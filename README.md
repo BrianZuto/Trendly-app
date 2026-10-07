@@ -34,7 +34,7 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 |---|---|---|
 | Backend | API REST con Spring Boot 4.1.1, Java 21, Maven. Spring Web MVC, Spring Security, Bean Validation, Spring Data JPA, Flyway, Lombok, Actuator. Paquete base `co.trendly`; rutas versionadas con `/api/v1` | Proyecto base creado |
 | Autenticación | JWT con jjwt | Pendiente (Sprint 2) |
-| Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker pendiente (SCRUM-29) |
+| Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker y migraciones Flyway (SCRUM-29) |
 | Frontend | SPA con React 19 + Vite 8, ESLint | Proyecto base creado |
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
 | Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
@@ -77,11 +77,13 @@ trendly/
 
 ### 1. Base de datos
 
+Primero crea el `.env` (paso 2) con `DB_PASSWORD` y `DB_ROOT_PASSWORD`; el contenedor los lee de ahí. Luego:
+
 ```bash
 docker compose up -d
 ```
 
-> El `docker-compose.yml` con MySQL 8 lo agrega Raquel en **SCRUM-29** (pendiente, Sprint 2).
+Levanta MySQL 8 en el puerto 3306. Las tablas las crea **Flyway** al arrancar el backend (`backend/src/main/resources/db/migration`), junto con los planes Gratuito y Pro y el administrador `admin@trendly.co` / `Trendly123`. El modelo de datos está en [`docs/modelo-datos.md`](docs/modelo-datos.md). Para borrar la base y empezar de cero: `docker compose down -v`.
 
 ### 2. Variables de entorno
 
@@ -98,6 +100,8 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `DB_URL` | URL JDBC de MySQL | `jdbc:mysql://localhost:3306/trendly` |
 | `DB_USERNAME` | Usuario de la base de datos | `trendly` |
 | `DB_PASSWORD` | Contraseña de la base de datos | `cambia-esto` |
+| `DB_ROOT_PASSWORD` | Contraseña de root del contenedor MySQL | `cambia-esto-tambien` |
+| `DB_PORT` | Puerto local de MySQL en `docker-compose.yml` | `3306` |
 | `JWT_SECRET` | Clave para firmar los tokens JWT (mínimo 256 bits) | salida de `openssl rand -base64 64` |
 | `JWT_EXPIRATION_MS` | Vigencia del token en milisegundos | `3600000` (1 h) |
 | `MAIL_HOST` | Servidor SMTP para las alertas | `smtp.gmail.com` |
