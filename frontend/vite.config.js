@@ -21,7 +21,6 @@ export default defineConfig({
       provider: 'v8',
       include: ['src/**/*.{js,jsx}'],
       exclude: ['src/main.jsx', 'src/test/**', 'src/**/*.test.{js,jsx}'],
-      // lcov lo usará SonarCloud en el S3
       reporter: ['text', 'html', 'lcov'],
       reportsDirectory: 'coverage',
     },
