@@ -1,0 +1,117 @@
+/* ═══════════════════════════════════════════
+   LAYOUT PÚBLICO — Login y Registro
+   Glassmorphism + mismo sistema de fondo
+   ═══════════════════════════════════════════ */
+
+.auth-root {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--slate-50);
+}
+
+/* ─── Fondo (misma textura que landing) ─── */
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.auth-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--slate-200) 1px, transparent 1px),
+    linear-gradient(90deg, var(--slate-200) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.45;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
+}
+
+.auth-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+}
+.auth-orb-1 {
+  width: 600px; height: 600px;
+  background: var(--indigo-400);
+  top: -150px; right: -100px;
+}
+.auth-orb-2 {
+  width: 400px; height: 400px;
+  background: var(--landing-cian-oscuro);
+  bottom: 0; left: -80px;
+}
+
+/* ─── Header mínimo ─── */
+.auth-header {
+  position: relative;
+  z-index: 10;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.4);
+  background: rgba(248, 250, 252, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--indigo-600);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.auth-logo:hover { color: var(--indigo-700); }
+
+.auth-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  background: var(--indigo-600);
+  border-radius: 7px;
+  color: white;
+}
+
+/* ─── Área central ─── */
+.auth-main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+}
+
+/* ─── Tarjeta glassmorphism ─── */
+.auth-card {
+  width: 100%;
+  max-width: 26rem;
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2.5rem;
+  /* Sombra 3D multicapa */
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,0.9) inset,
+    0 -1px 0 0 rgba(0,0,0,0.04) inset,
+    0 2px 4px rgba(15, 23, 42, 0.03),
+    0 8px 24px rgba(15, 23, 42, 0.07),
+    0 32px 64px rgba(15, 23, 42, 0.09);
+}
+
+/* Registro puede ser un poco más ancha */
+.auth-card.ancha {
+  max-width: 30rem;
+}

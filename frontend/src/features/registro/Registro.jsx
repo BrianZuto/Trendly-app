@@ -50,6 +50,7 @@ export default function Registro() {
     return (
         <>
             <h1>Crear cuenta</h1>
+            <p className="auth-subtitle">Empieza a monitorear tu competencia hoy</p>
             {errorApi && <Mensaje tipo="error">{errorApi}</Mensaje>}
 
             <form onSubmit={enviar} noValidate>

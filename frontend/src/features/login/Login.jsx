@@ -42,6 +42,7 @@ export default function Login() {
     return (
         <>
             <h1>Iniciar sesión</h1>
+            <p className="auth-subtitle">Bienvenido de nuevo a Trendly</p>
             {location.state?.registroExitoso && <Mensaje tipo="exito">Cuenta creada. Inicia sesión para continuar.</Mensaje>}
             {sesionExpirada && <Mensaje tipo="info">Tu sesión expiró. Inicia sesión de nuevo.</Mensaje>}
             {errorApi && <Mensaje tipo="error">{errorApi}</Mensaje>}
