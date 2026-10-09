@@ -6,9 +6,9 @@ import client from '@core/api/client'
 import { AuthProvider } from '@core/auth/AuthProvider'
 import App from './App'
 
-function renderizar(ruta) {
+function renderizar(ruta, initialEntries = [ruta]) {
     return render(
-        <MemoryRouter initialEntries={[ruta]}>
+        <MemoryRouter initialEntries={initialEntries}>
             <AuthProvider>
                 <App />
             </AuthProvider>
@@ -33,14 +33,45 @@ describe('rutas protegidas', () => {
         expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
     })
 
-    it('una ruta desconocida lleva al inicio y, sin sesión, a /login', async () => {
+    it('una ruta desconocida lleva a la landing pública', async () => {
         renderizar('/no-existe')
-        expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: /domina el mercado, protege tu margen/i })).toBeInTheDocument()
     })
 
     it('la política de datos es pública', () => {
         renderizar('/politica-datos')
         expect(screen.getByRole('heading', { name: /política de tratamiento/i })).toBeInTheDocument()
+    })
+})
+
+describe('navegación pública compartida', () => {
+    it.each(['/login', '/registro'])('muestra los mismos enlaces en %s', (ruta) => {
+        renderizar(ruta)
+
+        expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Planes' })).toHaveAttribute('href', '/#planes')
+        expect(screen.getByRole('link', { name: 'Política de datos' })).toHaveAttribute('href', '/politica-datos')
+        expect(screen.queryByRole('link', { name: 'Iniciar sesión' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Empezar gratis' })).not.toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Regresar a la vista anterior' })).toBeInTheDocument()
+    })
+
+    it('regresa a la vista visitada antes de registro', async () => {
+        const user = userEvent.setup()
+        renderizar('/registro', ['/', '/registro'])
+
+        await user.click(screen.getByRole('button', { name: 'Regresar a la vista anterior' }))
+
+        expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
+    })
+
+    it('usa la landing como destino al abrir login directamente', async () => {
+        const user = userEvent.setup()
+        renderizar('/login')
+
+        await user.click(screen.getByRole('button', { name: 'Regresar a la vista anterior' }))
+
+        expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
     })
 })
 

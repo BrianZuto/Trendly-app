@@ -1,28 +1,21 @@
 package co.trendly.seguridad;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -48,14 +41,14 @@ public class SecurityConfig {
         static final String MENSAJE_403 = "No tienes permiso para realizar esta acción";
 
         @Bean
-        SecurityFilterChain securityFilterChain(HttpSecurity http, JsonMapper jsonMapper)
+        SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter, JsonMapper jsonMapper)
                         throws Exception {
                 http
-                                .csrf(csrf -> csrf.disable())
+                                .csrf(AbstractHttpConfigurer::disable)
                                 .cors(Customizer.withDefaults())
-                                .httpBasic(basic -> basic.disable())
-                                .formLogin(form -> form.disable())
-                                .logout(logout -> logout.disable())
+                                .httpBasic(AbstractHttpConfigurer::disable)
+                                .formLogin(AbstractHttpConfigurer::disable)
+                                .logout(AbstractHttpConfigurer::disable)
                                 .sessionManagement(
                                                 sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(rutas -> rutas
@@ -70,30 +63,8 @@ public class SecurityConfig {
                                                                 MENSAJE_401))
                                                 .accessDeniedHandler((request, response, e) -> escribirError(jsonMapper,
                                                                 request, response, HttpStatus.FORBIDDEN, MENSAJE_403)))
-                                .oauth2ResourceServer(recurso -> recurso
-                                                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
                 return http.build();
-        }
-
-        @Bean
-        JwtDecoder jwtDecoder(@Value("${JWT_SECRET}") String secretoBase64) {
-                byte[] bytesSecreto = Base64.getDecoder().decode(secretoBase64.trim());
-                if (bytesSecreto.length < 32) {
-                        throw new IllegalArgumentException("JWT_SECRET debe tener al menos 256 bits");
-                }
-                SecretKey clave = new SecretKeySpec(bytesSecreto, "HmacSHA256");
-                return NimbusJwtDecoder.withSecretKey(clave).macAlgorithm(MacAlgorithm.HS256).build();
-        }
-
-        @Bean
-        JwtAuthenticationConverter jwtAuthenticationConverter() {
-                JwtAuthenticationConverter conversor = new JwtAuthenticationConverter();
-                conversor.setPrincipalClaimName("id");
-                conversor.setJwtGrantedAuthoritiesConverter(jwt -> {
-                        String rol = jwt.getClaimAsString("rol");
-                        return rol == null ? List.of() : List.of(new SimpleGrantedAuthority("ROLE_" + rol));
-                });
-                return conversor;
         }
 
         @Bean

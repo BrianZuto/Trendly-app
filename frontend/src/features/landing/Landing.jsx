@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PublicNavbar from '@core/layout/PublicNavbar'
 import './Landing.css';
 
 /* ─── Íconos SVG ─── */
@@ -12,21 +13,111 @@ const IconoFlecha = () => (
     <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
   </svg>
 );
-const IconoEscudo = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-  </svg>
-);
+const DATOS_DEMO = {
+  nombre: 'Audífonos Bluetooth',
+  sku: 'DEMO-001',
+  costo: 85000,
+  precioVenta: 119900,
+  margenObjetivo: 30,
+  competidor: 139900,
+};
 
-/* ─── Dato de métrica en el panel ─── */
-function MetricaItem({ label, value, delta, positivo }) {
+const formatoCOP = new Intl.NumberFormat('es-CO', {
+  style: 'currency',
+  currency: 'COP',
+  maximumFractionDigits: 0,
+});
+
+function ComparacionPrecios() {
+  const precioSugerido = Math.round(DATOS_DEMO.costo / (1 - DATOS_DEMO.margenObjetivo / 100));
+  const margenActual = ((DATOS_DEMO.precioVenta - DATOS_DEMO.costo) / DATOS_DEMO.precioVenta) * 100;
+  const diferenciaCompetidor = DATOS_DEMO.competidor - DATOS_DEMO.precioVenta;
+  const porcentajeMenor = (diferenciaCompetidor / DATOS_DEMO.competidor) * 100;
+  const barras = [
+    { nombre: 'Tu precio', detalle: 'venta', valor: DATOS_DEMO.precioVenta, clase: 'propio' },
+    { nombre: 'Competidor', detalle: 'MercadoLibre', valor: DATOS_DEMO.competidor, clase: 'mercado' },
+    { nombre: 'Costo', detalle: 'AliExpress', valor: DATOS_DEMO.costo, clase: 'costo' },
+  ];
+  const maximo = Math.max(...barras.map(({ valor }) => valor));
+
   return (
-    <div className="metrica-item">
-      <span className="metrica-label">{label}</span>
-      <div className="metrica-valores">
-        <span className="metrica-value">{value}</span>
-        <span className={`metrica-delta ${positivo ? 'positivo' : 'negativo'}`}>{delta}</span>
-      </div>
+    <div className="hero-panel">
+      <article className="panel-glass price-preview" aria-label="Vista de ejemplo de comparación de precios">
+        <header className="preview-header">
+        </header>
+
+        <div className="preview-product">
+          <div className="preview-product-art">
+            <img
+              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=720&q=85"
+              alt="Audífonos de diadema sobre fondo claro"
+              fetchPriority="high"
+            />
+          </div>
+          <div className="preview-product-info">
+            <h3>{DATOS_DEMO.nombre}</h3>
+            <span className="preview-sku">SKU {DATOS_DEMO.sku}</span>
+            <span className="preview-product-market">MercadoLibre <span aria-hidden="true">·</span> AliExpress</span>
+          </div>
+        </div>
+
+        <div className="preview-comparison">
+          <div className="preview-section-heading">
+            <div>
+              <h4>Precios de referencia</h4>
+            </div>
+            <span className="preview-capture">COP</span>
+          </div>
+
+          <div className="price-bars">
+            {barras.map(({ nombre, detalle, valor, clase }, index) => (
+              <div className="price-bar-row" key={nombre} style={{ '--bar-delay': `${index * 140}ms` }}>
+                <div className="price-bar-heading">
+                  <span className="price-bar-name">
+                    <span className={`price-bar-dot ${clase}`} />
+                    <span>{nombre}</span>
+                    <small>{detalle}</small>
+                  </span>
+                  <strong>{formatoCOP.format(valor)}</strong>
+                </div>
+                <div
+                  className="price-bar-track"
+                  role="meter"
+                  aria-label={`${nombre}: ${formatoCOP.format(valor)}`}
+                  aria-valuemin="0"
+                  aria-valuemax={maximo}
+                  aria-valuenow={valor}
+                >
+                  <span className={`price-bar-fill ${clase}`} style={{ '--bar-size': `${(valor / maximo) * 100}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="preview-result">
+          <div className="preview-position">
+            <span>
+              <strong>{formatoCOP.format(diferenciaCompetidor)} menos</strong>
+              {' '}
+              <small>que el precio observado en MercadoLibre</small>
+            </span>
+            <span className="position-percent">{porcentajeMenor.toFixed(1)}%</span>
+          </div>
+          <div className="preview-suggestion">
+            <span className="suggestion-copy">
+              <span>PRECIO SUGERIDO <span aria-hidden="true">·</span> MARGEN OBJETIVO {DATOS_DEMO.margenObjetivo}%</span>
+              <strong>{formatoCOP.format(precioSugerido)}</strong>
+              <small>Margen actual: {margenActual.toFixed(1)}%</small>
+            </span>
+            <span className="suggestion-delta">
+              <span>Para alcanzar tu objetivo</span>
+              <strong>+{formatoCOP.format(precioSugerido - DATOS_DEMO.precioVenta)}</strong>
+            </span>
+          </div>
+        </div>
+
+      </article>
     </div>
   );
 }
@@ -51,36 +142,16 @@ export default function Landing() {
         <div className="bg-orb orb-2"></div>
       </div>
 
-      {/* ── Navegación ── */}
-      <header className="landing-header">
-        <nav className="landing-nav" role="navigation" aria-label="Navegación principal">
-          <div className="landing-logo" aria-label="Trendly">
-            <span className="logo-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
-            </span>
-            Trendly
-          </div>
-          <ul className="nav-links" role="list">
-            <li><a href="#planes" className="nav-link">Planes</a></li>
-            <li><Link to="/politica-datos" className="nav-link">Política de datos</Link></li>
-          </ul>
-          <div className="nav-ctas">
-            <Link to="/login" className="btn btn-ghost">Iniciar sesión</Link>
-            <Link to="/registro" className="btn btn-primary">Empezar gratis</Link>
-          </div>
-        </nav>
-      </header>
+      <PublicNavbar />
 
       {/* ── Hero ── */}
       <section className="landing-hero" aria-labelledby="hero-heading">
         <div className="hero-copy">
           <h1 id="hero-heading" className="hero-title">
-            Domina el mercado,<br />Protege tu margen
+            Domina el mercado y protege tu margen
           </h1>
           <p className="hero-subtitle">
-            Trendly monitorea a tus competidores en MercadoLibre y AliExpress, analiza tendencias y te sugiere el precio óptimo antes de que pierdas una venta
+            Trendly monitorea precios y disponibilidad en MercadoLibre y AliExpress, y sugiere un precio y margen a partir del costo y el margen objetivo de tu producto.
           </p>
           <div className="hero-actions">
             <Link to="/registro" className="btn btn-primary btn-lg">
@@ -91,47 +162,37 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Panel glassmorphism */}
-        <div className="hero-panel" aria-hidden="true">
-          <div className="panel-glass">
-            <div className="panel-topbar">
-              <div className="panel-dots">
-                <span className="pdot"></span><span className="pdot"></span><span className="pdot"></span>
+        <ComparacionPrecios />
+      </section>
+
+      {/* ── Cómo funciona ── */}
+      <section className="landing-steps" aria-labelledby="steps-heading">
+        <div className="section-container steps-container">
+          <p className="section-eyebrow">Cómo funciona</p>
+          <h2 id="steps-heading" className="section-title">De tus productos a decisiones de precio</h2>
+          <ol className="steps-list">
+            <li className="step-card">
+              <span className="step-number">1</span>
+              <div>
+                <h3>Registra tu producto</h3>
+                <p>Agrega su costo, precio de venta y margen objetivo</p>
               </div>
-              <span className="panel-title-bar">Panel de precios — Hoy</span>
-            </div>
-            <div className="panel-body">
-              <div className="panel-chart-wrap">
-                <span className="chart-label">Historial 30 días</span>
-                <svg className="mini-chart" viewBox="0 0 260 80" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="grad-indigo" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#4f46e5" stopOpacity="0" />
-                    </linearGradient>
-                    <linearGradient id="grad-cyan" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#0891b2" stopOpacity="0.15" />
-                      <stop offset="100%" stopColor="#0891b2" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M0,55 C20,50 40,45 65,40 C90,35 110,30 130,28 C150,26 175,30 200,25 C220,21 240,18 260,15 L260,80 L0,80 Z" fill="url(#grad-indigo)" />
-                  <polyline fill="none" stroke="#4f46e5" strokeWidth="2.5" points="0,55 65,40 130,28 200,25 260,15" />
-                  <path d="M0,62 C20,60 40,58 65,55 C90,52 110,50 130,48 C150,46 175,50 200,45 C220,42 240,40 260,38 L260,80 L0,80 Z" fill="url(#grad-cyan)" />
-                  <polyline fill="none" stroke="#0891b2" strokeWidth="1.5" strokeDasharray="4 3" points="0,62 65,55 130,48 200,45 260,38" />
-                  <circle cx="260" cy="15" r="4" fill="#4f46e5" stroke="white" strokeWidth="2" />
-                </svg>
+            </li>
+            <li className="step-card">
+              <span className="step-number">2</span>
+              <div>
+                <h3>Monitoreamos el mercado</h3>
+                <p>La recolección programada consulta competidores cada 6 horas</p>
               </div>
-              <div className="panel-metricas">
-                <MetricaItem label="Mi precio" value="$189.900" delta="+2,3%" positivo={true} />
-                <MetricaItem label="Competidor 1" value="$195.000" delta="-1,1%" positivo={false} />
-                <MetricaItem label="Margen actual" value="38,4%" delta="En objetivo" positivo={true} />
+            </li>
+            <li className="step-card">
+              <span className="step-number">3</span>
+              <div>
+                <h3>Revisa sugerencias y alertas</h3>
+                <p>Consulta el precio y margen sugeridos, y las alertas generadas tras cada recolección</p>
               </div>
-              <div className="panel-alerta">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
-                Oportunidad — Competidor subió su precio
-              </div>
-            </div>
-          </div>
+            </li>
+          </ol>
         </div>
       </section>
 
@@ -141,107 +202,59 @@ export default function Landing() {
           <p className="section-eyebrow">Planes y precios</p>
           <h2 id="planes-heading" className="section-title">Elige el plan que se adapta a tu negocio</h2>
           <div className="planes-grid">
-            {/* Plan Gratuito (Estilo Azul) */}
-            <article className="plan-card plan-dark">
+            {/* Plan gratuito */}
+            <article className="plan-card">
               <div className="plan-header">
-                <h3 className="plan-nombre">Paquete Básico</h3>
+                <h3 className="plan-nombre">Gratuito</h3>
                 <div className="plan-precio">
                   <span className="plan-monto">$0</span>
-                  <span className="plan-periodo">/ Pago Único</span>
                 </div>
-                <p className="plan-descripcion">Para emprendedores que quieren explorar la inteligencia de precios.</p>
+                <p className="plan-descripcion">Para empezar a organizar tus productos y monitoreos</p>
               </div>
               <ul className="plan-features" role="list">
                 <PlanItem texto="Hasta 10 productos registrados" />
-                <PlanItem texto="Monitoreo cada 12 horas" />
-                <PlanItem texto="Historial de 15 días" />
-                <PlanItem texto="Soporte por correo" />
+                <PlanItem texto="Recolección programada cada 6 horas" />
+                <PlanItem texto="Precio y margen sugeridos según tu objetivo" />
               </ul>
-              <Link to="/registro" className="plan-cta btn btn-outline-light">Comprar Ahora</Link>
+              <Link to="/registro" className="plan-cta btn btn-outline">Crear cuenta gratis</Link>
             </article>
 
-            {/* Plan Pro (Estilo Blanco) */}
-            <article className="plan-card plan-destacado">
+            {/* Plan Pro destacado */}
+            <article className="plan-card plan-destacado plan-dark">
               <div className="plan-badge-top">Más popular</div>
               <div className="plan-header">
-                <h3 className="plan-nombre">Paquete Premium</h3>
+                <h3 className="plan-nombre">Pro</h3>
                 <div className="plan-precio">
-                  <span className="plan-monto">$49.900 COP</span>
-                  <span className="plan-periodo">/ Pago Único</span>
+                  <span className="plan-monto">$49.900</span>
+                  <span className="plan-periodo">COP / mes</span>
                 </div>
-                <p className="plan-descripcion">Para vendedores profesionales que necesitan escalar su operación.</p>
+                <p className="plan-descripcion">Para vendedores que necesitan monitorear más productos</p>
               </div>
               <ul className="plan-features" role="list">
                 <PlanItem texto="Hasta 100 productos registrados" />
-                <PlanItem texto="Monitoreo configurable (mín. 1 hora)" />
-                <PlanItem texto="Historial de 6 meses" />
-                <PlanItem texto="Sugerencias de precio con IA" />
-                <PlanItem texto="Soporte prioritario" />
+                <PlanItem texto="Frecuencia configurable desde 1 hora" />
+                <PlanItem texto="Recolección programada cada 6 horas por defecto" />
+                <PlanItem texto="Precio y margen sugeridos según tu objetivo" />
               </ul>
-              <Link to="/registro" className="plan-cta btn btn-primary">
-                Comprar Ahora
+              <Link to="/registro" className="plan-cta btn btn-outline-light">
+                Crear cuenta
               </Link>
             </article>
           </div>
-          <p className="planes-legal">
-            Facturación mensual, puedes cancelar en cualquier momento
-          </p>
+          <p className="planes-legal">Facturacion manual, puedes cancelar en cualquier momento</p>
         </div>
       </section>
 
-      {/* ── Footer estilo HubSpot (Oscuro, múltiples columnas) ── */}
+      {/* ── Footer ── */}
       <footer className="landing-footer-dark" role="contentinfo">
         <div className="footer-dark-inner">
-          <nav className="footer-dark-nav" aria-label="Navegación del pie de página">
-            <div className="footer-dark-col">
-              <strong>Funciones populares</strong>
-              <a href="#" className="footer-link">Monitoreo de precios MercadoLibre</a>
-              <a href="#" className="footer-link">Sugerencias de IA</a>
-              <a href="#" className="footer-link">Alertas en tiempo real</a>
-              <a href="#" className="footer-link">Historial de competidores</a>
-              <a href="#" className="footer-link">Análisis de margen</a>
-              <a href="#" className="footer-link">Gestión de catálogos</a>
-              <a href="#" className="footer-link">Reportes exportables</a>
-            </div>
-
-            <div className="footer-dark-col">
-              <strong>Herramientas gratuitas</strong>
-              <a href="#" className="footer-link">Calculadora de margen</a>
-              <a href="#" className="footer-link">Analizador de competidores</a>
-              <a href="#" className="footer-link">Plantillas de precios</a>
-              <a href="#" className="footer-link">Generador de descripciones</a>
-              <a href="#" className="footer-link">Datos de la industria</a>
-            </div>
-
-            <div className="footer-dark-col">
-              <strong>Empresa</strong>
-              <a href="#" className="footer-link">Sobre nosotros</a>
-              <a href="#" className="footer-link">Trabaja con nosotros <span className="footer-badge">CO</span></a>
-              <a href="#" className="footer-link">Contacto</a>
-              <a href="#" className="footer-link">Inversores <span className="footer-badge">EN</span></a>
-              <a href="#" className="footer-link">Blog</a>
-              <Link to="/politica-datos" className="footer-link">Política de privacidad</Link>
-            </div>
-
-            <div className="footer-dark-col">
-              <strong>Clientes y Partners</strong>
-              <a href="#" className="footer-link">Atención al cliente</a>
-              <a href="#" className="footer-link">Comunidad de vendedores</a>
-              <a href="#" className="footer-link" style={{ marginTop: '1.5rem' }}>Programa de afiliados</a>
-              <a href="#" className="footer-link">Agencias y consultores</a>
-              <a href="#" className="footer-link">API para desarrolladores</a>
-            </div>
-          </nav>
-
           <div className="footer-dark-bottom">
             <div className="footer-logo-row">
               <div className="footer-brand">Trendly</div>
-              <p className="footer-tagline">Inteligencia de precios para dominar el mercado</p>
+              <p className="footer-tagline">Monitoreo y análisis de precios para vendedores</p>
             </div>
             <div className="footer-legal-links">
-              <a href="#">Términos legales</a>
-              <Link to="/politica-datos">Política de privacidad</Link>
-              <a href="#">Seguridad</a>
+              <Link to="/politica-datos">Política de tratamiento de datos</Link>
             </div>
             <p className="footer-copy">© 2026 Trendly</p>
           </div>

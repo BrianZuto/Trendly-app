@@ -8,15 +8,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--slate-50);
+  background: #fff;
 }
 
 /* ─── Fondo (misma textura que landing) ─── */
 .auth-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .auth-bg-grid {
@@ -47,39 +44,6 @@
   bottom: 0; left: -80px;
 }
 
-/* ─── Header mínimo ─── */
-.auth-header {
-  position: relative;
-  z-index: 10;
-  padding: 1.25rem 2rem;
-  border-bottom: 1px solid rgba(203, 213, 225, 0.4);
-  background: rgba(248, 250, 252, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.auth-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--indigo-600);
-  letter-spacing: -0.02em;
-  text-decoration: none;
-}
-.auth-logo:hover { color: var(--indigo-700); }
-
-.auth-logo-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px; height: 30px;
-  background: var(--indigo-600);
-  border-radius: 7px;
-  color: white;
-}
-
 /* ─── Área central ─── */
 .auth-main {
   position: relative;
@@ -95,11 +59,8 @@
 .auth-card {
   width: 100%;
   max-width: 26rem;
-  /* Glassmorphism */
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  background: #fff;
+  border: 1px solid #e8eaf2;
   border-radius: 20px;
   padding: 2.5rem;
   /* Sombra 3D multicapa */

@@ -64,6 +64,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   background: var(--color-fondo);
@@ -107,11 +111,35 @@ a:hover { color: var(--indigo-700); }
   color: var(--color-primario);
 }
 
-/* Compatibilidad: ya no se usan, el layout está en PublicLayout.css */
-.publico { display: contents; }
-.tarjeta { display: contents; }
-.tarjeta-ancha { display: contents; }
-.marca-grande { display: none; } /* El logo lo pone PublicLayout */
+/* Página pública de política de datos */
+.publico {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+  background: var(--slate-50);
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 38rem;
+  align-self: flex-start;
+  padding: 2rem;
+  background: white;
+  border: 1px solid var(--slate-300);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+.tarjeta-ancha {
+  max-width: 48rem;
+}
+
+.marca-grande {
+  display: block;
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
 
 /* ─── Formularios ─── */
 .campo {
