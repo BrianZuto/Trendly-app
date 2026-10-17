@@ -38,6 +38,19 @@ export function validarLogin({ email, password }) {
     })
 }
 
+// Mismas reglas que el backend de SCRUM-33; el SKU repetido lo detecta el servidor
+export function validarProducto({ nombre, sku, costo, precioVenta, margenObjetivo }) {
+    const margen = Number(margenObjetivo)
+    return quitarVacios({
+    nombre: nombre.trim() ? '' : 'El nombre es obligatorio',
+    sku: sku.trim() ? '' : 'El SKU es obligatorio',
+    costo: Number(costo) > 0 ? '' : 'El costo debe ser mayor que 0',
+    precioVenta: Number(precioVenta) > 0 ? '' : 'El precio de venta debe ser mayor que 0',
+    margenObjetivo:
+        String(margenObjetivo).trim() !== '' && margen >= 0 && margen <= 100 ? '' : 'El margen objetivo debe estar entre 0 y 100',
+    })
+}
+
 function quitarVacios(errores) {
     return Object.fromEntries(Object.entries(errores).filter(([, mensaje]) => mensaje))
 }

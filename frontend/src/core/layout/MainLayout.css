@@ -1,0 +1,271 @@
+/* ═══════════════════════════════════════════
+   ÁREA AUTENTICADA · Plaza de mercado
+   Pizarra arriba, papel abajo; el verde es tu precio y lo positivo,
+   el tomate el competidor y el rojo lo que está bajo tu margen.
+   Los tokens viven en .app y en el fondo de los diálogos (van en un portal),
+   así la landing y el login conservan los suyos.
+   ═══════════════════════════════════════════ */
+
+:where(.app, .dialogo-fondo) {
+  --pizarra: #0f241b;
+  --pizarra-alta: #163024;
+  --pizarra-honda: #0a1a13;
+  --tiza: #f2eee3;
+  --tiza-suave: #a6b5aa;
+  --etiqueta: #ffd23f;
+
+  --papel: #f5f0e6;
+  --papel-alto: #fffdf8;
+  --papel-hondo: #f3ede2;
+  --arena: #eadfc8;
+  --borde: #d6ccb7;
+  --borde-campo: #8f8672;
+  --tinta: #1a1d16;
+  --tinta-media: #464b3e;
+  --tinta-suave: #5e6356;
+  --texto: var(--tinta);
+  --texto-suave: var(--tinta-suave);
+
+  --verde: #0e7c5a;
+  --verde-hondo: #0a6448;
+  --verde-claro: #e2f1ea;
+  --tomate: #d9480f;
+  --ambar: #d97706;
+  --ambar-texto: #9a4a00;
+  --peligro: #b42318;
+  --peligro-fondo: #fcebe8;
+  --peligro-texto: #b42318;
+  --peligro-borde: #efb4ab;
+  --exito-texto: #0a6448;
+  --exito-fondo: #e2f1ea;
+  --exito-borde: #a8d5c1;
+
+  /* paletas giratorias */
+  --noche: #07100c;
+  --paleta: #07100c;
+  --paleta-luz: #13201a;
+
+  --radio: 12px;
+  --sombra: 0 1px 0 rgb(26 29 22 / 4%), 0 8px 24px -12px rgb(26 29 22 / 18%);
+  --t-press: 140ms;
+  --t-hover: 180ms;
+}
+
+html:has(.app) { background: var(--pizarra, #0f241b); }
+
+.app {
+  min-height: 100vh;
+  background: var(--papel);
+  color: var(--tinta);
+  overflow-x: clip;
+}
+
+.app :focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
+.app-barra :focus-visible { outline-color: var(--etiqueta); }
+.app ::selection { background: var(--etiqueta); color: var(--tinta); }
+
+.cifra { font-variant-numeric: tabular-nums; }
+
+/* ─── Barra: igual al lienzo, marca + búsqueda + usuario, y las secciones debajo ─── */
+.app-barra {
+  background: var(--pizarra);
+  color: #fff;
+}
+
+.app-barra-fila,
+.app-barra-nav {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left));
+  padding-right: max(24px, env(safe-area-inset-right));
+}
+
+.app-barra-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.app-barra-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  transition: transform var(--t-press) var(--ease-out);
+}
+.app-barra-marca:active { transform: scale(0.97); }
+
+.app-barra-logo {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--etiqueta);
+  color: var(--tinta);
+}
+.app-barra-logo .logo-icon { width: 24px; height: 24px; }
+
+.app-barra-nombre-marca {
+  font-size: 24px;
+  font-stretch: 80%;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.app-barra-buscar {
+  flex: 1 1 420px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 46px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--tinta-suave);
+}
+.app-barra-buscar svg { flex: none; width: 20px; height: 20px; }
+.app-barra-buscar:focus-within { outline: 3px solid var(--etiqueta); outline-offset: 2px; }
+
+.app-barra-buscar input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 15px;
+}
+.app-barra-buscar input::placeholder { color: var(--tinta-suave); }
+
+.app-barra-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-barra-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #22402f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.app-barra-quien {
+  font-size: 14px;
+  line-height: 1.2;
+}
+.app-barra-quien span {
+  display: block;
+  color: var(--tiza-suave);
+  font-size: 12px;
+}
+
+.app-barra-salir {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -8px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+}
+.app-barra-salir svg { width: 20px; height: 20px; }
+.app-barra-salir:active { transform: scale(0.95); }
+
+.app-barra-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.app-barra-nav a {
+  padding: 14px 0;
+  border-bottom: 3px solid transparent;
+  color: #b3c2b6;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--t-hover) ease;
+}
+.app-barra-nav a.active { color: #fff; border-bottom-color: var(--etiqueta); }
+
+@media (hover: hover) and (pointer: fine) {
+  .app-barra-nav a:hover { color: #fff; }
+  .app-barra-salir:hover { background: var(--pizarra-alta); }
+}
+
+.app-contenido {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 28px max(24px, env(safe-area-inset-right)) 64px max(24px, env(safe-area-inset-left));
+}
+
+@media (max-width: 760px) {
+  .app-barra-fila { gap: 12px; }
+  .app-barra-marca { margin-right: auto; }
+  .app-barra-nombre-marca { font-size: 20px; }
+  .app-barra-quien { display: none; }
+  .app-barra-buscar { order: 3; flex-basis: 100%; }
+  .app-barra-fila, .app-barra-nav { padding-left: 16px; padding-right: 16px; }
+  .app-contenido { padding-top: 24px; padding-left: 16px; padding-right: 16px; }
+}
+
+/* ─── Botones de la app ─── */
+.app-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--verde);
+  color: #fff;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+}
+.app-boton svg { width: 18px; height: 18px; }
+.app-boton:active:not(:disabled) { transform: scale(0.97); }
+.app-boton:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.app-boton-claro {
+  background: #fff;
+  color: var(--tinta);
+  box-shadow: inset 0 0 0 1.5px var(--borde);
+}
+
+.app-boton-chico { height: 36px; padding: 0 12px; font-size: 14px; }
+
+.app-boton-peligro { background: var(--peligro); }
+
+@media (hover: hover) and (pointer: fine) {
+  .app-boton:hover:not(:disabled) { background: var(--verde-hondo); }
+  .app-boton-claro:hover:not(:disabled) { background: #fff; box-shadow: inset 0 0 0 1.5px var(--tinta); }
+  .app-boton-peligro:hover:not(:disabled) { background: #93190f; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-boton, .app-barra-salir, .app-barra-marca { transition: none; }
+}

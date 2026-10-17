@@ -85,3 +85,18 @@
   .paleta .h-arriba,
   .paleta .h-abajo { display: none; }
 }
+
+/* Verde: tu precio y lo que va bien. Rojo: bajo tu margen objetivo */
+.paletas-verde .paleta { color: #fff; }
+.paletas-verde .paleta > span { background: #0a6448; }
+.paletas-verde .paleta .p-arriba,
+.paletas-verde .paleta .h-arriba { background: #0e7c5a; }
+.paletas-verde .paleta .p-abajo,
+.paletas-verde .paleta .h-abajo { border-top-color: #063d2c; }
+
+.paletas-rojo .paleta { color: #fff; }
+.paletas-rojo .paleta > span { background: #93190f; }
+.paletas-rojo .paleta .p-arriba,
+.paletas-rojo .paleta .h-arriba { background: #b42318; }
+.paletas-rojo .paleta .p-abajo,
+.paletas-rojo .paleta .h-abajo { border-top-color: #5c0f09; }
