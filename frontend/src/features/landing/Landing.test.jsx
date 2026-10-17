@@ -13,39 +13,50 @@ function renderizarLanding() {
 }
 
 describe('landing', () => {
-  it('explica cómo funciona el monitoreo programado', () => {
+  it('explica cómo funciona el monitoreo programado en tres pasos', () => {
     renderizarLanding()
 
-    expect(screen.getByRole('heading', { name: /registra tu producto/i })).toBeInTheDocument()
-    expect(screen.getByText('La recolección programada consulta competidores cada 6 horas')).toBeInTheDocument()
-    expect(screen.getByText(/Consulta el precio y margen sugeridos, y las alertas generadas tras cada recolección/)).toBeInTheDocument()
+    const recorrido = screen.getByRole('region', { name: 'Muchos precios, una decisión' })
+    expect(within(recorrido).getByRole('button', { name: /registra/i })).toHaveAttribute('aria-current', 'step')
+    expect(within(recorrido).getByText('Los precios y la disponibilidad de tus competidores, cada 6 horas.')).toBeInTheDocument()
+    expect(within(recorrido).getByText('Con el precio sugerido y las alertas de cada recolección.')).toBeInTheDocument()
   })
 
-  it('muestra los planes documentados sin inventar precios ni funciones', () => {
+  it('al elegir un paso lo marca como actual', async () => {
+    const user = userEvent.setup()
     renderizarLanding()
 
-    expect(screen.getByRole('heading', { name: 'Gratuito' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Pro' })).toBeInTheDocument()
-    expect(screen.getByText('Hasta 10 productos registrados')).toBeInTheDocument()
-    expect(screen.getByText('Hasta 100 productos registrados')).toBeInTheDocument()
-    expect(screen.getByText('Precio por anunciar')).toBeInTheDocument()
-    expect(screen.queryByText(/COP\s*\/\s*mes/i)).not.toBeInTheDocument()
-    expect(screen.queryByText(/inteligencia artificial|tiempo real|historial de 15 días|historial de 6 meses|más popular/i)).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /decides/i }))
+
+    expect(screen.getByRole('button', { name: /decides/i })).toHaveAttribute('aria-current', 'step')
+    expect(screen.getByRole('button', { name: /registra/i })).not.toHaveAttribute('aria-current')
   })
 
-  it('muestra un producto de ejemplo y calcula la sugerencia desde costo y margen objetivo', () => {
+  it('no muestra planes ni precios de suscripción', () => {
     renderizarLanding()
 
-    const tablero = screen.getByRole('article', { name: 'Vista de ejemplo de comparación de precios' })
-    expect(within(tablero).getByText('Ejemplo')).toBeInTheDocument()
-    expect(within(tablero).getByRole('heading', { name: 'Audífonos Bluetooth' })).toBeInTheDocument()
-    expect(within(tablero).getByRole('rowheader', { name: /costo/i })).toBeInTheDocument()
-    expect(within(tablero).getByText(/121[.,]429/)).toBeInTheDocument()
-    expect(within(tablero).getByText(/119[.,]900/)).toBeInTheDocument()
-    expect(within(tablero).getByText(/20[.,]000 menos/)).toBeInTheDocument()
-    expect(within(tablero).getByText('Para alcanzar tu objetivo')).toBeInTheDocument()
-    expect(within(tablero).getByText(/29[.,]1%/)).toBeInTheDocument()
-    expect(document.querySelector('img[src*="unsplash"]')).toBeNull()
+    expect(screen.queryByRole('heading', { name: /gratuito|pro\b/i })).not.toBeInTheDocument()
+    expect(screen.queryByText(/precio por anunciar|hasta 10 productos|hasta 100 productos/i)).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Planes' })).not.toBeInTheDocument()
+  })
+
+  it('calcula el precio sugerido desde el costo y el margen objetivo que escribe el vendedor', async () => {
+    const user = userEvent.setup()
+    renderizarLanding()
+
+    const tablero = screen.getByRole('region', { name: 'Tablero de ejemplo' })
+    expect(within(tablero).getByText('Cifras de ejemplo')).toBeInTheDocument()
+    expect(await within(tablero).findByRole('img', { name: '$121.429' })).toBeInTheDocument()
+
+    const costo = screen.getByLabelText('Costo en COP')
+    await user.clear(costo)
+    await user.type(costo, '100000')
+    const margen = screen.getByLabelText('Margen objetivo %')
+    await user.clear(margen)
+    await user.type(margen, '20')
+
+    expect(await within(tablero).findByRole('img', { name: '$125.000' })).toBeInTheDocument()
+    expect(within(tablero).getByText('Margen 20%')).toBeInTheDocument()
   })
 
   it('el registro rápido lleva el email al formulario de registro', async () => {
@@ -71,17 +82,18 @@ describe('landing', () => {
     expect(estado).toEqual({ email: 'ana@correo.com' })
   })
 
-  it('usa enlaces funcionales y conserva navegación pública en el encabezado', () => {
+  it('usa enlaces funcionales en el encabezado y en el cierre', () => {
     renderizarLanding()
 
-    expect(screen.getByRole('link', { name: 'Planes' })).toHaveAttribute('href', '#planes')
-    expect(screen.getByRole('link', { name: 'Política de datos' })).toHaveAttribute('href', '/politica-datos')
-    expect(screen.getByRole('link', { name: 'Iniciar sesión' })).toHaveClass('btn-outline')
-    expect(screen.getByRole('link', { name: 'Empezar gratis' })).toHaveAttribute('href', '/registro')
-    expect(screen.getByRole('link', { name: 'Crear cuenta gratis' })).toHaveAttribute('href', '/registro')
+    const barra = screen.getByRole('navigation', { name: 'Navegación principal' })
+    expect(within(barra).getByRole('link', { name: 'Cómo funciona' })).toHaveAttribute('href', '#recorrido')
+    expect(within(barra).getByRole('link', { name: 'Política de datos' })).toHaveAttribute('href', '/politica-datos')
+    expect(within(barra).getByRole('link', { name: 'Iniciar sesión' })).toHaveAttribute('href', '/login')
+    expect(within(barra).getByRole('link', { name: 'Crear cuenta' })).toHaveAttribute('href', '/registro')
 
-    const footer = screen.getByRole('contentinfo')
-    expect(within(footer).getByRole('link', { name: 'Política de tratamiento de datos' })).toHaveAttribute('href', '/politica-datos')
-    expect(footer.querySelector('a[href="#"]')).toBeNull()
+    const cierre = screen.getByRole('contentinfo')
+    expect(within(cierre).getByRole('img', { name: 'Trendly' })).toBeInTheDocument()
+    expect(within(cierre).getByRole('link', { name: 'Política de tratamiento de datos' })).toHaveAttribute('href', '/politica-datos')
+    expect(cierre.querySelector('a[href="#"]')).toBeNull()
   })
 })

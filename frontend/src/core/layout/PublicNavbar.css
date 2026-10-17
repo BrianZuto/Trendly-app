@@ -1,230 +1,74 @@
-/* Barra pública: el borde superior de la pizarra */
-.landing-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--pizarra);
-  border-bottom: 1px solid var(--pizarra-linea);
+/* La barra también son mosaicos: marca, enlaces y una sola acción */
+.pub-barra {
+  padding: var(--gap) max(var(--gap), env(safe-area-inset-right)) 0 max(var(--gap), env(safe-area-inset-left));
+  background: var(--noche);
 }
 
-.landing-nav {
+.pub-barra-nav {
+  display: flex;
+  gap: var(--gap);
+}
+
+.pub-barra-nav > *,
+.pub-barra-enlaces {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  max-width: 76rem;
-  min-height: 64px;
-  margin: 0 auto;
-  padding: 0.5rem 1.5rem;
+  height: 60px;
+  border-radius: var(--radio);
 }
 
-.landing-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-shrink: 0;
-  color: var(--tiza);
-  font-size: 1.375rem;
-  font-stretch: 85%;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.landing-logo:hover {
-  color: var(--tiza);
-}
-
-.logo-icon {
-  width: 34px;
-  height: 34px;
-  color: var(--pizarra-hondo);
-}
-
-.nav-links {
-  display: flex;
-  flex: 1;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 0.75rem;
-  color: var(--tiza-suave);
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 150ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .nav-link:hover {
-    color: var(--tiza);
-    text-decoration: underline;
-    text-decoration-color: var(--etiqueta);
-  }
-}
-
-.nav-home {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  margin-left: -0.5rem;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--tiza);
-  cursor: pointer;
-  transition: background-color 150ms ease, transform 160ms var(--ease-out);
-}
-
-.nav-home svg {
-  width: 22px;
-  height: 22px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .nav-home:hover {
-    background: var(--pizarra-clara);
-  }
-}
-
-.nav-home:active {
-  transform: scale(0.95);
-}
-
-.nav-ctas {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* ─── Botones-enlace ─── */
-.btn {
-  display: inline-flex;
-  align-items: center;
+.pub-barra-volver,
+.pub-barra-marca {
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0 1.125rem;
-  border: 1.5px solid transparent;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1;
-  text-decoration: none;
-  white-space: nowrap;
+  flex: none;
+  width: 64px;
+  border: 0;
   cursor: pointer;
-  transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease,
-    transform 160ms var(--ease-out);
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
 }
+.pub-barra-volver { background: var(--mosaico); color: var(--tiza); }
+.pub-barra-volver svg { width: 22px; height: 22px; }
+.pub-barra-marca { background: var(--etiqueta); color: var(--tinta); }
+.pub-barra-marca .logo-icon { width: 28px; height: 28px; }
 
-.btn:active {
-  transform: scale(0.97);
+.pub-barra-enlaces {
+  flex: 1;
+  gap: 32px;
+  margin: 0;
+  padding: 0 24px;
+  list-style: none;
+  background: var(--mosaico);
+  font-size: var(--paso-chico);
+  font-weight: 500;
 }
+.pub-barra-enlaces a { color: var(--tiza-suave); text-decoration: none; transition: color var(--t-hover) ease; }
 
-.btn svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  transition: transform 200ms var(--ease-out);
+.pub-barra-entrar,
+.pub-barra-accion {
+  padding: 0 24px;
+  font-size: var(--paso-chico);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
 }
+.pub-barra-entrar { background: var(--mosaico); color: var(--tiza); }
+.pub-barra-accion { background: var(--tiza); color: var(--noche); }
 
-.btn-etiqueta {
-  background: var(--etiqueta);
-  color: var(--tinta);
-}
-
-.btn-etiqueta:hover {
-  color: var(--tinta);
-}
-
-.btn-outline {
-  border-color: var(--pizarra-linea);
-  color: var(--tiza);
-}
-
-.btn-outline:hover {
-  color: var(--tiza);
-}
-
-.btn-pizarra {
-  background: var(--pizarra);
-  color: var(--tiza);
-}
-
-.btn-pizarra:hover {
-  color: var(--tiza);
-}
-
-.btn-lg {
-  min-height: 52px;
-  padding: 0 1.5rem;
-  font-size: 1.05rem;
-}
+.pub-barra-volver:active,
+.pub-barra-marca:active,
+.pub-barra-entrar:active,
+.pub-barra-accion:active { transform: scale(0.97); }
 
 @media (hover: hover) and (pointer: fine) {
-  .btn-etiqueta:hover { background: #ffdc66; }
-  .btn-outline:hover { border-color: var(--tiza-suave); background: var(--pizarra-clara); }
-  .btn-pizarra:hover { background: var(--pizarra-hondo); }
-  .btn:hover svg { transform: translateX(3px); }
+  .pub-barra-enlaces a:hover { color: var(--tiza); }
+  .pub-barra-volver:hover,
+  .pub-barra-entrar:hover { background: var(--mosaico-alto); }
+  .pub-barra-accion:hover { background: #fff; }
 }
 
-@media (max-width: 720px) {
-  .landing-header {
-    position: static;
-  }
-
-  .landing-nav {
-    flex-wrap: wrap;
-    gap: 0.25rem 0.5rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .landing-logo {
-    font-size: 1.2rem;
-  }
-
-  .nav-ctas {
-    margin-left: auto;
-  }
-
-  .nav-ctas {
-    gap: 0.375rem;
-  }
-
-  .nav-ctas .btn {
-    padding: 0 0.6rem;
-    font-size: 0.85rem;
-  }
-
-  /* En la landing móvil, Planes y la política siguen a mano en la pizarra y el pie */
-  .landing-nav:has(.nav-ctas) .nav-links {
-    display: none;
-  }
-
-  .nav-links {
-    order: 3;
-    flex-basis: 100%;
-    margin-left: -0.75rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn:active,
-  .nav-home:active {
-    transform: none;
-  }
-
-  .btn:hover svg {
-    transform: none;
-  }
+@media (max-width: 860px) {
+  .pub-barra-enlaces { display: none; }
+  .pub-barra-entrar,
+  .pub-barra-accion { flex: 1; justify-content: center; padding: 0 12px; }
+  .pub-barra-nav:has(.pub-barra-volver) .pub-barra-marca { flex: 1; }
 }

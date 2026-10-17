@@ -1,36 +1,41 @@
-# Diseño de Trendly · Tablero de plaza
+# Diseño de Trendly · Tablero de llegadas
 
-La interfaz toma su lenguaje de la plaza de mercado: una pizarra verde donde se escriben los precios y etiquetas amarillas que marcan el precio vigente. Es lo que hace Trendly: mirar los precios del mercado y escribir el tuyo.
+Las páginas públicas (landing, login y registro) toman su lenguaje del tablero de paletas giratorias de las estaciones y plazas: los precios caen paleta por paleta, como cuando el mercado cambia. Lo clásico es el tablero; lo moderno es la cuadrícula de mosaicos llenos con un solo acento amarillo.
 
 ## Color
 
 | Token | Valor | Uso |
 | --- | --- | --- |
-| `--pizarra` | `#12352b` | Barra pública, pizarra de la landing, panel de acceso, botón principal |
-| `--pizarra-clara` | `#1a4637` | Tablero de precios sobre la pizarra |
-| `--pizarra-hondo` | `#0b241d` | Repisa de registro, hover del botón principal |
-| `--tiza` / `--tiza-suave` | `#f3f1e9` / `#b9c7bf` | Texto sobre la pizarra |
-| `--etiqueta` | `#ffd23f` | Etiquetas de precio, CTA sobre pizarra, foco, selección |
-| `--tinta` | `#16130d` | Texto sobre la etiqueta |
-| `--papel` / `--blanco` | `#f4f6f1` / `#ffffff` | Fondo de la app y de las secciones claras |
-| `--texto` / `--texto-suave` | `#17241f` / `#4d5c55` | Texto sobre papel |
+| `--noche` | `#0c1411` | Fondo de las páginas públicas |
+| `--mosaico` / `--mosaico-alto` | `#15211c` / `#1d2d26` | Mosaicos sobre la noche |
+| `--paleta` / `--paleta-luz` | `#101614` / `#1a2320` | Mitad de abajo y de arriba de cada paleta |
+| `--tiza` / `--tiza-suave` | `#f3f1e9` / `#b9c7bf` | Texto sobre fondos oscuros |
+| `--etiqueta` | `#ffd23f` | Precio sugerido, acción principal, foco y selección |
+| `--verde` / `--verde-hondo` | `#2f6b55` / `#24543f` | Calculadora del primer pantallazo |
+| `--papel` | `#f4f6f1` | Mosaico del nombre y del formulario de acceso |
 
-Estrategia: la pizarra cubre las zonas de decisión (primer pantallazo, acceso) y el amarillo aparece solo donde hay un precio o una acción.
+Los tokens públicos viven en `src/core/layout/Tablero.css`. El resto de la app sigue usando los de `src/index.css`.
 
 ## Tipografía
 
-Archivo (Google Fonts, eje de ancho variable). Los titulares y las cifras usan el ancho condensado (`font-stretch: 70–80%`, peso 800–850), como las letras de una pizarra de precios. El texto corrido va en ancho normal. Las cifras usan `.cifra` (números tabulares).
+Archivo con eje de ancho variable. Titulares y paletas en ancho condensado (`font-stretch: 62–78%`, peso 800–900). Texto corrido en ancho normal. Cifras con números tabulares.
+
+## Composición
+
+- Cuadrícula de 12 columnas con 8 px de separación. Cada mosaico es un rectángulo lleno, sin borde ni sombra, con un solo radio (10 px).
+- La barra pública también son mosaicos: marca, enlaces y una sola acción.
+- En el teléfono cada página es una sola columna con su propio orden.
 
 ## Componentes propios
 
-- **`.etiqueta`**: etiqueta de precio con perforación (`--agujero` = color del fondo). Partes: `.etiqueta-titulo`, `.etiqueta-precio`, `.etiqueta-nota`.
-- **Tablero de precios**: tabla escrita en tiza, con filas separadas por líneas punteadas; el precio actual se tacha y la etiqueta lo reemplaza.
-- **Riel**: los pasos cuelgan de una línea continua; en móvil la línea pasa a ser vertical.
+- **`Paletas`** (`src/shared/components/Paletas.jsx`): escribe un texto en paletas giratorias. Props: `texto`, `largo`, `alinear` (`izq` o `der` para cifras), `acento`, `retraso`. Expone el texto como `role="img"` con `aria-label`.
+- **Tablero 3D** (`.tablero-3d`): inclinado en perspectiva; el canto son dos planos girados 90°, así tiene grosor sin sombra. En la landing se inclina hacia el puntero.
+- **Tambor de "Cómo funciona"**: prisma de tres caras que gira con el scroll (registrar, recoger, decidir). Cada paso también se puede tocar.
+- **Marca en bloques**: el cierre arma TRENDLY con bloques de distinta altura que se voltean al entrar en pantalla.
 
 ## Movimiento
 
-- Curva base `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`.
-- Botones: `scale(0.97)` al presionar, 160 ms. Hover solo con `@media (hover: hover) and (pointer: fine)`.
-- Único momento orquestado: al cargar la landing, el precio actual se tacha (280 ms) y la etiqueta cuelga (480 ms), con `@starting-style`. Si el navegador no lo soporta, todo aparece en su estado final.
-- Mensajes: entran con opacidad y 4 px de desplazamiento, 200 ms.
-- `prefers-reduced-motion`: sin desplazamientos; se mantienen opacidad y color.
+- Curvas: `--ease-out` para entradas y `--ease-suave` para el tablero.
+- Firma: las paletas giran pasando por los caracteres intermedios (máximo 7 pasos, 55 ms por medio giro).
+- Entradas por mosaico escalonadas 80 ms. Botones con `scale(0.97)` al presionar; hover solo con puntero fino.
+- `prefers-reduced-motion`: las paletas muestran el texto de una vez, el tambor se convierte en tres tarjetas en columna y los bloques no se voltean.

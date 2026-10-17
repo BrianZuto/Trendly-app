@@ -1,73 +1,48 @@
 /* ═══════════════════════════════════════════
    LAYOUT PÚBLICO · Login y registro
-   Pizarra a la izquierda, formulario sobre papel a la derecha
+   Tablero de paletas a la izquierda, formulario en papel a la derecha
    ═══════════════════════════════════════════ */
 
-.auth-root {
+.acceso {
+  min-height: calc(100vh - 68px);
+}
+
+.acceso-tablero {
+  grid-column: 1 / 8;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: var(--papel);
+  justify-content: space-between;
+  gap: 40px;
+  padding: 48px;
+  overflow: hidden;
+  perspective: 1600px;
 }
 
-.auth-main {
+.acceso-saludo {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  flex: 1;
+  gap: 6px;
+  font-size: clamp(30px, 4.6vw, 76px);
 }
 
-/* ─── Pizarra lateral ─── */
-.auth-tablero {
-  position: sticky;
-  top: 64px;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  min-height: calc(100vh - 64px);
-  padding: 4rem 3rem 3rem;
-  background: var(--pizarra);
-  color: var(--tiza);
+.acceso-tablero-3d {
+  --rx: 6deg;
+  --ry: -12deg;
+  font-size: clamp(16px, 2vw, 32px);
 }
 
-.auth-tablero-titulo {
-  max-width: 14ch;
+.acceso-nota {
   margin: 0;
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  font-stretch: 72%;
-  font-weight: 850;
-  line-height: 1;
-}
-
-.auth-tablero-lista {
-  display: grid;
-  gap: 0;
-  max-width: 30rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.auth-tablero-lista li {
-  padding: 0.75rem 0;
-  border-bottom: 1px dashed var(--pizarra-linea);
+  font-size: var(--paso-chico);
   color: var(--tiza-suave);
-  font-size: 1rem;
 }
 
-.auth-etiqueta {
-  align-self: flex-start;
-  margin-top: auto;
-  transform: rotate(-2deg);
-  transform-origin: 2.5rem 50%;
-}
-
-/* ─── Formulario ─── */
-.auth-form {
+/* ─── Formulario sobre papel ─── */
+.acceso-form {
+  grid-column: 8 / -1;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 4rem 1.5rem 4rem;
+  align-items: center;
+  padding: 56px clamp(24px, 4vw, 64px);
 }
 
 .auth-card {
@@ -76,7 +51,12 @@
 }
 
 .auth-card h1 {
-  font-size: clamp(2.25rem, 3.4vw, 2.75rem);
+  margin: 0 0 8px;
+  font-size: var(--paso-titulo);
+  font-stretch: 78%;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
 .auth-subtitle {
@@ -89,26 +69,25 @@
   margin-top: 1.75rem;
 }
 
-/* En acceso la barra se alinea con la pizarra lateral */
-.auth-root .landing-nav {
-  max-width: none;
-  padding-inline: 3rem;
+.acceso-form :focus-visible {
+  outline-color: var(--pizarra);
+}
+
+@keyframes acceso-llega {
+  from { transform: rotateX(28deg) rotateY(-30deg) translateZ(-120px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .acceso-tablero-3d { animation: acceso-llega 1200ms var(--ease-suave) both; }
 }
 
 @media (max-width: 860px) {
-  .auth-main {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-tablero {
-    display: none;
-  }
-
-  .auth-form {
-    padding: 2rem 1.25rem 3rem;
-  }
-
-  .auth-root .landing-nav {
-    padding-inline: 1rem;
-  }
+  .acceso { grid-template-columns: 1fr; min-height: 0; }
+  .acceso-tablero,
+  .acceso-form { grid-column: 1; }
+  .acceso-tablero { gap: 0; padding: 24px 20px; }
+  .acceso-saludo { font-size: 8.4vw; }
+  .acceso-tablero-3d,
+  .acceso-nota { display: none; }
+  .acceso-form { padding: 32px 20px; }
 }

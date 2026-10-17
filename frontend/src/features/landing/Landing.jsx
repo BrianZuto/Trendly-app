@@ -1,93 +1,125 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import PublicNavbar, { LogoTrendly } from '@core/layout/PublicNavbar'
+import PublicNavbar from '@core/layout/PublicNavbar'
+import Paletas from '@shared/components/Paletas'
 import './Landing.css'
 
-/* ─── Íconos SVG ─── */
-const IconoCheck = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-)
 const IconoFlecha = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 )
 
 // Producto de ejemplo: las cifras son ilustrativas y se marcan como tal en el tablero
-const DATOS_DEMO = {
-  nombre: 'Audífonos Bluetooth',
-  sku: 'DEMO-001',
+const DEMO = {
+  nombre: 'Audífonos BT',
   costo: 85000,
   precioVenta: 119900,
   margenObjetivo: 30,
   competidor: 139900,
 }
 
-const formatoCOP = new Intl.NumberFormat('es-CO', {
-  style: 'currency',
-  currency: 'COP',
-  maximumFractionDigits: 0,
-})
+const formatoMiles = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 })
+const precio = (n) => `$${formatoMiles.format(n)}`
 
-const formatoPorcentaje = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 1, minimumFractionDigits: 1 })
+function precioSugerido(costo, margen) {
+  const m = Math.min(95, Math.max(0, margen))
+  return Math.round(costo / (1 - m / 100))
+}
 
-/* ─── Tablero: el producto de ejemplo con su precio reescrito ─── */
-function TableroPrecios() {
-  const precioSugerido = Math.round(DATOS_DEMO.costo / (1 - DATOS_DEMO.margenObjetivo / 100))
-  const margenActual = ((DATOS_DEMO.precioVenta - DATOS_DEMO.costo) / DATOS_DEMO.precioVenta) * 100
-  const diferenciaCompetidor = DATOS_DEMO.competidor - DATOS_DEMO.precioVenta
+const reducido = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+const punteroFino = () => window.matchMedia?.('(hover: hover) and (pointer: fine)').matches
+
+/* ─── Tablero 3D: el producto de ejemplo con el precio sugerido en amarillo ─── */
+function TableroHeroe({ costo, margen }) {
+  const escena = useRef(null)
+  const tablero = useRef(null)
+  const [encendido, setEncendido] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => setEncendido(true), 300)
+    return () => clearTimeout(t)
+  }, [])
+
+  // El tablero se inclina un poco hacia el puntero
+  useEffect(() => {
+    const zona = escena.current
+    if (!zona || reducido() || !punteroFino()) return undefined
+    function mover(e) {
+      const r = zona.getBoundingClientRect()
+      const x = (e.clientX - r.left) / r.width - 0.5
+      const y = (e.clientY - r.top) / r.height - 0.5
+      tablero.current.style.setProperty('--rx', `${9 - y * 8}deg`)
+      tablero.current.style.setProperty('--ry', `${-18 + x * 14}deg`)
+    }
+    function salir() {
+      tablero.current.style.removeProperty('--rx')
+      tablero.current.style.removeProperty('--ry')
+    }
+    zona.addEventListener('pointermove', mover)
+    zona.addEventListener('pointerleave', salir)
+    return () => {
+      zona.removeEventListener('pointermove', mover)
+      zona.removeEventListener('pointerleave', salir)
+    }
+  }, [])
 
   const filas = [
-    { nombre: 'Costo', fuente: 'AliExpress', valor: DATOS_DEMO.costo },
-    { nombre: 'Competidor', fuente: 'MercadoLibre', valor: DATOS_DEMO.competidor, clase: 'fila-competidor' },
-    { nombre: 'Tu precio', fuente: 'venta actual', valor: DATOS_DEMO.precioVenta, clase: 'fila-propia' },
+    { nombre: 'Producto', fuente: 'Ejemplo', texto: DEMO.nombre, largo: 12, alinear: 'izq' },
+    { nombre: 'Costo', fuente: 'AliExpress', texto: precio(costo) },
+    { nombre: 'Competidor', fuente: 'MercadoLibre', texto: precio(DEMO.competidor) },
+    { nombre: 'Tu precio', fuente: 'Venta actual', texto: precio(DEMO.precioVenta) },
+    { nombre: 'Sugerido', fuente: `Margen ${margen}%`, texto: precio(precioSugerido(costo, margen)), acento: true },
   ]
 
   return (
-    <article className="tablero-precios" aria-label="Vista de ejemplo de comparación de precios">
-      <header className="tablero-producto">
-        <h2>{DATOS_DEMO.nombre}</h2>
-        <span>SKU {DATOS_DEMO.sku}</span>
-        <span className="tablero-ejemplo">Ejemplo</span>
-      </header>
-
-      <table className="tablero-tabla">
-        <caption className="sr-only">Precios de referencia en pesos colombianos</caption>
-        <tbody>
-          {filas.map(({ nombre, fuente, valor, clase }) => (
-            <tr key={nombre} className={clase}>
-              <th scope="row">
-                {nombre} <small>{fuente}</small>
-              </th>
-              <td className="cifra">
-                <span>{formatoCOP.format(valor)}</span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <p className="tablero-posicion">
-        <strong className="cifra">{formatoCOP.format(diferenciaCompetidor)} menos</strong> que el precio observado en MercadoLibre
-      </p>
-
-      <div className="etiqueta tablero-etiqueta">
-        <span className="etiqueta-titulo">Precio sugerido · objetivo {DATOS_DEMO.margenObjetivo}%</span>
-        <strong className="etiqueta-precio cifra">{formatoCOP.format(precioSugerido)}</strong>
-        <span className="etiqueta-nota">Margen actual: {formatoPorcentaje.format(margenActual)}%</span>
-        <span className="etiqueta-delta">
-          <span>Para alcanzar tu objetivo</span>
-          <strong className="cifra">+{formatoCOP.format(precioSugerido - DATOS_DEMO.precioVenta)}</strong>
-        </span>
+    <section ref={escena} className={`mosaico mosaico-alto ld-tablero tb-sube${encendido ? ' encendido' : ''}`} style={{ '--i': 2 }} aria-labelledby="ld-tablero-titulo">
+      <h2 id="ld-tablero-titulo" className="sr-only">Tablero de ejemplo</h2>
+      <div ref={tablero} className="tablero-3d">
+        {filas.map(({ nombre, fuente, texto, largo = 9, alinear = 'der', acento }, n) => (
+          <div className="tablero-fila" key={nombre}>
+            <span className="tablero-fila-nombre"><b>{nombre}</b><span>{fuente}</span></span>
+            <Paletas texto={encendido ? texto : ''} largo={largo} alinear={alinear} acento={acento} retraso={250 + n * 160} />
+          </div>
+        ))}
       </div>
-    </article>
+      <p className="ld-tablero-pie">
+        <span>Cifras de ejemplo</span>
+        <span>Recolección cada <b className="cifra">6 horas</b></span>
+      </p>
+    </section>
+  )
+}
+
+/* ─── La cosa viva: tu costo y tu margen reescriben el precio sugerido ─── */
+function Calculadora({ costo, margen, onCambio }) {
+  const [texto, setTexto] = useState({ costo: formatoMiles.format(costo), margen: String(margen) })
+
+  function cambiar(evento) {
+    const { name, value } = evento.target
+    setTexto((t) => ({ ...t, [name]: value }))
+    const numero = Number(value.replace(/\D/g, ''))
+    onCambio(name, name === 'margen' ? Math.min(95, numero) : numero)
+  }
+
+  return (
+    <form className="mosaico mosaico-verde ld-calculo tb-sube" style={{ '--i': 3 }} onSubmit={(e) => e.preventDefault()}>
+      <h2>Prueba con tu producto</h2>
+      <label className="ld-campo">
+        Costo en COP
+        <input name="costo" inputMode="numeric" autoComplete="off" value={texto.costo} onChange={cambiar}
+          onBlur={() => costo && setTexto((t) => ({ ...t, costo: formatoMiles.format(costo) }))} />
+      </label>
+      <label className="ld-campo">
+        Margen objetivo %
+        <input name="margen" inputMode="numeric" autoComplete="off" value={texto.margen} onChange={cambiar} />
+      </label>
+    </form>
   )
 }
 
 /* ─── Registro rápido: el email viaja al formulario de registro ─── */
-function RepisaRegistro() {
+function RegistroRapido() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
 
@@ -97,131 +129,209 @@ function RepisaRegistro() {
   }
 
   return (
-    <form className="tablero-repisa" onSubmit={enviar}>
-      <label htmlFor="repisa-email" className="sr-only">Tu email</label>
-      <input
-        id="repisa-email"
-        type="email"
-        name="email"
-        autoComplete="email"
-        placeholder="tu@correo.com"
-        value={email}
-        onChange={(evento) => setEmail(evento.target.value)}
-      />
-      <button type="submit" className="btn btn-etiqueta btn-lg">
+    <form className="mosaico mosaico-etiqueta ld-registro tb-sube" style={{ '--i': 4 }} onSubmit={enviar}>
+      <h2>Escribe tu correo y empieza a vigilar tus precios hoy</h2>
+      <label htmlFor="ld-email" className="sr-only">Tu email</label>
+      <input id="ld-email" type="email" name="email" autoComplete="email" placeholder="tu@correo.com"
+        value={email} onChange={(e) => setEmail(e.target.value)} />
+      <button type="submit" className="btn-t btn-t-noche">
         Crear mi cuenta
         <IconoFlecha />
       </button>
-      <p className="repisa-nota">
-        Gratis hasta 10 productos. <a href="#planes">Ver planes</a>
-      </p>
+      <p>Solo te pedimos nombre, correo y contraseña.</p>
     </form>
   )
 }
 
-function PlanItem({ texto }) {
+/* ─── Cómo funciona: el scroll gira un tambor de tres caras ─── */
+const PASOS = [
+  { titulo: 'Registra', texto: 'Tu producto con su costo, precio de venta y margen objetivo.' },
+  { titulo: 'Recogemos', texto: 'Los precios y la disponibilidad de tus competidores, cada 6 horas.' },
+  { titulo: 'Decides', texto: 'Con el precio sugerido y las alertas de cada recolección.' },
+]
+
+function Recorrido() {
+  const pista = useRef(null)
+  const tambor = useRef(null)
+  const [activo, setActivo] = useState(0)
+
+  useEffect(() => {
+    if (reducido()) return undefined
+    let actual = 0
+    let corriendo = false
+    let marco = 0
+
+    function progreso() {
+      const r = pista.current.getBoundingClientRect()
+      const recorrido = r.height - window.innerHeight
+      return recorrido > 0 ? Math.min(1, Math.max(0, -r.top / recorrido)) : 0
+    }
+    function cuadro() {
+      // un poco de imán hacia cada cara para que no se quede a medio girar
+      const p = progreso() * 2
+      const base = Math.round(p)
+      const resto = p - base
+      const meta = (base + resto * Math.min(1, Math.abs(resto) * 2.2)) * 120
+      actual += (meta - actual) * 0.14
+      tambor.current.style.setProperty('--giro', `${actual.toFixed(2)}deg`)
+      setActivo(Math.round(actual / 120))
+      if (Math.abs(meta - actual) > 0.05) marco = requestAnimationFrame(cuadro)
+      else corriendo = false
+    }
+    function despertar() {
+      if (!corriendo) {
+        corriendo = true
+        marco = requestAnimationFrame(cuadro)
+      }
+    }
+    window.addEventListener('scroll', despertar, { passive: true })
+    despertar()
+    return () => {
+      window.removeEventListener('scroll', despertar)
+      cancelAnimationFrame(marco)
+    }
+  }, [])
+
+  function irA(i) {
+    setActivo(i)
+    if (reducido()) {
+      tambor.current.children[i]?.scrollIntoView({ block: 'center' })
+      return
+    }
+    const r = pista.current.getBoundingClientRect()
+    window.scrollTo({ top: window.scrollY + r.top + (r.height - window.innerHeight) * (i / 2) + 2, behavior: 'smooth' })
+  }
+
   return (
-    <li className="plan-item">
-      <IconoCheck />
-      {texto}
-    </li>
+    <section className="ld-recorrido" id="recorrido" aria-labelledby="ld-recorrido-titulo">
+      <div ref={pista} className="ld-recorrido-pista">
+        <div className="ld-recorrido-fijo">
+          <div className="mosaico ld-recorrido-texto">
+            <div>
+              <h2 id="ld-recorrido-titulo">Muchos precios, una decisión</h2>
+              <p>Cada seis horas Trendly recoge lo que cobra el mercado y lo convierte en un precio para ti.</p>
+            </div>
+            <ol className="ld-pasos">
+              {PASOS.map(({ titulo, texto }, i) => (
+                <li key={titulo}>
+                  <button type="button" className="ld-paso" aria-current={activo === i ? 'step' : undefined} onClick={() => irA(i)}>
+                    <span className="ld-paso-marca" aria-hidden="true" />
+                    <b>{titulo}</b>
+                    <span>{texto}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="mosaico mosaico-alto ld-recorrido-escena">
+            <div ref={tambor} className="ld-tambor">
+              <div className="ld-cara" aria-label="Formulario de producto de ejemplo">
+                <h3>Nuevo producto <small>Ejemplo</small></h3>
+                <div className="ld-ui-campos">
+                  <div className="ld-ui-campo ld-ui-ancho">Nombre<span>Audífonos Bluetooth</span></div>
+                  <div className="ld-ui-campo">Costo<span>$85.000</span></div>
+                  <div className="ld-ui-campo">Precio de venta<span>$119.900</span></div>
+                  <div className="ld-ui-campo">Margen objetivo<span>30%</span></div>
+                  <div className="ld-ui-campo">SKU<span>DEMO-001</span></div>
+                </div>
+                <span className="ld-ui-boton">Guardar producto</span>
+              </div>
+              <div className="ld-cara" aria-label="Precios recogidos de ejemplo">
+                <h3>Competidores <small>Recolección de las 12:00</small></h3>
+                <ul className="ld-ui-lista">
+                  <li><span>MercadoLibre · Tienda Audio</span><b>$139.900</b><span className="ld-ui-estado">Disponible</span></li>
+                  <li><span>MercadoLibre · SonidoCo</span><b>$132.500</b><span className="ld-ui-estado agotado">Agotado</span></li>
+                  <li><span>AliExpress · proveedor</span><b>$85.000</b><span className="ld-ui-estado">Disponible</span></li>
+                </ul>
+                <p className="ld-ui-nota">Próxima recolección a las 18:00</p>
+              </div>
+              <div className="ld-cara" aria-label="Precio sugerido de ejemplo">
+                <h3>Precio sugerido <small>Margen objetivo 30%</small></h3>
+                <p className="ld-ui-precio">$121.429</p>
+                <p className="ld-ui-dato"><span>Margen actual 29,1%</span><span>Subir $1.529</span></p>
+                <p className="ld-ui-alerta">Alerta: SonidoCo se quedó sin unidades</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Cierre: la marca construida con bloques que se voltean ─── */
+function Cierre() {
+  const ref = useRef(null)
+  // Sin IntersectionObserver los bloques quedan quietos en su sitio
+  const [dentro, setDentro] = useState(() => !('IntersectionObserver' in window))
+
+  useEffect(() => {
+    if (dentro) return undefined
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setDentro(true)
+        io.disconnect()
+      }
+    }, { rootMargin: '0px 0px -12% 0px' })
+    io.observe(ref.current)
+    return () => io.disconnect()
+  }, [dentro])
+
+  return (
+    <footer ref={ref} className={`ld-cierre${dentro ? ' dentro' : ''}`}>
+      <div className="ld-marca" role="img" aria-label="Trendly">
+        {[...'TRENDLY'].map((letra, i) => (
+          <span key={i} className="ld-bloque" style={{ '--i': i }} aria-hidden="true">{letra}</span>
+        ))}
+      </div>
+      <nav className="ld-cierre-enlaces" aria-label="Pie de página">
+        <a href="#recorrido">Cómo funciona</a>
+        <Link to="/login">Iniciar sesión</Link>
+        <Link to="/registro">Crear cuenta</Link>
+        <Link to="/politica-datos">Política de tratamiento de datos</Link>
+      </nav>
+      <p className="ld-cierre-lema">Monitoreo y análisis de precios para vendedores en Colombia.</p>
+      <div className="ld-cierre-fin">
+        <span>© 2026 Trendly</span>
+        <Link to="/registro" className="btn-t btn-t-etiqueta ld-cierre-accion">Empezar ahora</Link>
+      </div>
+    </footer>
   )
 }
 
 export default function Landing() {
+  const [producto, setProducto] = useState({ costo: DEMO.costo, margen: DEMO.margenObjetivo })
+  const [enTablero, setEnTablero] = useState(producto)
+
+  // Espera a que se termine de escribir para no girar el tablero en cada tecla
+  useEffect(() => {
+    const t = setTimeout(() => setEnTablero(producto), 260)
+    return () => clearTimeout(t)
+  }, [producto])
+
   return (
-    <div className="landing-root">
+    <div className="tb-pagina">
       <PublicNavbar />
 
-      <main>
-        {/* ── Primer pantallazo: la pizarra ── */}
-        <section className="tablero" aria-labelledby="hero-heading">
-          <div className="tablero-marco">
-            <div className="tablero-encabezado">
-              <h1 id="hero-heading" className="hero-title">
-                Domina el mercado y protege tu margen
-              </h1>
-              <p className="hero-subtitle">
-                Trendly monitorea precios y disponibilidad en MercadoLibre y AliExpress, y sugiere un precio y margen a partir del costo y el margen objetivo de tu producto.
-              </p>
-            </div>
-            <TableroPrecios />
-            <RepisaRegistro />
-          </div>
-        </section>
+      <main className="tb-rejilla">
+        <div className="mosaico mosaico-papel ld-nombre tb-sube" style={{ '--i': 0 }}>
+          <p>Trendly</p>
+        </div>
 
-        {/* ── Cómo funciona ── */}
-        <section className="recorrido" aria-labelledby="steps-heading">
-          <div className="seccion">
-            <h2 id="steps-heading" className="seccion-titulo">De tus productos a decisiones de precio</h2>
-            <ol className="recorrido-lista">
-              <li className="recorrido-paso">
-                <span className="recorrido-numero cifra" aria-hidden="true">1</span>
-                <h3>Registra tu producto</h3>
-                <p>Agrega su costo, precio de venta y margen objetivo</p>
-              </li>
-              <li className="recorrido-paso">
-                <span className="recorrido-numero cifra" aria-hidden="true">2</span>
-                <h3>Monitoreamos el mercado</h3>
-                <p>La recolección programada consulta competidores cada 6 horas</p>
-              </li>
-              <li className="recorrido-paso">
-                <span className="recorrido-numero cifra" aria-hidden="true">3</span>
-                <h3>Revisa sugerencias y alertas</h3>
-                <p>Consulta el precio y margen sugeridos, y las alertas generadas tras cada recolección</p>
-              </li>
-            </ol>
-          </div>
-        </section>
+        <div className="mosaico ld-frase tb-sube" style={{ '--i': 1 }}>
+          <h1>Domina el mercado y protege tu margen</h1>
+          <p>Trendly vigila tus precios en MercadoLibre y AliExpress y te sugiere el precio que cuida tu margen objetivo.</p>
+        </div>
 
-        {/* ── Planes ── */}
-        <section id="planes" className="planes" aria-labelledby="planes-heading">
-          <div className="seccion">
-            <h2 id="planes-heading" className="seccion-titulo">Elige el plan que se adapta a tu negocio</h2>
-            <div className="planes-grid">
-              <article className="plan" aria-labelledby="plan-gratuito">
-                <div className="etiqueta plan-etiqueta">
-                  <h3 id="plan-gratuito" className="etiqueta-titulo">Gratuito</h3>
-                  <strong className="etiqueta-precio cifra">$0</strong>
-                </div>
-                <p className="plan-descripcion">Para empezar a organizar tus productos y monitoreos.</p>
-                <ul className="plan-features" role="list">
-                  <PlanItem texto="Hasta 10 productos registrados" />
-                  <PlanItem texto="Recolección programada cada 6 horas" />
-                  <PlanItem texto="Precio y margen sugeridos según tu objetivo" />
-                </ul>
-                <Link to="/registro" className="btn btn-pizarra btn-lg plan-cta">Crear cuenta gratis</Link>
-              </article>
+        <TableroHeroe costo={enTablero.costo} margen={enTablero.margen} />
+        <Calculadora costo={producto.costo} margen={producto.margen} onCambio={(campo, valor) => setProducto((p) => ({ ...p, [campo]: valor }))} />
+        <RegistroRapido />
 
-              <article className="plan plan-pro" aria-labelledby="plan-pro">
-                <div className="etiqueta plan-etiqueta">
-                  <h3 id="plan-pro" className="etiqueta-titulo">Pro</h3>
-                  <strong className="etiqueta-precio plan-por-anunciar">Precio por anunciar</strong>
-                </div>
-                <p className="plan-descripcion">Para vendedores que necesitan monitorear más productos.</p>
-                <ul className="plan-features" role="list">
-                  <PlanItem texto="Hasta 100 productos registrados" />
-                  <PlanItem texto="Frecuencia configurable desde 1 hora" />
-                  <PlanItem texto="Precio y margen sugeridos según tu objetivo" />
-                </ul>
-                <Link to="/registro" className="btn btn-etiqueta btn-lg plan-cta">Empezar con el gratuito</Link>
-              </article>
-            </div>
-          </div>
-        </section>
+        <Recorrido />
       </main>
 
-      <footer className="pie-tablero">
-        <div className="pie-tablero-interior">
-          <Link to="/" className="landing-logo" aria-label="Trendly, inicio">
-            <LogoTrendly />
-            Trendly
-          </Link>
-          <p>Monitoreo y análisis de precios para vendedores</p>
-          <Link to="/politica-datos">Política de tratamiento de datos</Link>
-          <p className="pie-copy">© 2026 Trendly</p>
-        </div>
-      </footer>
+      <Cierre />
     </div>
   )
 }

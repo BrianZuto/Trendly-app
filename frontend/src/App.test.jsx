@@ -49,10 +49,10 @@ describe('navegación pública compartida', () => {
         renderizar(ruta)
 
         expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
-        expect(screen.getByRole('link', { name: 'Planes' })).toHaveAttribute('href', '/#planes')
+        expect(screen.getByRole('link', { name: 'Cómo funciona' })).toHaveAttribute('href', '/#recorrido')
         expect(screen.getByRole('link', { name: 'Política de datos' })).toHaveAttribute('href', '/politica-datos')
         expect(screen.queryByRole('link', { name: 'Iniciar sesión' })).not.toBeInTheDocument()
-        expect(screen.queryByRole('link', { name: 'Empezar gratis' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Crear cuenta' })).not.toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'Regresar a la vista anterior' })).toBeInTheDocument()
     })
 
