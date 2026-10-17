@@ -283,7 +283,7 @@ function Cierre() {
           <span key={i} className="ld-bloque" style={{ '--i': i }} aria-hidden="true">{letra}</span>
         ))}
       </div>
-      <p className="ld-cierre-lema">Monitoreo y análisis de precios para vendedores en Colombia.</p>
+      <p className="ld-cierre-lema">Monitoreo y análisis de precios para vendedores en Colombia y Latinoamérica.</p>
       <div className="ld-cierre-fin">
         <span>© 2026 Trendly</span>
         <Link to="/registro" className="btn-t btn-t-etiqueta ld-cierre-accion">Empezar ahora</Link>
