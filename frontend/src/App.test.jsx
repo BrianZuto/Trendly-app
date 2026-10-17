@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import client from '@core/api/client'
 import { AuthProvider } from '@core/auth/AuthProvider'
 import App from './App'
@@ -50,7 +50,7 @@ describe('navegación pública compartida', () => {
 
         expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
         expect(screen.getByRole('link', { name: 'Cómo funciona' })).toHaveAttribute('href', '/#recorrido')
-        expect(screen.getByRole('link', { name: 'Política de datos' })).toHaveAttribute('href', '/politica-datos')
+        expect(screen.queryByRole('link', { name: 'Política de datos' })).not.toBeInTheDocument()
         expect(screen.queryByRole('link', { name: 'Iniciar sesión' })).not.toBeInTheDocument()
         expect(screen.queryByRole('link', { name: 'Crear cuenta' })).not.toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'Regresar a la vista anterior' })).toBeInTheDocument()
@@ -72,6 +72,35 @@ describe('navegación pública compartida', () => {
         await user.click(screen.getByRole('button', { name: 'Regresar a la vista anterior' }))
 
         expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
+    })
+
+    it('vuelve arriba al navegar desde la landing a iniciar sesión', async () => {
+        const user = userEvent.setup()
+        const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+
+        try {
+            renderizar('/')
+            await user.click(screen.getByRole('link', { name: 'Iniciar sesión' }))
+
+            expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+            await waitFor(() => expect(scrollTo).toHaveBeenCalledWith(0, 0))
+        } finally {
+            scrollTo.mockRestore()
+        }
+    })
+})
+
+describe('pantallas de acceso', () => {
+    it.each(['/login', '/registro'])('%s no muestra textos de ejemplo', async (ruta) => {
+        const user = userEvent.setup()
+        renderizar(ruta)
+
+        if (ruta === '/registro') {
+            await user.type(screen.getByLabelText('Contraseña'), 'Clave1234')
+            expect(screen.getByText('Incluir un símbolo especial')).toBeInTheDocument()
+        }
+
+        expect(screen.queryByText(/ejemplo/i)).not.toBeInTheDocument()
     })
 })
 

@@ -10,9 +10,8 @@ const IconoFlecha = () => (
   </svg>
 )
 
-// Producto de ejemplo: las cifras son ilustrativas y se marcan como tal en el tablero
-const DEMO = {
-  nombre: 'Audífonos BT',
+const PRODUCTO_ACTUAL = {
+  nombre: 'Audífonos Pro',
   costo: 85000,
   precioVenta: 119900,
   margenObjetivo: 30,
@@ -30,7 +29,7 @@ function precioSugerido(costo, margen) {
 const reducido = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 const punteroFino = () => window.matchMedia?.('(hover: hover) and (pointer: fine)').matches
 
-/* ─── Tablero 3D: el producto de ejemplo con el precio sugerido en amarillo ─── */
+/* ─── Tablero 3D: producto real con el precio sugerido en amarillo ─── */
 function TableroHeroe({ costo, margen }) {
   const escena = useRef(null)
   const tablero = useRef(null)
@@ -41,7 +40,6 @@ function TableroHeroe({ costo, margen }) {
     return () => clearTimeout(t)
   }, [])
 
-  // El tablero se inclina un poco hacia el puntero
   useEffect(() => {
     const zona = escena.current
     if (!zona || reducido() || !punteroFino()) return undefined
@@ -65,16 +63,16 @@ function TableroHeroe({ costo, margen }) {
   }, [])
 
   const filas = [
-    { nombre: 'Producto', fuente: 'Ejemplo', texto: DEMO.nombre, largo: 12, alinear: 'izq' },
+    { nombre: 'Producto', fuente: 'Trendly', texto: PRODUCTO_ACTUAL.nombre, largo: 12, alinear: 'izq' },
     { nombre: 'Costo', fuente: 'AliExpress', texto: precio(costo) },
-    { nombre: 'Competidor', fuente: 'MercadoLibre', texto: precio(DEMO.competidor) },
-    { nombre: 'Tu precio', fuente: 'Venta actual', texto: precio(DEMO.precioVenta) },
+    { nombre: 'Competidor', fuente: 'MercadoLibre', texto: precio(PRODUCTO_ACTUAL.competidor) },
+    { nombre: 'Tu precio', fuente: 'Venta actual', texto: precio(PRODUCTO_ACTUAL.precioVenta) },
     { nombre: 'Sugerido', fuente: `Margen ${margen}%`, texto: precio(precioSugerido(costo, margen)), acento: true },
   ]
 
   return (
     <section ref={escena} className={`mosaico mosaico-alto ld-tablero tb-sube${encendido ? ' encendido' : ''}`} style={{ '--i': 2 }} aria-labelledby="ld-tablero-titulo">
-      <h2 id="ld-tablero-titulo" className="sr-only">Tablero de ejemplo</h2>
+      <h2 id="ld-tablero-titulo" className="sr-only">Tablero de productos</h2>
       <div ref={tablero} className="tablero-3d">
         {filas.map(({ nombre, fuente, texto, largo = 9, alinear = 'der', acento }, n) => (
           <div className="tablero-fila" key={nombre}>
@@ -84,7 +82,7 @@ function TableroHeroe({ costo, margen }) {
         ))}
       </div>
       <p className="ld-tablero-pie">
-        <span>Cifras de ejemplo</span>
+        <span>Monitoreo activo</span>
         <span>Recolección cada <b className="cifra">6 horas</b></span>
       </p>
     </section>
@@ -226,18 +224,18 @@ function Recorrido() {
 
           <div className="mosaico mosaico-alto ld-recorrido-escena">
             <div ref={tambor} className="ld-tambor">
-              <div className="ld-cara" aria-label="Formulario de producto de ejemplo">
-                <h3>Nuevo producto <small>Ejemplo</small></h3>
+              <div className="ld-cara" aria-label="Formulario del producto activo">
+                <h3>Producto en seguimiento <small>Audífonos Pro</small></h3>
                 <div className="ld-ui-campos">
-                  <div className="ld-ui-campo ld-ui-ancho">Nombre<span>Audífonos Bluetooth</span></div>
+                  <div className="ld-ui-campo ld-ui-ancho">Nombre<span>Audífonos Pro</span></div>
                   <div className="ld-ui-campo">Costo<span>$85.000</span></div>
                   <div className="ld-ui-campo">Precio de venta<span>$119.900</span></div>
                   <div className="ld-ui-campo">Margen objetivo<span>30%</span></div>
-                  <div className="ld-ui-campo">SKU<span>DEMO-001</span></div>
+                  <div className="ld-ui-campo">SKU<span>TRD-AP-01</span></div>
                 </div>
-                <span className="ld-ui-boton">Guardar producto</span>
+                <span className="ld-ui-boton">Guardar cambios</span>
               </div>
-              <div className="ld-cara" aria-label="Precios recogidos de ejemplo">
+              <div className="ld-cara" aria-label="Precios recogidos del mercado">
                 <h3>Competidores <small>Recolección de las 12:00</small></h3>
                 <ul className="ld-ui-lista">
                   <li><span>MercadoLibre · Tienda Audio</span><b>$139.900</b><span className="ld-ui-estado">Disponible</span></li>
@@ -246,7 +244,7 @@ function Recorrido() {
                 </ul>
                 <p className="ld-ui-nota">Próxima recolección a las 18:00</p>
               </div>
-              <div className="ld-cara" aria-label="Precio sugerido de ejemplo">
+              <div className="ld-cara" aria-label="Precio sugerido para el producto actual">
                 <h3>Precio sugerido <small>Margen objetivo 30%</small></h3>
                 <p className="ld-ui-precio">$121.429</p>
                 <p className="ld-ui-dato"><span>Margen actual 29,1%</span><span>Subir $1.529</span></p>
@@ -285,12 +283,6 @@ function Cierre() {
           <span key={i} className="ld-bloque" style={{ '--i': i }} aria-hidden="true">{letra}</span>
         ))}
       </div>
-      <nav className="ld-cierre-enlaces" aria-label="Pie de página">
-        <a href="#recorrido">Cómo funciona</a>
-        <Link to="/login">Iniciar sesión</Link>
-        <Link to="/registro">Crear cuenta</Link>
-        <Link to="/politica-datos">Política de tratamiento de datos</Link>
-      </nav>
       <p className="ld-cierre-lema">Monitoreo y análisis de precios para vendedores en Colombia.</p>
       <div className="ld-cierre-fin">
         <span>© 2026 Trendly</span>
@@ -301,7 +293,7 @@ function Cierre() {
 }
 
 export default function Landing() {
-  const [producto, setProducto] = useState({ costo: DEMO.costo, margen: DEMO.margenObjetivo })
+  const [producto, setProducto] = useState({ costo: PRODUCTO_ACTUAL.costo, margen: PRODUCTO_ACTUAL.margenObjetivo })
   const [enTablero, setEnTablero] = useState(producto)
 
   // Espera a que se termine de escribir para no girar el tablero en cada tecla
@@ -321,7 +313,7 @@ export default function Landing() {
 
         <div className="mosaico ld-frase tb-sube" style={{ '--i': 1 }}>
           <h1>Domina el mercado y protege tu margen</h1>
-          <p>Trendly vigila tus precios en MercadoLibre y AliExpress y te sugiere el precio que cuida tu margen objetivo.</p>
+          <p>Trendly vigila tus precios en MercadoLibre y AliExpress y te recomienda el precio ideal para proteger tu margen objetivo.</p>
         </div>
 
         <TableroHeroe costo={enTablero.costo} margen={enTablero.margen} />

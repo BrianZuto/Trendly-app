@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Paletas from '@shared/components/Paletas'
 import PublicNavbar from './PublicNavbar'
@@ -9,9 +9,8 @@ const SALUDOS = {
     '/registro': ['TU PRECIO,', 'AL DIA'],
 }
 
-// Productos de ejemplo que el tablero va mostrando mientras se llena el formulario
 const MUESTRAS = [
-    { producto: 'AUDIFONOS BT', competidor: '$139.900', sugerido: '$121.429' },
+    { producto: 'AUDIFONOS PRO', competidor: '$139.900', sugerido: '$121.429' },
     { producto: 'LAMPARA LED', competidor: '$64.900', sugerido: '$57.000' },
     { producto: 'TERMO 1L', competidor: '$45.500', sugerido: '$41.300' },
 ]
@@ -29,7 +28,7 @@ function TableroAcceso() {
     return (
         <div className="tablero-3d acceso-tablero-3d">
             <div className="tablero-fila">
-                <span className="tablero-fila-nombre"><b>Producto</b><span>Ejemplo</span></span>
+                <span className="tablero-fila-nombre"><b>Producto</b><span>Trendly</span></span>
                 <Paletas texto={producto} largo={12} retraso={500} />
             </div>
             <div className="tablero-fila">
@@ -49,6 +48,11 @@ export default function PublicLayout() {
     const saludo = SALUDOS[pathname] ?? SALUDOS['/login']
     const largo = Math.max(...saludo.map((l) => l.length))
 
+    useLayoutEffect(() => {
+        const frame = window.requestAnimationFrame(() => window.scrollTo(0, 0))
+        return () => window.cancelAnimationFrame(frame)
+    }, [pathname])
+
     return (
         <div className="tb-pagina">
             <PublicNavbar />
@@ -62,7 +66,7 @@ export default function PublicLayout() {
                         ))}
                     </div>
                     <TableroAcceso />
-                    <p className="acceso-nota">Cifras de ejemplo. Trendly recoge los precios de tus competidores cada 6 horas.</p>
+                    <p className="acceso-nota">Trendly recoge los precios de tus competidores cada 6 horas y te ayuda a decidir con datos actuales.</p>
                 </aside>
 
                 <div className="mosaico mosaico-papel acceso-form tb-sube" style={{ '--i': 1 }}>

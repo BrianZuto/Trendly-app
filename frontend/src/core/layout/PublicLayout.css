@@ -9,10 +9,12 @@
 
 .acceso-tablero {
   grid-column: 1 / 8;
+  align-self: start;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 40px;
+  height: max(620px, calc(100vh - 84px));
   padding: 48px;
   overflow: hidden;
   perspective: 1600px;
@@ -27,6 +29,10 @@
 .acceso-tablero-3d {
   --rx: 6deg;
   --ry: -12deg;
+  align-self: center;
+  flex: none;
+  width: 100%;
+  max-width: 760px;
   font-size: clamp(16px, 2vw, 32px);
 }
 
@@ -85,7 +91,7 @@
   .acceso { grid-template-columns: 1fr; min-height: 0; }
   .acceso-tablero,
   .acceso-form { grid-column: 1; }
-  .acceso-tablero { gap: 0; padding: 24px 20px; }
+  .acceso-tablero { gap: 0; height: auto; padding: 24px 20px; }
   .acceso-saludo { font-size: 8.4vw; }
   .acceso-tablero-3d,
   .acceso-nota { display: none; }

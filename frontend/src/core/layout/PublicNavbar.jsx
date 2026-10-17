@@ -41,7 +41,6 @@ export default function PublicNavbar() {
         </Link>
         <ul className="pub-barra-enlaces" role="list">
           <li><a href={recorridoHref}>Cómo funciona</a></li>
-          <li><Link to="/politica-datos">Política de datos</Link></li>
         </ul>
         {!isAuthView && (
           <>

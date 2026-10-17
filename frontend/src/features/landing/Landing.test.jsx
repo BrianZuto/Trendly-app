@@ -35,7 +35,7 @@ describe('landing', () => {
   it('no muestra planes ni precios de suscripción', () => {
     renderizarLanding()
 
-    expect(screen.queryByRole('heading', { name: /gratuito|pro\b/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: /gratuito|plan(?:es)?\b/i })).not.toBeInTheDocument()
     expect(screen.queryByText(/precio por anunciar|hasta 10 productos|hasta 100 productos/i)).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Planes' })).not.toBeInTheDocument()
   })
@@ -44,8 +44,8 @@ describe('landing', () => {
     const user = userEvent.setup()
     renderizarLanding()
 
-    const tablero = screen.getByRole('region', { name: 'Tablero de ejemplo' })
-    expect(within(tablero).getByText('Cifras de ejemplo')).toBeInTheDocument()
+    const tablero = screen.getByRole('region', { name: 'Tablero de productos' })
+    expect(within(tablero).getByText('Monitoreo activo')).toBeInTheDocument()
     expect(await within(tablero).findByRole('img', { name: '$121.429' })).toBeInTheDocument()
 
     const costo = screen.getByLabelText('Costo en COP')
@@ -87,13 +87,17 @@ describe('landing', () => {
 
     const barra = screen.getByRole('navigation', { name: 'Navegación principal' })
     expect(within(barra).getByRole('link', { name: 'Cómo funciona' })).toHaveAttribute('href', '#recorrido')
-    expect(within(barra).getByRole('link', { name: 'Política de datos' })).toHaveAttribute('href', '/politica-datos')
+    expect(within(barra).queryByRole('link', { name: 'Política de datos' })).not.toBeInTheDocument()
     expect(within(barra).getByRole('link', { name: 'Iniciar sesión' })).toHaveAttribute('href', '/login')
     expect(within(barra).getByRole('link', { name: 'Crear cuenta' })).toHaveAttribute('href', '/registro')
 
     const cierre = screen.getByRole('contentinfo')
     expect(within(cierre).getByRole('img', { name: 'Trendly' })).toBeInTheDocument()
-    expect(within(cierre).getByRole('link', { name: 'Política de tratamiento de datos' })).toHaveAttribute('href', '/politica-datos')
+    expect(within(cierre).queryByRole('navigation', { name: 'Pie de página' })).not.toBeInTheDocument()
+    expect(within(cierre).queryByRole('link', { name: 'Cómo funciona' })).not.toBeInTheDocument()
+    expect(within(cierre).queryByRole('link', { name: 'Iniciar sesión' })).not.toBeInTheDocument()
+    expect(within(cierre).queryByRole('link', { name: 'Crear cuenta' })).not.toBeInTheDocument()
+    expect(within(cierre).queryByRole('link', { name: 'Política de tratamiento de datos' })).not.toBeInTheDocument()
     expect(cierre.querySelector('a[href="#"]')).toBeNull()
   })
 })
