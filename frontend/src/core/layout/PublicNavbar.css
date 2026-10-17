@@ -1,201 +1,230 @@
+/* Barra pública: el borde superior de la pizarra */
 .landing-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid #eef0f6;
-  background: #fff;
+  background: var(--pizarra);
+  border-bottom: 1px solid var(--pizarra-linea);
 }
 
 .landing-nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  max-width: 1200px;
-  height: 68px;
+  gap: 1.5rem;
+  max-width: 76rem;
+  min-height: 64px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0.5rem 1.5rem;
 }
 
 .landing-logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   flex-shrink: 0;
-  color: #3730a3;
-  font-size: 1.25rem;
+  color: var(--tiza);
+  font-size: 1.375rem;
+  font-stretch: 85%;
   font-weight: 800;
-  letter-spacing: -0.02em;
   text-decoration: none;
 }
 
+.landing-logo:hover {
+  color: var(--tiza);
+}
+
 .logo-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  color: #fff;
-  background: linear-gradient(145deg, #6255f5, #4338ca);
-  border: 1px solid rgba(67, 56, 202, 0.22);
-  border-radius: 11px;
-  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.22);
+  width: 34px;
+  height: 34px;
+  color: var(--pizarra-hondo);
 }
 
 .nav-links {
   display: flex;
   flex: 1;
-  gap: 0;
+  gap: 0.25rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .nav-link {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  color: var(--slate-600);
-  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  color: var(--tiza-suave);
+  font-size: 0.95rem;
   font-weight: 500;
   text-decoration: none;
-  border-radius: 6px;
-  transition: color 0.15s, background 0.15s;
+  transition: color 150ms ease;
 }
 
-.nav-link:hover {
-  color: var(--indigo-600);
-  background: var(--indigo-50);
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    color: var(--tiza);
+    text-decoration: underline;
+    text-decoration-color: var(--etiqueta);
+  }
+}
+
+.nav-home {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin-left: -0.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--tiza);
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 160ms var(--ease-out);
+}
+
+.nav-home svg {
+  width: 22px;
+  height: 22px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-home:hover {
+    background: var(--pizarra-clara);
+  }
+}
+
+.nav-home:active {
+  transform: scale(0.95);
 }
 
 .nav-ctas {
   display: flex;
-  flex: 0 0 290px;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
-.nav-ctas-home {
-  min-height: 44px;
-}
-
-.nav-home {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  color: #3730a3;
-  background: transparent;
-  border: 0;
-  border-radius: 8px;
-  box-shadow: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  transition: color 0.15s, background-color 0.15s;
-}
-
-.nav-home svg {
-  width: 29px;
-  height: 29px;
-}
-
-.nav-home:hover {
-  color: #4338ca;
-  background: #f3f4f6;
-}
-
-.nav-home:focus-visible {
-  outline: 3px solid rgba(99, 102, 241, 0.35);
-  outline-offset: 2px;
-}
-
+/* ─── Botones-enlace ─── */
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.6rem 1.25rem;
-  font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  min-height: 44px;
+  padding: 0 1.125rem;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
-  border: 0;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-  transition: transform 0.18s ease;
+  transition: transform 200ms var(--ease-out);
 }
 
-.btn:hover svg {
-  transform: translateX(3px);
+.btn-etiqueta {
+  background: var(--etiqueta);
+  color: var(--tinta);
 }
 
-.btn-primary {
-  color: #fff;
-  background: var(--indigo-600);
-  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(79, 70, 229, 0.1);
-}
-
-.btn-primary:hover {
-  color: #fff;
-  background: var(--indigo-700);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35), 0 0 0 1px rgba(79, 70, 229, 0.1);
-  transform: translateY(-1px);
+.btn-etiqueta:hover {
+  color: var(--tinta);
 }
 
 .btn-outline {
-  color: var(--slate-700);
-  background: transparent;
-  border: 1.5px solid var(--slate-300);
+  border-color: var(--pizarra-linea);
+  color: var(--tiza);
 }
 
 .btn-outline:hover {
-  color: var(--indigo-600);
-  background: var(--indigo-50);
-  border-color: var(--indigo-400);
+  color: var(--tiza);
 }
 
-@media (max-width: 640px) {
+.btn-pizarra {
+  background: var(--pizarra);
+  color: var(--tiza);
+}
+
+.btn-pizarra:hover {
+  color: var(--tiza);
+}
+
+.btn-lg {
+  min-height: 52px;
+  padding: 0 1.5rem;
+  font-size: 1.05rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-etiqueta:hover { background: #ffdc66; }
+  .btn-outline:hover { border-color: var(--tiza-suave); background: var(--pizarra-clara); }
+  .btn-pizarra:hover { background: var(--pizarra-hondo); }
+  .btn:hover svg { transform: translateX(3px); }
+}
+
+@media (max-width: 720px) {
+  .landing-header {
+    position: static;
+  }
+
   .landing-nav {
-    height: auto;
-    min-height: 68px;
-    padding: 0.75rem 1rem;
-    gap: 0.5rem;
     flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    padding: 0.5rem 1rem;
   }
 
   .landing-logo {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .nav-ctas {
-    flex: 0 0 auto;
     margin-left: auto;
-    gap: 0.25rem;
+  }
+
+  .nav-ctas {
+    gap: 0.375rem;
   }
 
   .nav-ctas .btn {
-    padding: 0.55rem 0.65rem;
-    font-size: 0.78rem;
+    padding: 0 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  /* En la landing móvil, Planes y la política siguen a mano en la pizarra y el pie */
+  .landing-nav:has(.nav-ctas) .nav-links {
+    display: none;
   }
 
   .nav-links {
     order: 3;
     flex-basis: 100%;
-    justify-content: center;
-    padding-bottom: 0.25rem;
+    margin-left: -0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active,
+  .nav-home:active {
+    transform: none;
   }
 
-  .nav-link {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.85rem;
+  .btn:hover svg {
+    transform: none;
   }
 }

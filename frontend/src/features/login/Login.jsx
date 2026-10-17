@@ -11,7 +11,9 @@ export default function Login() {
     const { login, sesionExpirada } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const [valores, setValores] = useState({ email: '', password: '' })
+    // Tras el registro llega el email: se precarga y el foco pasa a la contraseña
+    const emailRecibido = location.state?.email ?? ''
+    const [valores, setValores] = useState({ email: emailRecibido, password: '' })
     const [errores, setErrores] = useState({})
     const [errorApi, setErrorApi] = useState('')
     const [enviando, setEnviando] = useState(false)
@@ -53,7 +55,7 @@ export default function Login() {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    autoFocus
+                    autoFocus={!emailRecibido}
                     value={valores.email}
                     onChange={cambiar}
                     error={errores.email}
@@ -62,6 +64,7 @@ export default function Login() {
                     etiqueta="Contraseña"
                     name="password"
                     autoComplete="current-password"
+                    autoFocus={Boolean(emailRecibido)}
                     value={valores.password}
                     onChange={cambiar}
                     error={errores.password}

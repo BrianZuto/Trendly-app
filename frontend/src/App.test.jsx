@@ -35,7 +35,7 @@ describe('rutas protegidas', () => {
 
     it('una ruta desconocida lleva a la landing pública', async () => {
         renderizar('/no-existe')
-        expect(await screen.findByRole('heading', { name: /domina el mercado, protege tu margen/i })).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
     })
 
     it('la política de datos es pública', () => {
@@ -154,7 +154,11 @@ describe('registro', () => {
         await llenar(user)
 
         expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.')).toBeInTheDocument()
-        await iniciarSesion(user, 'nuevo@correo.com', 'Clave1234')
+        // El email llega precargado y el foco queda en la contraseña
+        expect(screen.getByLabelText('Email')).toHaveValue('nuevo@correo.com')
+        expect(screen.getByLabelText('Contraseña')).toHaveFocus()
+        await user.keyboard('Clave1234')
+        await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
         expect(await screen.findByRole('heading', { name: 'Hola, Ana Pérez' })).toBeInTheDocument()
     })
 
@@ -171,6 +175,11 @@ describe('registro', () => {
         renderizar('/registro')
         await llenar(user, { email: 'vendedor@trendly.co' })
         expect(await screen.findByText('Email ya registrado')).toBeInTheDocument()
+    })
+
+    it('precarga el email que llega desde la landing', () => {
+        renderizar('/registro', [{ pathname: '/registro', state: { email: 'ana@correo.com' } }])
+        expect(screen.getByLabelText('Email')).toHaveValue('ana@correo.com')
     })
 
     it('enlaza a la política de datos', () => {

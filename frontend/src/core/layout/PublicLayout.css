@@ -1,78 +1,114 @@
 /* ═══════════════════════════════════════════
-   LAYOUT PÚBLICO — Login y Registro
-   Glassmorphism + mismo sistema de fondo
+   LAYOUT PÚBLICO · Login y registro
+   Pizarra a la izquierda, formulario sobre papel a la derecha
    ═══════════════════════════════════════════ */
 
 .auth-root {
-  position: relative;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  min-height: 100vh;
+  background: var(--papel);
 }
 
-/* ─── Fondo (misma textura que landing) ─── */
-.auth-bg {
-  display: none;
-}
-
-.auth-bg-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--slate-200) 1px, transparent 1px),
-    linear-gradient(90deg, var(--slate-200) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.45;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
-}
-
-.auth-bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.15;
-}
-.auth-orb-1 {
-  width: 600px; height: 600px;
-  background: var(--indigo-400);
-  top: -150px; right: -100px;
-}
-.auth-orb-2 {
-  width: 400px; height: 400px;
-  background: var(--landing-cian-oscuro);
-  bottom: 0; left: -80px;
-}
-
-/* ─── Área central ─── */
 .auth-main {
-  position: relative;
-  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 1.25rem;
 }
 
-/* ─── Tarjeta glassmorphism ─── */
+/* ─── Pizarra lateral ─── */
+.auth-tablero {
+  position: sticky;
+  top: 64px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: calc(100vh - 64px);
+  padding: 4rem 3rem 3rem;
+  background: var(--pizarra);
+  color: var(--tiza);
+}
+
+.auth-tablero-titulo {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-stretch: 72%;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.auth-tablero-lista {
+  display: grid;
+  gap: 0;
+  max-width: 30rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.auth-tablero-lista li {
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--pizarra-linea);
+  color: var(--tiza-suave);
+  font-size: 1rem;
+}
+
+.auth-etiqueta {
+  align-self: flex-start;
+  margin-top: auto;
+  transform: rotate(-2deg);
+  transform-origin: 2.5rem 50%;
+}
+
+/* ─── Formulario ─── */
+.auth-form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4rem 1.5rem 4rem;
+}
+
 .auth-card {
   width: 100%;
-  max-width: 26rem;
-  background: #fff;
-  border: 1px solid #e8eaf2;
-  border-radius: 20px;
-  padding: 2.5rem;
-  /* Sombra 3D multicapa */
-  box-shadow:
-    0 1px 0 0 rgba(255,255,255,0.9) inset,
-    0 -1px 0 0 rgba(0,0,0,0.04) inset,
-    0 2px 4px rgba(15, 23, 42, 0.03),
-    0 8px 24px rgba(15, 23, 42, 0.07),
-    0 32px 64px rgba(15, 23, 42, 0.09);
+  max-width: 27rem;
 }
 
-/* Registro puede ser un poco más ancha */
-.auth-card.ancha {
-  max-width: 30rem;
+.auth-card h1 {
+  font-size: clamp(2.25rem, 3.4vw, 2.75rem);
+}
+
+.auth-subtitle {
+  margin: 0 0 2rem;
+  color: var(--texto-suave);
+  font-size: 1.05rem;
+}
+
+.auth-card .grupo + .grupo {
+  margin-top: 1.75rem;
+}
+
+/* En acceso la barra se alinea con la pizarra lateral */
+.auth-root .landing-nav {
+  max-width: none;
+  padding-inline: 3rem;
+}
+
+@media (max-width: 860px) {
+  .auth-main {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-tablero {
+    display: none;
+  }
+
+  .auth-form {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .auth-root .landing-nav {
+    padding-inline: 1rem;
+  }
 }
