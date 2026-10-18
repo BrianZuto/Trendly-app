@@ -1,0 +1,365 @@
+/* ═══════════════════════════════════════════
+   ÁREA AUTENTICADA · Apple Glass & Pure Minimal
+   Barra translúcida con blur, lienzo puro y tipografía SF Pro
+   ═══════════════════════════════════════════ */
+
+:where(.app, .dialogo-fondo) {
+  --negro: #000000;
+  --blanco: #ffffff;
+  --humo: #f5f5f7;
+  --humo-oscuro: #e5e5ea;
+
+  --pizarra: #000000;
+  --pizarra-alta: #1c1c1e;
+  --pizarra-honda: #000000;
+  --tiza: #f5f5f7;
+  --tiza-suave: #86868b;
+  --etiqueta: #ffd23f;
+
+  --papel: #f5f5f7;
+  --papel-alto: #ffffff;
+  --papel-hondo: #e5e5ea;
+  --borde: rgba(0, 0, 0, 0.08);
+  --borde-campo: rgba(0, 0, 0, 0.12);
+  --tinta: #000000;
+  --tinta-media: #48484a;
+  --tinta-suave: #86868b;
+  --texto: var(--tinta);
+  --texto-suave: var(--tinta-suave);
+
+  --verde: #000000;
+  --verde-hondo: #1c1c1e;
+  --verde-claro: #f5f5f7;
+  --tomate: #86868b;
+  --ambar: #86868b;
+  --ambar-texto: #48484a;
+  --peligro: #d70015;
+  --peligro-fondo: #fff2f4;
+  --peligro-texto: #d70015;
+  --peligro-borde: rgba(215, 0, 21, 0.2);
+  --exito-texto: #1d1d1f;
+  --exito-fondo: #f5f5f7;
+  --exito-borde: rgba(0, 0, 0, 0.12);
+
+  --noche: #000000;
+  --paleta: #111113;
+  --paleta-luz: #1c1c20;
+
+  --radio: 14px;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.03);
+  --t-press: 120ms;
+  --t-hover: 140ms;
+}
+
+html:has(.app) {
+  background: var(--humo, #f5f5f7);
+}
+
+.app {
+  min-height: 100vh;
+  background: var(--humo, #f5f5f7);
+  color: var(--tinta);
+  overflow-x: clip;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+}
+
+.app :focus-visible {
+  outline: 2px solid var(--negro);
+  outline-offset: 2px;
+}
+
+.app-barra :focus-visible {
+  outline-color: var(--negro);
+}
+
+.app ::selection {
+  background: #000000;
+  color: #ffffff;
+}
+
+.cifra {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ─── Barra de Navegación Translúcida Apple ─── */
+.app-barra {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  color: #000000;
+}
+
+.app-barra-fila,
+.app-barra-nav {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left));
+  padding-right: max(24px, env(safe-area-inset-right));
+}
+
+.app-barra-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.app-barra-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #000000;
+  text-decoration: none;
+  transition: transform var(--t-press) var(--ease-out);
+}
+
+.app-barra-marca:active {
+  transform: scale(0.97);
+}
+
+.app-barra-logo {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #000000;
+  color: #ffffff;
+}
+
+.app-barra-logo .logo-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.app-barra-nombre-marca {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-barra-buscar {
+  flex: 1 1 420px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 980px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #86868b;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.app-barra-buscar svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.app-barra-buscar:focus-within {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.2);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.app-barra-buscar input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 14px;
+}
+
+.app-barra-buscar input::placeholder {
+  color: #86868b;
+}
+
+.app-barra-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-barra-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #000000;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.app-barra-quien {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.app-barra-quien span {
+  display: block;
+  color: #86868b;
+  font-size: 11px;
+}
+
+.app-barra-salir {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-left: -4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #86868b;
+  cursor: pointer;
+  transition: color var(--t-hover) ease, background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+}
+
+.app-barra-salir svg {
+  width: 18px;
+  height: 18px;
+}
+
+.app-barra-salir:active {
+  transform: scale(0.95);
+}
+
+.app-barra-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.app-barra-nav a {
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
+  color: #86868b;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: color var(--t-hover) ease;
+}
+
+.app-barra-nav a.active {
+  color: #000000;
+  font-weight: 600;
+  border-bottom-color: #000000;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-barra-nav a:hover {
+    color: #000000;
+  }
+  .app-barra-salir:hover {
+    color: #000000;
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.app-contenido {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 28px max(24px, env(safe-area-inset-right)) 64px max(24px, env(safe-area-inset-left));
+}
+
+@media (max-width: 760px) {
+  .app-barra-fila { gap: 12px; }
+  .app-barra-marca { margin-right: auto; }
+  .app-barra-nombre-marca { font-size: 18px; }
+  .app-barra-quien { display: none; }
+  .app-barra-buscar { order: 3; flex-basis: 100%; }
+  .app-barra-fila, .app-barra-nav { padding-left: 16px; padding-right: 16px; }
+  .app-contenido { padding-top: 20px; padding-left: 16px; padding-right: 16px; }
+}
+
+/* ─── Botones Apple (Pill / Monocromáticos) ─── */
+.app-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 980px;
+  background: #000000;
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+}
+
+.app-boton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.app-boton:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.app-boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.app-boton-claro {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.app-boton-chico {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.app-boton-peligro {
+  background: #d70015;
+  color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-boton:hover:not(:disabled) {
+    background: #1c1c1e;
+  }
+  .app-boton-claro:hover:not(:disabled) {
+    background: #f5f5f7;
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+  .app-boton-peligro:hover:not(:disabled) {
+    background: #b30012;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-boton, .app-barra-salir, .app-barra-marca {
+    transition: none;
+  }
+}

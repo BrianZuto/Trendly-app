@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Defs_trendly_p2_recoleccion" targetNamespace="http://trendly.co/bpmn">
+<bpmn:collaboration id="Collab_trendly_p2_recoleccion"><bpmn:participant id="Pool_trendly_p2_recoleccion" name="Proceso 2 · Monitoreo, recolección y análisis de precios" processRef="Process_trendly_p2_recoleccion"/></bpmn:collaboration>
+<bpmn:process id="Process_trendly_p2_recoleccion" isExecutable="false"><bpmn:laneSet id="LaneSet_trendly_p2_recoleccion">
+<bpmn:lane id="Lane_trendly_p2_recoleccion_0" name="Azure Functions">
+<bpmn:flowNodeRef>s</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>job</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="Lane_trendly_p2_recoleccion_1" name="Scraper">
+<bpmn:flowNodeRef>ext</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>gext</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>fallo</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>grei</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>marca</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>efallo</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>val</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>gcons</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>desc</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>edesc</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="Lane_trendly_p2_recoleccion_2" name="Motor de análisis">
+<bpmn:flowNodeRef>obt</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>gsuf</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>pend</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>epend</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>comp</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>calc</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="Lane_trendly_p2_recoleccion_3" name="Base de datos (MySQL)">
+<bpmn:flowNodeRef>hist</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>sug</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>e</bpmn:flowNodeRef>
+</bpmn:lane>
+</bpmn:laneSet>
+<bpmn:startEvent id="s" name="Cada 6 horas">
+<bpmn:outgoing>f_s_job</bpmn:outgoing>
+<bpmn:timerEventDefinition id="Timer_s"/>
+</bpmn:startEvent>
+<bpmn:serviceTask id="job" name="Disparar job de scraping programado">
+<bpmn:incoming>f_s_job</bpmn:incoming>
+<bpmn:outgoing>f_job_ext</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:serviceTask id="ext" name="Extraer precio y disponibilidad">
+<bpmn:incoming>f_job_ext</bpmn:incoming>
+<bpmn:incoming>f_grei_ext</bpmn:incoming>
+<bpmn:outgoing>f_ext_gext</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:exclusiveGateway id="gext" name="¿Extracción exitosa?">
+<bpmn:incoming>f_ext_gext</bpmn:incoming>
+<bpmn:outgoing>f_gext_fallo</bpmn:outgoing>
+<bpmn:outgoing>f_gext_val</bpmn:outgoing>
+</bpmn:exclusiveGateway>
+<bpmn:serviceTask id="fallo" name="Registrar fallo y reintentar">
+<bpmn:incoming>f_gext_fallo</bpmn:incoming>
+<bpmn:outgoing>f_fallo_grei</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:exclusiveGateway id="grei" name="¿Reintentos agotados?">
+<bpmn:incoming>f_fallo_grei</bpmn:incoming>
+<bpmn:outgoing>f_grei_ext</bpmn:outgoing>
+<bpmn:outgoing>f_grei_marca</bpmn:outgoing>
+</bpmn:exclusiveGateway>
+<bpmn:serviceTask id="marca" name="Marcar producto para revisión del administrador">
+<bpmn:incoming>f_grei_marca</bpmn:incoming>
+<bpmn:outgoing>f_marca_efallo</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:endEvent id="efallo" name="Fallo registrado">
+<bpmn:incoming>f_marca_efallo</bpmn:incoming>
+</bpmn:endEvent>
+<bpmn:serviceTask id="val" name="Validar precio numérico y producto disponible">
+<bpmn:incoming>f_gext_val</bpmn:incoming>
+<bpmn:outgoing>f_val_gcons</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:exclusiveGateway id="gcons" name="¿Dato consistente?">
+<bpmn:incoming>f_val_gcons</bpmn:incoming>
+<bpmn:outgoing>f_gcons_desc</bpmn:outgoing>
+<bpmn:outgoing>f_gcons_hist</bpmn:outgoing>
+</bpmn:exclusiveGateway>
+<bpmn:serviceTask id="desc" name="Descartar dato y marcar producto para revisión">
+<bpmn:incoming>f_gcons_desc</bpmn:incoming>
+<bpmn:outgoing>f_desc_edesc</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:endEvent id="edesc" name="Dato descartado">
+<bpmn:incoming>f_desc_edesc</bpmn:incoming>
+</bpmn:endEvent>
+<bpmn:serviceTask id="hist" name="Persistir nuevo punto del histórico">
+<bpmn:incoming>f_gcons_hist</bpmn:incoming>
+<bpmn:outgoing>f_hist_obt</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:serviceTask id="obt" name="Obtener histórico de precios">
+<bpmn:incoming>f_hist_obt</bpmn:incoming>
+<bpmn:outgoing>f_obt_gsuf</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:exclusiveGateway id="gsuf" name="¿Histórico suficiente para comparar?">
+<bpmn:incoming>f_obt_gsuf</bpmn:incoming>
+<bpmn:outgoing>f_gsuf_pend</bpmn:outgoing>
+<bpmn:outgoing>f_gsuf_comp</bpmn:outgoing>
+</bpmn:exclusiveGateway>
+<bpmn:serviceTask id="pend" name="Dejar análisis pendiente">
+<bpmn:incoming>f_gsuf_pend</bpmn:incoming>
+<bpmn:outgoing>f_pend_epend</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:endEvent id="epend" name="Análisis pendiente">
+<bpmn:incoming>f_pend_epend</bpmn:incoming>
+</bpmn:endEvent>
+<bpmn:serviceTask id="comp" name="Comparar precios entre plataformas">
+<bpmn:incoming>f_gsuf_comp</bpmn:incoming>
+<bpmn:outgoing>f_comp_calc</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:serviceTask id="calc" name="Calcular precio y margen sugeridos">
+<bpmn:incoming>f_comp_calc</bpmn:incoming>
+<bpmn:outgoing>f_calc_sug</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:serviceTask id="sug" name="Persistir sugerencia de precio y margen">
+<bpmn:incoming>f_calc_sug</bpmn:incoming>
+<bpmn:outgoing>f_sug_e</bpmn:outgoing>
+</bpmn:serviceTask>
+<bpmn:endEvent id="e" name="Sugerencia generada (dispara el Proceso 3)">
+<bpmn:incoming>f_sug_e</bpmn:incoming>
+<bpmn:messageEventDefinition id="Msg_e"/>
+</bpmn:endEvent>
+<bpmn:sequenceFlow id="f_s_job" name="" sourceRef="s" targetRef="job"/>
+<bpmn:sequenceFlow id="f_job_ext" name="" sourceRef="job" targetRef="ext"/>
+<bpmn:sequenceFlow id="f_ext_gext" name="" sourceRef="ext" targetRef="gext"/>
+<bpmn:sequenceFlow id="f_gext_fallo" name="No" sourceRef="gext" targetRef="fallo"/>
+<bpmn:sequenceFlow id="f_fallo_grei" name="" sourceRef="fallo" targetRef="grei"/>
+<bpmn:sequenceFlow id="f_grei_ext" name="No" sourceRef="grei" targetRef="ext"/>
+<bpmn:sequenceFlow id="f_grei_marca" name="Sí" sourceRef="grei" targetRef="marca"/>
+<bpmn:sequenceFlow id="f_marca_efallo" name="" sourceRef="marca" targetRef="efallo"/>
+<bpmn:sequenceFlow id="f_gext_val" name="Sí" sourceRef="gext" targetRef="val"/>
+<bpmn:sequenceFlow id="f_val_gcons" name="" sourceRef="val" targetRef="gcons"/>
+<bpmn:sequenceFlow id="f_gcons_desc" name="No" sourceRef="gcons" targetRef="desc"/>
+<bpmn:sequenceFlow id="f_desc_edesc" name="" sourceRef="desc" targetRef="edesc"/>
+<bpmn:sequenceFlow id="f_gcons_hist" name="Sí" sourceRef="gcons" targetRef="hist"/>
+<bpmn:sequenceFlow id="f_hist_obt" name="" sourceRef="hist" targetRef="obt"/>
+<bpmn:sequenceFlow id="f_obt_gsuf" name="" sourceRef="obt" targetRef="gsuf"/>
+<bpmn:sequenceFlow id="f_gsuf_pend" name="No" sourceRef="gsuf" targetRef="pend"/>
+<bpmn:sequenceFlow id="f_pend_epend" name="" sourceRef="pend" targetRef="epend"/>
+<bpmn:sequenceFlow id="f_gsuf_comp" name="Sí" sourceRef="gsuf" targetRef="comp"/>
+<bpmn:sequenceFlow id="f_comp_calc" name="" sourceRef="comp" targetRef="calc"/>
+<bpmn:sequenceFlow id="f_calc_sug" name="" sourceRef="calc" targetRef="sug"/>
+<bpmn:sequenceFlow id="f_sug_e" name="" sourceRef="sug" targetRef="e"/>
+</bpmn:process>
+<bpmndi:BPMNDiagram id="Diag_trendly_p2_recoleccion"><bpmndi:BPMNPlane id="Plane_trendly_p2_recoleccion" bpmnElement="Collab_trendly_p2_recoleccion">
+<bpmndi:BPMNShape id="Pool_trendly_p2_recoleccion_di" bpmnElement="Pool_trendly_p2_recoleccion" isHorizontal="false"><dc:Bounds x="0" y="0" width="1080" height="1346"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_trendly_p2_recoleccion_0_di" bpmnElement="Lane_trendly_p2_recoleccion_0" isHorizontal="false"><dc:Bounds x="0" y="34" width="180" height="1312"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_trendly_p2_recoleccion_1_di" bpmnElement="Lane_trendly_p2_recoleccion_1" isHorizontal="false"><dc:Bounds x="180" y="34" width="360" height="1312"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_trendly_p2_recoleccion_2_di" bpmnElement="Lane_trendly_p2_recoleccion_2" isHorizontal="false"><dc:Bounds x="540" y="34" width="360" height="1312"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_trendly_p2_recoleccion_3_di" bpmnElement="Lane_trendly_p2_recoleccion_3" isHorizontal="false"><dc:Bounds x="900" y="34" width="180" height="1312"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_di" bpmnElement="s"><dc:Bounds x="72" y="118" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="job_di" bpmnElement="job"><dc:Bounds x="15" y="199" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="ext_di" bpmnElement="ext"><dc:Bounds x="375" y="295" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="gext_di" bpmnElement="gext"><dc:Bounds x="427" y="401" width="46" height="46"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="fallo_di" bpmnElement="fallo"><dc:Bounds x="195" y="391" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="grei_di" bpmnElement="grei"><dc:Bounds x="247" y="497" width="46" height="46"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="marca_di" bpmnElement="marca"><dc:Bounds x="195" y="583" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="efallo_di" bpmnElement="efallo"><dc:Bounds x="252" y="694" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="val_di" bpmnElement="val"><dc:Bounds x="375" y="583" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="gcons_di" bpmnElement="gcons"><dc:Bounds x="427" y="689" width="46" height="46"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="desc_di" bpmnElement="desc"><dc:Bounds x="375" y="775" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="edesc_di" bpmnElement="edesc"><dc:Bounds x="432" y="886" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="hist_di" bpmnElement="hist"><dc:Bounds x="915" y="679" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="obt_di" bpmnElement="obt"><dc:Bounds x="555" y="775" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="gsuf_di" bpmnElement="gsuf"><dc:Bounds x="607" y="881" width="46" height="46"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="pend_di" bpmnElement="pend"><dc:Bounds x="735" y="871" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="epend_di" bpmnElement="epend"><dc:Bounds x="792" y="982" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="comp_di" bpmnElement="comp"><dc:Bounds x="555" y="967" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="calc_di" bpmnElement="calc"><dc:Bounds x="555" y="1063" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="sug_di" bpmnElement="sug"><dc:Bounds x="915" y="1159" width="150" height="66"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="e_di" bpmnElement="e"><dc:Bounds x="972" y="1270" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNEdge id="f_s_job_di" bpmnElement="f_s_job">
+<di:waypoint x="90" y="154"/>
+<di:waypoint x="90" y="199"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_job_ext_di" bpmnElement="f_job_ext">
+<di:waypoint x="90" y="265"/>
+<di:waypoint x="90" y="328"/>
+<di:waypoint x="375" y="328"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_ext_gext_di" bpmnElement="f_ext_gext">
+<di:waypoint x="450" y="361"/>
+<di:waypoint x="450" y="401"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_gext_fallo_di" bpmnElement="f_gext_fallo">
+<di:waypoint x="427" y="424"/>
+<di:waypoint x="345" y="424"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_fallo_grei_di" bpmnElement="f_fallo_grei">
+<di:waypoint x="270" y="457"/>
+<di:waypoint x="270" y="497"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_grei_ext_di" bpmnElement="f_grei_ext">
+<di:waypoint x="247" y="520"/>
+<di:waypoint x="185" y="520"/>
+<di:waypoint x="185" y="279"/>
+<di:waypoint x="420" y="279"/>
+<di:waypoint x="420" y="295"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_grei_marca_di" bpmnElement="f_grei_marca">
+<di:waypoint x="270" y="543"/>
+<di:waypoint x="270" y="583"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_marca_efallo_di" bpmnElement="f_marca_efallo">
+<di:waypoint x="270" y="649"/>
+<di:waypoint x="270" y="694"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_gext_val_di" bpmnElement="f_gext_val">
+<di:waypoint x="450" y="447"/>
+<di:waypoint x="450" y="583"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_val_gcons_di" bpmnElement="f_val_gcons">
+<di:waypoint x="450" y="649"/>
+<di:waypoint x="450" y="689"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_gcons_desc_di" bpmnElement="f_gcons_desc">
+<di:waypoint x="450" y="735"/>
+<di:waypoint x="450" y="775"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_desc_edesc_di" bpmnElement="f_desc_edesc">
+<di:waypoint x="450" y="841"/>
+<di:waypoint x="450" y="886"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_gcons_hist_di" bpmnElement="f_gcons_hist">
+<di:waypoint x="473" y="712"/>
+<di:waypoint x="915" y="712"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_hist_obt_di" bpmnElement="f_hist_obt">
+<di:waypoint x="990" y="745"/>
+<di:waypoint x="990" y="808"/>
+<di:waypoint x="705" y="808"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_obt_gsuf_di" bpmnElement="f_obt_gsuf">
+<di:waypoint x="630" y="841"/>
+<di:waypoint x="630" y="881"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_gsuf_pend_di" bpmnElement="f_gsuf_pend">
+<di:waypoint x="653" y="904"/>
+<di:waypoint x="735" y="904"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_pend_epend_di" bpmnElement="f_pend_epend">
+<di:waypoint x="810" y="937"/>
+<di:waypoint x="810" y="982"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_gsuf_comp_di" bpmnElement="f_gsuf_comp">
+<di:waypoint x="630" y="927"/>
+<di:waypoint x="630" y="967"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_comp_calc_di" bpmnElement="f_comp_calc">
+<di:waypoint x="630" y="1033"/>
+<di:waypoint x="630" y="1063"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_calc_sug_di" bpmnElement="f_calc_sug">
+<di:waypoint x="630" y="1129"/>
+<di:waypoint x="630" y="1192"/>
+<di:waypoint x="915" y="1192"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_sug_e_di" bpmnElement="f_sug_e">
+<di:waypoint x="990" y="1225"/>
+<di:waypoint x="990" y="1270"/>
+</bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn:definitions>

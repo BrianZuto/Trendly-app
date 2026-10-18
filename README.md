@@ -2,8 +2,10 @@
 
 Plataforma web (con extensión móvil) de análisis de precios y productos para comercio electrónico y dropshipping en Colombia y Latinoamérica.
 
-![CI](https://github.com/<usuario>/trendly/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml/badge.svg)](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml)
 <!-- SonarCloud: badge pendiente (Sprint 3) -->
+
+**Aplicación publicada:** https://trendlyapp.vercel.app (producción, se actualiza con cada cambio en `main`)
 
 ## Problema y solución
 
@@ -36,12 +38,12 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Autenticación | JWT con jjwt | Pendiente (Sprint 2) |
 | Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker pendiente (SCRUM-29) |
 | Frontend | SPA con React 19 + Vite 8, ESLint | Proyecto base creado |
-| Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Pendiente (Sprint 2) |
+| Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
 | Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Pendiente (Sprint 3) |
-| Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Pendiente |
-| Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo pendientes (Sprint 2); SonarCloud pendiente (Sprint 3) |
+| Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Frontend en Vercel (SCRUM-35); backend pendiente (Sprint 5) |
+| Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud pendiente (Sprint 3) |
 
 ### Estructura del monorepo
 
@@ -138,11 +140,30 @@ Disponible en http://localhost:5173.
 cd backend && ./mvnw verify
 
 # Frontend
-cd frontend && npm test       # Vitest, pendiente (Sprint 2)
+cd frontend && npm test       # Vitest
+cd frontend && npm run coverage  # Vitest con reporte en frontend/coverage/
 cd frontend && npm run lint   # ESLint
 ```
 
-Cuando se configure JaCoCo (pendiente, Sprint 2), `./mvnw verify` también generará el reporte de cobertura en `backend/target/site/jacoco/index.html`.
+`./mvnw verify` también genera el reporte de cobertura de JaCoCo en `backend/target/site/jacoco/index.html` y falla si la cobertura de líneas baja del 70 %. El pipeline de GitHub Actions (`.github/workflows/ci.yml`) ejecuta lo mismo en cada PR y publica los reportes como artefactos.
+
+### 6. Despliegue del frontend (Vercel)
+
+El frontend se publica en Vercel desde la carpeta `frontend/`. La configuración vive en `frontend/vercel.json`, que tiene la regla de reescritura para que rutas como `/login` o `/productos` no den 404 al recargar la página.
+
+| Rama | Qué se despliega | URL |
+|---|---|---|
+| `main` | Producción | https://trendlyapp.vercel.app |
+| Cada pull request | Vista previa | Vercel comenta la URL en el PR |
+
+Variables de entorno, en Vercel → Settings → Environment Variables:
+
+| Variable | Valor |
+|---|---|
+| `VITE_API_URL` | URL del API. Mientras el backend no esté en Azure (Sprint 5), apunta al entorno de pruebas. |
+| `VITE_USE_MOCK` | `true` mientras no haya backend publicado (la app funciona con datos simulados); `false` cuando el API esté arriba. |
+
+Las variables `VITE_` se leen al compilar: después de cambiarlas hay que volver a desplegar (Deployments → Redeploy). No hace falta tocar el código.
 
 ## Flujo de trabajo con Git
 
@@ -164,7 +185,7 @@ Cuando se configure JaCoCo (pendiente, Sprint 2), `./mvnw verify` también gener
    gh pr create --base develop --fill   # o desde la interfaz de GitHub
    ```
    Completa la plantilla del PR (historia, qué cambia, cómo probarlo, evidencias, checklist).
-5. **Revisión:** otro integrante aprueba el PR y el pipeline debe quedar en verde.
+5. **Revisión:** el pipeline debe quedar en verde (checks `backend` y `frontend`, obligatorios). Pedir revisión a otro integrante es recomendable, pero no obligatorio.
 6. **Merge a `develop`** y borra la rama. Mueve la historia a "Hecho" cuando cumpla la Definición de Hecho.
 7. **Al final de cada sprint**, `develop` se integra en `main`.
 
@@ -174,7 +195,7 @@ Cuando se configure JaCoCo (pendiente, Sprint 2), `./mvnw verify` también gener
 |---|---|---|
 | Ramas | `main`: producción, protegida<br>`develop`: integración, rama por defecto, protegida<br>`feature/SCRUM-XX-descripcion-corta`: una por historia | `feature/SCRUM-30-registro-usuario` |
 | Commits | `SCRUM-XX: mensaje en español e imperativo`. La clave enlaza el commit con la historia en Jira | `SCRUM-31: agrega endpoint de login con JWT` |
-| Pull requests | Siempre hacia `develop`. Requieren 1 aprobación de otro integrante y el pipeline en verde | — |
+| Pull requests | Siempre hacia `develop`. Requieren el pipeline en verde; la aprobación de otro integrante es opcional | — |
 | API | Rutas versionadas bajo `/api/v1` | `/api/v1/productos` |
 | Formato | Definido en `.editorconfig`: UTF-8, LF, 4 espacios en Java/XML, 2 en JS/JSON/CSS/YAML/Markdown | — |
 
@@ -184,7 +205,7 @@ Cuando se configure JaCoCo (pendiente, Sprint 2), `./mvnw verify` también gener
 
 Una historia está terminada cuando:
 
-- [ ] Su PR fue aprobado e integrado a `develop`.
+- [ ] Su PR fue integrado a `develop`.
 - [ ] El pipeline de CI está en verde (y el quality gate de SonarCloud desde el Sprint 3).
 - [ ] Cumple todos sus criterios de aceptación.
 

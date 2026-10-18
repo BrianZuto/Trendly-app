@@ -1,0 +1,249 @@
+/* ═══════════════════════════════════════════
+   TRENDLY · Tablero de llegadas & Estética Apple Dark
+   Monolito oscuro con precisión de ingeniería, tipografía SF Pro
+   y animaciones físicas calibradas (Emil Kowalski + Apple).
+   ═══════════════════════════════════════════ */
+
+:root {
+  /* ─── Paleta Pura Dark (OLED Black) ─── */
+  --noche: #000000;
+  --mosaico: #0d0d0f;
+  --mosaico-alto: #161619;
+  --paleta: #111113;
+  --paleta-luz: #1c1c20;
+  --verde: #161619;
+  --verde-hondo: #0a0a0c;
+  --papel-alto: #ffffff;
+
+  --gap: 8px;
+  --radio: 12px;
+
+  /* Escala de texto Apple */
+  --paso-chico: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --paso-cuerpo: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --paso-lead: clamp(1.2rem, 1.05rem + 0.6vw, 1.5rem);
+  --paso-titulo: clamp(2.25rem, 1.3rem + 3.4vw, 4.25rem);
+
+  /* Curvas naturales */
+  --ease-suave: cubic-bezier(0.33, 1, 0.68, 1);
+  --t-press: 120ms;
+  --t-hover: 160ms;
+  --t-entrada: 600ms;
+}
+
+html:has(.tb-pagina) {
+  background: var(--noche);
+  scrollbar-color: #222226 var(--noche);
+}
+
+.tb-pagina {
+  min-height: 100vh;
+  background: var(--noche);
+  color: #f5f5f7;
+  overflow-x: clip;
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+}
+
+.tb-pagina ::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+.tb-pagina :focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.tb-rejilla {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gap);
+  padding: var(--gap) max(var(--gap), env(safe-area-inset-right)) var(--gap) max(var(--gap), env(safe-area-inset-left));
+}
+
+/* Mosaicos puros con borde sutil Apple */
+.mosaico {
+  min-width: 0;
+  padding: 28px;
+  border-radius: var(--radio);
+  background: var(--mosaico);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mosaico-alto {
+  background: var(--mosaico-alto);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.mosaico-papel {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mosaico-etiqueta {
+  background: #ffffff;
+  color: #000000;
+}
+
+.mosaico-verde {
+  background: #1c1c1e;
+  color: #f5f5f7;
+}
+
+/* Botones Apple pill y rect */
+.btn-t {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 980px;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease, opacity var(--t-hover) ease;
+}
+
+.btn-t svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--t-hover) var(--ease-out);
+}
+
+.btn-t:active {
+  transform: scale(0.97);
+}
+
+.btn-t-noche {
+  background: #1c1c1e;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-t-etiqueta {
+  background: #ffffff;
+  color: #000000;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-t-noche:hover {
+    background: #2c2c2e;
+  }
+  .btn-t-etiqueta:hover {
+    background: #e5e5ea;
+  }
+  .btn-t:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+/* Tablero 3D: Canto en 3D puro sin sombras toscas */
+.tablero-3d {
+  --rx: 9deg;
+  --ry: -18deg;
+  position: relative;
+  padding: 24px 24px 28px;
+  border-radius: 16px;
+  background: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(0.6deg);
+  transform-style: preserve-3d;
+  transition: transform 900ms var(--ease-suave);
+}
+
+.tablero-3d::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  right: 0;
+  width: 24px;
+  border-radius: 0 16px 16px 0;
+  background: #18181b;
+  transform-origin: 100% 50%;
+  transform: rotateY(90deg);
+}
+
+.tablero-3d::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  height: 24px;
+  border-radius: 0 0 16px 16px;
+  background: #131316;
+  transform-origin: 50% 100%;
+  transform: rotateX(-90deg);
+}
+
+.tablero-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 8px 0;
+}
+
+.tablero-fila-nombre {
+  flex: none;
+  width: 7.5em;
+  font-size: var(--paso-chico);
+  font-weight: 500;
+  color: #86868b;
+  letter-spacing: -0.005em;
+}
+
+.tablero-fila-nombre b {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+@keyframes tb-sube {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tb-sube {
+    animation: tb-sube var(--t-entrada) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 60ms + 60ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tablero-3d {
+    transition: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .tablero-fila {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 6px 0;
+  }
+  .tablero-fila-nombre {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    width: auto;
+    font-size: 0.8125rem;
+  }
+  .tablero-fila-nombre b {
+    font-size: 0.875rem;
+  }
+}
