@@ -40,7 +40,7 @@ const IconoRestaurar = () => (
     </svg>
 )
 
-function FilaPublicacion({ pub, sospechosos, publicaciones, productoId, onExcluir }) {
+function FilaPublicacion({ pub, sospechosos, publicaciones, onExcluir }) {
     const esSospechosa = sospechosos.has(pub.idPublicacion)
     const motivo = esSospechosa ? motivoSospecha(Number(pub.precio), publicaciones) : null
 

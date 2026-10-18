@@ -23,7 +23,7 @@ export function calcularSimulacionMargen(producto, competidores = [], margenDese
 
     const diffPrecio = precioRequerido - producto.precioVenta
 
-    let textoImpacto = ''
+    let textoImpacto
     if (cambioPosicion > 0) {
         textoImpacto = `Subirías ${cambioPosicion} ${cambioPosicion === 1 ? 'puesto' : 'puestos'} en el ranking (del ${posActual}.º al ${posicionNueva}.º).`
     } else if (cambioPosicion < 0) {
@@ -58,7 +58,7 @@ export function analizarPorQueBajoRentabilidad(producto) {
     const bajoObjetivo = producto.margenActual < producto.margenObjetivo
     const precioParaObjetivo = precioMinimo(producto.costo, producto.margenObjetivo)
 
-    let explicacion = ''
+    let explicacion
 
     if (costoSubio) {
         const subidaUsd = prov.precioUsd - prov.precioAnteriorUsd

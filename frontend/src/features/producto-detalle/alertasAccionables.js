@@ -1,4 +1,4 @@
-import { calcularMargen, formatearPesos, formatearPorcentaje, precioMinimo } from '@features/productos/formato'
+import { calcularMargen, formatearPesos, formatearPorcentaje } from '@features/productos/formato'
 
 /**
  * Calcula la variación de precio más representativa del competidor a partir de su historial.
@@ -81,7 +81,6 @@ export function generarAlertasAccionables(producto, monitoreos = []) {
     const disponibles = publicaciones.filter((p) => p.disponible)
     const preciosActuales = disponibles.map((p) => p.precio)
     const posActual = calcularPosicion(producto.precioVenta, preciosActuales)
-    const minViable = precioMinimo(producto.costo, producto.margenObjetivo)
 
     const alertas = []
 

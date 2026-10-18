@@ -41,9 +41,9 @@ export function calcularEscenarios({ costo, margenObjetivo, publicaciones = [], 
     const precioPiso = precioMinimo(c, margenPiso) || redondearCentena(c * 1.1)
     const precioBaseObjetivo = precioMinimo(c, mObj) || redondearCentena(c * (1 + mObj / 100))
 
-    let pConservador = 0
-    let pEquilibrado = 0
-    let pMargenAlto = 0
+    let pConservador
+    let pEquilibrado
+    let pMargenAlto
 
     if (precios.length === 0) {
         // Sin competidores con stock: escenarios basados en márgenes estratégicos
@@ -80,7 +80,7 @@ export function calcularEscenarios({ costo, margenObjetivo, publicaciones = [], 
         const puesto = masBaratosQueTu + 1
         const esActual = Math.abs(precio - pActual) < 100
 
-        let resumenPosicion = ''
+        let resumenPosicion
         if (precios.length === 0) {
             resumenPosicion = 'Sin competidores activos con stock'
         } else if (masBaratosQueTu === 0) {
