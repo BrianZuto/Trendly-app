@@ -1,33 +1,31 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { mensajeDeError } from '@core/api/errores'
-import {
-    actualizarProducto,
-    crearProducto,
-    eliminarProducto,
-    listarProductos,
-} from '@core/services/productos.service'
+import { actualizarProducto, eliminarProducto, listarProductos } from '@core/services/productos.service'
 import Dialogo from '@shared/components/Dialogo'
 import Mensaje from '@shared/components/Mensaje'
 import Paletas from '@shared/components/Paletas'
+import { MARKETPLACES as MARKETPLACE } from '@shared/utils/marketplaces'
 import FormularioProducto from './FormularioProducto'
-import { formatearPesos, formatearPorcentaje } from './formato'
+import LlegadaProducto from './LlegadaProducto'
+import { formatearDolares, formatearPesos, formatearPorcentaje, pesosEnPaletas } from './formato'
 import './Productos.css'
 
 const bajoObjetivo = (p) => p.margenActual < p.margenObjetivo
 
-// Los competidores llegan con SCRUM-36; mientras tanto ningún producto tiene publicaciones vigiladas
-const competidores = (p) => p.competidores ?? []
-
-// "$139.900" para las paletas: el mismo texto que se lee, sin el espacio de Intl
-const precioEnPaletas = (valor) => formatearPesos(valor).replace(/\s/g, '')
+// Resumen de la competencia que trae la lista (propuesta para el backend; sin él, "Sin datos")
+const minimoDe = (p) => p.competencia?.minimo ?? null
+const diferencia = (p) => {
+    const minimo = minimoDe(p)
+    return minimo ? Math.round(((p.precioVenta - minimo.precio) / minimo.precio) * 1000) / 10 : null
+}
 
 const FILTROS = [
     ['todos', 'Todos', () => true],
     ['bajo', 'Bajo el objetivo', bajoObjetivo],
-    ['caro', 'Más caros que el mínimo', () => false],
-    ['barato', 'Los más baratos', () => false],
-    ['sin', 'Sin competidores', (p) => competidores(p).length === 0],
+    ['caro', 'Más caros que el mínimo', (p) => diferencia(p) > 0],
+    ['barato', 'Los más baratos', (p) => diferencia(p) !== null && diferencia(p) < 0],
+    ['sin', 'Sin competidores', (p) => !p.competencia?.monitoreos],
 ]
 
 const ORDENES = {
@@ -76,9 +74,19 @@ function BarraMargen({ producto }) {
     )
 }
 
-// Sin competidores todavía no hay posición que mostrar
-function Posicion() {
-    return <span className="pos pos-neu">Sin datos</span>
+// Tu precio frente al más barato de la competencia
+function Posicion({ producto }) {
+    const dif = diferencia(producto)
+    if (dif === null) return <span className="pos pos-neu">Sin datos</span>
+    if (dif > 0) return <span className="pos pos-mal">{dif.toLocaleString('es-CO')}% más caro</span>
+    if (dif < 0) return <span className="pos pos-ok">El más barato</span>
+    return <span className="pos pos-neu">Igual al mínimo</span>
+}
+
+function publicacionesDe(p) {
+    const n = p.competencia?.publicaciones ?? 0
+    if (!p.competencia?.monitoreos) return 'Sin competidores'
+    return n === 1 ? '1 publicación' : `${n} publicaciones`
 }
 
 function MenuAcciones({ producto, onEditar, onEliminar }) {
@@ -134,17 +142,22 @@ function MenuAcciones({ producto, onEditar, onEliminar }) {
 export default function Productos() {
     const [estado, setEstado] = useState({ cargando: true, error: '', productos: [] })
     const [intento, setIntento] = useState(0)
-    // null: cerrado · { producto: null }: crear · { producto }: editar
+    // null: cerrado · { producto }: editar (crear es la pantalla /productos/nuevo)
     const [formulario, setFormulario] = useState(null)
     const [porEliminar, setPorEliminar] = useState(null)
     const [eliminando, setEliminando] = useState(false)
     const [errorEliminar, setErrorEliminar] = useState('')
     const [aviso, setAviso] = useState('')
+    // El producto recién creado llega desde /productos/nuevo: su etiqueta de llegada y el resalte de su fila
+    const location = useLocation()
+    const navigate = useNavigate()
+    const [llegada, setLlegada] = useState(() => location.state?.creado ?? null)
+    const [resalte, setResalte] = useState(() => (location.state?.creado ? { id: location.state.creado.id, vez: 1 } : null))
     const [filtro, setFiltro] = useState('todos')
     const [marketplace, setMarketplace] = useState('todos')
     const [orden, setOrden] = useState('recientes')
     const [vista, setVista] = useState('tabla')
-    const [parametros] = useSearchParams()
+    const [parametros, setParametros] = useSearchParams()
     const consulta = parametros.get('q') ?? ''
     const busqueda = consulta.trim().toLowerCase()
 
@@ -160,14 +173,18 @@ export default function Productos() {
 
     const { cargando, error, productos } = estado
 
+    // La llegada se muestra una vez; volver atrás o recargar no la repite
+    useEffect(() => {
+        if (location.state?.creado) navigate(`${location.pathname}${location.search}`, { replace: true, state: null })
+    }, [location, navigate])
+
     function reintentar() {
         setEstado((anterior) => ({ ...anterior, cargando: true, error: '' }))
         setIntento((n) => n + 1)
     }
 
     function abrirNuevo() {
-        setAviso('')
-        setFormulario({ producto: null })
+        navigate('/productos/nuevo')
     }
 
     function abrirEdicion(producto) {
@@ -176,21 +193,29 @@ export default function Productos() {
     }
 
     async function guardar(datos) {
-        const editando = formulario.producto
-        if (editando) {
-            const actualizado = await actualizarProducto(editando.id, datos)
-            setEstado((anterior) => ({
-                ...anterior,
-                productos: anterior.productos.map((p) => (p.id === actualizado.id ? actualizado : p)),
-            }))
-            setAviso('Producto actualizado')
-        } else {
-            const creado = await crearProducto(datos)
-            setEstado((anterior) => ({ ...anterior, productos: [...anterior.productos, creado] }))
-            setAviso('Producto creado')
-        }
-        setFormulario(null)
+        const actualizado = await actualizarProducto(formulario.producto.id, datos)
+        setEstado((anterior) => ({
+            ...anterior,
+            productos: anterior.productos.map((p) => (p.id === actualizado.id ? actualizado : p)),
+        }))
+        setAviso('Producto actualizado')
     }
+
+    function verEnLista() {
+        const { id } = llegada
+        setLlegada(null)
+        setFiltro('todos')
+        setMarketplace('todos')
+        if (parametros.get('q')) setParametros({}, { replace: true })
+        setResalte((anterior) => ({ id, vez: (anterior?.vez ?? 0) + 1 }))
+        requestAnimationFrame(() => {
+            const fila = document.querySelector(`[data-producto="${id}"]`)
+            fila?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
+            fila?.querySelector('button')?.focus({ preventScroll: true })
+        })
+    }
+
+    const claseResalte = (p) => (resalte?.id === p.id ? ` fila-nueva fila-nueva-${resalte.vez % 2}` : '')
 
     function pedirEliminar(producto) {
         setAviso('')
@@ -218,7 +243,7 @@ export default function Productos() {
         ? productos.filter((p) => p.nombre.toLowerCase().includes(busqueda) || p.sku.toLowerCase().includes(busqueda))
         : productos
     const deMarketplace =
-        marketplace === 'todos' ? buscados : buscados.filter((p) => competidores(p).some((c) => c.marketplace === marketplace))
+        marketplace === 'todos' ? buscados : buscados.filter((p) => p.competencia?.marketplaces?.includes(marketplace))
     const elegido = FILTROS.find(([id]) => id === filtro)
     const visibles = deMarketplace.filter(elegido[2]).sort(ORDENES[orden].comparar)
 
@@ -228,8 +253,8 @@ export default function Productos() {
                 <div>
                     <h1 id="productos-titulo">Productos</h1>
                     <p>
-                        Tus productos con su costo, precio y margen objetivo. Cuando les agregues competidores de MercadoLibre o
-                        AliExpress, aquí verás cómo está tu precio frente al de ellos.
+                        Cada producto parte de su proveedor en AliExpress. Aquí ves tu costo, tu margen y cómo está tu precio frente
+                        a la reventa en MercadoLibre, Falabella y Amazon.
                     </p>
                 </div>
                 <button type="button" className="app-boton" onClick={abrirNuevo} disabled={!listo}>
@@ -323,8 +348,8 @@ export default function Productos() {
                     </span>
                     <p className="productos-vacio-titulo">Aún no tienes productos, agrega el primero</p>
                     <p className="mini">
-                        Regístralo con su costo, precio de venta y margen objetivo. Verás tu margen actual al momento, y en rojo si
-                        queda por debajo del objetivo. Después le agregarás los competidores que Trendly vigilará.
+                        Búscalo en AliExpress y elige el proveedor que más te convenga. Trendly calcula tu costo con el envío y la TRM, y
+                        compara tu precio con la reventa en MercadoLibre, Falabella y Amazon.
                     </p>
                     <button type="button" className="app-boton" onClick={abrirNuevo}>
                         <Icono d={ICONO_MAS} />
@@ -349,7 +374,7 @@ export default function Productos() {
                                 <th scope="col" className="r">Costo</th>
                                 <th scope="col" className="r">Tu precio</th>
                                 <th scope="col">Margen actual / objetivo</th>
-                                <th scope="col" className="r">Mínimo de la competencia</th>
+                                <th scope="col" className="r">Mínimo de la reventa</th>
                                 <th scope="col">Tu posición</th>
                                 <th scope="col">Competidores</th>
                                 <th scope="col"><span className="sr-only">Acciones</span></th>
@@ -358,18 +383,28 @@ export default function Productos() {
                         <tbody>
                             {visibles.map((p) => {
                                 const bajo = bajoObjetivo(p)
+                                const minimo = minimoDe(p)
                                 return (
-                                    <tr key={p.id}>
+                                    <tr key={p.id} data-producto={p.id} className={claseResalte(p).trim() || undefined}>
                                         <th scope="row">
-                                            <span className="producto">
+                                            <Link className="producto" to={`/productos/${p.id}`}>
                                                 <Foto producto={p} />
                                                 <span className="producto-texto">
                                                     <strong>{p.nombre}</strong>
                                                     <span className="mini num">SKU {p.sku}</span>
                                                 </span>
-                                            </span>
+                                            </Link>
                                         </th>
-                                        <td className="r num costo">{formatearPesos(p.costo)}</td>
+                                        <td className="r costo">
+                                            <span className="num">{formatearPesos(p.costo)}</span>
+                                            {p.proveedor ? (
+                                                <span className="mini num costo-proveedor">
+                                                    <span className="mk mk-ae">AE</span> {formatearDolares(p.proveedor.precioUsd + p.proveedor.envioUsd)}
+                                                </span>
+                                            ) : (
+                                                <span className="mini">Costo a mano</span>
+                                            )}
+                                        </td>
                                         <td className="r num precio">{formatearPesos(p.precioVenta)}</td>
                                         <td className={`margen${bajo ? ' margen-bajo' : ''}`}>
                                             <span className="margen-linea">
@@ -380,22 +415,32 @@ export default function Productos() {
                                             <span className="mini num margen-objetivo">Objetivo {formatearPorcentaje(p.margenObjetivo)}</span>
                                         </td>
                                         <td className="r">
-                                            <span className="num minimo">—</span>
-                                            <span className="mini">Agrega uno</span>
+                                            {minimo ? (
+                                                <>
+                                                    <span className="num minimo">{formatearPesos(minimo.precio)}</span>
+                                                    <span className="minimo-mk">
+                                                        <span className={`mk ${MARKETPLACE[minimo.marketplace].clase}`}>{MARKETPLACE[minimo.marketplace].nombre}</span>
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span className="num minimo">—</span>
+                                                    <span className="mini">Agrega uno</span>
+                                                </>
+                                            )}
                                         </td>
                                         <td>
-                                            <Posicion />
+                                            <Posicion producto={p} />
                                         </td>
-                                        <td className="mini">Próximamente</td>
+                                        <td className="mini num">{publicacionesDe(p)}</td>
                                         <td className="r acciones">
-                                            <button
-                                                type="button"
+                                            <Link
                                                 className="app-boton app-boton-claro app-boton-chico"
-                                                aria-label={`Editar ${p.nombre}`}
-                                                onClick={() => abrirEdicion(p)}
+                                                aria-label={`Ver detalle de ${p.nombre}`}
+                                                to={`/productos/${p.id}`}
                                             >
-                                                Editar
-                                            </button>
+                                                Ver detalle
+                                            </Link>
                                             <MenuAcciones producto={p} onEditar={abrirEdicion} onEliminar={pedirEliminar} />
                                         </td>
                                     </tr>
@@ -411,27 +456,29 @@ export default function Productos() {
                     {visibles.map((p) => {
                         const bajo = bajoObjetivo(p)
                         return (
-                            <li key={p.id} className="hoja tarjeta-producto">
+                            <li key={p.id} data-producto={p.id} className={`hoja tarjeta-producto${claseResalte(p)}`}>
                                 <div className="tarjeta-producto-foto">
                                     <Foto producto={p} grande />
                                     <span className="tarjeta-producto-pos">
-                                        <Posicion />
+                                        <Posicion producto={p} />
                                     </span>
                                     <span className="tarjeta-producto-menu">
                                         <MenuAcciones producto={p} onEditar={abrirEdicion} onEliminar={pedirEliminar} />
                                     </span>
                                 </div>
                                 <div className="tarjeta-producto-cuerpo">
-                                    <button
-                                        type="button"
-                                        className="tarjeta-producto-nombre"
-                                        aria-label={`Editar ${p.nombre}`}
-                                        onClick={() => abrirEdicion(p)}
-                                    >
+                                    <Link className="tarjeta-producto-nombre" to={`/productos/${p.id}`}>
                                         {p.nombre}
-                                    </button>
-                                    <Paletas texto={precioEnPaletas(p.precioVenta)} className="tarjeta-producto-precio" escalon={18} />
-                                    <span className="mini">Sin competidores todavía · SKU {p.sku}</span>
+                                    </Link>
+                                    <Paletas texto={pesosEnPaletas(p.precioVenta)} className="tarjeta-producto-precio" escalon={18} />
+                                    {minimoDe(p) ? (
+                                        <span className="mini num">
+                                            Mínimo {formatearPesos(minimoDe(p).precio)} en{' '}
+                                            <span className={`mk ${MARKETPLACE[minimoDe(p).marketplace].clase}`}>{MARKETPLACE[minimoDe(p).marketplace].nombre}</span>
+                                        </span>
+                                    ) : (
+                                        <span className="mini">Sin competidores todavía · SKU {p.sku}</span>
+                                    )}
                                     <span className={`margen-linea${bajo ? ' margen-bajo' : ''}`}>
                                         <BarraMargen producto={p} />
                                         <span className="num margen-valor">{formatearPorcentaje(p.margenActual)}</span>
@@ -445,8 +492,8 @@ export default function Productos() {
 
             {listo && productos.length > 0 && (
                 <p className="mini productos-nota">
-                    La posición comparará tu precio con las publicaciones activas de MercadoLibre. Los precios de AliExpress se
-                    convertirán a pesos con la TRM del día y se mostrarán como costo de proveedor.
+                    La posición compara tu precio con la publicación más barata de la reventa. El costo de AliExpress incluye el envío y
+                    se convierte a pesos con la TRM del día.
                 </p>
             )}
 
@@ -454,7 +501,18 @@ export default function Productos() {
                 <FormularioProducto
                     producto={formulario.producto}
                     onGuardar={guardar}
+                    onTerminar={() => setFormulario(null)}
                     onCerrar={() => setFormulario(null)}
+                />
+            )}
+
+            {llegada && (
+                <LlegadaProducto
+                    key={llegada.id}
+                    producto={llegada}
+                    onVerEnLista={verEnLista}
+                    onAgregarOtro={abrirNuevo}
+                    onCerrar={() => setLlegada(null)}
                 />
             )}
 

@@ -7,6 +7,8 @@ import Dashboard from '@features/dashboard/Dashboard'
 import Login from '@features/login/Login'
 import PoliticaDatos from '@features/politica-datos/PoliticaDatos'
 import Productos from '@features/productos/Productos'
+import ProductoDetalle from '@features/producto-detalle/ProductoDetalle'
+import NuevoProducto from '@features/nuevo-producto/NuevoProducto'
 import Registro from '@features/registro/Registro'
 import Landing from '@features/landing/Landing'
 
@@ -31,6 +33,8 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/productos" element={<Productos />} />
+          <Route path="/productos/nuevo" element={<NuevoProducto />} />
+          <Route path="/productos/:id" element={<ProductoDetalle />} />
         </Route>
       </Route>
 

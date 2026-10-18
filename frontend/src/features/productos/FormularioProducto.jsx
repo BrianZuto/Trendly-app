@@ -7,35 +7,38 @@ import Paletas from '@shared/components/Paletas'
 import { validarProducto } from '@shared/utils/validaciones'
 import { calcularMargen, formatearPesos, formatearPorcentaje, precioMinimo } from './formato'
 
-const VACIO = { nombre: '', sku: '', costo: '', precioVenta: '', margenObjetivo: '' }
-
-const aValores = (producto) =>
-    producto
-        ? {
-              nombre: producto.nombre,
-              sku: producto.sku,
-              costo: String(producto.costo),
-              precioVenta: String(producto.precioVenta),
-              margenObjetivo: String(producto.margenObjetivo),
-          }
-        : VACIO
+// Con proveedor, el costo base es su precio en pesos y aquí solo se editan los costos extra
+const aValores = (producto) => ({
+    nombre: producto.nombre,
+    sku: producto.sku,
+    costo: String(producto.proveedor ? producto.costo - (producto.costosExtra ?? 0) : producto.costo),
+    costosExtra: producto.costosExtra ? String(producto.costosExtra) : '',
+    precioVenta: String(producto.precioVenta),
+    margenObjetivo: String(producto.margenObjetivo),
+})
 
 // "56,2%" para las paletas: una cifra decimal basta para leer el margen de un vistazo
 const margenCorto = (valor) => `${valor.toLocaleString('es-CO', { maximumFractionDigits: 1 })}%`
 
-// El mismo formulario sirve para crear (producto = null) y para editar
-export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
+// Edita un producto existente (crear es la pantalla /productos/nuevo, que parte del proveedor).
+// Tras guardar, el botón muestra el check un instante y luego avisa con onTerminar
+const PAUSA_DEL_CHECK = 480
+
+export default function FormularioProducto({ producto, onGuardar, onTerminar, onCerrar }) {
     const [valores, setValores] = useState(() => aValores(producto))
     const [errores, setErrores] = useState({})
     const [errorApi, setErrorApi] = useState('')
     const [enviando, setEnviando] = useState(false)
+    const [hecho, setHecho] = useState(false)
 
-    const margen = calcularMargen(valores.costo, valores.precioVenta)
+    const conProveedor = Boolean(producto.proveedor)
+    const costo = Number(valores.costo) + (Number(valores.costosExtra) || 0)
+    const margen = calcularMargen(costo, valores.precioVenta)
     const hayObjetivo = valores.margenObjetivo !== ''
     const objetivo = Number(valores.margenObjetivo)
     const bajoObjetivo = margen !== null && hayObjetivo && margen < objetivo
-    const minimo = hayObjetivo ? precioMinimo(valores.costo, objetivo) : null
-    const ganancia = margen !== null ? Number(valores.precioVenta) - Number(valores.costo) : null
+    const minimo = hayObjetivo ? precioMinimo(costo, objetivo) : null
+    const ganancia = margen !== null ? Number(valores.precioVenta) - costo : null
 
     function cambiar(evento) {
         const { name, value } = evento.target
@@ -45,7 +48,7 @@ export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
 
     async function enviar(evento) {
         evento.preventDefault()
-        const encontrados = validarProducto(valores)
+        const encontrados = validarProducto(valores, { conProveedor })
         setErrores(encontrados)
         if (Object.keys(encontrados).length > 0) return
 
@@ -55,10 +58,13 @@ export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
             await onGuardar({
                 nombre: valores.nombre.trim(),
                 sku: valores.sku.trim(),
-                costo: Number(valores.costo),
+                ...(conProveedor ? {} : { costo: Number(valores.costo) }),
+                costosExtra: Number(valores.costosExtra) || 0,
                 precioVenta: Number(valores.precioVenta),
                 margenObjetivo: Number(valores.margenObjetivo),
             })
+            setHecho(true)
+            setTimeout(onTerminar, PAUSA_DEL_CHECK)
         } catch (error) {
             setErrorApi(mensajeDeError(error))
             setEnviando(false)
@@ -69,8 +75,8 @@ export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
 
     return (
         <Dialogo
-            titulo={producto ? 'Editar producto' : 'Nuevo producto'}
-            subtitulo={producto ? 'Tus datos de venta' : 'Paso 1 de 2 · tus datos de venta'}
+            titulo="Editar producto"
+            subtitulo={conProveedor ? `Proveedor: ${producto.proveedor.tienda} en AliExpress` : 'Tus datos de venta'}
             className="dialogo-ancho"
             onCerrar={onCerrar}
         >
@@ -81,15 +87,19 @@ export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
                         <p className="form-producto-foto-titulo" aria-hidden="true">
                             Foto
                         </p>
-                        <div className="form-producto-foto">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                <rect x="3" y="4" width="18" height="16" rx="3" />
-                                <circle cx="9" cy="10" r="1.6" />
-                                <path d="m21 16-5-5-9 9" />
-                            </svg>
-                            Llega con la primera captura
-                        </div>
-                        <p className="form-producto-foto-nota">La tomamos de la publicación que vigiles en el paso 2.</p>
+                        {producto.imagen ? (
+                            <img className="form-producto-foto form-producto-foto-img" src={producto.imagen} alt="" />
+                        ) : (
+                            <div className="form-producto-foto">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                    <rect x="3" y="4" width="18" height="16" rx="3" />
+                                    <circle cx="9" cy="10" r="1.6" />
+                                    <path d="m21 16-5-5-9 9" />
+                                </svg>
+                                Sin foto
+                            </div>
+                        )}
+                        <p className="form-producto-foto-nota">{conProveedor ? 'Viene del proveedor. Cámbiala en el detalle.' : 'Llega con la primera captura.'}</p>
                     </div>
                     <div className="form-producto-datos-basicos">
                         <CampoTexto etiqueta="Nombre" name="nombre" value={valores.nombre} onChange={cambiar} error={errores.nombre} />
@@ -101,7 +111,15 @@ export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
                 </div>
 
                 <div className="form-producto-cifras">
-                    <CampoTexto etiqueta="Costo" name="costo" value={valores.costo} error={errores.costo} prefijo="$" {...numero} />
+                    {conProveedor ? (
+                        <div className="campo">
+                            <span className="campo-etiqueta-fija">Costo del proveedor</span>
+                            <span className="campo-fijo num">{formatearPesos(Number(valores.costo))}</span>
+                        </div>
+                    ) : (
+                        <CampoTexto etiqueta="Costo" name="costo" value={valores.costo} error={errores.costo} prefijo="$" {...numero} />
+                    )}
+                    <CampoTexto etiqueta="Costos extra" name="costosExtra" value={valores.costosExtra} error={errores.costosExtra} prefijo="$" {...numero} />
                     <CampoTexto
                         etiqueta="Precio de venta"
                         name="precioVenta"
@@ -149,26 +167,23 @@ export default function FormularioProducto({ producto, onGuardar, onCerrar }) {
                     </div>
                 </dl>
 
-                <div className="form-producto-paso2">
-                    <div className="form-producto-paso2-cabeza">
-                        <strong>Paso 2 · competidores</strong>
-                        <span>Próximamente</span>
-                    </div>
-                    <CampoTexto
-                        etiqueta="URL de MercadoLibre o AliExpress"
-                        name="urlCompetidor"
-                        placeholder="https://articulo.mercadolibre.com.co/MCO-..."
-                        disabled
-                    />
-                    <p className="campo-ayuda">Cuando esté lista esta parte, la primera captura llegará en máximo 6 horas.</p>
-                </div>
-
                 <div className="dialogo-acciones">
                     <button type="button" className="app-boton app-boton-claro" onClick={onCerrar}>
                         Cancelar
                     </button>
-                    <button type="submit" className="app-boton" disabled={enviando}>
-                        {enviando ? 'Guardando…' : producto ? 'Guardar cambios' : 'Crear producto'}
+                    <button type="submit" className={`app-boton boton-guardar${hecho ? ' hecho' : ''}`} disabled={enviando}>
+                        {hecho ? (
+                            <>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                    <path className="boton-guardar-check" d="M5 12.5l4.5 4.5L19 7.5" />
+                                </svg>
+                                Guardado
+                            </>
+                        ) : enviando ? (
+                            'Guardando…'
+                        ) : (
+                            'Guardar cambios'
+                        )}
                     </button>
                 </div>
             </form>

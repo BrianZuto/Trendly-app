@@ -1,11 +1,12 @@
 import { render, screen, waitForElementToBeRemoved, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { AuthProvider } from '@core/auth/AuthProvider'
 import { guardarSesion, guardarToken } from '@core/auth/token'
 import { sembrarProductos } from '@core/mocks/mockAdapter'
 import { iniciarSesion, obtenerPerfil } from '@core/services/auth.service'
+import { crearMonitoreo } from '@core/services/monitoreos.service'
 import Productos from './Productos'
 
 const EMAIL = 'vendedor@trendly.co'
@@ -18,11 +19,14 @@ beforeEach(async () => {
     guardarSesion(token, await obtenerPerfil())
 })
 
-async function renderizar() {
+async function renderizar(entradas = ['/productos']) {
     render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={entradas}>
             <AuthProvider>
-                <Productos />
+                <Routes>
+                    <Route path="/productos" element={<Productos />} />
+                    <Route path="/productos/nuevo" element={<p>Pantalla nuevo producto</p>} />
+                </Routes>
             </AuthProvider>
         </MemoryRouter>,
     )
@@ -53,53 +57,28 @@ describe('productos', () => {
         expect(screen.queryByText(/plan/i)).not.toBeInTheDocument()
     })
 
-    it('crea un producto y aparece en la tabla sin recargar', async () => {
+    it('Nuevo producto lleva a la pantalla que parte del proveedor', async () => {
         const user = userEvent.setup()
         await renderizar()
 
         await user.click(screen.getByRole('button', { name: 'Nuevo producto' }))
-        const dialogo = screen.getByRole('dialog', { name: 'Nuevo producto' })
-        expect(within(dialogo).getByLabelText('Nombre')).toHaveFocus()
-        await llenar(user, dialogo, CAMISETA)
-        expect(within(dialogo).getByText('Margen con este precio: 50%')).toBeInTheDocument()
-        await user.click(within(dialogo).getByRole('button', { name: 'Crear producto' }))
-
-        expect(await screen.findByText('Producto creado')).toBeInTheDocument()
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-        const fila = screen.getByRole('row', { name: /Camiseta básica/ })
-        expect(within(fila).getByText('SKU CAM-001')).toBeInTheDocument()
-        expect(within(fila).getByText(/40\.000/)).toBeInTheDocument()
-        expect(within(fila).getByText('Próximamente')).toBeInTheDocument()
-        expect(within(fila).getByText('Sin datos')).toBeInTheDocument()
+        expect(screen.getByText('Pantalla nuevo producto')).toBeInTheDocument()
     })
 
-    it('valida los campos antes de enviar', async () => {
-        const user = userEvent.setup()
-        await renderizar()
-
-        await user.click(screen.getByRole('button', { name: 'Nuevo producto' }))
-        const dialogo = screen.getByRole('dialog')
-        await llenar(user, dialogo, { costo: 0, margenObjetivo: 150 })
-        await user.click(within(dialogo).getByRole('button', { name: 'Crear producto' }))
-
-        expect(within(dialogo).getByText('El nombre es obligatorio')).toBeInTheDocument()
-        expect(within(dialogo).getByText('El SKU es obligatorio')).toBeInTheDocument()
-        expect(within(dialogo).getByText('El costo debe ser mayor que 0')).toBeInTheDocument()
-        expect(within(dialogo).getByText('El precio de venta debe ser mayor que 0')).toBeInTheDocument()
-        expect(within(dialogo).getByText('El margen objetivo debe estar entre 0 y 100')).toBeInTheDocument()
-    })
-
-    it('muestra el error del servidor cuando el SKU ya existe', async () => {
+    it('el producto recién creado llega con su etiqueta y su fila resaltada', async () => {
         sembrarProductos(EMAIL, [CAMISETA])
         const user = userEvent.setup()
-        await renderizar()
+        const { obtenerProducto } = await import('@core/services/productos.service')
+        const creado = await obtenerProducto(1)
+        await renderizar([{ pathname: '/productos', state: { creado } }])
 
-        await user.click(screen.getByRole('button', { name: 'Nuevo producto' }))
-        const dialogo = screen.getByRole('dialog')
-        await llenar(user, dialogo, { ...CAMISETA, nombre: 'Otra camiseta' })
-        await user.click(within(dialogo).getByRole('button', { name: 'Crear producto' }))
+        const etiqueta = screen.getByText('Producto creado').closest('.llegada')
+        expect(within(etiqueta).getByText('Camiseta básica')).toBeInTheDocument()
+        expect(within(etiqueta).getByRole('img', { name: /40\.000/ })).toBeInTheDocument()
+        expect(screen.getByRole('row', { name: /Camiseta básica/ })).toHaveClass('fila-nueva')
 
-        expect(await within(dialogo).findByText('Ya tienes un producto con ese SKU')).toBeInTheDocument()
+        await user.click(within(etiqueta).getByRole('button', { name: 'Ver en la lista' }))
+        expect(screen.queryByText('Producto creado')).not.toBeInTheDocument()
     })
 
     it('edita un producto con el mismo formulario', async () => {
@@ -107,7 +86,8 @@ describe('productos', () => {
         const user = userEvent.setup()
         await renderizar()
 
-        await user.click(screen.getByRole('button', { name: 'Editar Camiseta básica' }))
+        await user.click(screen.getByRole('button', { name: 'Más acciones para Camiseta básica' }))
+        await user.click(screen.getByRole('button', { name: 'Editar' }))
         const dialogo = screen.getByRole('dialog', { name: 'Editar producto' })
         expect(within(dialogo).getByLabelText('SKU')).toHaveValue('CAM-001')
         await llenar(user, dialogo, { precioVenta: 50000 })
@@ -119,16 +99,23 @@ describe('productos', () => {
         expect(within(fila).getByText('60%')).toBeInTheDocument()
     })
 
-    it('Escape cierra el formulario y devuelve el foco al botón', async () => {
+    it('al editar valida los campos y calcula el precio mínimo', async () => {
+        sembrarProductos(EMAIL, [CAMISETA])
         const user = userEvent.setup()
         await renderizar()
 
-        const boton = screen.getByRole('button', { name: 'Nuevo producto' })
-        await user.click(boton)
-        await user.keyboard('{Escape}')
+        await user.click(screen.getByRole('button', { name: 'Más acciones para Camiseta básica' }))
+        await user.click(screen.getByRole('button', { name: 'Editar' }))
+        const dialogo = screen.getByRole('dialog', { name: 'Editar producto' })
+        await llenar(user, dialogo, { nombre: '', costo: 30000, precioVenta: 35000, margenObjetivo: 25 })
+        expect(within(dialogo).getByText('Margen con este precio: 14,29%, por debajo del objetivo')).toBeInTheDocument()
+        expect(within(dialogo).getByText('Precio mínimo para tu objetivo').nextElementSibling).toHaveTextContent(/40\.000/)
 
+        await user.click(within(dialogo).getByRole('button', { name: 'Guardar cambios' }))
+        expect(within(dialogo).getByText('El nombre es obligatorio')).toBeInTheDocument()
+
+        await user.keyboard('{Escape}')
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-        expect(boton).toHaveFocus()
     })
 
     it('pide confirmación antes de eliminar', async () => {
@@ -174,7 +161,7 @@ describe('productos', () => {
         await user.click(screen.getByRole('button', { name: 'Tarjetas' }))
         expect(screen.queryByRole('table')).not.toBeInTheDocument()
         expect(screen.getByRole('img', { name: /40\.000/ })).toBeInTheDocument()
-        expect(screen.getByRole('button', { name: 'Editar Camiseta básica' })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Camiseta básica' })).toHaveAttribute('href', expect.stringMatching(/^\/productos\/\d+$/))
     })
 
     it('filtra los productos bajo su margen objetivo', async () => {
@@ -190,32 +177,17 @@ describe('productos', () => {
         expect(screen.queryByRole('row', { name: /Camiseta básica/ })).not.toBeInTheDocument()
     })
 
-    it('el formulario calcula el precio mínimo para el margen objetivo', async () => {
-        const user = userEvent.setup()
+    it('con competidores muestra el mínimo, tu posición y cuántas publicaciones vigilas', async () => {
+        sembrarProductos(EMAIL, [CAMISETA])
+        await crearMonitoreo(1, { tipo: 'URL', valor: 'https://articulo.mercadolibre.com.co/MCO-1342210987-camiseta-_JM' })
         await renderizar()
 
-        await user.click(screen.getByRole('button', { name: 'Nuevo producto' }))
-        const dialogo = screen.getByRole('dialog')
-        await llenar(user, dialogo, { costo: 30000, precioVenta: 35000, margenObjetivo: 25 })
-
-        expect(within(dialogo).getByText('Margen con este precio: 14,29%, por debajo del objetivo')).toBeInTheDocument()
-        const minimo = within(dialogo).getByText('Precio mínimo para tu objetivo').nextElementSibling
-        expect(minimo).toHaveTextContent(/40\.000/)
-    })
-
-    it('al llegar al límite del plan muestra el mensaje del servidor', async () => {
-        sembrarProductos(
-            EMAIL,
-            Array.from({ length: 10 }, (_, n) => ({ ...CAMISETA, nombre: `Producto ${n + 1}`, sku: `SKU-${n + 1}` })),
-        )
-        const user = userEvent.setup()
-        await renderizar()
-
-        await user.click(screen.getByRole('button', { name: 'Nuevo producto' }))
-        const dialogo = screen.getByRole('dialog')
-        await llenar(user, dialogo, { ...CAMISETA, sku: 'NUEVO-1' })
-        await user.click(within(dialogo).getByRole('button', { name: 'Crear producto' }))
-
-        expect(await within(dialogo).findByText('Alcanzó el límite de su plan')).toBeInTheDocument()
+        const fila = within(screen.getByRole('row', { name: /Camiseta básica/ }))
+        expect(fila.getByText('MercadoLibre')).toBeInTheDocument()
+        expect(fila.getByText('Costo a mano')).toBeInTheDocument()
+        expect(fila.getByText('1 publicación')).toBeInTheDocument()
+        expect(fila.getByText(/40\.100/)).toBeInTheDocument()
+        expect(fila.getByText('El más barato')).toBeInTheDocument()
+        expect(fila.getByRole('link', { name: 'Ver detalle de Camiseta básica' })).toHaveAttribute('href', '/productos/1')
     })
 })
