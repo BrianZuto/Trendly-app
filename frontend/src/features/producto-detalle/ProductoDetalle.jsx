@@ -14,6 +14,7 @@ import AgregarCompetidor from './AgregarCompetidor'
 import Competidores from './Competidores'
 import EscalaPrecio from './EscalaPrecio'
 import EscenariosPrecio from './EscenariosPrecio'
+import EquivalenciasProducto from './EquivalenciasProducto'
 import Galeria from './Galeria'
 import TarjetaProveedor from './TarjetaProveedor'
 import { cuando, filasDe, MARKETPLACES } from './util'
@@ -311,6 +312,14 @@ export default function ProductoDetalle() {
                     precioActual={producto.precioVenta}
                     publicaciones={reventa}
                     onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
+                />
+            </div>
+
+            <div className="detalle-entra">
+                <EquivalenciasProducto
+                    nombreProducto={producto.nombre}
+                    publicaciones={reventa}
+                    productoId={producto.id}
                 />
             </div>
 
