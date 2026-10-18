@@ -457,6 +457,18 @@ a {
   text-align: center;
 }
 
+.pie a {
+  font-weight: 600;
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pie a:hover {
+  color: #000000;
+  text-decoration-thickness: 2px;
+}
+
 /* ─── Indicador de seguridad de contraseña ─── */
 .indicador {
   margin-top: 0.625rem;

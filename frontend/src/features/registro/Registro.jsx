@@ -134,7 +134,7 @@ export default function Registro() {
             </form>
 
             <p className="pie">
-                ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+                ¿Ya tienes cuenta? <Link to="/login"><strong>Inicia sesión</strong></Link>
             </p>
         </>
     )

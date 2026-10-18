@@ -75,7 +75,7 @@ export default function Login() {
             </form>
 
             <p className="pie">
-                ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
+                ¿No tienes cuenta? <Link to="/registro"><strong>Regístrate</strong></Link>
             </p>
         </>
     )
