@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { mensajeDeError } from '@core/api/errores'
 import { registrar } from '@core/services/auth.service'
 import CampoPassword from '@shared/components/CampoPassword'
@@ -12,7 +12,9 @@ const INICIAL = { nombre: '', email: '', password: '', confirmar: '', aceptaPoli
 
 export default function Registro() {
     const navigate = useNavigate()
-    const [valores, setValores] = useState(INICIAL)
+    const location = useLocation()
+    // Si viene de la landing, el email ya está escrito
+    const [valores, setValores] = useState({ ...INICIAL, email: location.state?.email ?? '' })
     const [errores, setErrores] = useState({})
     const [errorApi, setErrorApi] = useState('')
     const [enviando, setEnviando] = useState(false)
@@ -40,7 +42,7 @@ export default function Registro() {
                 password: valores.password,
                 aceptaPolitica: valores.aceptaPolitica,
             })
-            navigate('/login', { replace: true, state: { registroExitoso: true } })
+            navigate('/login', { replace: true, state: { registroExitoso: true, email: valores.email.trim() } })
         } catch (error) {
             setErrorApi(mensajeDeError(error, { 409: 'Email ya registrado' }))
             setEnviando(false)
@@ -50,6 +52,7 @@ export default function Registro() {
     return (
         <>
             <h1>Crear cuenta</h1>
+            <p className="auth-subtitle">Empieza a monitorear tu competencia hoy</p>
             {errorApi && <Mensaje tipo="error">{errorApi}</Mensaje>}
 
             <form onSubmit={enviar} noValidate>
