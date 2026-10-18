@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════
-   LAYOUT PÚBLICO · Login y registro
-   Tablero de paletas a la izquierda, formulario en papel a la derecha
+   LAYOUT PÚBLICO · Login y registro Apple Pure
+   Tablero de llegadas a la izquierda, formulario puro a la derecha
    ═══════════════════════════════════════════ */
 
 .acceso {
@@ -23,7 +23,7 @@
 .acceso-saludo {
   display: grid;
   gap: 6px;
-  font-size: clamp(30px, 4.6vw, 76px);
+  font-size: clamp(28px, 4vw, 68px);
 }
 
 .acceso-tablero-3d {
@@ -39,61 +39,90 @@
 .acceso-nota {
   margin: 0;
   font-size: var(--paso-chico);
-  color: var(--tiza-suave);
+  color: #86868b;
+  letter-spacing: -0.005em;
 }
 
-/* ─── Formulario sobre papel ─── */
+/* ─── Formulario sobre fondo puro ─── */
 .acceso-form {
   grid-column: 8 / -1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 56px clamp(24px, 4vw, 64px);
+  background: #ffffff;
+  border-radius: var(--radio);
 }
 
 .auth-card {
   width: 100%;
-  max-width: 27rem;
+  max-width: 26rem;
 }
 
 .auth-card h1 {
   margin: 0 0 8px;
-  font-size: var(--paso-titulo);
-  font-stretch: 78%;
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 1.8rem + 1vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #000000;
 }
 
 .auth-subtitle {
-  margin: 0 0 2rem;
-  color: var(--texto-suave);
-  font-size: 1.05rem;
+  margin: 0 0 1.75rem;
+  color: #86868b;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
 }
 
 .auth-card .grupo + .grupo {
-  margin-top: 1.75rem;
+  margin-top: 1.5rem;
 }
 
 .acceso-form :focus-visible {
-  outline-color: var(--pizarra);
+  outline-color: #000000;
 }
 
 @keyframes acceso-llega {
-  from { transform: rotateX(28deg) rotateY(-30deg) translateZ(-120px); }
+  from {
+    transform: rotateX(28deg) rotateY(-30deg) translateZ(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(var(--rx, 6deg)) rotateY(var(--ry, -12deg)) translateZ(0);
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .acceso-tablero-3d { animation: acceso-llega 1200ms var(--ease-suave) both; }
+  .acceso-tablero-3d {
+    animation: acceso-llega 1000ms var(--ease-suave) both;
+  }
 }
 
 @media (max-width: 860px) {
-  .acceso { grid-template-columns: 1fr; min-height: 0; }
+  .acceso {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
   .acceso-tablero,
-  .acceso-form { grid-column: 1; }
-  .acceso-tablero { gap: 0; height: auto; padding: 24px 20px; }
-  .acceso-saludo { font-size: 8.4vw; }
+  .acceso-form {
+    grid-column: 1;
+  }
+  .acceso-tablero {
+    gap: 0;
+    height: auto;
+    padding: 24px 20px;
+  }
+  .acceso-saludo {
+    font-size: 8vw;
+  }
   .acceso-tablero-3d,
-  .acceso-nota { display: none; }
-  .acceso-form { padding: 32px 20px; }
+  .acceso-nota {
+    display: none;
+  }
+  .acceso-form {
+    padding: 36px 20px;
+  }
 }

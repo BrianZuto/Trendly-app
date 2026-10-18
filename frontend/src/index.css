@@ -1,60 +1,71 @@
 /* ═══════════════════════════════════════════
-   TRENDLY · Tablero de plaza
-   Pizarra verde de plaza de mercado, etiquetas de precio amarillas
-   y cifras condensadas. Detalle de decisiones en DESIGN.md.
+   TRENDLY · Sistema de Diseño Apple & Pureza Visual
+   Tipografía San Francisco (SF Pro) con tracking óptico,
+   paleta monocromática pura y cinemática de precisión (Emil Kowalski).
    ═══════════════════════════════════════════ */
 
 :root {
-  /* Pizarra */
-  --pizarra: #12352b;
-  --pizarra-hondo: #0b241d;
-  --pizarra-clara: #1a4637;
-  --pizarra-linea: rgb(243 241 233 / 16%);
-  --tiza: #f3f1e9;
-  --tiza-suave: #b9c7bf;
+  /* ─── Paleta Pura Monocromática (Estilo Apple) ─── */
+  --negro: #000000;
+  --grafito: #121214;
+  --elevado: #1c1c1e;
+  --blanco: #ffffff;
+  --humo: #f5f5f7;
+  --humo-medio: #e5e5ea;
 
-  /* Etiqueta de precio */
+  /* Texto */
+  --texto: #000000;
+  --texto-suave: #86868b;
+  --texto-secundario: #6e6e73;
+  --tiza: #f5f5f7;
+  --tiza-suave: #86868b;
+  --tinta: #000000;
+  --tinta-media: #48484a;
+  --tinta-suave: #86868b;
+
+  /* Fondos y superficies */
+  --papel: #ffffff;
+  --papel-alto: #ffffff;
+  --papel-hondo: #f5f5f7;
+
+  /* Bordes ultra-finos Apple */
+  --borde: rgba(0, 0, 0, 0.09);
+  --borde-suave: rgba(0, 0, 0, 0.05);
+
+  /* Pizarra (compatibilidad monochrome) */
+  --pizarra: #000000;
+  --pizarra-hondo: #000000;
+  --pizarra-clara: #1c1c1e;
+  --pizarra-linea: rgba(255, 255, 255, 0.08);
+
+  /* Etiqueta de llegada (preservada para creación de producto) */
   --etiqueta: #ffd23f;
   --etiqueta-hondo: #e5b700;
-  --tinta: #16130d;
 
-  /* Papel y texto */
-  --papel: #f4f6f1;
-  --blanco: #ffffff;
-  --texto: #17241f;
-  --texto-suave: #4d5c55;
-  --borde: #7f8d86;          /* 3:1 sobre blanco, para campos */
-  --borde-suave: #dce3dc;
+  /* Indicadores de estado puros y contenidos */
+  --baja: #000000;
+  --exito-texto: #1d1d1f;
+  --exito-fondo: #f5f5f7;
+  --exito-borde: rgba(0, 0, 0, 0.12);
+  --peligro-texto: #d70015;
+  --peligro-fondo: #fff2f4;
+  --peligro-borde: rgba(215, 0, 21, 0.2);
+  --aviso-texto: #633b00;
+  --aviso-fondo: #fff9ed;
+  --aviso-borde: rgba(99, 59, 0, 0.15);
+  --info-texto: #1d1d1f;
+  --info-fondo: #f5f5f7;
+  --info-borde: rgba(0, 0, 0, 0.1);
 
-  /* Estados */
-  --baja: #b4430b;           /* el competidor cambió el precio */
-  --exito-texto: #1d6b3a;
-  --exito-fondo: #e3f2e6;
-  --exito-borde: #9fcfac;
-  --peligro-texto: #b42318;
-  --peligro-fondo: #fdecea;
-  --peligro-borde: #f2b8b1;
-  --aviso-texto: #8a4b00;
-  --aviso-fondo: #fff4d6;
-  --aviso-borde: #f1cf73;
-  --info-texto: #12352b;
-  --info-fondo: #e6efe9;
-  --info-borde: #a9c4b5;
-
-  /* Gráficas (SCRUM-43) */
-  --grafica-mi-precio: #12352b;
-  --grafica-comp-1: #b4430b;
-  --grafica-comp-2: #2b6cb0;
-  --grafica-comp-3: #7a5a00;
-  --grafica-promedio: #7f8d86;
-
-  /* Movimiento */
+  /* Curvas de aceleración naturales (Emil Kowalski + Apple) */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1);
 
-  /* Alias usados por el resto de la app */
-  --color-primario: var(--pizarra);
-  --color-primario-oscuro: var(--pizarra-hondo);
+  /* Alias universales */
+  --color-primario: var(--negro);
+  --color-primario-oscuro: #1c1c1e;
   --color-texto: var(--texto);
   --color-suave: var(--texto-suave);
   --color-borde: var(--borde);
@@ -62,12 +73,13 @@
   --color-error: var(--peligro-texto);
   --color-exito: var(--exito-texto);
 
-  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  font-stretch: 100%;
+  /* ─── Tipografía Apple Design (SF Pro / System) ─── */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   color: var(--texto);
-  line-height: 1.55;
-  accent-color: var(--pizarra);
-  caret-color: var(--pizarra);
+  line-height: 1.47;
+  accent-color: var(--negro);
+  caret-color: var(--negro);
 }
 
 * {
@@ -76,18 +88,20 @@
 
 html {
   scrollbar-gutter: stable;
-  scrollbar-color: var(--pizarra-clara) var(--papel);
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 body {
   margin: 0;
-  background: var(--papel);
+  background: var(--blanco);
+  color: var(--texto);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: var(--etiqueta);
-  color: var(--tinta);
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--blanco);
 }
 
 ::placeholder {
@@ -95,76 +109,89 @@ body {
   opacity: 1;
 }
 
+/* ─── Jerarquía Tipográfica con Tracking Óptico Apple ─── */
 h1 {
-  margin: 0 0 0.375rem;
-  font-size: 2rem;
-  font-stretch: 78%;
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
 h2 {
-  margin: 1.5rem 0 0.25rem;
-  font-size: 1.1rem;
-  font-weight: 700;
+  margin: 1.5rem 0 0.35rem;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
+h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+p, li {
+  letter-spacing: -0.005em;
+}
+
 a {
-  color: var(--pizarra);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  transition: color 150ms ease;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 150ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   a:hover {
-    color: var(--pizarra-hondo);
-    text-decoration-thickness: 2px;
+    opacity: 0.75;
   }
 }
 
 :focus-visible {
-  outline: 3px solid var(--etiqueta-hondo);
+  outline: 2px solid var(--negro);
   outline-offset: 2px;
 }
 
-/* Cifras de precio: columnas alineadas */
+/* Cifras de precio tabulares */
 .cifra {
   font-variant-numeric: tabular-nums;
-  font-stretch: 75%;
-  font-weight: 800;
+  font-feature-settings: 'tnum';
+  font-weight: 600;
 }
 
 /* ─── Marca ─── */
 .marca {
-  font-weight: 800;
-  color: var(--pizarra);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--negro);
 }
 
 .marca-grande {
   display: block;
   margin: 0 0 1rem;
   font-size: 1.25rem;
-  font-stretch: 85%;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-/* ─── Etiqueta de precio (pieza central del sistema) ─── */
+/* ─── Etiqueta de precio creada (Preservada) ─── */
 .etiqueta {
-  --agujero: var(--pizarra);
+  --agujero: var(--blanco);
   position: relative;
   display: inline-grid;
   gap: 0.15rem;
   padding: 0.875rem 1.25rem 0.875rem 2.5rem;
   background: var(--etiqueta);
-  color: var(--tinta);
+  color: #1a1d16;
   border-radius: 4px 14px 14px 4px;
-  box-shadow: 0 2px 0 var(--etiqueta-hondo), 0 12px 24px rgb(11 36 29 / 28%);
+  box-shadow: 0 2px 0 var(--etiqueta-hondo), 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Perforación de la etiqueta */
 .etiqueta::before {
   content: '';
   position: absolute;
@@ -175,7 +202,7 @@ a {
   margin-top: -0.375rem;
   border-radius: 50%;
   background: var(--agujero);
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / 35%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .etiqueta-titulo {
@@ -195,7 +222,7 @@ a {
   font-weight: 500;
 }
 
-/* ─── Formularios ─── */
+/* ─── Formularios Limpios Apple ─── */
 .campo {
   display: flex;
   flex-direction: column;
@@ -204,75 +231,81 @@ a {
 }
 
 .campo label {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
   color: var(--texto);
 }
 
 .campo input:not([type='checkbox']) {
   width: 100%;
-  height: 48px;
+  height: 44px;
   padding: 0 0.875rem;
-  border: 1.5px solid var(--borde);
-  border-radius: 6px;
-  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: #fbfbfd;
   color: var(--texto);
   font: inherit;
-  font-size: 1rem;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  font-size: 0.9375rem;
+  letter-spacing: -0.005em;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
 }
 
 .campo input:not([type='checkbox']):focus-visible {
   outline: none;
-  border-color: var(--pizarra);
-  box-shadow: 0 0 0 3px rgb(255 210 63 / 70%);
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
 
 .campo input[aria-invalid='true'] {
   border-color: var(--peligro-texto);
+  background: var(--peligro-fondo);
 }
 
 .campo-error {
   margin: 0;
   color: var(--peligro-texto);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 
 .campo-aviso {
   margin: 0;
   color: var(--aviso-texto);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
 }
 
-/* Checkbox: la etiqueta entera es el objetivo, y el enlace se alinea con su texto */
 .campo-check label {
   display: flex;
   align-items: flex-start;
   gap: 0.625rem;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
   font-weight: 400;
   cursor: pointer;
 }
 
 .campo-check input[type='checkbox'] {
   flex: none;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0.1rem 0 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--negro);
+  border-radius: 4px;
 }
 
 .campo-check a {
   align-self: flex-start;
-  margin-left: 1.875rem;
-  font-size: 0.9rem;
+  margin-left: 1.775rem;
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+  text-decoration: underline;
 }
 
 .campo-check .campo-error {
-  margin-left: 1.875rem;
+  margin-left: 1.775rem;
 }
 
-/* Bloques de campos relacionados (proximidad) */
 .grupo {
   min-width: 0;
   margin: 0 0 0.5rem;
@@ -283,12 +316,12 @@ a {
 .grupo legend {
   margin-bottom: 0.75rem;
   padding: 0;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--texto);
 }
 
-/* Campo de contraseña con ojo */
 .campo-password {
   position: relative;
 }
@@ -303,51 +336,52 @@ a {
   right: 2px;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 8px;
   background: transparent;
   color: var(--texto-suave);
   cursor: pointer;
-  transition: color 150ms ease, background-color 150ms ease;
+  transition: color 140ms ease, background-color 140ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .boton-ojo:hover {
-    color: var(--pizarra);
-    background: var(--info-fondo);
+    color: var(--texto);
+    background: rgba(0, 0, 0, 0.05);
   }
 }
 
 .boton-ojo svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
-/* ─── Botones ─── */
+/* ─── Botones Apple (Feedback táctil + pureza) ─── */
 .boton {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   width: 100%;
-  height: 50px;
+  height: 46px;
   padding: 0 1.25rem;
   border: 0;
-  border-radius: 6px;
-  background: var(--pizarra);
-  color: var(--tiza);
+  border-radius: 980px;
+  background: var(--negro);
+  color: var(--blanco);
   font: inherit;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  transition: background-color 150ms ease, transform 160ms var(--ease-out);
+  transition: background-color 140ms ease, transform 120ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .boton:hover:not(:disabled) {
-    background: var(--pizarra-hondo);
+    background: #1c1c1e;
   }
 }
 
@@ -356,43 +390,45 @@ a {
 }
 
 .boton:disabled {
-  opacity: 0.6;
-  cursor: progress;
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .boton-secundario {
   width: auto;
-  height: 40px;
-  padding: 0 0.875rem;
-  border: 1.5px solid var(--pizarra);
+  height: 38px;
+  padding: 0 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 980px;
   background: transparent;
-  color: var(--pizarra);
-  font-size: 0.9rem;
+  color: var(--texto);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .boton-secundario:hover:not(:disabled) {
-    background: var(--info-fondo);
+    background: rgba(0, 0, 0, 0.04);
   }
 }
 
-/* ─── Mensajes ─── */
+/* ─── Mensajes y avisos ─── */
 .mensaje {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.6rem;
   margin-bottom: 1.25rem;
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
   border: 1px solid;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
   font-weight: 500;
-  line-height: 1.45;
-  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+  line-height: 1.4;
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
 
   @starting-style {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(0.98);
   }
 }
 
@@ -415,20 +451,20 @@ a {
 }
 
 .pie {
-  margin: 1.25rem 0 0;
+  margin: 1.5rem 0 0;
   color: var(--texto-suave);
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   text-align: center;
 }
 
-/* ─── Seguridad de la contraseña (región común) ─── */
+/* ─── Indicador de seguridad de contraseña ─── */
 .indicador {
-  margin-top: 0.5rem;
-  padding: 0.875rem;
+  margin-top: 0.625rem;
+  padding: 0.875rem 1rem;
   border: 1px solid var(--borde-suave);
-  border-radius: 6px;
-  background: var(--papel);
-  font-size: 0.875rem;
+  border-radius: 10px;
+  background: #fbfbfd;
+  font-size: 0.8125rem;
 }
 
 .indicador-barra {
@@ -438,24 +474,24 @@ a {
 }
 
 .segmento {
-  height: 0.375rem;
+  height: 0.25rem;
   border-radius: 999px;
-  background: var(--borde-suave);
+  background: var(--humo-medio);
   transition: background-color 200ms ease;
 }
 
-.segmento.nivel-1 { background: var(--peligro-texto); }
-.segmento.nivel-2 { background: var(--etiqueta-hondo); }
-.segmento.nivel-3 { background: var(--exito-texto); }
+.segmento.nivel-1 { background: #d70015; }
+.segmento.nivel-2 { background: #ff9f0a; }
+.segmento.nivel-3 { background: #34c759; }
 
 .indicador-texto {
   margin: 0.5rem 0;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .requisitos {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.25rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -463,7 +499,7 @@ a {
 }
 
 .requisitos li.cumple {
-  color: var(--exito-texto);
+  color: #34c759;
 }
 
 .requisitos li > span[aria-hidden] {
@@ -473,37 +509,38 @@ a {
 
 .recomendado-titulo {
   margin: 0.75rem 0 0.25rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--texto);
 }
 
 .coincidencia {
   margin: 0.4rem 0 0;
   color: var(--texto-suave);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .coincidencia.coincide {
-  color: var(--exito-texto);
+  color: #34c759;
 }
 
-/* ─── Página de política de datos ─── */
+/* ─── Vista Pública (Política, etc.) ─── */
 .publico {
   display: flex;
   justify-content: center;
   min-height: 100vh;
   padding: 3rem 1.25rem;
-  background: var(--papel);
+  background: #f5f5f7;
 }
 
 .tarjeta {
   align-self: flex-start;
   width: 100%;
   max-width: 38rem;
-  padding: 2rem;
-  border: 1px solid var(--borde-suave);
-  border-radius: 8px;
+  padding: 2.25rem;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
   background: var(--blanco);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }
 
 .tarjeta-ancha {
@@ -512,10 +549,10 @@ a {
 
 .tarjeta p,
 .tarjeta li {
-  max-width: 70ch;
+  max-width: 68ch;
+  color: #333336;
 }
 
-/* Texto solo para lectores de pantalla */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -528,7 +565,7 @@ a {
   border: 0;
 }
 
-/* Movimiento reducido: sin desplazamientos, se conservan color y opacidad */
+/* ─── Movimiento Reducido (Accesibilidad Apple) ─── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -542,7 +579,7 @@ a {
   }
 
   .mensaje {
-    transition: opacity 200ms ease;
+    transition: opacity 150ms ease;
 
     @starting-style {
       transform: none;

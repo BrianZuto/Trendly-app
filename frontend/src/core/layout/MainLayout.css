@@ -1,75 +1,97 @@
 /* ═══════════════════════════════════════════
-   ÁREA AUTENTICADA · Plaza de mercado
-   Pizarra arriba, papel abajo; el verde es tu precio y lo positivo,
-   el tomate el competidor y el rojo lo que está bajo tu margen.
-   Los tokens viven en .app y en el fondo de los diálogos (van en un portal),
-   así la landing y el login conservan los suyos.
+   ÁREA AUTENTICADA · Apple Glass & Pure Minimal
+   Barra translúcida con blur, lienzo puro y tipografía SF Pro
    ═══════════════════════════════════════════ */
 
 :where(.app, .dialogo-fondo) {
-  --pizarra: #0f241b;
-  --pizarra-alta: #163024;
-  --pizarra-honda: #0a1a13;
-  --tiza: #f2eee3;
-  --tiza-suave: #a6b5aa;
+  --negro: #000000;
+  --blanco: #ffffff;
+  --humo: #f5f5f7;
+  --humo-oscuro: #e5e5ea;
+
+  --pizarra: #000000;
+  --pizarra-alta: #1c1c1e;
+  --pizarra-honda: #000000;
+  --tiza: #f5f5f7;
+  --tiza-suave: #86868b;
   --etiqueta: #ffd23f;
 
-  --papel: #f5f0e6;
-  --papel-alto: #fffdf8;
-  --papel-hondo: #f3ede2;
-  --arena: #eadfc8;
-  --borde: #d6ccb7;
-  --borde-campo: #8f8672;
-  --tinta: #1a1d16;
-  --tinta-media: #464b3e;
-  --tinta-suave: #5e6356;
+  --papel: #f5f5f7;
+  --papel-alto: #ffffff;
+  --papel-hondo: #e5e5ea;
+  --borde: rgba(0, 0, 0, 0.08);
+  --borde-campo: rgba(0, 0, 0, 0.12);
+  --tinta: #000000;
+  --tinta-media: #48484a;
+  --tinta-suave: #86868b;
   --texto: var(--tinta);
   --texto-suave: var(--tinta-suave);
 
-  --verde: #0e7c5a;
-  --verde-hondo: #0a6448;
-  --verde-claro: #e2f1ea;
-  --tomate: #d9480f;
-  --ambar: #d97706;
-  --ambar-texto: #9a4a00;
-  --peligro: #b42318;
-  --peligro-fondo: #fcebe8;
-  --peligro-texto: #b42318;
-  --peligro-borde: #efb4ab;
-  --exito-texto: #0a6448;
-  --exito-fondo: #e2f1ea;
-  --exito-borde: #a8d5c1;
+  --verde: #000000;
+  --verde-hondo: #1c1c1e;
+  --verde-claro: #f5f5f7;
+  --tomate: #86868b;
+  --ambar: #86868b;
+  --ambar-texto: #48484a;
+  --peligro: #d70015;
+  --peligro-fondo: #fff2f4;
+  --peligro-texto: #d70015;
+  --peligro-borde: rgba(215, 0, 21, 0.2);
+  --exito-texto: #1d1d1f;
+  --exito-fondo: #f5f5f7;
+  --exito-borde: rgba(0, 0, 0, 0.12);
 
-  /* paletas giratorias */
-  --noche: #07100c;
-  --paleta: #07100c;
-  --paleta-luz: #13201a;
+  --noche: #000000;
+  --paleta: #111113;
+  --paleta-luz: #1c1c20;
 
-  --radio: 12px;
-  --sombra: 0 1px 0 rgb(26 29 22 / 4%), 0 8px 24px -12px rgb(26 29 22 / 18%);
-  --t-press: 140ms;
-  --t-hover: 180ms;
+  --radio: 14px;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.03);
+  --t-press: 120ms;
+  --t-hover: 140ms;
 }
 
-html:has(.app) { background: var(--pizarra, #0f241b); }
+html:has(.app) {
+  background: var(--humo, #f5f5f7);
+}
 
 .app {
   min-height: 100vh;
-  background: var(--papel);
+  background: var(--humo, #f5f5f7);
   color: var(--tinta);
   overflow-x: clip;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
 }
 
-.app :focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
-.app-barra :focus-visible { outline-color: var(--etiqueta); }
-.app ::selection { background: var(--etiqueta); color: var(--tinta); }
+.app :focus-visible {
+  outline: 2px solid var(--negro);
+  outline-offset: 2px;
+}
 
-.cifra { font-variant-numeric: tabular-nums; }
+.app-barra :focus-visible {
+  outline-color: var(--negro);
+}
 
-/* ─── Barra: igual al lienzo, marca + búsqueda + usuario, y las secciones debajo ─── */
+.app ::selection {
+  background: #000000;
+  color: #ffffff;
+}
+
+.cifra {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ─── Barra de Navegación Translúcida Apple ─── */
 .app-barra {
-  background: var(--pizarra);
-  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  color: #000000;
 }
 
 .app-barra-fila,
@@ -85,36 +107,42 @@ html:has(.app) { background: var(--pizarra, #0f241b); }
   flex-wrap: wrap;
   align-items: center;
   gap: 20px;
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .app-barra-marca {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #fff;
+  color: #000000;
   text-decoration: none;
   transition: transform var(--t-press) var(--ease-out);
 }
-.app-barra-marca:active { transform: scale(0.97); }
+
+.app-barra-marca:active {
+  transform: scale(0.97);
+}
 
 .app-barra-logo {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
-  background: var(--etiqueta);
-  color: var(--tinta);
+  background: #000000;
+  color: #ffffff;
 }
-.app-barra-logo .logo-icon { width: 24px; height: 24px; }
+
+.app-barra-logo .logo-icon {
+  width: 22px;
+  height: 22px;
+}
 
 .app-barra-nombre-marca {
-  font-size: 24px;
-  font-stretch: 80%;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .app-barra-buscar {
@@ -123,14 +151,27 @@ html:has(.app) { background: var(--pizarra, #0f241b); }
   align-items: center;
   gap: 10px;
   min-width: 0;
-  height: 46px;
+  height: 40px;
   padding: 0 16px;
-  border-radius: 10px;
-  background: #fff;
-  color: var(--tinta-suave);
+  border-radius: 980px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #86868b;
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
-.app-barra-buscar svg { flex: none; width: 20px; height: 20px; }
-.app-barra-buscar:focus-within { outline: 3px solid var(--etiqueta); outline-offset: 2px; }
+
+.app-barra-buscar svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.app-barra-buscar:focus-within {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.2);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
 
 .app-barra-buscar input {
   flex: 1;
@@ -140,9 +181,12 @@ html:has(.app) { background: var(--pizarra, #0f241b); }
   background: transparent;
   color: var(--tinta);
   font: inherit;
-  font-size: 15px;
+  font-size: 14px;
 }
-.app-barra-buscar input::placeholder { color: var(--tinta-suave); }
+
+.app-barra-buscar input::placeholder {
+  color: #86868b;
+}
 
 .app-barra-usuario {
   display: flex;
@@ -155,60 +199,81 @@ html:has(.app) { background: var(--pizarra, #0f241b); }
   display: grid;
   place-items: center;
   flex: none;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: #22402f;
-  font-size: 14px;
-  font-weight: 700;
+  background: #000000;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .app-barra-quien {
-  font-size: 14px;
-  line-height: 1.2;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
 }
+
 .app-barra-quien span {
   display: block;
-  color: var(--tiza-suave);
-  font-size: 12px;
+  color: #86868b;
+  font-size: 11px;
 }
 
 .app-barra-salir {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-left: -8px;
+  width: 36px;
+  height: 36px;
+  margin-left: -4px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   background: transparent;
-  color: #fff;
+  color: #86868b;
   cursor: pointer;
-  transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+  transition: color var(--t-hover) ease, background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
 }
-.app-barra-salir svg { width: 20px; height: 20px; }
-.app-barra-salir:active { transform: scale(0.95); }
+
+.app-barra-salir svg {
+  width: 18px;
+  height: 18px;
+}
+
+.app-barra-salir:active {
+  transform: scale(0.95);
+}
 
 .app-barra-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
+  gap: 24px;
 }
 
 .app-barra-nav a {
-  padding: 14px 0;
-  border-bottom: 3px solid transparent;
-  color: #b3c2b6;
-  font-size: 15px;
-  font-weight: 600;
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
+  color: #86868b;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
   text-decoration: none;
   transition: color var(--t-hover) ease;
 }
-.app-barra-nav a.active { color: #fff; border-bottom-color: var(--etiqueta); }
+
+.app-barra-nav a.active {
+  color: #000000;
+  font-weight: 600;
+  border-bottom-color: #000000;
+}
 
 @media (hover: hover) and (pointer: fine) {
-  .app-barra-nav a:hover { color: #fff; }
-  .app-barra-salir:hover { background: var(--pizarra-alta); }
+  .app-barra-nav a:hover {
+    color: #000000;
+  }
+  .app-barra-salir:hover {
+    color: #000000;
+    background: rgba(0, 0, 0, 0.05);
+  }
 }
 
 .app-contenido {
@@ -220,52 +285,81 @@ html:has(.app) { background: var(--pizarra, #0f241b); }
 @media (max-width: 760px) {
   .app-barra-fila { gap: 12px; }
   .app-barra-marca { margin-right: auto; }
-  .app-barra-nombre-marca { font-size: 20px; }
+  .app-barra-nombre-marca { font-size: 18px; }
   .app-barra-quien { display: none; }
   .app-barra-buscar { order: 3; flex-basis: 100%; }
   .app-barra-fila, .app-barra-nav { padding-left: 16px; padding-right: 16px; }
-  .app-contenido { padding-top: 24px; padding-left: 16px; padding-right: 16px; }
+  .app-contenido { padding-top: 20px; padding-left: 16px; padding-right: 16px; }
 }
 
-/* ─── Botones de la app ─── */
+/* ─── Botones Apple (Pill / Monocromáticos) ─── */
 .app-boton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 44px;
+  height: 40px;
   padding: 0 18px;
   border: 0;
-  border-radius: 10px;
-  background: var(--verde);
-  color: #fff;
+  border-radius: 980px;
+  background: #000000;
+  color: #ffffff;
   font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   cursor: pointer;
   transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
 }
-.app-boton svg { width: 18px; height: 18px; }
-.app-boton:active:not(:disabled) { transform: scale(0.97); }
-.app-boton:disabled { opacity: 0.55; cursor: not-allowed; }
 
-.app-boton-claro {
-  background: #fff;
-  color: var(--tinta);
-  box-shadow: inset 0 0 0 1.5px var(--borde);
+.app-boton svg {
+  width: 16px;
+  height: 16px;
 }
 
-.app-boton-chico { height: 36px; padding: 0 12px; font-size: 14px; }
+.app-boton:active:not(:disabled) {
+  transform: scale(0.97);
+}
 
-.app-boton-peligro { background: var(--peligro); }
+.app-boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.app-boton-claro {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.app-boton-chico {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.app-boton-peligro {
+  background: #d70015;
+  color: #ffffff;
+}
 
 @media (hover: hover) and (pointer: fine) {
-  .app-boton:hover:not(:disabled) { background: var(--verde-hondo); }
-  .app-boton-claro:hover:not(:disabled) { background: #fff; box-shadow: inset 0 0 0 1.5px var(--tinta); }
-  .app-boton-peligro:hover:not(:disabled) { background: #93190f; }
+  .app-boton:hover:not(:disabled) {
+    background: #1c1c1e;
+  }
+  .app-boton-claro:hover:not(:disabled) {
+    background: #f5f5f7;
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+  .app-boton-peligro:hover:not(:disabled) {
+    background: #b30012;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-boton, .app-barra-salir, .app-barra-marca { transition: none; }
+  .app-boton, .app-barra-salir, .app-barra-marca {
+    transition: none;
+  }
 }

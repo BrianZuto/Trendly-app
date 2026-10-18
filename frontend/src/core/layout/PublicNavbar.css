@@ -1,7 +1,17 @@
-/* La barra también son mosaicos: marca, enlaces y una sola acción */
+/* ═══════════════════════════════════════════
+   NAVBAR PÚBLICA · Apple Translucent Glass
+   Cristal translúcido con blur de precisión y tipografía SF Pro
+   ═══════════════════════════════════════════ */
+
 .pub-barra {
-  padding: var(--gap) max(var(--gap), env(safe-area-inset-right)) 0 max(var(--gap), env(safe-area-inset-left));
-  background: var(--noche);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: var(--gap) max(var(--gap), env(safe-area-inset-right)) var(--gap) max(var(--gap), env(safe-area-inset-left));
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .pub-barra-nav {
@@ -13,7 +23,7 @@
 .pub-barra-enlaces {
   display: flex;
   align-items: center;
-  height: 60px;
+  height: 52px;
   border-radius: var(--radio);
 }
 
@@ -21,15 +31,32 @@
 .pub-barra-marca {
   justify-content: center;
   flex: none;
-  width: 64px;
-  border: 0;
+  width: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   cursor: pointer;
   transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
 }
-.pub-barra-volver { background: var(--mosaico); color: var(--tiza); }
-.pub-barra-volver svg { width: 22px; height: 22px; }
-.pub-barra-marca { background: var(--etiqueta); color: var(--tinta); }
-.pub-barra-marca .logo-icon { width: 28px; height: 28px; }
+
+.pub-barra-volver {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.pub-barra-volver svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pub-barra-marca {
+  background: #ffffff;
+  color: #000000;
+}
+
+.pub-barra-marca .logo-icon {
+  width: 24px;
+  height: 24px;
+}
 
 .pub-barra-enlaces {
   flex: 1;
@@ -37,38 +64,72 @@
   margin: 0;
   padding: 0 24px;
   list-style: none;
-  background: var(--mosaico);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   font-size: var(--paso-chico);
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
-.pub-barra-enlaces a { color: var(--tiza-suave); text-decoration: none; transition: color var(--t-hover) ease; }
+
+.pub-barra-enlaces a {
+  color: #86868b;
+  text-decoration: none;
+  transition: color var(--t-hover) ease;
+}
 
 .pub-barra-entrar,
 .pub-barra-accion {
-  padding: 0 24px;
+  padding: 0 20px;
   font-size: var(--paso-chico);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
+  border-radius: 980px;
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease, opacity var(--t-hover) ease;
 }
-.pub-barra-entrar { background: var(--mosaico); color: var(--tiza); }
-.pub-barra-accion { background: var(--tiza); color: var(--noche); }
+
+.pub-barra-entrar {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pub-barra-accion {
+  background: #ffffff;
+  color: #000000;
+}
 
 .pub-barra-volver:active,
 .pub-barra-marca:active,
 .pub-barra-entrar:active,
-.pub-barra-accion:active { transform: scale(0.97); }
+.pub-barra-accion:active {
+  transform: scale(0.97);
+}
 
 @media (hover: hover) and (pointer: fine) {
-  .pub-barra-enlaces a:hover { color: var(--tiza); }
+  .pub-barra-enlaces a:hover {
+    color: #ffffff;
+  }
   .pub-barra-volver:hover,
-  .pub-barra-entrar:hover { background: var(--mosaico-alto); }
-  .pub-barra-accion:hover { background: #fff; }
+  .pub-barra-entrar:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .pub-barra-accion:hover {
+    background: #e5e5ea;
+  }
 }
 
 @media (max-width: 860px) {
-  .pub-barra-enlaces { display: none; }
+  .pub-barra-enlaces {
+    display: none;
+  }
   .pub-barra-entrar,
-  .pub-barra-accion { flex: 1; justify-content: center; padding: 0 12px; }
-  .pub-barra-nav:has(.pub-barra-volver) .pub-barra-marca { flex: 1; }
+  .pub-barra-accion {
+    flex: 1;
+    justify-content: center;
+    padding: 0 12px;
+  }
+  .pub-barra-nav:has(.pub-barra-volver) .pub-barra-marca {
+    flex: 1;
+  }
 }

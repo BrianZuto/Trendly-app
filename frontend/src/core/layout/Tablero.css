@@ -1,47 +1,59 @@
 /* ═══════════════════════════════════════════
-   TRENDLY · Tablero de llegadas
-   Lo clásico: el tablero de paletas giratorias de estaciones y plazas.
-   Lo moderno: una cuadrícula de mosaicos llenos con un solo acento.
-   Base compartida por la landing, el login y el registro.
+   TRENDLY · Tablero de llegadas & Estética Apple Dark
+   Monolito oscuro con precisión de ingeniería, tipografía SF Pro
+   y animaciones físicas calibradas (Emil Kowalski + Apple).
    ═══════════════════════════════════════════ */
 
 :root {
-  --noche: #0c1411;
-  --mosaico: #15211c;
-  --mosaico-alto: #1d2d26;
-  --paleta: #101614;
-  --paleta-luz: #1a2320;
-  --verde: #2f6b55;
-  --verde-hondo: #24543f;
-  --papel-alto: #fbfcf8;
+  /* ─── Paleta Pura Dark (OLED Black) ─── */
+  --noche: #000000;
+  --mosaico: #0d0d0f;
+  --mosaico-alto: #161619;
+  --paleta: #111113;
+  --paleta-luz: #1c1c20;
+  --verde: #161619;
+  --verde-hondo: #0a0a0c;
+  --papel-alto: #ffffff;
 
   --gap: 8px;
-  --radio: 10px;
+  --radio: 12px;
 
+  /* Escala de texto Apple */
   --paso-chico: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
-  --paso-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  --paso-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --paso-cuerpo: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --paso-lead: clamp(1.2rem, 1.05rem + 0.6vw, 1.5rem);
   --paso-titulo: clamp(2.25rem, 1.3rem + 3.4vw, 4.25rem);
 
+  /* Curvas naturales */
   --ease-suave: cubic-bezier(0.33, 1, 0.68, 1);
-  --t-press: 140ms;
-  --t-hover: 180ms;
-  --t-entrada: 800ms;
+  --t-press: 120ms;
+  --t-hover: 160ms;
+  --t-entrada: 600ms;
 }
 
-/* Las páginas públicas son oscuras hasta el canal de la barra de desplazamiento */
-html:has(.tb-pagina) { background: var(--noche); scrollbar-color: var(--mosaico-alto) var(--noche); }
+html:has(.tb-pagina) {
+  background: var(--noche);
+  scrollbar-color: #222226 var(--noche);
+}
 
 .tb-pagina {
   min-height: 100vh;
   background: var(--noche);
-  color: var(--tiza);
+  color: #f5f5f7;
   overflow-x: clip;
   color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
 }
 
-.tb-pagina ::selection { background: var(--etiqueta); color: var(--tinta); }
-.tb-pagina :focus-visible { outline: 3px solid var(--etiqueta); outline-offset: 3px; }
+.tb-pagina ::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+.tb-pagina :focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
 
 .tb-rejilla {
   display: grid;
@@ -50,78 +62,124 @@ html:has(.tb-pagina) { background: var(--noche); scrollbar-color: var(--mosaico-
   padding: var(--gap) max(var(--gap), env(safe-area-inset-right)) var(--gap) max(var(--gap), env(safe-area-inset-left));
 }
 
-/* Mosaicos: rectángulos llenos, nunca con borde ni sombra */
+/* Mosaicos puros con borde sutil Apple */
 .mosaico {
   min-width: 0;
-  padding: 24px;
+  padding: 28px;
   border-radius: var(--radio);
   background: var(--mosaico);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
-.mosaico-alto { background: var(--mosaico-alto); }
-.mosaico-papel { background: var(--papel); color: var(--texto); }
-.mosaico-etiqueta { background: var(--etiqueta); color: var(--tinta); }
-.mosaico-verde { background: var(--verde); color: var(--tiza); }
 
-/* Botones planos con un solo radio */
+.mosaico-alto {
+  background: var(--mosaico-alto);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.mosaico-papel {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mosaico-etiqueta {
+  background: #ffffff;
+  color: #000000;
+}
+
+.mosaico-verde {
+  background: #1c1c1e;
+  color: #f5f5f7;
+}
+
+/* Botones Apple pill y rect */
 .btn-t {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  min-height: 56px;
+  gap: 14px;
+  min-height: 52px;
   padding: 0 22px;
   border: 0;
-  border-radius: var(--radio);
+  border-radius: 980px;
   font: inherit;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
-  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease, opacity var(--t-hover) ease;
 }
-.btn-t svg { width: 20px; height: 20px; transition: transform var(--t-hover) var(--ease-out); }
-.btn-t:active { transform: scale(0.97); }
-.btn-t-noche { background: var(--noche); color: var(--tiza); }
-.btn-t-etiqueta { background: var(--etiqueta); color: var(--tinta); }
+
+.btn-t svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--t-hover) var(--ease-out);
+}
+
+.btn-t:active {
+  transform: scale(0.97);
+}
+
+.btn-t-noche {
+  background: #1c1c1e;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-t-etiqueta {
+  background: #ffffff;
+  color: #000000;
+}
 
 @media (hover: hover) and (pointer: fine) {
-  .btn-t-noche:hover { background: #000; }
-  .btn-t-etiqueta:hover { background: var(--etiqueta-hondo); }
-  .btn-t:hover svg { transform: translateX(3px); }
+  .btn-t-noche:hover {
+    background: #2c2c2e;
+  }
+  .btn-t-etiqueta:hover {
+    background: #e5e5ea;
+  }
+  .btn-t:hover svg {
+    transform: translateX(3px);
+  }
 }
 
-/* Tablero 3D: el canto son dos planos girados 90°, da grosor sin sombra */
+/* Tablero 3D: Canto en 3D puro sin sombras toscas */
 .tablero-3d {
   --rx: 9deg;
   --ry: -18deg;
   position: relative;
-  padding: 22px 22px 26px;
-  border-radius: 14px;
-  background: #070b09;
+  padding: 24px 24px 28px;
+  border-radius: 16px;
+  background: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(0.6deg);
   transform-style: preserve-3d;
   transition: transform 900ms var(--ease-suave);
 }
+
 .tablero-3d::after {
   content: '';
   position: absolute;
   top: 10px;
   bottom: 10px;
   right: 0;
-  width: 26px;
-  border-radius: 0 14px 14px 0;
-  background: #1f2a25;
+  width: 24px;
+  border-radius: 0 16px 16px 0;
+  background: #18181b;
   transform-origin: 100% 50%;
   transform: rotateY(90deg);
 }
+
 .tablero-3d::before {
   content: '';
   position: absolute;
   left: 10px;
   right: 10px;
   bottom: 0;
-  height: 26px;
-  border-radius: 0 0 14px 14px;
-  background: #18211d;
+  height: 24px;
+  border-radius: 0 0 16px 16px;
+  background: #131316;
   transform-origin: 50% 100%;
   transform: rotateX(-90deg);
 }
@@ -131,34 +189,61 @@ html:has(.tb-pagina) { background: var(--noche); scrollbar-color: var(--mosaico-
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 7px 0;
+  padding: 8px 0;
 }
+
 .tablero-fila-nombre {
   flex: none;
   width: 7.5em;
   font-size: var(--paso-chico);
   font-weight: 500;
-  color: var(--tiza-suave);
+  color: #86868b;
+  letter-spacing: -0.005em;
 }
+
 .tablero-fila-nombre b {
   display: block;
-  font-size: 1rem;
-  font-weight: 650;
-  color: var(--tiza);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
-@keyframes tb-sube { from { opacity: 0; transform: translateY(24px); } }
+@keyframes tb-sube {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
-  .tb-sube { animation: tb-sube var(--t-entrada) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 80ms + 100ms); }
+  .tb-sube {
+    animation: tb-sube var(--t-entrada) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 60ms + 60ms);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tablero-3d { transition: none; }
+  .tablero-3d {
+    transition: none;
+  }
 }
 
 @media (max-width: 860px) {
-  .tablero-fila { flex-direction: column; align-items: flex-start; gap: 6px; padding: 6px 0; }
-  .tablero-fila-nombre { display: flex; gap: 8px; align-items: baseline; width: auto; font-size: 0.8125rem; }
-  .tablero-fila-nombre b { font-size: 0.875rem; }
+  .tablero-fila {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 6px 0;
+  }
+  .tablero-fila-nombre {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    width: auto;
+    font-size: 0.8125rem;
+  }
+  .tablero-fila-nombre b {
+    font-size: 0.875rem;
+  }
 }
