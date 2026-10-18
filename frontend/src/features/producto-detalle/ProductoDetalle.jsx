@@ -13,6 +13,7 @@ import { formatearPesos, formatearPorcentaje, pesosEnPaletas, precioMinimo } fro
 import AgregarCompetidor from './AgregarCompetidor'
 import Competidores from './Competidores'
 import EscalaPrecio from './EscalaPrecio'
+import EscenariosPrecio from './EscenariosPrecio'
 import Galeria from './Galeria'
 import TarjetaProveedor from './TarjetaProveedor'
 import { cuando, filasDe, MARKETPLACES } from './util'
@@ -301,6 +302,16 @@ export default function ProductoDetalle() {
                         <TarjetaProveedor producto={producto} />
                     </div>
                 </div>
+            </div>
+
+            <div className="detalle-entra">
+                <EscenariosPrecio
+                    costo={producto.costo}
+                    margenObjetivo={producto.margenObjetivo}
+                    precioActual={producto.precioVenta}
+                    publicaciones={reventa}
+                    onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
+                />
             </div>
 
             <div className="detalle-entra">
