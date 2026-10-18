@@ -1,14 +1,14 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import client from '@core/api/client'
 import { AuthProvider } from '@core/auth/AuthProvider'
 import App from './App'
 
-function renderizar(ruta) {
+function renderizar(ruta, initialEntries = [ruta]) {
     return render(
-        <MemoryRouter initialEntries={[ruta]}>
+        <MemoryRouter initialEntries={initialEntries}>
             <AuthProvider>
                 <App />
             </AuthProvider>
@@ -33,14 +33,74 @@ describe('rutas protegidas', () => {
         expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
     })
 
-    it('una ruta desconocida lleva al inicio y, sin sesión, a /login', async () => {
+    it('una ruta desconocida lleva a la landing pública', async () => {
         renderizar('/no-existe')
-        expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
     })
 
     it('la política de datos es pública', () => {
         renderizar('/politica-datos')
         expect(screen.getByRole('heading', { name: /política de tratamiento/i })).toBeInTheDocument()
+    })
+})
+
+describe('navegación pública compartida', () => {
+    it.each(['/login', '/registro'])('muestra los mismos enlaces en %s', (ruta) => {
+        renderizar(ruta)
+
+        expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Cómo funciona' })).toHaveAttribute('href', '/#recorrido')
+        expect(screen.queryByRole('link', { name: 'Política de datos' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Iniciar sesión' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Crear cuenta' })).not.toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Regresar a la vista anterior' })).toBeInTheDocument()
+    })
+
+    it('regresa a la vista visitada antes de registro', async () => {
+        const user = userEvent.setup()
+        renderizar('/registro', ['/', '/registro'])
+
+        await user.click(screen.getByRole('button', { name: 'Regresar a la vista anterior' }))
+
+        expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
+    })
+
+    it('usa la landing como destino al abrir login directamente', async () => {
+        const user = userEvent.setup()
+        renderizar('/login')
+
+        await user.click(screen.getByRole('button', { name: 'Regresar a la vista anterior' }))
+
+        expect(await screen.findByRole('heading', { name: /domina el mercado y protege tu margen/i })).toBeInTheDocument()
+    })
+
+    it('vuelve arriba al navegar desde la landing a iniciar sesión', async () => {
+        const user = userEvent.setup()
+        const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+
+        try {
+            renderizar('/')
+            await user.click(screen.getByRole('link', { name: 'Iniciar sesión' }))
+
+            expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+            await waitFor(() => expect(scrollTo).toHaveBeenCalledWith(0, 0))
+        } finally {
+            scrollTo.mockRestore()
+        }
+    })
+})
+
+describe('pantallas de acceso', () => {
+    it.each(['/login', '/registro'])('%s no muestra textos de ejemplo', async (ruta) => {
+        const user = userEvent.setup()
+        renderizar(ruta)
+
+        if (ruta === '/registro') {
+            await user.type(screen.getByLabelText('Contraseña'), 'Clave1234')
+            expect(screen.getByText('Incluir un símbolo especial')).toBeInTheDocument()
+        }
+
+        expect(screen.queryByText(/ejemplo/i)).not.toBeInTheDocument()
     })
 })
 
@@ -122,9 +182,14 @@ describe('registro', () => {
         renderizar('/registro')
         await llenar(user)
 
-        expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.')).toBeInTheDocument()
-        await iniciarSesion(user, 'nuevo@correo.com', 'Clave1234')
-        expect(await screen.findByRole('heading', { name: 'Hola, Ana Pérez' })).toBeInTheDocument()
+        // Con toda la suite corriendo en paralelo, el registro simulado puede tardar más de 1 s
+        expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.', {}, { timeout: 5000 })).toBeInTheDocument()
+        // El email llega precargado y el foco queda en la contraseña
+        expect(screen.getByLabelText('Email')).toHaveValue('nuevo@correo.com')
+        expect(screen.getByLabelText('Contraseña')).toHaveFocus()
+        await user.keyboard('Clave1234')
+        await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
+        expect(await screen.findByRole('heading', { name: 'Hola, Ana Pérez' }, { timeout: 5000 })).toBeInTheDocument()
     })
 
     it('exige aceptar la política y no llama al API sin ella', async () => {
@@ -140,6 +205,11 @@ describe('registro', () => {
         renderizar('/registro')
         await llenar(user, { email: 'vendedor@trendly.co' })
         expect(await screen.findByText('Email ya registrado')).toBeInTheDocument()
+    })
+
+    it('precarga el email que llega desde la landing', () => {
+        renderizar('/registro', [{ pathname: '/registro', state: { email: 'ana@correo.com' } }])
+        expect(screen.getByLabelText('Email')).toHaveValue('ana@correo.com')
     })
 
     it('enlaza a la política de datos', () => {

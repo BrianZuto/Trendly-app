@@ -1,0 +1,47 @@
+/* ═══════════════════════════════════════════
+   DASHBOARD · Apple Pure Minimal Card
+   ═══════════════════════════════════════════ */
+
+.panel-inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: clamp(32px, 5vw, 48px);
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
+  color: #000000;
+}
+
+.panel-inicio-antetitulo {
+  margin: 0;
+  color: #86868b;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.panel-inicio h1 {
+  margin: 0;
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #000000;
+}
+
+.panel-inicio-texto {
+  max-width: 60ch;
+  margin: 0 0 10px;
+  color: #86868b;
+  font-size: 1.05rem;
+  line-height: 1.47;
+  letter-spacing: -0.005em;
+}
+
+.panel-inicio .app-boton {
+  text-decoration: none;
+}

@@ -6,7 +6,7 @@ export const REQUISITOS = [
 
 export const RECOMENDACIONES = [
     { id: 'mayusculas', texto: 'Mayúsculas y minúsculas', cumple: (v) => /\p{Lu}/u.test(v) && /\p{Ll}/u.test(v) },
-    { id: 'simbolo', texto: 'Un símbolo, por ejemplo ! ? # $', cumple: (v) => /[^\p{L}\d\s]/u.test(v) },
+    { id: 'simbolo', texto: 'Incluir un símbolo especial', cumple: (v) => /[^\p{L}\d\s]/u.test(v) },
     { id: 'largo', texto: '12 caracteres o más', cumple: (v) => v.length >= 12 },
 ]
 
