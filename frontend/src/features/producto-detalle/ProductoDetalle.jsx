@@ -15,6 +15,8 @@ import Competidores from './Competidores'
 import EscalaPrecio from './EscalaPrecio'
 import EscenariosPrecio from './EscenariosPrecio'
 import EquivalenciasProducto from './EquivalenciasProducto'
+import AlertasAccionables from './AlertasAccionables.jsx'
+import AsistenteNegocio from './AsistenteNegocio.jsx'
 import Galeria from './Galeria'
 import TarjetaProveedor from './TarjetaProveedor'
 import { cuando, filasDe, MARKETPLACES } from './util'
@@ -320,6 +322,22 @@ export default function ProductoDetalle() {
                     nombreProducto={producto.nombre}
                     publicaciones={reventa}
                     productoId={producto.id}
+                />
+            </div>
+
+            <div className="detalle-entra">
+                <AlertasAccionables
+                    producto={producto}
+                    monitoreos={monitoreos}
+                    onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
+                />
+            </div>
+
+            <div className="detalle-entra">
+                <AsistenteNegocio
+                    producto={producto}
+                    publicaciones={reventa}
+                    onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
                 />
             </div>
 

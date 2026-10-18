@@ -1,0 +1,221 @@
+/* ═══════════════════════════════════════════
+   ASISTENTE DE NEGOCIO · Apple Design
+   Simulador de decisiones comerciales basado en datos reales.
+   ═══════════════════════════════════════════ */
+
+.asistente-panel {
+    background: var(--superficie, #121214);
+    border: 1px solid var(--borde, rgba(255, 255, 255, 0.08));
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asistente-panel:hover {
+    border-color: var(--borde-hover, rgba(255, 255, 255, 0.16));
+}
+
+.asistente-encabezado {
+    margin-bottom: 20px;
+}
+
+.asistente-super-titulo {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--texto-secundario, #86868b);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.asistente-titulo {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--texto, #f5f5f7);
+    margin: 4px 0 0 0;
+    letter-spacing: -0.015em;
+}
+
+.asistente-descripcion {
+    font-size: 13px;
+    color: var(--texto-secundario, #86868b);
+    margin: 4px 0 0 0;
+    line-height: 1.45;
+}
+
+/* Chips de preguntas sugeridas */
+.asistente-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.asistente-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--texto, #e5e5ea);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+.asistente-chip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+
+.asistente-chip.activo {
+    background: #f5f5f7;
+    color: #000;
+    border-color: #f5f5f7;
+    font-weight: 600;
+}
+
+/* Simulador interactivo de margen con slider */
+.asistente-slider-seccion {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.asistente-slider-etiqueta {
+    font-size: 12px;
+    color: var(--texto-secundario, #86868b);
+    font-weight: 500;
+    min-width: 130px;
+}
+
+.asistente-slider-control {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.asistente-slider {
+    flex: 1;
+    height: 4px;
+    accent-color: #f5f5f7;
+    cursor: pointer;
+}
+
+.asistente-slider-valor {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texto, #f5f5f7);
+    min-width: 44px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Caja de respuesta del asistente */
+.asistente-respuesta-caja {
+    background: var(--superficie-elevada, #1c1c1e);
+    border: 1px solid var(--borde, rgba(255, 255, 255, 0.08));
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeInAsistente 0.2s ease;
+}
+
+@keyframes fadeInAsistente {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.asistente-respuesta-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--texto-secundario, #86868b);
+    margin: 0;
+}
+
+.asistente-respuesta-texto {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--texto, #f5f5f7);
+    margin: 0;
+}
+
+/* Métricas destacadas del resultado */
+.asistente-metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.asistente-metrica-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.asistente-metrica-rotulo {
+    font-size: 11px;
+    color: var(--texto-secundario, #86868b);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.asistente-metrica-valor {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--texto, #f5f5f7);
+    font-variant-numeric: tabular-nums;
+}
+
+.asistente-respuesta-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.asistente-boton-aplicar {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #f5f5f7;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.asistente-boton-aplicar:hover {
+    background: #ffffff;
+    transform: scale(1.02);
+}
+
+.asistente-boton-aplicar:active {
+    transform: scale(0.98);
+}
