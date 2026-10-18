@@ -1,21 +1,24 @@
 /* ═══════════════════════════════════════════
-   DASHBOARD · Apple Pure Minimal Card
+   SCRUM-43 · Tablero de precios
+   Monocromático: blanco, negro y grises. El color solo identifica cada línea
    ═══════════════════════════════════════════ */
 
-.panel-inicio {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  padding: clamp(32px, 5vw, 48px);
-  border-radius: 18px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
-  color: #000000;
+.tablero {
+  display: grid;
+  gap: 24px;
+  color: #1d1d1f;
 }
 
-.panel-inicio-antetitulo {
+.tablero .num {
+  font-variant-numeric: tabular-nums;
+}
+
+.tablero-encabezado {
+  display: grid;
+  gap: 6px;
+}
+
+.tablero-saludo {
   margin: 0;
   color: #86868b;
   font-size: 0.75rem;
@@ -24,24 +27,541 @@
   text-transform: uppercase;
 }
 
-.panel-inicio h1 {
+.tablero-encabezado h1 {
   margin: 0;
-  font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem);
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 2.5rem);
   font-weight: 700;
-  line-height: 1.08;
   letter-spacing: -0.025em;
-  color: #000000;
+  line-height: 1.1;
 }
 
-.panel-inicio-texto {
-  max-width: 60ch;
-  margin: 0 0 10px;
+.tablero-subtitulo {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 1.0625rem;
+}
+
+/* ─── Controles ─── */
+.tablero-controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tablero-campo {
+  display: grid;
+  gap: 8px;
+}
+
+.tablero-campo-producto {
+  flex: 0 1 380px;
+  min-width: 0;
+}
+
+.tablero-etiqueta {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1d1d1f;
+}
+
+.tablero-campo select {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: #ffffff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d1d1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px;
+  color: #1d1d1f;
+  font: inherit;
+  font-size: 15px;
+  appearance: none;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+.tablero-campo select:focus-visible {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+
+.tablero-segmentos {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 980px;
+  background: #e8e8ed;
+}
+
+.tablero-segmentos button {
+  min-width: 82px;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 980px;
+  background: transparent;
+  color: #6e6e73;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+.tablero-segmentos button.on {
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.tablero-segmentos button:focus-visible,
+.tablero-leyenda button:focus-visible,
+.tablero-datos summary:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* ─── Tarjetas ─── */
+.tablero-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tablero-tarjeta,
+.tablero-panel {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
+}
+
+.tablero-tarjeta {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 20px;
+}
+
+.tablero-tarjeta h2 {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tablero-valor {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.2rem + 0.9vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Estado del precio: va con signo y texto, nunca solo con color */
+.tablero-valor.es-mas-caro {
+  color: #d70015;
+}
+
+.tablero-valor.es-mas-barato {
+  color: #1f7a3d;
+}
+
+.tablero-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
   color: #86868b;
-  font-size: 1.05rem;
-  line-height: 1.47;
-  letter-spacing: -0.005em;
+  font-size: 13px;
 }
 
-.panel-inicio .app-boton {
-  text-decoration: none;
+.tablero-pie-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Panel de la gráfica ─── */
+.tablero-panel {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  min-width: 0;
+}
+
+.tablero-panel-cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tablero-panel-cabeza h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tablero-interruptor {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #6e6e73;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tablero-interruptor input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tablero-interruptor span {
+  order: 2;
+  position: relative;
+  width: 40px;
+  height: 24px;
+  border-radius: 980px;
+  background: #e5e5ea;
+  transition: background-color 180ms ease-out;
+}
+
+.tablero-interruptor span::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 180ms ease-out;
+}
+
+.tablero-interruptor input:checked + span {
+  background: #000000;
+}
+
+.tablero-interruptor input:checked + span::after {
+  transform: translateX(16px);
+}
+
+.tablero-interruptor input:focus-visible + span {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.tablero-interruptor input:disabled + span {
+  opacity: 0.4;
+}
+
+.tablero-grafica {
+  min-width: 0;
+}
+
+.tablero-etiqueta-tu {
+  fill: #000000;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Tooltip */
+.tablero-detalle {
+  min-width: 200px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  font-size: 13px;
+}
+
+.tablero-detalle-fecha {
+  margin: 0 0 8px;
+  color: #6e6e73;
+  font-size: 12px;
+}
+
+.tablero-detalle ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tablero-detalle li {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  color: #1d1d1f;
+}
+
+.tablero-detalle li .num {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tablero-detalle li.es-propio {
+  font-weight: 600;
+}
+
+.tablero-detalle-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tablero-punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Leyenda: cada línea se puede ocultar */
+.tablero-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tablero-leyenda button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 980px;
+  background: #ffffff;
+  color: #1d1d1f;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: opacity 160ms ease-out, background-color 160ms ease-out;
+}
+
+.tablero-leyenda button[aria-pressed='false'] {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.tablero-muestra {
+  width: 16px;
+  height: 0;
+  border-top: 2px solid var(--color);
+}
+
+.es-propio .tablero-muestra {
+  border-top-style: dashed;
+}
+
+.tablero-leyenda-detalle {
+  color: #86868b;
+}
+
+.tablero-leyenda-mas {
+  align-self: center;
+  color: #86868b;
+  font-size: 13px;
+}
+
+.tablero-lectura {
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: #48484a;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.tablero-datos summary {
+  width: fit-content;
+  color: #6e6e73;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.tablero-tabla-contenedor {
+  max-height: 320px;
+  margin-top: 12px;
+  overflow: auto;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+}
+
+.tablero-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tablero-tabla th,
+.tablero-tabla td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tablero-tabla thead th {
+  position: sticky;
+  top: 0;
+  background: #f5f5f7;
+  color: #6e6e73;
+  font-weight: 500;
+}
+
+.tablero-tabla tbody th {
+  font-weight: 400;
+  color: #6e6e73;
+}
+
+.tablero-tabla .r {
+  text-align: right;
+}
+
+/* Estados */
+.tablero-sin-capturas {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  color: #6e6e73;
+  text-align: center;
+  padding: 24px;
+}
+
+.tablero-sin-capturas svg {
+  width: 32px;
+  height: 32px;
+  color: #86868b;
+}
+
+.tablero-sin-capturas p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.tablero-vacio {
+  justify-items: start;
+}
+
+.tablero-vacio p {
+  margin: 0;
+  max-width: 52ch;
+  color: #6e6e73;
+}
+
+.tablero-vacio .tablero-vacio-titulo {
+  color: #1d1d1f;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.tablero-esqueleto {
+  display: block;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f0f2 0%, #f7f7f9 50%, #f0f0f2 100%);
+  background-size: 200% 100%;
+  animation: tablero-brillo 1.4s ease-in-out infinite;
+}
+
+.tablero-esqueleto-valor {
+  width: 70%;
+  height: 32px;
+}
+
+.tablero-esqueleto-pie {
+  width: 45%;
+  height: 14px;
+}
+
+.tablero-esqueleto-grafica {
+  width: 100%;
+  border-radius: 14px;
+}
+
+@keyframes tablero-brillo {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tablero-segmentos button:not(.on):hover {
+    color: #1d1d1f;
+  }
+  .tablero-leyenda button:hover {
+    background: #f5f5f7;
+  }
+  .tablero-campo select:hover {
+    border-color: rgba(0, 0, 0, 0.24);
+  }
+}
+
+@media (max-width: 960px) {
+  .tablero-tarjetas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .tablero {
+    gap: 20px;
+  }
+  .tablero-controles {
+    display: grid;
+  }
+  .tablero-campo-producto {
+    flex: none;
+  }
+  .tablero-segmentos {
+    display: flex;
+  }
+  .tablero-segmentos button {
+    flex: 1;
+    min-width: 0;
+  }
+  .tablero-tarjetas {
+    gap: 12px;
+  }
+  .tablero-tarjeta {
+    padding: 16px;
+  }
+  .tablero-panel {
+    padding: 16px;
+  }
+  .tablero-panel-cabeza h2 {
+    font-size: 17px;
+  }
+  .tablero-lectura {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tablero-esqueleto {
+    animation: none;
+  }
+  .tablero-interruptor span,
+  .tablero-interruptor span::after,
+  .tablero-segmentos button,
+  .tablero-leyenda button {
+    transition: none;
+  }
 }
