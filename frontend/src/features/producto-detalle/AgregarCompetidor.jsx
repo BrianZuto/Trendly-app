@@ -10,6 +10,9 @@ gsap.registerPlugin(useGSAP)
 
 const PALABRA_VACIA = { valor: '', marketplace: 'MERCADOLIBRE', topN: '5' }
 
+// 409 y 400 llegan con el mensaje del API; el 422 (cupo) se explica sin hablar de planes
+const MENSAJE_CUPO = 'Llegaste al máximo de competidores para este producto. Elimina uno para agregar otro'
+
 const animar = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: no-preference)').matches
 
 // Lo que Trendly "hace" con lo que pegaste, contado en tres pasos mientras se ve el escaneo
@@ -120,7 +123,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
             setEscaneo(creado)
             requestAnimationFrame(() => escanear(creado))
         } catch (fallo) {
-            setErrorApi(mensajeDeError(fallo))
+            setErrorApi(mensajeDeError(fallo, { 422: MENSAJE_CUPO }))
         } finally {
             setEnviando(false)
         }

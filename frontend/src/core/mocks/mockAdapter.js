@@ -198,7 +198,7 @@ function conMonitoreo(config, id, accion) {
 
 function crearMonitoreo(producto, { tipo, valor, marketplace, topN = 5, frecuenciaHoras = 6 }) {
     const delProducto = monitoreos.filter((m) => m.productoId === producto.id)
-    if (delProducto.length >= MAX_MONITOREOS_POR_PRODUCTO) return [422, { message: 'Alcanzó el límite de competidores de su plan' }]
+    if (delProducto.length >= MAX_MONITOREOS_POR_PRODUCTO) return [422, { message: 'Alcanzó el límite de competidores para este producto' }]
     if (frecuenciaHoras !== 6) return [400, { message: 'Solo el plan Pro puede cambiar la frecuencia' }]
     const ahora = new Date().toISOString()
     let nuevo

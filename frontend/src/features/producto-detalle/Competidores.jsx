@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { TRM } from '@features/productos/formato'
+import Monitoreos from './Monitoreos'
 import { cuando, filasDe, MARKETPLACES, pesos, variacion } from './util'
 
 gsap.registerPlugin(useGSAP)
@@ -104,23 +105,6 @@ function Movimiento({ movimiento }) {
         </p>
     )
 }
-
-const IconoPausa = () => (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <rect x="6" y="5" width="4" height="14" rx="1" />
-        <rect x="14" y="5" width="4" height="14" rx="1" />
-    </svg>
-)
-const IconoReanudar = () => (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
-    </svg>
-)
-const IconoBasura = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-        <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" />
-    </svg>
-)
 
 // Cómo llegó la publicación: por su URL o por su puesto en la búsqueda
 function origenDe(m, pub) {
@@ -225,7 +209,7 @@ export default function Competidores({ monitoreos, precioPropio, cambios, llegad
 
     const filaTu = (
         <tr className="fila-tu" key="tu">
-            <td colSpan={5}>
+            <td colSpan={4}>
                 <span className="fila-tu-marca">Tú</span>
                 <strong className="num">{pesos(precioPropio)}</strong>
                 <span>
@@ -301,16 +285,12 @@ export default function Competidores({ monitoreos, precioPropio, cambios, llegad
                                         7 días
                                     </Encabezado>
                                     <th scope="col">Estado</th>
-                                    <th scope="col">
-                                        <span className="sr-only">Acciones</span>
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {mostradas.flatMap(({ clave, monitoreo: m, pub }, i) => {
                                     const mk = MARKETPLACES[m.marketplace]
                                     const pausado = m.estado === 'PAUSADO'
-                                    const quien = pub?.vendedor ?? (m.tipo === 'URL' ? m.idPublicacion : `"${m.valor}"`)
                                     const cambio = cambios[clave]
                                     const fila = (
                                         <tr
@@ -345,23 +325,6 @@ export default function Competidores({ monitoreos, precioPropio, cambios, llegad
                                                     <EstadoFila m={m} pub={pub} />
                                                 </span>
                                             </td>
-                                            <td className="r c-acciones">
-                                                <span className="acciones">
-                                                    <button
-                                                        type="button"
-                                                        className="icono"
-                                                        title={pausado ? 'Reactivar' : 'Pausar'}
-                                                        aria-label={`${pausado ? 'Reactivar' : 'Pausar'} ${quien}`}
-                                                        disabled={ocupado === m.id}
-                                                        onClick={() => onAlternar(m)}
-                                                    >
-                                                        {pausado ? <IconoReanudar /> : <IconoPausa />}
-                                                    </button>
-                                                    <button type="button" className="icono icono-peligro" title="Dejar de vigilar" aria-label={`Eliminar ${quien}`} onClick={() => onEliminar(m, quien)}>
-                                                        <IconoBasura />
-                                                    </button>
-                                                </span>
-                                            </td>
                                         </tr>
                                     )
                                     return ubicarTu && i === posicionTu ? [filaTu, fila] : [fila]
@@ -386,6 +349,8 @@ export default function Competidores({ monitoreos, precioPropio, cambios, llegad
                             {hayAmazon && <p className="mini">Amazon publica en dólares. Se compara en pesos con una TRM de {pesos(TRM)}.</p>}
                         </div>
                     )}
+
+                    <Monitoreos monitoreos={monitoreos} ocupado={ocupado} onAlternar={onAlternar} onEliminar={onEliminar} />
                 </>
             )}
         </section>

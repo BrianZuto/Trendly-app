@@ -6,6 +6,7 @@ import { AuthProvider } from '@core/auth/AuthProvider'
 import { guardarSesion, guardarToken } from '@core/auth/token'
 import { sembrarProductos } from '@core/mocks/mockAdapter'
 import { iniciarSesion, obtenerPerfil } from '@core/services/auth.service'
+import { crearMonitoreo } from '@core/services/monitoreos.service'
 import ProductoDetalle from './ProductoDetalle'
 
 const EMAIL = 'vendedor@trendly.co'
@@ -158,23 +159,71 @@ describe('detalle del producto', () => {
         expect(within(tabla).queryAllByText('Sin stock')).toHaveLength(0)
     })
 
-    it('pausa, reactiva y deja de vigilar una publicación', async () => {
+    it('lista cada monitoreo con su tipo, estado, frecuencia y última captura', async () => {
         const user = userEvent.setup()
         await renderizar()
         await agregarPorUrl(user, URL_ML)
-        const tabla = await screen.findByRole('table', { name: 'Publicaciones que vigilas' })
+        await screen.findByText('MCO-1342210987', { selector: '.publicacion-id' })
+        await user.click(screen.getByRole('tab', { name: 'Por palabra clave' }))
+        await user.type(screen.getByLabelText('Palabra clave'), 'smartwatch amoled')
+        await user.selectOptions(screen.getByLabelText('Primeros'), '3')
+        await user.click(screen.getByRole('button', { name: 'Agregar' }))
+        await screen.findByText('Puesto 1 de 3')
 
-        await user.click(within(tabla).getByRole('button', { name: /^Pausar / }))
-        expect(await within(tabla).findByText('Pausado')).toBeInTheDocument()
-        await user.click(within(tabla).getByRole('button', { name: /^Reactivar / }))
-        expect(await within(tabla).findByRole('button', { name: /^Pausar / })).toBeInTheDocument()
+        const lista = screen.getByRole('list', { name: 'Lo que vigila Trendly' })
+        const items = within(lista).getAllByRole('listitem')
+        // Una búsqueda con 3 resultados es un solo monitoreo
+        expect(items).toHaveLength(2)
+        expect(within(items[0]).getByText('Por URL')).toBeInTheDocument()
+        expect(within(items[0]).getByText('MCO-1342210987')).toBeInTheDocument()
+        expect(within(items[1]).getByText('"smartwatch amoled"')).toBeInTheDocument()
+        expect(within(items[1]).getByText('Palabra clave · primeros 3')).toBeInTheDocument()
+        for (const item of items) {
+            expect(within(item).getByText('Activo')).toBeInTheDocument()
+            expect(within(item).getByText('Cada 6 h')).toBeInTheDocument()
+            expect(within(item).getByText('Última captura')).toBeInTheDocument()
+        }
+    })
+
+    it('pausa, reactiva y deja de vigilar un monitoreo', async () => {
+        const user = userEvent.setup()
+        await renderizar()
+        await user.click(screen.getByRole('tab', { name: 'Por palabra clave' }))
+        await user.type(screen.getByLabelText('Palabra clave'), 'smartwatch amoled')
+        await user.selectOptions(screen.getByLabelText('Primeros'), '3')
+        await user.click(screen.getByRole('button', { name: 'Agregar' }))
+        const tabla = await screen.findByRole('table', { name: 'Publicaciones que vigilas' })
+        await within(tabla).findByText('Puesto 1 de 3')
+        const lista = screen.getByRole('list', { name: 'Lo que vigila Trendly' })
+
+        // Pausar la búsqueda pausa sus 3 resultados
+        await user.click(within(lista).getByRole('button', { name: 'Pausar "smartwatch amoled"' }))
+        expect(await within(lista).findByText('Pausado')).toBeInTheDocument()
+        expect(within(tabla).getAllByText('Pausado')).toHaveLength(3)
+
+        await user.click(within(lista).getByRole('button', { name: 'Reactivar "smartwatch amoled"' }))
+        expect(await within(lista).findByText('Activo')).toBeInTheDocument()
         expect(within(tabla).queryByText('Pausado')).not.toBeInTheDocument()
 
-        await user.click(within(tabla).getByRole('button', { name: /^Eliminar / }))
+        await user.click(within(lista).getByRole('button', { name: 'Eliminar "smartwatch amoled"' }))
         const confirmacion = screen.getByRole('alertdialog', { name: '¿Dejar de vigilar?' })
         await user.click(within(confirmacion).getByRole('button', { name: 'Dejar de vigilar' }))
 
         expect(await screen.findByText(/Todavía no vigilas la reventa/)).toBeInTheDocument()
+    })
+
+    it('explica el cupo de competidores sin hablar de planes', async () => {
+        const user = userEvent.setup()
+        for (let i = 0; i < 10; i++) {
+            await crearMonitoreo(1, { tipo: 'PALABRA_CLAVE', valor: `busqueda ${i}`, marketplace: 'MERCADOLIBRE', topN: 1 })
+        }
+        await renderizar()
+        await screen.findByRole('list', { name: 'Lo que vigila Trendly' })
+
+        await agregarPorUrl(user, URL_ML)
+
+        expect(await screen.findByText(/^Llegaste al máximo de competidores para este producto/)).toBeInTheDocument()
+        expect(screen.queryByText(/plan/i)).not.toBeInTheDocument()
     })
 
     it('un producto que no existe muestra el error y el camino de vuelta', async () => {

@@ -182,13 +182,14 @@ describe('registro', () => {
         renderizar('/registro')
         await llenar(user)
 
-        expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.')).toBeInTheDocument()
+        // Con toda la suite corriendo en paralelo, el registro simulado puede tardar más de 1 s
+        expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.', {}, { timeout: 5000 })).toBeInTheDocument()
         // El email llega precargado y el foco queda en la contraseña
         expect(screen.getByLabelText('Email')).toHaveValue('nuevo@correo.com')
         expect(screen.getByLabelText('Contraseña')).toHaveFocus()
         await user.keyboard('Clave1234')
         await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-        expect(await screen.findByRole('heading', { name: 'Hola, Ana Pérez' })).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: 'Hola, Ana Pérez' }, { timeout: 5000 })).toBeInTheDocument()
     })
 
     it('exige aceptar la política y no llama al API sin ella', async () => {
