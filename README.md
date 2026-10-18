@@ -5,7 +5,7 @@ Plataforma web (con extensión móvil) de análisis de precios y productos para 
 [![CI](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml/badge.svg)](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml)
 <!-- SonarCloud: badge pendiente (Sprint 3) -->
 
-**Aplicación publicada:** https://trendly-app.vercel.app (producción, se actualiza con cada cambio en `main`)
+**Aplicación publicada:** https://trendlyapp.vercel.app (producción, se actualiza con cada cambio en `main`)
 
 ## Problema y solución
 
@@ -153,7 +153,7 @@ El frontend se publica en Vercel desde la carpeta `frontend/`. La configuración
 
 | Rama | Qué se despliega | URL |
 |---|---|---|
-| `main` | Producción | https://trendly-app.vercel.app |
+| `main` | Producción | https://trendlyapp.vercel.app |
 | Cada pull request | Vista previa | Vercel comenta la URL en el PR |
 
 Variables de entorno, en Vercel → Settings → Environment Variables:
