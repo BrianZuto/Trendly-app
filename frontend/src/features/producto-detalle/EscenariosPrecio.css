@@ -1,0 +1,275 @@
+/* ═══════════════════════════════════════════
+   ESCENARIOS DE PRECIO INTELIGENTES · Apple Design
+   3 estrategias comerciales: Conservador, Equilibrado, Mayor Margen
+   ═══════════════════════════════════════════ */
+
+.escenarios {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  padding: 24px 28px 28px;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.escenarios button {
+  font-family: inherit;
+}
+
+.escenarios-cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.escenarios-etiqueta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 980px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.escenarios-etiqueta-badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.escenarios-cabeza h2 {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: #000000;
+}
+
+.escenarios-cabeza p {
+  margin: 4px 0 0;
+  max-width: 64ch;
+}
+
+.escenarios-aviso-exito {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 980px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 500;
+  animation: aviso-desliza 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.escenarios-aviso-exito svg {
+  width: 15px;
+  height: 15px;
+  color: #34c759;
+}
+
+@keyframes aviso-desliza {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.escenarios-grilla {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.escenario-tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 16px;
+  background: #fafafc;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .escenario-tarjeta:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.escenario-tarjeta.es-recomendado {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.03);
+}
+
+.escenario-tarjeta.es-actual {
+  border-color: #000000;
+  background: #ffffff;
+}
+
+.escenario-tarjeta-arriba {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.escenario-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 980px;
+  background: #e5e5ea;
+  color: #1d1d1f;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.escenario-badge.badge-recomendado {
+  background: #000000;
+  color: #ffffff;
+}
+
+.escenario-chip-actual {
+  font-size: 11px;
+  font-weight: 600;
+  color: #000000;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 2px 8px;
+  border-radius: 980px;
+}
+
+.escenario-nombre {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+}
+
+.escenario-precio {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #000000;
+  margin: 6px 0 12px;
+  line-height: 1.1;
+}
+
+.escenario-metricas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 12px;
+}
+
+.escenario-tarjeta.es-recomendado .escenario-metricas,
+.escenario-tarjeta.es-actual .escenario-metricas {
+  background: #f5f5f7;
+}
+
+.escenario-metrica {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.escenario-metrica-rotulo {
+  font-size: 11px;
+  color: #86868b;
+  font-weight: 500;
+}
+
+.escenario-metrica strong {
+  font-size: 13.5px;
+  color: #000000;
+}
+
+.escenario-metrica strong.margen-cumple {
+  color: #000000;
+  font-weight: 600;
+}
+
+.escenario-metrica strong.margen-bajo {
+  color: #d70015;
+}
+
+.escenario-posicion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 10px;
+}
+
+.escenario-posicion svg {
+  width: 14px;
+  height: 14px;
+  color: #86868b;
+  flex: none;
+}
+
+.escenario-explicacion {
+  margin: 0 0 16px;
+  font-size: 12.5px;
+  color: #6e6e73;
+  line-height: 1.45;
+  flex: 1 1 auto;
+}
+
+.escenario-boton {
+  width: 100%;
+  height: 38px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 980px;
+}
+
+.escenario-boton:disabled {
+  opacity: 0.55;
+  cursor: default;
+  background: #e5e5ea;
+  color: #86868b;
+  border: 0;
+}
+
+@media (max-width: 960px) {
+  .escenarios-grilla {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .escenarios {
+    padding: 18px 16px 20px;
+    border-radius: 16px;
+  }
+}

@@ -110,7 +110,7 @@ describe('inicio de sesión', () => {
         renderizar('/login')
         await iniciarSesion(user)
 
-        expect(await screen.findByRole('heading', { name: 'Hola, Vendedor Demo' })).toBeInTheDocument()
+        expect(await screen.findByText('Hola, Vendedor Demo')).toBeInTheDocument()
         expect(localStorage.getItem('trendly.token')).toBeTruthy()
 
         await user.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
@@ -137,11 +137,11 @@ describe('inicio de sesión', () => {
         const user = userEvent.setup()
         const primera = renderizar('/login')
         await iniciarSesion(user)
-        await screen.findByRole('heading', { name: /Hola/ })
+        await screen.findByRole('heading', { name: 'Tablero de precios' })
         primera.unmount()
 
         renderizar('/login')
-        expect(await screen.findByRole('heading', { name: /Hola/ })).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: 'Tablero de precios' })).toBeInTheDocument()
     })
 
     it('el ojo muestra y oculta la contraseña', async () => {
@@ -182,13 +182,14 @@ describe('registro', () => {
         renderizar('/registro')
         await llenar(user)
 
-        expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.')).toBeInTheDocument()
+        // Con toda la suite corriendo en paralelo, el registro simulado puede tardar más de 1 s
+        expect(await screen.findByText('Cuenta creada. Inicia sesión para continuar.', {}, { timeout: 5000 })).toBeInTheDocument()
         // El email llega precargado y el foco queda en la contraseña
         expect(screen.getByLabelText('Email')).toHaveValue('nuevo@correo.com')
         expect(screen.getByLabelText('Contraseña')).toHaveFocus()
         await user.keyboard('Clave1234')
         await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-        expect(await screen.findByRole('heading', { name: 'Hola, Ana Pérez' })).toBeInTheDocument()
+        expect(await screen.findByText('Hola, Ana Pérez', {}, { timeout: 5000 })).toBeInTheDocument()
     })
 
     it('exige aceptar la política y no llama al API sin ella', async () => {
@@ -253,7 +254,7 @@ describe('interceptor de Axios', () => {
         const user = userEvent.setup()
         renderizar('/login')
         await iniciarSesion(user)
-        await screen.findByRole('heading', { name: /Hola/ })
+        await screen.findByRole('heading', { name: 'Tablero de precios' })
 
         const token = localStorage.getItem('trendly.token')
         let enviado

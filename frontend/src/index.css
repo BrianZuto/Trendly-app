@@ -140,6 +140,12 @@ p, li {
   letter-spacing: -0.005em;
 }
 
+.descripcion-seccion {
+  color: var(--texto-suave);
+  font-size: 13px;
+  letter-spacing: -0.005em;
+}
+
 a {
   color: inherit;
   text-decoration: none;

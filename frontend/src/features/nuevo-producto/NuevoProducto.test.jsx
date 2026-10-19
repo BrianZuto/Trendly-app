@@ -6,7 +6,9 @@ import { AuthProvider } from '@core/auth/AuthProvider'
 import { guardarSesion, guardarToken } from '@core/auth/token'
 import { sembrarProductos } from '@core/mocks/mockAdapter'
 import { iniciarSesion, obtenerPerfil } from '@core/services/auth.service'
+import { formatearPesos } from '@features/productos/formato'
 import Productos from '@features/productos/Productos'
+import TendenciasDropshipping from '@features/dashboard/TendenciasDropshipping'
 import NuevoProducto from './NuevoProducto'
 import { recomendar } from './recomendaciones'
 
@@ -18,11 +20,12 @@ beforeEach(async () => {
     guardarSesion(token, await obtenerPerfil())
 })
 
-function renderizar() {
+function renderizar(ruta = '/productos/nuevo') {
     render(
-        <MemoryRouter initialEntries={['/productos/nuevo']}>
+        <MemoryRouter initialEntries={[ruta]}>
             <AuthProvider>
                 <Routes>
+                    <Route path="/" element={<TendenciasDropshipping />} />
                     <Route path="/productos" element={<Productos />} />
                     <Route path="/productos/nuevo" element={<NuevoProducto />} />
                 </Routes>
@@ -47,6 +50,60 @@ async function llenarDatos(user, datos) {
 }
 
 describe('nuevo producto desde el proveedor', () => {
+    it('recupera el proveedor seleccionado y los datos de venta de la tendencia desde la URL', async () => {
+        renderizar('/productos/nuevo?origen=tendencias&id=termo-acero-1l&nombre=Termo+de+acero+1+L&categoria=Hogar&costo=28400&precioVenta=64900&margenObjetivo=30')
+
+        expect(await screen.findByText('Proveedor elegido')).toBeInTheDocument()
+        expect(document.querySelector('.pasos li[aria-current="step"]')).toHaveTextContent('Tus datos de venta')
+        expect(screen.getByRole('button', { name: 'Siguiente' })).toBeInTheDocument()
+        expect(screen.getByLabelText('Nombre')).toHaveValue('Termo de acero 1 L')
+        expect(screen.queryByLabelText('Costo')).not.toBeInTheDocument()
+        expect(screen.getByText(/En pesos \(TRM/)).toBeInTheDocument()
+        expect(screen.getByLabelText('Precio de venta')).toHaveValue(64900)
+    })
+
+    it('agrega una tendencia y abre los datos de venta precargados', async () => {
+        const user = userEvent.setup()
+        renderizar('/')
+
+        await user.click(screen.getAllByRole('link', { name: 'Agregar a monitoreo' })[0])
+
+        expect(await screen.findByText('Proveedor elegido')).toBeInTheDocument()
+        expect(document.querySelector('.pasos li[aria-current="step"]')).toHaveTextContent('Tus datos de venta')
+        expect(screen.getByLabelText('Nombre')).toHaveValue('Termo de acero 1 L')
+        expect(screen.getByLabelText('SKU')).toHaveValue('TERMO-ACERO-1L')
+        expect(screen.queryByLabelText('Costo')).not.toBeInTheDocument()
+        expect(screen.getByText(/En pesos \(TRM/)).toBeInTheDocument()
+        const costoMostrado = document.querySelector('.desglose div:nth-child(3) dd').textContent.replace(/\s/g, '')
+        expect(costoMostrado).toBe(formatearPesos(28400).replace(/\s/g, ''))
+        expect(screen.getByLabelText('Precio de venta')).toHaveValue(64900)
+        expect(screen.getByLabelText('Margen objetivo')).toHaveValue(56)
+        expect(screen.getByText(/Margen con este precio: 56,24%/)).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: 'Siguiente' }))
+        expect(screen.getByRole('heading', { name: '¿Dónde comparar tu precio de reventa?' })).toBeInTheDocument()
+        expect(screen.getByLabelText('Palabra clave')).toHaveValue('Termo de acero 1')
+        await user.click(screen.getByRole('button', { name: 'Crear producto' }))
+
+        expect(await screen.findByText('Producto creado', {}, { timeout: 3000 })).toBeInTheDocument()
+        const fila = await screen.findByRole('row', { name: /Termo de acero 1 L/ })
+        expect(within(fila).getByText(/publicaciones$/)).toBeInTheDocument()
+    })
+
+    it('conserva el costo, precio de venta y margen anunciados para el perfume', async () => {
+        const user = userEvent.setup()
+        renderizar('/')
+
+        await user.click(screen.getAllByRole('link', { name: 'Agregar a monitoreo' })[3])
+
+        expect(await screen.findByText('Proveedor elegido')).toBeInTheDocument()
+        const costoMostrado = document.querySelector('.desglose div:nth-child(3) dd').textContent.replace(/\s/g, '')
+        expect(costoMostrado).toBe(formatearPesos(44000).replace(/\s/g, ''))
+        expect(screen.getByLabelText('Precio de venta')).toHaveValue(89900)
+        expect(screen.getByLabelText('Margen objetivo')).toHaveValue(51)
+        expect(screen.getByText(/Margen con este precio: 51,06%/)).toBeInTheDocument()
+    })
+
     it('valida la búsqueda antes de llamar al API', async () => {
         const user = userEvent.setup()
         renderizar()

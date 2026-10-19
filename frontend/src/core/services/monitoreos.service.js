@@ -25,3 +25,10 @@ export async function cambiarEstadoMonitoreo(id, estado) {
 export async function eliminarMonitoreo(id) {
     await client.delete(`/monitoreos/${id}`)
 }
+
+// GET /monitoreos/:id/historico?desde=&hasta= → 200 [{ fechaCaptura, idPublicacion, vendedor, precio,
+//   moneda, precioCop, disponible, fuente }] ordenado por fecha (SCRUM-42)
+export async function obtenerHistorico(id, { desde, hasta } = {}) {
+    const { data } = await client.get(`/monitoreos/${id}/historico`, { params: { desde, hasta } })
+    return data
+}

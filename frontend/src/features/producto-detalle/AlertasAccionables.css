@@ -1,0 +1,259 @@
+/* ═══════════════════════════════════════════
+   ALERTAS ACCIONABLES · Apple Design
+   Inteligencia comercial: historial convertido en
+   decisiones de negocio con impacto directo en margen.
+   Paleta monocromática Apple, consistente con la página.
+   ═══════════════════════════════════════════ */
+
+.alertas-panel {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 24px 28px 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alertas-panel button {
+    font-family: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .alertas-panel:hover {
+        border-color: rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.alertas-encabezado {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.alertas-titulo-bloque {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.alertas-super-titulo {
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #86868b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.alertas-titulo {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+    font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: #000000;
+    margin: 0;
+}
+
+.alertas-descripcion {
+    margin: 4px 0 0 0;
+    max-width: 64ch;
+}
+
+.alertas-badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 980px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.alertas-badge-critico {
+    color: #d70015;
+    background: #fff2f4;
+    border: 1px solid rgba(215, 0, 21, 0.15);
+}
+
+.alertas-badge-oportunidad {
+    color: #1d1d1f;
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.alertas-badge-estable {
+    color: #1d1d1f;
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Lista de tarjetas de alerta */
+.alertas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.alerta-card {
+    background: #fafafc;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .alerta-card:hover {
+        border-color: rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.alerta-card-critica {
+    border-left: 3px solid #d70015;
+}
+
+.alerta-card-oportunidad {
+    border-left: 3px solid #000000;
+}
+
+.alerta-card-info {
+    border-left: 3px solid #86868b;
+}
+
+.alerta-fila-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.alerta-origen {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.alerta-origen-tag {
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #f5f5f7;
+    color: #86868b;
+    font-weight: 500;
+}
+
+.alerta-cambio-chip {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: -0.01em;
+}
+
+.alerta-cambio-baja {
+    color: #d70015;
+    background: #fff2f4;
+}
+
+.alerta-cambio-sube {
+    color: #1d1d1f;
+    background: #f5f5f7;
+}
+
+.alerta-impacto {
+    font-size: 14px;
+    color: #1d1d1f;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.alerta-accion-caja {
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.alerta-accion-texto {
+    font-size: 13px;
+    color: #6e6e73;
+    line-height: 1.45;
+    flex: 1;
+    min-width: 240px;
+}
+
+.alerta-accion-boton {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 980px;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.alerta-accion-boton:hover {
+    background: #1c1c1e;
+    transform: scale(1.02);
+}
+
+.alerta-accion-boton:active {
+    transform: scale(0.98);
+}
+
+/* Estado vacío / estable */
+.alerta-vacio {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: #f5f5f7;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.alerta-vacio-icono {
+    font-size: 20px;
+    opacity: 0.8;
+    color: #1d1d1f;
+}
+
+.alerta-vacio-texto {
+    font-size: 13.5px;
+    color: #86868b;
+    line-height: 1.45;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+    .alertas-panel {
+        padding: 18px 16px 20px;
+        border-radius: 16px;
+    }
+}

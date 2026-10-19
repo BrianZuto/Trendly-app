@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { mensajeDeError } from '@core/api/errores'
 import { actualizarProducto, elegirImagen, obtenerProducto } from '@core/services/productos.service'
-import { cambiarEstadoMonitoreo, crearMonitoreo, eliminarMonitoreo, listarMonitoreos } from '@core/services/monitoreos.service'
+import { crearMonitoreo, eliminarMonitoreo, listarMonitoreos } from '@core/services/monitoreos.service'
 import Dialogo from '@shared/components/Dialogo'
 import Mensaje from '@shared/components/Mensaje'
 import Paletas from '@shared/components/Paletas'
@@ -13,6 +13,10 @@ import { formatearPesos, formatearPorcentaje, pesosEnPaletas, precioMinimo } fro
 import AgregarCompetidor from './AgregarCompetidor'
 import Competidores from './Competidores'
 import EscalaPrecio from './EscalaPrecio'
+import EscenariosPrecio from './EscenariosPrecio'
+import EquivalenciasProducto from './EquivalenciasProducto'
+import AlertasAccionables from './AlertasAccionables.jsx'
+import AsistenteNegocio from './AsistenteNegocio.jsx'
 import Galeria from './Galeria'
 import TarjetaProveedor from './TarjetaProveedor'
 import { cuando, filasDe, MARKETPLACES } from './util'
@@ -48,7 +52,6 @@ export default function ProductoDetalle() {
     const [cambios, setCambios] = useState({})
     const [llegadas, setLlegadas] = useState(() => new Set())
     const [movimiento, setMovimiento] = useState(null)
-    const [ocupado, setOcupado] = useState(null)
     const [eligiendoFoto, setEligiendoFoto] = useState(false)
     const [errorAccion, setErrorAccion] = useState('')
     const [editando, setEditando] = useState(false)
@@ -135,22 +138,9 @@ export default function ProductoDetalle() {
             // La primera captura pudo darle foto al producto
             obtenerProducto(id)
                 .then((actual) => setEstado((e) => ({ ...e, producto: actual })))
-                .catch(() => {})
+                .catch(() => { })
         }
         return creado
-    }
-
-    async function alternar(m) {
-        setErrorAccion('')
-        setOcupado(m.id)
-        try {
-            const actualizado = await cambiarEstadoMonitoreo(m.id, m.estado === 'PAUSADO' ? 'ACTIVO' : 'PAUSADO')
-            setEstado((e) => ({ ...e, monitoreos: e.monitoreos.map((x) => (x.id === m.id ? actualizado : x)) }))
-        } catch (fallo) {
-            setErrorAccion(mensajeDeError(fallo))
-        } finally {
-            setOcupado(null)
-        }
     }
 
     async function confirmarEliminar() {
@@ -304,16 +294,47 @@ export default function ProductoDetalle() {
             </div>
 
             <div className="detalle-entra">
+                <EscenariosPrecio
+                    costo={producto.costo}
+                    margenObjetivo={producto.margenObjetivo}
+                    precioActual={producto.precioVenta}
+                    publicaciones={reventa}
+                    onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
+                />
+            </div>
+
+            <div className="detalle-entra">
+                <EquivalenciasProducto
+                    nombreProducto={producto.nombre}
+                    publicaciones={reventa}
+                    productoId={producto.id}
+                />
+            </div>
+
+            <div className="detalle-entra">
+                <AlertasAccionables
+                    producto={producto}
+                    monitoreos={monitoreos}
+                    onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
+                />
+            </div>
+
+            <div className="detalle-entra">
+                <AsistenteNegocio
+                    producto={producto}
+                    publicaciones={reventa}
+                    onAplicarPrecio={(nuevoPrecio) => guardar({ ...producto, precioVenta: nuevoPrecio })}
+                />
+            </div>
+
+            <div className="detalle-entra">
                 <Competidores
                     monitoreos={monitoreos}
                     precioPropio={producto.precioVenta}
                     cambios={cambios}
                     llegadas={llegadas}
                     movimiento={movimiento}
-                    ocupado={ocupado}
                     onAgregar={() => agregarRef.current?.enfocar()}
-                    onAlternar={alternar}
-                    onEliminar={(monitoreo, quien) => setPorEliminar({ monitoreo, quien })}
                 />
             </div>
 

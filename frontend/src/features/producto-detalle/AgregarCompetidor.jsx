@@ -10,6 +10,9 @@ gsap.registerPlugin(useGSAP)
 
 const PALABRA_VACIA = { valor: '', marketplace: 'MERCADOLIBRE', topN: '5' }
 
+// 409 y 400 llegan con el mensaje del API; el 422 (cupo) se explica sin hablar de planes
+const MENSAJE_CUPO = 'Llegaste al máximo de competidores para este producto. Elimina uno para agregar otro'
+
 const animar = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: no-preference)').matches
 
 // Lo que Trendly "hace" con lo que pegaste, contado en tres pasos mientras se ve el escaneo
@@ -120,7 +123,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
             setEscaneo(creado)
             requestAnimationFrame(() => escanear(creado))
         } catch (fallo) {
-            setErrorApi(mensajeDeError(fallo))
+            setErrorApi(mensajeDeError(fallo, { 422: MENSAJE_CUPO }))
         } finally {
             setEnviando(false)
         }
@@ -130,7 +133,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
         <section id="agregar" className="hoja agregar" aria-labelledby="agregar-titulo" ref={ref}>
             <div>
                 <h2 id="agregar-titulo">Agregar competidor</h2>
-                <p className="mini">Vigila una publicación de reventa puntual o los primeros resultados de una búsqueda. Trendly lo revisa cada 6 horas.</p>
+                <p className="mini descripcion-seccion">Vigila una publicación de reventa puntual o los primeros resultados de una búsqueda. Trendly lo revisa cada 6 horas.</p>
             </div>
             <div className="pestanas" role="tablist" aria-label="Tipo de monitoreo">
                 <button type="button" role="tab" className={modo === 'url' ? 'on' : ''} aria-selected={modo === 'url'} onClick={() => cambiarModo('url')}>

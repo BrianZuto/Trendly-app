@@ -6,6 +6,7 @@ import { AuthProvider } from '@core/auth/AuthProvider'
 import { guardarSesion, guardarToken } from '@core/auth/token'
 import { sembrarProductos } from '@core/mocks/mockAdapter'
 import { iniciarSesion, obtenerPerfil } from '@core/services/auth.service'
+import { crearMonitoreo } from '@core/services/monitoreos.service'
 import ProductoDetalle from './ProductoDetalle'
 
 const EMAIL = 'vendedor@trendly.co'
@@ -50,6 +51,20 @@ describe('detalle del producto', () => {
         expect(screen.getByText(/Todavía no vigilas la reventa/)).toBeInTheDocument()
         expect(screen.getByRole('link', { name: 'Productos' })).toHaveAttribute('href', '/productos')
     })
+
+    it('anima la confirmación en el botón y luego restaura su etiqueta', async () => {
+        const user = userEvent.setup()
+        await renderizar()
+
+        await user.click(screen.getByRole('button', { name: /^Fijar precio a/ }))
+
+        const textoConfirmacion = await screen.findByText(/^Fijado \$ ?[\d.]+$/)
+        const confirmacion = textoConfirmacion.closest('button')
+        expect(confirmacion).toHaveAttribute('aria-label', expect.stringMatching(/^Precio fijado en/))
+        expect(confirmacion.querySelector('svg')).toBeInTheDocument()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
+        await screen.findByRole('button', { name: /^Fijar precio a/ }, { timeout: 6000 })
+    }, 10000)
 
     it('valida la URL en el navegador antes de llamar al API', async () => {
         const user = userEvent.setup()
@@ -158,23 +173,18 @@ describe('detalle del producto', () => {
         expect(within(tabla).queryAllByText('Sin stock')).toHaveLength(0)
     })
 
-    it('pausa, reactiva y deja de vigilar una publicación', async () => {
+    it('explica el cupo de competidores sin hablar de planes', async () => {
         const user = userEvent.setup()
+        for (let i = 0; i < 10; i++) {
+            await crearMonitoreo(1, { tipo: 'PALABRA_CLAVE', valor: `busqueda ${i}`, marketplace: 'MERCADOLIBRE', topN: 1 })
+        }
         await renderizar()
+        await screen.findByRole('table', { name: 'Publicaciones que vigilas' })
+
         await agregarPorUrl(user, URL_ML)
-        const tabla = await screen.findByRole('table', { name: 'Publicaciones que vigilas' })
 
-        await user.click(within(tabla).getByRole('button', { name: /^Pausar / }))
-        expect(await within(tabla).findByText('Pausado')).toBeInTheDocument()
-        await user.click(within(tabla).getByRole('button', { name: /^Reactivar / }))
-        expect(await within(tabla).findByRole('button', { name: /^Pausar / })).toBeInTheDocument()
-        expect(within(tabla).queryByText('Pausado')).not.toBeInTheDocument()
-
-        await user.click(within(tabla).getByRole('button', { name: /^Eliminar / }))
-        const confirmacion = screen.getByRole('alertdialog', { name: '¿Dejar de vigilar?' })
-        await user.click(within(confirmacion).getByRole('button', { name: 'Dejar de vigilar' }))
-
-        expect(await screen.findByText(/Todavía no vigilas la reventa/)).toBeInTheDocument()
+        expect(await screen.findByText(/^Llegaste al máximo de competidores para este producto/)).toBeInTheDocument()
+        expect(screen.queryByText(/plan/i)).not.toBeInTheDocument()
     })
 
     it('un producto que no existe muestra el error y el camino de vuelta', async () => {
