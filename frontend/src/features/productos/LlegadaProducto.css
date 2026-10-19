@@ -1,0 +1,239 @@
+/* ═══════════════════════════════════════════
+   LLEGADA · la etiqueta de precio del producto nuevo
+   Cae colgada de una cuerda, rebota y se balancea hasta quedarse quieta.
+   Sigue al puntero como una etiqueta de verdad y un toque la vuelve a mecer.
+   ═══════════════════════════════════════════ */
+
+.llegada {
+  position: fixed;
+  top: 0;
+  right: max(24px, env(safe-area-inset-right));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 320px;
+  pointer-events: none;
+}
+
+.llegada-cuerda {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(#5e6356, #8f8672);
+  transform-origin: top center;
+  animation: llegada-cuerda 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.llegada-vaiven {
+  transform-origin: 50% -40px;
+  animation:
+    llegada-cae 520ms cubic-bezier(0.34, 1.4, 0.64, 1) both,
+    llegada-mece 2200ms cubic-bezier(0.37, 0, 0.63, 1) 520ms both;
+  pointer-events: auto;
+}
+
+/* El tirón no vuelve a caer: solo se mece */
+.llegada-vaiven.llegada-tiron { animation: llegada-mece 1800ms cubic-bezier(0.37, 0, 0.63, 1) both; }
+
+.llegada-etiqueta {
+  position: relative;
+  width: 300px;
+  margin-top: -2px;
+  padding: 34px 22px 22px;
+  border-radius: 18px 18px 16px 16px;
+  background: #ffd23f;
+  color: #1a1d16;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 45%) inset,
+    0 -2px 0 rgb(0 0 0 / 8%) inset,
+    0 18px 40px -12px rgb(15 36 27 / 45%),
+    0 4px 10px rgb(15 36 27 / 12%);
+  transform: rotate(var(--inclinacion, 0deg));
+  transform-origin: 50% 0;
+  transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: grab;
+  touch-action: manipulation;
+}
+
+/* Muesca de etiqueta de precio y el ojal por donde pasa la cuerda */
+.llegada-etiqueta::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 22px;
+  border-radius: 12px 12px 0 0;
+  background: inherit;
+  transform: translateX(-50%);
+}
+
+.llegada-ojal {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f5f0e6;
+  box-shadow: inset 0 2px 3px rgb(0 0 0 / 30%);
+  transform: translateX(-50%);
+}
+
+.llegada-cerrar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #1a1d16;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 140ms var(--ease-out);
+}
+.llegada-cerrar svg { width: 16px; height: 16px; }
+.llegada-cerrar:active { transform: scale(0.94); }
+
+.llegada-antetitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.llegada-antetitulo::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0e7c5a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 12px no-repeat;
+  animation: llegada-check 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 640ms both;
+}
+
+.llegada-nombre {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-stretch: 85%;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.llegada-precio { font-size: 30px; }
+/* Paletas oscuras sobre el amarillo, como el tablero de la plaza */
+.llegada-precio .paleta { color: #f2eee3; }
+
+.llegada-margen {
+  display: inline-block;
+  margin: 14px 0 2px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #0e7c5a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.llegada-margen span { font-weight: 500; opacity: 0.85; }
+.llegada-margen.es-bajo { background: #b42318; }
+
+.llegada-sku { margin: 4px 0 0; color: #464b3e; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+
+.llegada-acciones { display: flex; gap: 8px; margin-top: 16px; }
+
+.llegada-boton {
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: #0f241b;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 140ms var(--ease-out);
+}
+.llegada-boton:active { transform: scale(0.97); }
+.llegada-boton-claro { background: rgb(255 255 255 / 55%); color: #1a1d16; box-shadow: inset 0 0 0 1.5px rgb(26 29 22 / 25%); }
+.llegada :focus-visible { outline: 3px solid #0f241b; outline-offset: 2px; }
+
+/* Cuenta regresiva: se pausa mientras la miras o la recorres con el teclado */
+.llegada-tiempo {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 9px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgb(26 29 22 / 35%);
+  transform-origin: left center;
+  animation: llegada-tiempo 7s linear 900ms both;
+}
+.llegada-etiqueta:hover .llegada-tiempo,
+.llegada-etiqueta:focus-within .llegada-tiempo { animation-play-state: paused; }
+
+/* Chispas de papel que saltan cuando la etiqueta toca fondo */
+.llegada-chispas { position: absolute; inset: 0; pointer-events: none; }
+.llegada-chispas i {
+  --angulo: calc(var(--n) * 25.7deg);
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 8px;
+  height: 12px;
+  margin: -6px 0 0 -4px;
+  border-radius: 2px;
+  background: #0e7c5a;
+  opacity: 0;
+  animation: llegada-chispa 760ms cubic-bezier(0.22, 1, 0.36, 1) 480ms both;
+}
+.llegada-chispas i:nth-child(3n) { background: #d9480f; }
+.llegada-chispas i:nth-child(3n + 1) { background: #0f241b; width: 6px; height: 6px; border-radius: 50%; }
+
+@media (hover: hover) and (pointer: fine) {
+  .llegada-cerrar:hover { background: rgb(26 29 22 / 10%); }
+  .llegada-boton:hover { background: #163024; }
+  .llegada-boton-claro:hover { background: rgb(255 255 255 / 80%); }
+}
+
+@keyframes llegada-cuerda { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes llegada-cae { from { transform: translateY(-120%); } to { transform: translateY(0); } }
+@keyframes llegada-mece {
+  0% { rotate: 0deg; }
+  14% { rotate: 7deg; }
+  34% { rotate: -5deg; }
+  54% { rotate: 3deg; }
+  72% { rotate: -1.5deg; }
+  88% { rotate: 0.6deg; }
+  100% { rotate: 0deg; }
+}
+@keyframes llegada-check { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes llegada-tiempo { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes llegada-chispa {
+  0% { opacity: 1; transform: rotate(var(--angulo)) translateY(0) scale(0.6); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--angulo)) translateY(calc(var(--lejos) * -1)) rotate(220deg) scale(1); }
+}
+
+@media (max-width: 760px) {
+  .llegada { left: 0; right: 0; width: auto; }
+  .llegada-etiqueta { width: min(300px, calc(100vw - 32px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .llegada-cuerda, .llegada-vaiven, .llegada-vaiven.llegada-tiron { animation: llegada-aparece 200ms ease both; }
+  .llegada-etiqueta { transition: none; transform: none; }
+  .llegada-chispas { display: none; }
+  .llegada-antetitulo::before { animation: none; }
+}
+@keyframes llegada-aparece { from { opacity: 0; } to { opacity: 1; } }
+.llegada-precio .paleta { border-radius: 4px; background: #07100c; }

@@ -1,0 +1,697 @@
+/* ═══════════════════════════════════════════
+   TABLERO DE PRECIOS · Apple Design & Emil Kowalski Principles
+   Monocromático, tipografía SF Pro con tracking óptico,
+   materiales con micro-elevación, y respuestas táctiles fluidas.
+   ═══════════════════════════════════════════ */
+
+.tablero {
+  display: grid;
+  gap: 28px;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tablero button,
+.tablero select,
+.tablero input {
+  font-family: inherit;
+}
+
+.tablero .num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Encabezado ─── */
+.tablero-encabezado {
+  display: grid;
+  gap: 4px;
+}
+
+.tablero-saludo {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #86868b;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.tablero-encabezado h1 {
+  margin: 0;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.tablero-subtitulo {
+  margin: 4px 0 0;
+  color: #86868b;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 64ch;
+}
+
+/* ─── Controles ─── */
+.tablero-controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tablero-campo {
+  display: grid;
+  gap: 6px;
+}
+
+.tablero-campo-producto {
+  flex: 0 1 380px;
+  min-width: 0;
+}
+
+.tablero-etiqueta {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #86868b;
+}
+
+.tablero-campo select {
+  width: 100%;
+  height: 42px;
+  padding: 0 38px 0 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: #fafafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d1d1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px;
+  color: #1d1d1f;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  appearance: none;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: border-color 160ms ease-out, background-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+.tablero-campo select:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+}
+
+.tablero-campo select:focus-visible {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Segmented Control (Píldoras Apple) */
+.tablero-segmentos {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 980px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tablero-segmentos button {
+  min-width: 82px;
+  height: 34px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 980px;
+  background: transparent;
+  color: #6e6e73;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out, box-shadow 160ms ease-out, transform 100ms ease-out;
+}
+
+.tablero-segmentos button:active {
+  transform: scale(0.97);
+}
+
+.tablero-segmentos button.on {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tablero-segmentos button:focus-visible,
+.tablero-leyenda button:focus-visible,
+.tablero-datos summary:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* ─── Tarjetas Métricas (Apple Cards) ─── */
+.tablero-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tablero-tarjeta,
+.tablero-panel {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.02);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tablero-tarjeta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 22px 24px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tablero-tarjeta:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+  }
+}
+
+.tablero-tarjeta h2 {
+  margin: 0;
+  color: #86868b;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tablero-valor {
+  margin: 0;
+  font-size: clamp(1.6rem, 1.3rem + 0.9vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  min-height: 2.2rem;
+}
+
+.tablero-paleta {
+  font-size: clamp(1.15rem, 0.95rem + 0.5vw, 1.45rem);
+}
+
+/* Estado de tono semántico discreto */
+.tablero-valor.es-mas-caro {
+  color: #d70015;
+}
+
+.tablero-valor.es-mas-barato {
+  color: #000000;
+}
+
+.tablero-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: #86868b;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+.tablero-pie-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Panel Principal de la Gráfica ─── */
+.tablero-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 26px 28px 28px;
+  min-width: 0;
+}
+
+.tablero-evolucion-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 280px);
+  align-items: start;
+  gap: 16px;
+}
+
+.tablero-evolucion-layout > .tablero-panel {
+  min-width: 0;
+}
+
+.tablero-panel-cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tablero-panel-cabeza h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: #000000;
+}
+
+/* Interruptor iOS fluido */
+.tablero-interruptor {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #1d1d1f;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tablero-interruptor input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tablero-interruptor span {
+  order: 2;
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: 980px;
+  background: #e5e5ea;
+  transition: background-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tablero-interruptor span::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tablero-interruptor input:checked + span {
+  background: #000000;
+}
+
+.tablero-interruptor input:checked + span::after {
+  transform: translateX(18px);
+}
+
+.tablero-interruptor input:focus-visible + span {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.tablero-interruptor input:disabled + span {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.tablero-grafica {
+  min-width: 0;
+}
+
+.tablero-etiqueta-tu {
+  fill: #000000;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Tooltip Recharts flotante Apple Glass */
+.tablero-detalle {
+  min-width: 200px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  font-size: 13px;
+}
+
+.tablero-detalle-fecha {
+  margin: 0 0 8px;
+  color: #86868b;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.tablero-detalle ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tablero-detalle li {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  color: #1d1d1f;
+  font-size: 12.5px;
+}
+
+.tablero-detalle li .num {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tablero-detalle li.es-propio {
+  font-weight: 600;
+  color: #000000;
+}
+
+.tablero-detalle-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tablero-punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Leyenda interactiva con botones píldora */
+.tablero-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tablero-leyenda button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 980px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, border-color 160ms ease-out, transform 100ms ease-out, opacity 160ms ease-out;
+}
+
+.tablero-leyenda button:active {
+  transform: scale(0.97);
+}
+
+.tablero-leyenda button[aria-pressed='false'] {
+  opacity: 0.45;
+  text-decoration: line-through;
+  background: transparent;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.tablero-muestra {
+  width: 16px;
+  height: 0;
+  border-top: 2px solid var(--color);
+}
+
+.es-propio .tablero-muestra {
+  border-top-style: dashed;
+}
+
+.tablero-leyenda-detalle {
+  color: #86868b;
+  font-size: 11.5px;
+}
+
+.tablero-leyenda-mas {
+  align-self: center;
+  color: #86868b;
+  font-size: 12.5px;
+}
+
+/* Resumen narrativo / lectura de datos */
+.tablero-lectura {
+  margin: 0;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #fafafc;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+  font-size: 13.5px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+
+/* Detalles y tabla plegable */
+.tablero-datos summary {
+  width: fit-content;
+  color: #86868b;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 150ms ease;
+  padding: 4px 0;
+}
+
+.tablero-datos summary:hover {
+  color: #000000;
+}
+
+.tablero-tabla-contenedor {
+  max-height: 320px;
+  margin-top: 12px;
+  overflow: auto;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.tablero-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tablero-tabla thead th {
+  position: sticky;
+  top: 0;
+  background: #fafafc;
+  color: #86868b;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 10px 14px;
+}
+
+.tablero-tabla td,
+.tablero-tabla tbody th {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.tablero-tabla tbody tr:last-child td,
+.tablero-tabla tbody tr:last-child th {
+  border-bottom: 0;
+}
+
+.tablero-tabla tbody th {
+  font-weight: 500;
+  color: #1d1d1f;
+}
+
+.tablero-tabla .r {
+  text-align: right;
+}
+
+/* Estados Vacíos */
+.tablero-sin-capturas {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  color: #86868b;
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.tablero-sin-capturas svg {
+  width: 32px;
+  height: 32px;
+  color: #86868b;
+}
+
+.tablero-sin-capturas p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.tablero-vacio {
+  justify-items: start;
+  padding: 32px;
+}
+
+.tablero-vacio p {
+  margin: 0;
+  max-width: 52ch;
+  color: #86868b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.tablero-vacio .tablero-vacio-titulo {
+  color: #000000;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
+}
+
+/* Skeleton Loading */
+.tablero-esqueleto {
+  display: block;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f0f0f2 0%, #f7f7f9 50%, #f0f0f2 100%);
+  background-size: 200% 100%;
+  animation: tablero-brillo 1.4s ease-in-out infinite;
+}
+
+.tablero-esqueleto-valor {
+  width: 70%;
+  height: 32px;
+}
+
+.tablero-esqueleto-pie {
+  width: 45%;
+  height: 14px;
+}
+
+.tablero-esqueleto-grafica {
+  width: 100%;
+  border-radius: 16px;
+}
+
+@keyframes tablero-brillo {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tablero-segmentos button:not(.on):hover {
+    color: #000000;
+  }
+  .tablero-leyenda button:hover {
+    background: #e5e5ea;
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+  .tablero-campo select:hover {
+    border-color: rgba(0, 0, 0, 0.24);
+  }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 960px) {
+  .tablero-tarjetas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tablero-evolucion-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .tablero {
+    gap: 20px;
+  }
+  .tablero-controles {
+    display: grid;
+    gap: 12px;
+  }
+  .tablero-campo-producto {
+    flex: none;
+  }
+  .tablero-segmentos {
+    display: flex;
+  }
+  .tablero-segmentos button {
+    flex: 1;
+    min-width: 0;
+  }
+  .tablero-tarjetas {
+    gap: 12px;
+  }
+  .tablero-tarjeta {
+    padding: 18px 20px;
+    border-radius: 16px;
+  }
+  .tablero-panel {
+    padding: 20px;
+    border-radius: 16px;
+  }
+  .tablero-panel-cabeza h2 {
+    font-size: 17px;
+  }
+  .tablero-lectura {
+    font-size: 13px;
+  }
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .tablero-esqueleto {
+    animation: none;
+  }
+  .tablero-interruptor span,
+  .tablero-interruptor span::after,
+  .tablero-segmentos button,
+  .tablero-leyenda button,
+  .tablero-tarjeta {
+    transition: none !important;
+    transform: none !important;
+  }
+}

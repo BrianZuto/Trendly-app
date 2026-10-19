@@ -1,0 +1,405 @@
+/* ═══════════════════════════════════════════
+   EQUIVALENCIAS · Validación de Productos · Apple Design
+   Motor que verifica que las publicaciones vigiladas
+   sean realmente el mismo producto.
+   ═══════════════════════════════════════════ */
+
+.equivalencias {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  padding: 24px 28px 28px;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.equivalencias button {
+  font-family: inherit;
+}
+
+.equivalencias-cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.equivalencias-etiqueta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 980px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.equivalencias-etiqueta-badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.equivalencias-cabeza h2 {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: #000000;
+}
+
+.equivalencias-cabeza p {
+  margin: 4px 0 0;
+  max-width: 64ch;
+}
+
+/* ─── Resumen (barrita de confianza) ─── */
+.equivalencias-resumen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.equivalencias-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.equivalencias-stat-rotulo {
+  font-size: 11px;
+  font-weight: 500;
+  color: #86868b;
+  letter-spacing: 0.02em;
+}
+
+.equivalencias-stat-valor {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #000000;
+  letter-spacing: -0.02em;
+}
+
+.equivalencias-stat-valor.confianza-alta {
+  color: #000000;
+}
+
+.equivalencias-stat-valor.confianza-media {
+  color: #86868b;
+}
+
+.equivalencias-stat-valor.confianza-baja {
+  color: #d70015;
+}
+
+.equivalencias-barra-wrap {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.equivalencias-barra-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 500;
+  color: #86868b;
+}
+
+.equivalencias-barra {
+  height: 6px;
+  border-radius: 980px;
+  background: #e5e5ea;
+  overflow: hidden;
+}
+
+.equivalencias-barra-relleno {
+  height: 100%;
+  border-radius: 980px;
+  background: #000000;
+  transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.equivalencias-barra-relleno.confianza-alta {
+  background: #000000;
+}
+
+.equivalencias-barra-relleno.confianza-media {
+  background: #86868b;
+}
+
+.equivalencias-barra-relleno.confianza-baja {
+  background: #d70015;
+}
+
+/* ─── Lista de publicaciones ─── */
+.equivalencias-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.equivalencias-seccion-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #86868b;
+}
+
+.equivalencias-seccion-titulo::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.equivalencias-fila {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: background 140ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .equivalencias-fila:hover {
+    background: #f5f5f7;
+  }
+}
+
+.equivalencias-fila-foto {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex: none;
+  background: #f5f5f7;
+}
+
+.equivalencias-fila-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.equivalencias-fila-vendedor {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.equivalencias-fila-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: 12px;
+  color: #86868b;
+  margin-top: 2px;
+}
+
+.equivalencias-puntaje {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 980px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  flex: none;
+}
+
+.equivalencias-puntaje.alto {
+  background: #f5f5f7;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.equivalencias-puntaje.medio {
+  background: #f5f5f7;
+  color: #86868b;
+}
+
+.equivalencias-puntaje.bajo {
+  background: #fff2f4;
+  color: #d70015;
+}
+
+/* ─── Badge sospechoso ─── */
+.equivalencias-sospechoso {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 980px;
+  background: #fff8e1;
+  color: #b25000;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  flex: none;
+  animation: sospechoso-aparece 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sospechoso-aparece {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Botón de exclusión ─── */
+.equivalencias-acciones {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+
+.equivalencias-btn-excluir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 980px;
+  background: #ffffff;
+  color: #86868b;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+  white-space: nowrap;
+}
+
+.equivalencias-btn-excluir svg {
+  width: 12px;
+  height: 12px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .equivalencias-btn-excluir:hover {
+    background: #fff2f4;
+    border-color: #d70015;
+    color: #d70015;
+  }
+}
+
+.equivalencias-btn-restaurar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 980px;
+  background: #ffffff;
+  color: #86868b;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.equivalencias-btn-restaurar svg {
+  width: 12px;
+  height: 12px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .equivalencias-btn-restaurar:hover {
+    background: #f5f5f7;
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #000000;
+  }
+}
+
+/* ─── Excluidas ─── */
+.equivalencias-excluidas {
+  margin-top: 4px;
+}
+
+.equivalencias-excluida {
+  opacity: 0.55;
+}
+
+.equivalencias-excluida .equivalencias-fila-vendedor {
+  text-decoration: line-through;
+}
+
+/* ─── Vacío ─── */
+.equivalencias-vacio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f5f5f7;
+  color: #86868b;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.equivalencias-vacio svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: #86868b;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .equivalencias {
+    padding: 18px 16px 20px;
+    border-radius: 16px;
+  }
+
+  .equivalencias-resumen {
+    gap: 12px 20px;
+    padding: 12px 14px;
+  }
+
+  .equivalencias-fila {
+    padding: 10px 12px;
+  }
+
+  .equivalencias-btn-excluir span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .equivalencias-barra-relleno {
+    transition: none;
+  }
+  .equivalencias-sospechoso {
+    animation: none;
+  }
+}

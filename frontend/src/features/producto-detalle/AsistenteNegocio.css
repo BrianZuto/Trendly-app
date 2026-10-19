@@ -1,0 +1,333 @@
+/* ═══════════════════════════════════════════
+   ASISTENTE DE NEGOCIO · Apple Design
+   Simulador de decisiones comerciales basado en datos reales.
+   Paleta monocromática Apple, consistente con la página.
+   ═══════════════════════════════════════════ */
+
+.asistente-panel {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 24px 28px 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asistente-panel button,
+.asistente-panel input,
+.asistente-panel textarea {
+    font-family: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .asistente-panel:hover {
+        border-color: rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.asistente-encabezado {
+    margin-bottom: 0;
+}
+
+.asistente-super-titulo {
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #86868b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.asistente-titulo {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+    font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: #000000;
+    margin: 4px 0 0 0;
+}
+
+.asistente-descripcion {
+    margin: 4px 0 0 0;
+    max-width: 64ch;
+}
+
+/* Chips de preguntas sugeridas */
+.asistente-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.asistente-chip {
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 980px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .asistente-chip:hover {
+        background: #e5e5ea;
+        border-color: rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+    }
+}
+
+.asistente-chip.activo {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+    font-weight: 600;
+}
+
+/* Simulador interactivo de margen con slider */
+.asistente-slider-seccion {
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.asistente-slider-etiqueta {
+    font-size: 12px;
+    color: #86868b;
+    font-weight: 500;
+    min-width: 130px;
+}
+
+.asistente-slider-control {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.asistente-slider {
+    flex: 1;
+    height: 4px;
+    accent-color: #000000;
+    cursor: pointer;
+}
+
+.asistente-slider-valor {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000000;
+    min-width: 44px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Caja de respuesta del asistente */
+.asistente-respuesta-caja {
+    background: #fafafc;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeInAsistente 0.2s ease;
+}
+
+@keyframes fadeInAsistente {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.asistente-respuesta-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #86868b;
+    margin: 0;
+}
+
+.asistente-respuesta-texto {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1d1d1f;
+    margin: 0;
+}
+
+/* Métricas destacadas del resultado */
+.asistente-metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.asistente-metrica-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.asistente-metrica-rotulo {
+    font-size: 11px;
+    color: #86868b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.asistente-metrica-valor {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    font-variant-numeric: tabular-nums;
+}
+
+.asistente-respuesta-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.asistente-boton-aplicar {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 980px;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, transform 160ms ease-out;
+}
+
+.asistente-boton-aplicar:hover {
+    background: #1c1c1e;
+}
+
+.asistente-boton-aplicar:active {
+    transform: scale(0.98);
+}
+
+.asistente-boton-aplicar:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.asistente-boton-aplicar.precio-fijado {
+    animation: asistente-precio-fijado 220ms ease-out both;
+}
+
+.asistente-boton-check {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    animation: asistente-check-aparece 240ms ease-out both;
+}
+
+.asistente-boton-check path {
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    stroke-dasharray: 18;
+    stroke-dashoffset: 18;
+    animation: asistente-check-dibuja 260ms ease-out 80ms forwards;
+}
+
+.asistente-aplicar-resultado {
+    display: flex;
+    min-height: 52px;
+    align-items: center;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.asistente-aplicar-resultado.error {
+    border: 1px solid rgba(176, 0, 32, 0.18);
+    background: #fff4f4;
+    color: #b00020;
+}
+
+@keyframes asistente-precio-fijado {
+    from {
+        transform: scale(.96);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes asistente-check-aparece {
+    from {
+        opacity: 0;
+        transform: scale(.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes asistente-check-dibuja {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+    .asistente-panel {
+        padding: 18px 16px 20px;
+        border-radius: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .asistente-respuesta-caja {
+        animation: none;
+    }
+
+    .asistente-boton-aplicar.precio-fijado,
+    .asistente-boton-check,
+    .asistente-boton-check path {
+        animation: none;
+    }
+
+    .asistente-boton-check path {
+        stroke-dashoffset: 0;
+    }
+}

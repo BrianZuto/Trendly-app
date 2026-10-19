@@ -5,6 +5,8 @@ Plataforma web (con extensión móvil) de análisis de precios y productos para 
 [![CI](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml/badge.svg)](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml)
 <!-- SonarCloud: badge pendiente (Sprint 3) -->
 
+**Aplicación publicada:** https://trendlyapp.vercel.app (producción, se actualiza con cada cambio en `main`)
+
 ## Problema y solución
 
 Los vendedores fijan precios con revisiones manuales, lentas y desactualizadas de la competencia, lo que les hace perder margen y ventas. Trendly automatiza ese seguimiento y convierte los datos en sugerencias de precio.
@@ -40,7 +42,7 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Pendiente (Sprint 3) |
-| Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Pendiente |
+| Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Frontend en Vercel (SCRUM-35); backend pendiente (Sprint 5) |
 | Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud pendiente (Sprint 3) |
 
 ### Estructura del monorepo
@@ -148,6 +150,24 @@ cd frontend && npm run lint   # ESLint
 ```
 
 `./mvnw verify` también genera el reporte de cobertura de JaCoCo en `backend/target/site/jacoco/index.html` y falla si la cobertura de líneas baja del 70 %. El pipeline de GitHub Actions (`.github/workflows/ci.yml`) ejecuta lo mismo en cada PR y publica los reportes como artefactos.
+
+### 6. Despliegue del frontend (Vercel)
+
+El frontend se publica en Vercel desde la carpeta `frontend/`. La configuración vive en `frontend/vercel.json`, que tiene la regla de reescritura para que rutas como `/login` o `/productos` no den 404 al recargar la página.
+
+| Rama | Qué se despliega | URL |
+|---|---|---|
+| `main` | Producción | https://trendlyapp.vercel.app |
+| Cada pull request | Vista previa | Vercel comenta la URL en el PR |
+
+Variables de entorno, en Vercel → Settings → Environment Variables:
+
+| Variable | Valor |
+|---|---|
+| `VITE_API_URL` | URL del API. Mientras el backend no esté en Azure (Sprint 5), apunta al entorno de pruebas. |
+| `VITE_USE_MOCK` | `true` mientras no haya backend publicado (la app funciona con datos simulados); `false` cuando el API esté arriba. |
+
+Las variables `VITE_` se leen al compilar: después de cambiarlas hay que volver a desplegar (Deployments → Redeploy). No hace falta tocar el código.
 
 ## Flujo de trabajo con Git
 

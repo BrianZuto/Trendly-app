@@ -1,94 +1,606 @@
+/* ═══════════════════════════════════════════
+   TRENDLY · Sistema de Diseño Apple & Pureza Visual
+   Tipografía San Francisco (SF Pro) con tracking óptico,
+   paleta monocromática pura y cinemática de precisión (Emil Kowalski).
+   ═══════════════════════════════════════════ */
+
 :root {
-  --color-primario: #4f46e5;
-  --color-primario-oscuro: #4338ca;
-  --color-texto: #1f2937;
-  --color-suave: #6b7280;
-  --color-borde: #d1d5db;
-  --color-fondo: #f3f4f6;
-  --color-error: #b91c1c;
-  --color-exito: #166534;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  color: var(--color-texto);
-  line-height: 1.5;
+  /* ─── Paleta Pura Monocromática (Estilo Apple) ─── */
+  --negro: #000000;
+  --grafito: #121214;
+  --elevado: #1c1c1e;
+  --blanco: #ffffff;
+  --humo: #f5f5f7;
+  --humo-medio: #e5e5ea;
+
+  /* Texto */
+  --texto: #000000;
+  --texto-suave: #86868b;
+  --texto-secundario: #6e6e73;
+  --tiza: #f5f5f7;
+  --tiza-suave: #86868b;
+  --tinta: #000000;
+  --tinta-media: #48484a;
+  --tinta-suave: #86868b;
+
+  /* Fondos y superficies */
+  --papel: #ffffff;
+  --papel-alto: #ffffff;
+  --papel-hondo: #f5f5f7;
+
+  /* Bordes ultra-finos Apple */
+  --borde: rgba(0, 0, 0, 0.09);
+  --borde-suave: rgba(0, 0, 0, 0.05);
+
+  /* Pizarra (compatibilidad monochrome) */
+  --pizarra: #000000;
+  --pizarra-hondo: #000000;
+  --pizarra-clara: #1c1c1e;
+  --pizarra-linea: rgba(255, 255, 255, 0.08);
+
+  /* Etiqueta de llegada (preservada para creación de producto) */
+  --etiqueta: #ffd23f;
+  --etiqueta-hondo: #e5b700;
+
+  /* Indicadores de estado puros y contenidos */
+  --baja: #000000;
+  --exito-texto: #1d1d1f;
+  --exito-fondo: #f5f5f7;
+  --exito-borde: rgba(0, 0, 0, 0.12);
+  --peligro-texto: #d70015;
+  --peligro-fondo: #fff2f4;
+  --peligro-borde: rgba(215, 0, 21, 0.2);
+  --aviso-texto: #633b00;
+  --aviso-fondo: #fff9ed;
+  --aviso-borde: rgba(99, 59, 0, 0.15);
+  --info-texto: #1d1d1f;
+  --info-fondo: #f5f5f7;
+  --info-borde: rgba(0, 0, 0, 0.1);
+
+  /* Curvas de aceleración naturales (Emil Kowalski + Apple) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+
+  /* Alias universales */
+  --color-primario: var(--negro);
+  --color-primario-oscuro: #1c1c1e;
+  --color-texto: var(--texto);
+  --color-suave: var(--texto-suave);
+  --color-borde: var(--borde);
+  --color-fondo: var(--papel);
+  --color-error: var(--peligro-texto);
+  --color-exito: var(--exito-texto);
+
+  /* ─── Tipografía Apple Design (SF Pro / System) ─── */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  color: var(--texto);
+  line-height: 1.47;
+  accent-color: var(--negro);
+  caret-color: var(--negro);
 }
 
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--color-fondo); }
-h1 { font-size: 1.5rem; margin: 0 0 1rem; }
-h2 { font-size: 1.1rem; margin: 1.25rem 0 0.25rem; }
-a { color: var(--color-primario); }
+* {
+  box-sizing: border-box;
+}
 
-.marca { font-weight: 700; color: var(--color-primario); }
-.marca-grande { font-size: 1.75rem; margin: 0 0 0.5rem; text-align: center; }
+html {
+  scrollbar-gutter: stable;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
 
-/* Páginas públicas */
-.publico { min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
-.tarjeta { width: 100%; max-width: 26rem; background: #fff; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 1px 4px rgb(0 0 0 / 12%); }
-.tarjeta-ancha { max-width: 42rem; }
+body {
+  margin: 0;
+  background: var(--blanco);
+  color: var(--texto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-/* Formularios */
-.campo { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1rem; }
-.campo label { font-weight: 600; font-size: 0.9rem; }
-.campo input:not([type='checkbox']) { padding: 0.55rem 0.7rem; border: 1px solid var(--color-borde); border-radius: 0.5rem; font: inherit; }
-.campo input[aria-invalid='true'] { border-color: var(--color-error); }
-.campo-error { margin: 0; color: var(--color-error); font-size: 0.85rem; }
-.campo-check label { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
-.campo-check a { font-size: 0.85rem; }
+::selection {
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--blanco);
+}
 
-.boton { width: 100%; padding: 0.65rem 1rem; border: 0; border-radius: 0.5rem; background: var(--color-primario); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
-.boton:hover:not(:disabled) { background: var(--color-primario-oscuro); }
-.boton:disabled { opacity: 0.6; cursor: wait; }
-.boton-secundario { width: auto; background: transparent; color: var(--color-primario); border: 1px solid var(--color-primario); padding: 0.4rem 0.8rem; }
-.boton-secundario:hover:not(:disabled) { background: #eef2ff; }
+::placeholder {
+  color: var(--texto-suave);
+  opacity: 1;
+}
 
-.mensaje { padding: 0.65rem 0.8rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; }
-.mensaje-error { background: #fee2e2; color: var(--color-error); }
-.mensaje-exito { background: #dcfce7; color: var(--color-exito); }
-.mensaje-info { background: #e0e7ff; color: var(--color-primario-oscuro); }
+/* ─── Jerarquía Tipográfica con Tracking Óptico Apple ─── */
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
 
-.pie { text-align: center; font-size: 0.9rem; color: var(--color-suave); margin: 1rem 0 0; }
+h2 {
+  margin: 1.5rem 0 0.35rem;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
 
-/* Área autenticada */
-.barra { display: flex; align-items: center; gap: 1.5rem; padding: 0.75rem 1.5rem; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
-.barra nav { display: flex; gap: 1rem; flex: 1; }
-.barra nav a { text-decoration: none; color: var(--color-suave); font-weight: 600; }
-.barra nav a.active { color: var(--color-primario); }
-.barra-usuario { display: flex; align-items: center; gap: 0.75rem; }
-.contenido { max-width: 64rem; margin: 0 auto; padding: 1.5rem; }
+h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
 
-/* Foco visible para quien navega con teclado */
-:focus-visible { outline: 3px solid #c7d2fe; outline-offset: 2px; }
-.campo input:not([type='checkbox']) { width: 100%; transition: border-color 0.15s, box-shadow 0.15s; }
-.campo input:not([type='checkbox']):focus-visible { outline: none; border-color: var(--color-primario); box-shadow: 0 0 0 3px #c7d2fe; }
+p, li {
+  letter-spacing: -0.005em;
+}
 
-/* Proximidad: bloques de campos relacionados */
-.grupo { border: 0; padding: 0; margin: 0 0 0.5rem; min-width: 0; }
-.grupo legend { padding: 0; margin-bottom: 0.75rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-suave); }
+.descripcion-seccion {
+  color: var(--texto-suave);
+  font-size: 13px;
+  letter-spacing: -0.005em;
+}
 
-/* Campo de contraseña con ojo */
-.campo-password { position: relative; }
-.campo-password input { padding-right: 2.75rem; }
-.boton-ojo { position: absolute; top: 50%; right: 0.4rem; transform: translateY(-50%); display: grid; place-items: center; width: 2rem; height: 2rem; border: 0; border-radius: 0.4rem; background: transparent; color: var(--color-suave); cursor: pointer; }
-.boton-ojo:hover { color: var(--color-primario); background: #eef2ff; }
-.boton-ojo svg { width: 1.25rem; height: 1.25rem; }
-.campo-aviso { margin: 0; font-size: 0.85rem; color: #92400e; }
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 150ms ease;
+}
 
-/* Región común: caja de seguridad de la contraseña */
-.indicador { margin-top: 0.5rem; padding: 0.75rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; font-size: 0.85rem; }
-.indicador-barra { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; }
-.segmento { height: 0.35rem; border-radius: 999px; background: #e5e7eb; transition: background-color 0.2s; }
-.segmento.nivel-1 { background: #dc2626; }
-.segmento.nivel-2 { background: #d97706; }
-.segmento.nivel-3 { background: #16a34a; }
-.indicador-texto { margin: 0.4rem 0 0.5rem; font-weight: 600; }
-.requisitos { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.2rem; color: var(--color-suave); }
-.requisitos li.cumple { color: var(--color-exito); }
-.requisitos li > span[aria-hidden] { display: inline-block; width: 1.1rem; }
-.recomendado-titulo { margin: 0.75rem 0 0.25rem; font-weight: 600; color: var(--color-texto); }
-.coincidencia { margin: 0.4rem 0 0; font-size: 0.85rem; color: var(--color-suave); }
-.coincidencia.coincide { color: var(--color-exito); }
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    opacity: 0.75;
+  }
+}
 
-/* Texto solo para lectores de pantalla */
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+:focus-visible {
+  outline: 2px solid var(--negro);
+  outline-offset: 2px;
+}
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* Cifras de precio tabulares */
+.cifra {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  font-weight: 600;
+}
+
+/* ─── Marca ─── */
+.marca {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--negro);
+}
+
+.marca-grande {
+  display: block;
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Etiqueta de precio creada (Preservada) ─── */
+.etiqueta {
+  --agujero: var(--blanco);
+  position: relative;
+  display: inline-grid;
+  gap: 0.15rem;
+  padding: 0.875rem 1.25rem 0.875rem 2.5rem;
+  background: var(--etiqueta);
+  color: #1a1d16;
+  border-radius: 4px 14px 14px 4px;
+  box-shadow: 0 2px 0 var(--etiqueta-hondo), 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.etiqueta::before {
+  content: '';
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: -0.375rem;
+  border-radius: 50%;
+  background: var(--agujero);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.etiqueta-titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.etiqueta-precio {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.etiqueta-nota {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ─── Formularios Limpios Apple ─── */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.125rem;
+}
+
+.campo label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--texto);
+}
+
+.campo input:not([type='checkbox']) {
+  width: 100%;
+  height: 44px;
+  padding: 0 0.875rem;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: #fbfbfd;
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9375rem;
+  letter-spacing: -0.005em;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.campo input:not([type='checkbox']):focus-visible {
+  outline: none;
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.campo input[aria-invalid='true'] {
+  border-color: var(--peligro-texto);
+  background: var(--peligro-fondo);
+}
+
+.campo-error {
+  margin: 0;
+  color: var(--peligro-texto);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.campo-aviso {
+  margin: 0;
+  color: var(--aviso-texto);
+  font-size: 0.8125rem;
+}
+
+.campo-check label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.campo-check input[type='checkbox'] {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--negro);
+  border-radius: 4px;
+}
+
+.campo-check a {
+  align-self: flex-start;
+  margin-left: 1.775rem;
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+  text-decoration: underline;
+}
+
+.campo-check .campo-error {
+  margin-left: 1.775rem;
+}
+
+.grupo {
+  min-width: 0;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.grupo legend {
+  margin-bottom: 0.75rem;
+  padding: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--texto);
+}
+
+.campo-password {
+  position: relative;
+}
+
+.campo-password input {
+  padding-right: 3rem;
+}
+
+.boton-ojo {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton-ojo:hover {
+    color: var(--texto);
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.boton-ojo svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+/* ─── Botones Apple (Feedback táctil + pureza) ─── */
+.boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 46px;
+  padding: 0 1.25rem;
+  border: 0;
+  border-radius: 980px;
+  background: var(--negro);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background-color 140ms ease, transform 120ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton:hover:not(:disabled) {
+    background: #1c1c1e;
+  }
+}
+
+.boton:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.boton-secundario {
+  width: auto;
+  height: 38px;
+  padding: 0 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 980px;
+  background: transparent;
+  color: var(--texto);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton-secundario:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* ─── Mensajes y avisos ─── */
+.mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
+.mensaje-error {
+  background: var(--peligro-fondo);
+  color: var(--peligro-texto);
+  border-color: var(--peligro-borde);
+}
+
+.mensaje-exito {
+  background: var(--exito-fondo);
+  color: var(--exito-texto);
+  border-color: var(--exito-borde);
+}
+
+.mensaje-info {
+  background: var(--info-fondo);
+  color: var(--info-texto);
+  border-color: var(--info-borde);
+}
+
+.pie {
+  margin: 1.5rem 0 0;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.pie a {
+  font-weight: 600;
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pie a:hover {
+  color: #000000;
+  text-decoration-thickness: 2px;
+}
+
+/* ─── Indicador de seguridad de contraseña ─── */
+.indicador {
+  margin-top: 0.625rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--borde-suave);
+  border-radius: 10px;
+  background: #fbfbfd;
+  font-size: 0.8125rem;
+}
+
+.indicador-barra {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem;
+}
+
+.segmento {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--humo-medio);
+  transition: background-color 200ms ease;
+}
+
+.segmento.nivel-1 { background: #d70015; }
+.segmento.nivel-2 { background: #ff9f0a; }
+.segmento.nivel-3 { background: #34c759; }
+
+.indicador-texto {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+.requisitos {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texto-suave);
+}
+
+.requisitos li.cumple {
+  color: #34c759;
+}
+
+.requisitos li > span[aria-hidden] {
+  display: inline-block;
+  width: 1.1rem;
+}
+
+.recomendado-titulo {
+  margin: 0.75rem 0 0.25rem;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.coincidencia {
+  margin: 0.4rem 0 0;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+}
+
+.coincidencia.coincide {
+  color: #34c759;
+}
+
+/* ─── Vista Pública (Política, etc.) ─── */
+.publico {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3rem 1.25rem;
+  background: #f5f5f7;
+}
+
+.tarjeta {
+  align-self: flex-start;
+  width: 100%;
+  max-width: 38rem;
+  padding: 2.25rem;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--blanco);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+
+.tarjeta-ancha {
+  max-width: 48rem;
+}
+
+.tarjeta p,
+.tarjeta li {
+  max-width: 68ch;
+  color: #333336;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Movimiento Reducido (Accesibilidad Apple) ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .boton:active:not(:disabled) {
+    transform: none;
+  }
+
+  .mensaje {
+    transition: opacity 150ms ease;
+
+    @starting-style {
+      transform: none;
+    }
+  }
+}

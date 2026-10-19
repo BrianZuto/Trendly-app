@@ -11,7 +11,9 @@ export default function Login() {
     const { login, sesionExpirada } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const [valores, setValores] = useState({ email: '', password: '' })
+    // Tras el registro llega el email: se precarga y el foco pasa a la contraseña
+    const emailRecibido = location.state?.email ?? ''
+    const [valores, setValores] = useState({ email: emailRecibido, password: '' })
     const [errores, setErrores] = useState({})
     const [errorApi, setErrorApi] = useState('')
     const [enviando, setEnviando] = useState(false)
@@ -42,6 +44,7 @@ export default function Login() {
     return (
         <>
             <h1>Iniciar sesión</h1>
+            <p className="auth-subtitle">Bienvenido de nuevo a Trendly</p>
             {location.state?.registroExitoso && <Mensaje tipo="exito">Cuenta creada. Inicia sesión para continuar.</Mensaje>}
             {sesionExpirada && <Mensaje tipo="info">Tu sesión expiró. Inicia sesión de nuevo.</Mensaje>}
             {errorApi && <Mensaje tipo="error">{errorApi}</Mensaje>}
@@ -52,7 +55,7 @@ export default function Login() {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    autoFocus
+                    autoFocus={!emailRecibido}
                     value={valores.email}
                     onChange={cambiar}
                     error={errores.email}
@@ -61,6 +64,7 @@ export default function Login() {
                     etiqueta="Contraseña"
                     name="password"
                     autoComplete="current-password"
+                    autoFocus={Boolean(emailRecibido)}
                     value={valores.password}
                     onChange={cambiar}
                     error={errores.password}
@@ -71,7 +75,7 @@ export default function Login() {
             </form>
 
             <p className="pie">
-                ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
+                ¿No tienes cuenta? <Link to="/registro"><strong>Regístrate</strong></Link>
             </p>
         </>
     )
