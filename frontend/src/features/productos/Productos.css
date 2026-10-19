@@ -39,20 +39,22 @@
 
 .productos-cabecera h1 {
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
   font-size: clamp(1.8rem, 1.4rem + 1.2vw, 2.4rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.025em;
-  color: #000000;
+  letter-spacing: -0.03em;
+  color: #1d1d1f;
 }
 
 .productos-cabecera p {
   max-width: 64ch;
   margin: 6px 0 0;
   color: #86868b;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
   font-size: 15px;
-  line-height: 1.47;
-  letter-spacing: -0.005em;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
 }
 
 /* ─── Controles, Filtros y Segmented Control Apple ─── */

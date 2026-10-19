@@ -1,6 +1,6 @@
 // Mercado simulado: hace de scraper (SCRUM-40 y 41) para trabajar sin backend.
 // Del lado del proveedor busca ofertas en AliExpress; del lado de la reventa genera
-// publicaciones creíbles en MercadoLibre, Falabella y Amazon con 30 días de histórico,
+// publicaciones creíbles en MercadoLibre, Falabella y Amazon con 90 días de histórico,
 // y mueve precios de vez en cuando para que se vea vivo.
 
 const VENDEDORES = {
@@ -54,16 +54,23 @@ function fotosPara(nombre) {
     return encontrada ? [encontrada[0], ...(PARECIDAS[encontrada[0]] ?? [])] : TODAS
 }
 
-// 30 días con cambios escalonados, como se ven los precios reales: quietos y de pronto un salto
-function historico(azar, precioFinal, ahora) {
-    const puntos = []
-    let precio = redondear(precioFinal * (1 + (azar() - 0.4) * 0.12))
-    for (let d = 30; d >= 1; d--) {
-        if (azar() < 0.16) precio = redondear(precio * (1 + (azar() - 0.5) * 0.1))
-        puntos.push({ fecha: new Date(ahora - d * DIA).toISOString(), precio })
+// 90 días de capturas cada 6 horas (como el job de SCRUM-39), con cambios escalonados como
+// se ven los precios reales: quietos y de pronto un salto. A ratos la publicación se queda sin stock
+const PASO_CAPTURA = 6 * 3600000
+export const DIAS_HISTORICO = 90
+
+function historico(azar, precioFinal, disponibleFinal, ahora) {
+    const pasos = (DIAS_HISTORICO * DIA) / PASO_CAPTURA
+    // Se arma hacia atrás desde la captura de hoy, para que la última línea no dé un salto
+    const puntos = [{ fecha: new Date(ahora).toISOString(), precio: precioFinal, disponible: disponibleFinal }]
+    let precio = precioFinal
+    let disponible = disponibleFinal
+    for (let i = 1; i <= pasos; i++) {
+        if (azar() < 0.05) precio = redondear(precio * (1 + (azar() - 0.47) * 0.09))
+        disponible = disponible ? azar() > 0.012 : azar() > 0.2
+        puntos.push({ fecha: new Date(ahora - i * PASO_CAPTURA).toISOString(), precio, disponible })
     }
-    puntos.push({ fecha: new Date(ahora).toISOString(), precio: precioFinal })
-    return puntos
+    return puntos.reverse()
 }
 
 const dominio = (host, base) => host === base || host.endsWith(`.${base}`)
@@ -168,7 +175,7 @@ export function primeraCaptura(monitoreo, producto, ahora = Date.now()) {
     return Array.from({ length: cuantas }, (_, n) => {
         const factor = (enUsd ? 1.02 : monitoreo.marketplace === 'FALABELLA' ? 0.97 : 0.9) + azar() * 0.22
         const precio = redondear(producto.precioVenta * factor)
-        return {
+        const pub = {
             idPublicacion: monitoreo.idPublicacion && n === 0 ? monitoreo.idPublicacion : nuevoId(),
             titulo: `${producto.nombre}${n % 2 ? ' original' : ''}`,
             vendedor: vendedores[(inicio + n) % vendedores.length],
@@ -177,8 +184,10 @@ export function primeraCaptura(monitoreo, producto, ahora = Date.now()) {
             precioUsd: enUsd ? Math.round((precio / TRM) * 100) / 100 : null,
             disponible: azar() > 0.18,
             imagen: `/mock/${fotos[(n + 1) % fotos.length]}.jpg`,
-            historial: historico(azar, precio, ahora),
         }
+        // El histórico usa su propia semilla: así no cambia el resto de la captura
+        pub.historial = historico(semilla(`${pub.idPublicacion}|historico`), precio, pub.disponible, ahora)
+        return pub
     })
 }
 
@@ -192,6 +201,6 @@ export function moverUnPrecio(monitoreos, ahora = Date.now()) {
     pub.precioAnterior = pub.precio
     pub.precio = redondear(pub.precio * (1 + cambio))
     if (pub.precioUsd !== null) pub.precioUsd = Math.round((pub.precio / TRM) * 100) / 100
-    pub.historial.push({ fecha: new Date(ahora).toISOString(), precio: pub.precio })
+    pub.historial.push({ fecha: new Date(ahora).toISOString(), precio: pub.precio, disponible: pub.disponible })
     monitoreo.ultimaCaptura = new Date(ahora).toISOString()
 }

@@ -9,6 +9,7 @@ import {
     moverUnPrecio,
     primeraCaptura,
     reconocerMarketplace,
+    TRM,
 } from './mercadoSimulado'
 
 const VIGENCIA_SEGUNDOS = 3600
@@ -178,6 +179,7 @@ const manejadoresConId = [
         if (estado === 'ACTIVO') m.proximaEjecucion = new Date().toISOString()
         return [200, publicoMonitoreo(m)]
     })],
+    [/^GET \/monitoreos\/(\d+)\/historico$/, (config, id) => conMonitoreo(config, id, (m) => historicoDe(m, config.params ?? {}))],
     [/^DELETE \/monitoreos\/(\d+)$/, (config, id) => conMonitoreo(config, id, (m) => {
         monitoreos = monitoreos.filter((otro) => otro !== m)
         return [204, null]
@@ -185,7 +187,42 @@ const manejadoresConId = [
 ]
 
 // ─── Monitoreos de competidores: SCRUM-36 (por URL) y SCRUM-37 (por palabra clave) ───
-const publicoMonitoreo = (m) => structuredClone(m)
+// La lista trae solo los últimos 30 días de cada publicación; el histórico completo
+// se pide aparte con GET /monitoreos/:id/historico (SCRUM-42)
+const DIAS_EN_LISTA = 30
+const publicoMonitoreo = (m) => {
+    const desde = Date.now() - DIAS_EN_LISTA * 86400000
+    const copia = structuredClone(m)
+    copia.publicaciones.forEach((p) => (p.historial = p.historial.filter((h) => Date.parse(h.fecha) >= desde)))
+    return copia
+}
+
+// SCRUM-42: un punto por captura, en orden de fecha. Amazon guarda el precio en dólares y su
+// equivalente en pesos con la TRM; el tablero grafica precioCop
+function historicoDe(monitoreo, { desde, hasta }) {
+    const inicio = desde ? Date.parse(desde) : -Infinity
+    const fin = hasta ? Date.parse(hasta) : Infinity
+    if (Number.isNaN(inicio) || Number.isNaN(fin) || inicio > fin) return [400, { message: 'El rango de fechas no es válido' }]
+    const enUsd = monitoreo.marketplace === 'AMAZON'
+    const puntos = monitoreo.publicaciones.flatMap((pub) =>
+        pub.historial
+            .filter((h) => {
+                const t = Date.parse(h.fecha)
+                return t >= inicio && t <= fin
+            })
+            .map((h) => ({
+                fechaCaptura: h.fecha,
+                idPublicacion: pub.idPublicacion,
+                vendedor: pub.vendedor,
+                precio: enUsd ? Math.round((h.precio / TRM) * 100) / 100 : h.precio,
+                moneda: enUsd ? 'USD' : 'COP',
+                precioCop: h.precio,
+                disponible: h.disponible ?? true,
+                fuente: monitoreo.marketplace,
+            })),
+    )
+    return [200, puntos.sort((a, b) => Date.parse(a.fechaCaptura) - Date.parse(b.fechaCaptura))]
+}
 
 function conMonitoreo(config, id, accion) {
     const usuario = usuarioDelToken(config)

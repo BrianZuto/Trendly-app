@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { mensajeDeError } from '@core/api/errores'
 import { formatearPesos, formatearPorcentaje } from '@features/productos/formato'
 import { responderPreguntaAsistente } from './asistenteNegocio'
 import './AsistenteNegocio.css'
@@ -11,16 +12,27 @@ const PREGUNTAS_RAPIDAS = [
     '¿Quién es el competidor más agresivo?',
 ]
 
+const DURACION_CONFIRMACION = 2800
+
 export default function AsistenteNegocio({ producto, publicaciones = [], onAplicarPrecio }) {
     const [preguntaSeleccionada, setPreguntaSeleccionada] = useState(PREGUNTAS_RAPIDAS[0])
     const [sliderMargen, setSliderMargen] = useState(() => Math.round(producto?.margenObjetivo || 25))
+    const [aplicando, setAplicando] = useState(false)
+    const [resultadoAplicacion, setResultadoAplicacion] = useState(null)
 
     const respuesta = useMemo(() => {
         return responderPreguntaAsistente(preguntaSeleccionada, producto, publicaciones)
     }, [preguntaSeleccionada, producto, publicaciones])
 
+    useEffect(() => {
+        if (resultadoAplicacion?.tipo !== 'exito') return undefined
+        const temporizador = window.setTimeout(() => setResultadoAplicacion(null), DURACION_CONFIRMACION)
+        return () => window.clearTimeout(temporizador)
+    }, [resultadoAplicacion])
+
     function handleChipClick(pregunta) {
         setPreguntaSeleccionada(pregunta)
+        setResultadoAplicacion(null)
         const match = pregunta.match(/(\d+)\s*%/)
         if (match) {
             setSliderMargen(parseInt(match[1], 10))
@@ -30,17 +42,36 @@ export default function AsistenteNegocio({ producto, publicaciones = [], onAplic
     function handleSliderChange(e) {
         const nuevoValor = parseInt(e.target.value, 10)
         setSliderMargen(nuevoValor)
+        setResultadoAplicacion(null)
         setPreguntaSeleccionada(`¿Qué pasa si subo el margen al ${nuevoValor}%?`)
+    }
+
+    async function aplicarPrecio(precio) {
+        setAplicando(true)
+        setResultadoAplicacion(null)
+        try {
+            await onAplicarPrecio(precio)
+            setResultadoAplicacion({
+                tipo: 'exito',
+                precio,
+            })
+        } catch (error) {
+            setResultadoAplicacion({
+                tipo: 'error',
+                mensaje: `No se pudo fijar el precio. ${mensajeDeError(error)}`,
+            })
+        } finally {
+            setAplicando(false)
+        }
     }
 
     return (
         <section className="asistente-panel" aria-labelledby="asistente-titulo">
             <header className="asistente-encabezado">
-                <span className="asistente-super-titulo">Inteligencia Comercial · Asistente en Vivo</span>
                 <h2 id="asistente-titulo" className="asistente-titulo">
                     Simulador de Decisiones de Negocio
                 </h2>
-                <p className="asistente-descripcion">
+                <p className="asistente-descripcion descripcion-seccion">
                     Consulta escenarios de rentabilidad y posición competitiva basados exclusivamente en los costos reales de tu proveedor y precios del mercado.
                 </p>
             </header>
@@ -106,12 +137,34 @@ export default function AsistenteNegocio({ producto, publicaciones = [], onAplic
                     <div className="asistente-respuesta-acciones">
                         <button
                             type="button"
-                            className="asistente-boton-aplicar"
-                            onClick={() => onAplicarPrecio(respuesta.accion.nuevoPrecio)}
+                            className={`asistente-boton-aplicar${resultadoAplicacion?.tipo === 'exito' ? ' precio-fijado' : ''}`}
+                            disabled={aplicando}
+                            onClick={() => aplicarPrecio(respuesta.accion.nuevoPrecio)}
+                            aria-live="polite"
+                            aria-label={
+                                resultadoAplicacion?.tipo === 'exito'
+                                    ? `Precio fijado en ${formatearPesos(resultadoAplicacion.precio)}`
+                                    : undefined
+                            }
                         >
-                            {respuesta.accion.label}
+                            {resultadoAplicacion?.tipo === 'exito' ? (
+                                <>
+                                    <svg className="asistente-boton-check" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                        <path d="m4 10.5 4 4 8-9" />
+                                    </svg>
+                                    <span>Fijado {formatearPesos(resultadoAplicacion.precio)}</span>
+                                </>
+                            ) : aplicando ? 'Aplicando precio…' : respuesta.accion.label}
                         </button>
                     </div>
+                )}
+                {resultadoAplicacion?.tipo === 'error' && (
+                    <p
+                        className="asistente-aplicar-resultado error"
+                        role="alert"
+                    >
+                        <span>{resultadoAplicacion.mensaje}</span>
+                    </p>
                 )}
             </div>
         </section>

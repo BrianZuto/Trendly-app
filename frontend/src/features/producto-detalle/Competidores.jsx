@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { TRM } from '@features/productos/formato'
-import Monitoreos from './Monitoreos'
+
 import { cuando, filasDe, MARKETPLACES, pesos, variacion } from './util'
 
 gsap.registerPlugin(useGSAP)
@@ -152,7 +152,7 @@ function Encabezado({ campo, orden, onOrdenar, children }) {
     )
 }
 
-export default function Competidores({ monitoreos, precioPropio, cambios, llegadas, movimiento, ocupado, onAgregar, onAlternar, onEliminar }) {
+export default function Competidores({ monitoreos, precioPropio, cambios, llegadas, movimiento, onAgregar }) {
     const ref = useRef(null)
     const [sitio, setSitio] = useState('TODOS')
     const [soloStock, setSoloStock] = useState(false)
@@ -350,7 +350,7 @@ export default function Competidores({ monitoreos, precioPropio, cambios, llegad
                         </div>
                     )}
 
-                    <Monitoreos monitoreos={monitoreos} ocupado={ocupado} onAlternar={onAlternar} onEliminar={onEliminar} />
+
                 </>
             )}
         </section>

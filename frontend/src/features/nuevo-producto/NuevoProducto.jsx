@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { mensajeDeError } from '@core/api/errores'
 import { crearProducto } from '@core/services/productos.service'
+import { buscarOfertas } from '@core/services/proveedores.service'
 import CampoTexto from '@shared/components/CampoTexto'
 import Mensaje from '@shared/components/Mensaje'
 import Paletas from '@shared/components/Paletas'
@@ -11,7 +12,7 @@ import { MARKETPLACES, SITIOS_REVENTA } from '@shared/utils/marketplaces'
 import { validarProducto, validarReventa } from '@shared/utils/validaciones'
 import { calcularMargen, formatearDolares, formatearPesos, formatearPorcentaje, pesosEnPaletas, precioMinimo, TRM } from '@features/productos/formato'
 import BuscarProveedor from './BuscarProveedor'
-import { totalPesos } from './recomendaciones'
+import { recomendar, totalPesos } from './recomendaciones'
 import '@features/productos/Productos.css'
 import './NuevoProducto.css'
 
@@ -60,8 +61,8 @@ function ProveedorElegido({ oferta, onCambiar }) {
     )
 }
 
-function DesgloseCosto({ oferta, extra }) {
-    const proveedor = totalPesos(oferta)
+function DesgloseCosto({ oferta, extra, costoReferencia }) {
+    const proveedor = costoReferencia ?? totalPesos(oferta)
     return (
         <dl className="desglose">
             <div>
@@ -86,21 +87,77 @@ function DesgloseCosto({ oferta, extra }) {
 
 export default function NuevoProducto() {
     const navigate = useNavigate()
+    const location = useLocation()
     const ref = useRef(null)
-    const [paso, setPaso] = useState(0)
+    const parametros = new URLSearchParams(location.search)
+    const tendenciaDesdeUrl =
+        parametros.get('origen') === 'tendencias' && parametros.get('id') && parametros.get('nombre')
+            ? {
+                  id: parametros.get('id'),
+                  nombre: parametros.get('nombre'),
+                  categoria: parametros.get('categoria') ?? '',
+                  costo: Number(parametros.get('costo')),
+                  precioVenta: Number(parametros.get('precioVenta')),
+                  margenObjetivo: Number(parametros.get('margenObjetivo')),
+              }
+            : null
+    const tendencia = location.state?.productoTendencia ?? tendenciaDesdeUrl
+    const idTendencia = tendencia?.id
+    const nombreTendencia = tendencia?.nombre
+    const [paso, setPaso] = useState(tendencia ? 1 : 0)
     // null: aún no elige · 'manual': sin proveedor · oferta: la elegida
     const [proveedor, setProveedor] = useState(null)
     const [busqueda, setBusqueda] = useState({ consulta: '', ofertas: null })
-    const [datos, setDatos] = useState({ nombre: '', sku: '', costo: '', costosExtra: '', precioVenta: '', margenObjetivo: '' })
-    const [reventa, setReventa] = useState({ palabraClave: '', marketplaces: ['MERCADOLIBRE'], topN: '5' })
+    const [buscandoProveedorTendencia, setBuscandoProveedorTendencia] = useState(Boolean(tendencia))
+    const [datos, setDatos] = useState(() => (tendencia ? {
+        nombre: tendencia.nombre,
+        sku: tendencia.id.toLocaleUpperCase('es-CO'),
+        costo: String(tendencia.costo),
+        costosExtra: '0',
+        precioVenta: String(tendencia.precioVenta),
+        margenObjetivo: String(tendencia.margenObjetivo),
+    } : { nombre: '', sku: '', costo: '', costosExtra: '', precioVenta: '', margenObjetivo: '' }))
+    const [reventa, setReventa] = useState({
+        palabraClave: tendencia?.nombre.split(/\s+/).slice(0, 4).join(' ') ?? '',
+        marketplaces: ['MERCADOLIBRE'],
+        topN: '5',
+    })
     const [errores, setErrores] = useState({})
     const [errorApi, setErrorApi] = useState('')
     const [enviando, setEnviando] = useState(false)
     const [hecho, setHecho] = useState(false)
 
+    useEffect(() => {
+        if (!idTendencia || !nombreTendencia) return undefined
+        let vigente = true
+
+        async function seleccionarProveedor() {
+            setBuscandoProveedorTendencia(true)
+            setErrorApi('')
+            try {
+                const ofertas = await buscarOfertas(nombreTendencia)
+                const recomendada = recomendar(ofertas).recomendada
+                if (!recomendada) throw new Error('No encontramos ofertas de proveedor para este producto')
+                if (!vigente) return
+                setBusqueda({ consulta: nombreTendencia, ofertas })
+                setProveedor(recomendada)
+            } catch (fallo) {
+                if (vigente) setErrorApi(mensajeDeError(fallo))
+            } finally {
+                if (vigente) setBuscandoProveedorTendencia(false)
+            }
+        }
+
+        seleccionarProveedor()
+        return () => {
+            vigente = false
+        }
+    }, [idTendencia, nombreTendencia])
+
     const manual = proveedor === 'manual'
     const extra = Number(datos.costosExtra) || 0
-    const costo = proveedor && !manual ? totalPesos(proveedor) + extra : Number(datos.costo) + extra
+    const costoBase = tendencia ? Number(tendencia.costo) : proveedor && !manual ? totalPesos(proveedor) : Number(datos.costo)
+    const costo = costoBase + extra
     const margen = calcularMargen(costo, datos.precioVenta)
     const objetivo = datos.margenObjetivo === '' ? null : Number(datos.margenObjetivo)
     const bajo = margen !== null && objetivo !== null && margen < objetivo
@@ -144,7 +201,7 @@ export default function NuevoProducto() {
         setErrores((e) => ({ ...e, [name]: '' }))
     }
 
-    function siguienteDeDatos(evento) {
+    async function siguienteDeDatos(evento) {
         evento.preventDefault()
         const encontrados = validarProducto(datos, { conProveedor: !manual })
         setErrores(encontrados)
@@ -218,17 +275,35 @@ export default function NuevoProducto() {
                 </div>
             )}
 
-            {paso === 1 && (
+            {paso === 1 && tendencia && !proveedor && (
+                <div className="hoja elegido elegido-manual">
+                    <div className="elegido-texto">
+                        <strong>{buscandoProveedorTendencia ? 'Buscando proveedor en AliExpress…' : 'No pudimos seleccionar un proveedor'}</strong>
+                        {!buscandoProveedorTendencia && <span className="mini">Puedes buscar y elegir una oferta para continuar con el alta.</span>}
+                    </div>
+                    {!buscandoProveedorTendencia && (
+                        <button type="button" className="app-boton app-boton-claro app-boton-chico" onClick={() => ir(0)}>
+                            Buscar proveedor
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {paso === 1 && (!tendencia || proveedor) && (
                 <form className="paso-actual paso-datos" onSubmit={siguienteDeDatos} noValidate>
                     {manual ? (
                         <div className="hoja elegido elegido-manual">
                             <div className="elegido-texto">
                                 <strong>Sin proveedor en AliExpress</strong>
-                                <span className="mini">Escribe tu costo a mano. Podrás vigilar la reventa igual.</span>
+                                <span className="mini">
+                                    Escribe tu costo a mano. Podrás vigilar la reventa igual.
+                                </span>
                             </div>
-                            <button type="button" className="app-boton app-boton-claro app-boton-chico" onClick={() => ir(0)}>
-                                Buscar proveedor
-                            </button>
+                            {!tendencia && (
+                                <button type="button" className="app-boton app-boton-claro app-boton-chico" onClick={() => ir(0)}>
+                                    Buscar proveedor
+                                </button>
+                            )}
                         </div>
                     ) : (
                         <ProveedorElegido oferta={proveedor} onCambiar={() => ir(0)} />
@@ -254,7 +329,9 @@ export default function NuevoProducto() {
                                 ) : (
                                     <Paletas texto="$--" className="datos-paletas" />
                                 )}
-                                {!manual && <DesgloseCosto oferta={proveedor} extra={extra} />}
+                                {!manual && (
+                                    <DesgloseCosto oferta={proveedor} extra={extra} costoReferencia={tendencia?.costo} />
+                                )}
                                 <dl className="form-producto-lectura datos-cifras">
                                     <div>
                                         <dt>Margen actual</dt>
