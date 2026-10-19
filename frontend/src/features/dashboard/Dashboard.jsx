@@ -5,8 +5,13 @@ import { useAuth } from '@core/auth/useAuth'
 import { listarMonitoreos, obtenerHistorico } from '@core/services/monitoreos.service'
 import { listarProductos } from '@core/services/productos.service'
 import Mensaje from '@shared/components/Mensaje'
+import Paletas from '@shared/components/Paletas'
 import { MARKETPLACES } from '@shared/utils/marketplaces'
 import { agruparPorPublicacion, armarSeries, COLOR_PROPIO, DIA, fechaHora, leer, pesos, porcentajeConSigno, RANGOS, resumir } from './tablero'
+import DecisionesPendientes from './DecisionesPendientes'
+import TendenciasDropshipping from './TendenciasDropshipping'
+import Vitrina from './Vitrina'
+import { crearAnunciosVitrina } from './vitrina.mock'
 import './Dashboard.css'
 
 // Recharts pesa: la gráfica se descarga aparte, solo cuando hay algo que dibujar
@@ -38,6 +43,7 @@ async function cargarHistorico(productoId) {
 }
 
 function Tarjeta({ titulo, valor, pie, tono, cargando }) {
+    const clasePaleta = tono === 'es-mas-barato' ? 'paletas-verde' : tono === 'es-mas-caro' ? 'paletas-rojo' : titulo === 'Mi precio' ? 'paletas-verde' : ''
     return (
         <article className="tablero-tarjeta">
             <h2>{titulo}</h2>
@@ -48,7 +54,16 @@ function Tarjeta({ titulo, valor, pie, tono, cargando }) {
                 </>
             ) : (
                 <>
-                    <p className={`tablero-valor num${tono ? ` ${tono}` : ''}`}>{valor || '—'}</p>
+                    <p className={`tablero-valor num${tono ? ` ${tono}` : ''}`}>
+                        {valor ? (
+                            <>
+                                <span className="sr-only">{valor}</span>
+                                <Paletas key={valor} texto={valor} className={`tablero-paleta ${clasePaleta}`.trim()} escalon={18} />
+                            </>
+                        ) : (
+                            '—'
+                        )}
+                    </p>
                     {pie && <div className="tablero-pie">{pie}</div>}
                 </>
             )}
@@ -161,6 +176,7 @@ export default function Dashboard() {
         [listo, historico, desde, porPublicacion, producto],
     )
     const lectura = listo && grafica.filas.length ? leer(historico.publicaciones, { desde, hasta: historico.hasta, dias, resumen }) : ''
+    const anunciosVitrina = useMemo(() => crearAnunciosVitrina(producto, resumen), [producto, resumen])
 
     function elegirProducto(id) {
         setOcultas(new Set())
@@ -188,6 +204,7 @@ export default function Dashboard() {
         return (
             <section className="tablero">
                 {encabezado}
+                <Vitrina anuncios={anunciosVitrina} />
                 <Mensaje tipo="error">{errorProductos}</Mensaje>
             </section>
         )
@@ -197,6 +214,7 @@ export default function Dashboard() {
         return (
             <section className="tablero">
                 {encabezado}
+                <Vitrina anuncios={anunciosVitrina} />
                 <div className="tablero-panel tablero-vacio">
                     <p className="tablero-vacio-titulo">Aún no tienes productos</p>
                     <p>Agrega tu primer producto y los competidores que quieres vigilar. Aquí verás cómo se mueven sus precios frente al tuyo.</p>
@@ -204,6 +222,7 @@ export default function Dashboard() {
                         Agregar un producto
                     </Link>
                 </div>
+                <TendenciasDropshipping />
             </section>
         )
     }
@@ -217,6 +236,7 @@ export default function Dashboard() {
     return (
         <section className="tablero" aria-busy={cargando}>
             {encabezado}
+            <Vitrina anuncios={anunciosVitrina} />
 
             <div className="tablero-controles">
                 <div className="tablero-campo tablero-campo-producto">
@@ -266,7 +286,8 @@ export default function Dashboard() {
                 />
             </div>
 
-            <section className="tablero-panel" aria-labelledby="evolucion-titulo">
+            <div className="tablero-evolucion-layout">
+                <section className="tablero-panel" aria-labelledby="evolucion-titulo">
                 <div className="tablero-panel-cabeza">
                     <h2 id="evolucion-titulo">Evolución</h2>
                     <label className="tablero-interruptor">
@@ -316,7 +337,11 @@ export default function Dashboard() {
                         </details>
                     </>
                 )}
-            </section>
+                </section>
+                <DecisionesPendientes productos={productos ?? []} />
+            </div>
+
+            <TendenciasDropshipping />
         </section>
     )
 }

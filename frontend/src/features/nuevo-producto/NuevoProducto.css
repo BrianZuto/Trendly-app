@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
 }
 
 .nuevo .mini {
@@ -67,19 +67,22 @@
 
 .nuevo-cabeza h1 {
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
   font-size: clamp(1.8rem, 1.4rem + 1.2vw, 2.4rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-weight: 600;
+  letter-spacing: -0.03em;
   line-height: 1.1;
-  color: #000000;
+  color: #1d1d1f;
 }
 
 .nuevo-cabeza p {
   margin: 6px 0 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
   color: #86868b;
   font-size: 15px;
   max-width: 60ch;
-  line-height: 1.47;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
 }
 
 .app-boton-amarillo {

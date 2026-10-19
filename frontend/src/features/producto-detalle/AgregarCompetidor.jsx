@@ -133,7 +133,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
         <section id="agregar" className="hoja agregar" aria-labelledby="agregar-titulo" ref={ref}>
             <div>
                 <h2 id="agregar-titulo">Agregar competidor</h2>
-                <p className="mini">Vigila una publicación de reventa puntual o los primeros resultados de una búsqueda. Trendly lo revisa cada 6 horas.</p>
+                <p className="mini descripcion-seccion">Vigila una publicación de reventa puntual o los primeros resultados de una búsqueda. Trendly lo revisa cada 6 horas.</p>
             </div>
             <div className="pestanas" role="tablist" aria-label="Tipo de monitoreo">
                 <button type="button" role="tab" className={modo === 'url' ? 'on' : ''} aria-selected={modo === 'url'} onClick={() => cambiarModo('url')}>

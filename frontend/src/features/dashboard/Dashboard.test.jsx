@@ -58,7 +58,13 @@ const valorDe = (titulo) => within(screen.getByRole('heading', { name: titulo })
 describe('tablero de precios', () => {
     it('las tarjetas muestran el mínimo, el promedio, mi precio y la diferencia', async () => {
         renderizar()
-        expect(await screen.findByTestId('grafica')).toBeInTheDocument()
+        expect(await screen.findByTestId('grafica', {}, { timeout: 5000 })).toBeInTheDocument()
+
+        const vitrina = screen.getByRole('region', { name: 'Vitrina' })
+        const controles = document.querySelector('.tablero-controles')
+        expect(vitrina.compareDocumentPosition(controles) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+        await userEvent.setup().click(screen.getByRole('button', { name: 'Mostrar diapositiva 2 de 3' }))
+        expect(screen.getByRole('group', { name: '2 de 3' })).toHaveTextContent('Tu precio está 10 % sobre la oferta más baja')
 
         expect(valorDe('Mínimo de la competencia')).toHaveTextContent('$60.000')
         expect(valorDe('Promedio de la competencia')).toHaveTextContent('$66.000')

@@ -20,13 +20,6 @@ function claseConfianza(confianza) {
     return 'confianza-baja'
 }
 
-const IconoVerificado = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M9 12l2 2 4-4" />
-        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
-    </svg>
-)
-
 const IconoExcluir = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
         <path d="M18 6 6 18M6 6l12 12" />
@@ -148,10 +141,6 @@ export default function EquivalenciasProducto({ nombreProducto, publicaciones, p
             <section className="hoja equivalencias" aria-labelledby="equivalencias-titulo">
                 <div className="equivalencias-cabeza">
                     <div>
-                        <div className="equivalencias-etiqueta-badge">
-                            <IconoVerificado />
-                            Validación de Productos
-                        </div>
                         <h2 id="equivalencias-titulo">Equivalencia de publicaciones</h2>
                     </div>
                 </div>
@@ -171,12 +160,8 @@ export default function EquivalenciasProducto({ nombreProducto, publicaciones, p
         <section className="hoja equivalencias" aria-labelledby="equivalencias-titulo">
             <div className="equivalencias-cabeza">
                 <div>
-                    <div className="equivalencias-etiqueta-badge">
-                        <IconoVerificado />
-                        Validación de Productos
-                    </div>
                     <h2 id="equivalencias-titulo">Equivalencia de publicaciones</h2>
-                    <p>
+                    <p className="descripcion-seccion">
                         Verifica que las publicaciones vigiladas realmente correspondan a{' '}
                         <strong>{nombreProducto}</strong>. Si alguna es un producto diferente, exclúyela para mejorar
                         las comparaciones y escenarios.

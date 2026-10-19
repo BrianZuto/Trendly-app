@@ -4,6 +4,7 @@
    ═══════════════════════════════════════════ */
 
 .escenarios {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
   padding: 24px 28px 28px;
   background: #ffffff;
   border-radius: 20px;
@@ -12,6 +13,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.escenarios button {
+  font-family: inherit;
 }
 
 .escenarios-cabeza {
@@ -32,7 +37,8 @@
   color: #1d1d1f;
   font-size: 11.5px;
   font-weight: 600;
-  letter-spacing: -0.005em;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   margin-bottom: 8px;
 }
 
@@ -43,19 +49,17 @@
 
 .escenarios-cabeza h2 {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  font-size: 1.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   color: #000000;
 }
 
 .escenarios-cabeza p {
   margin: 4px 0 0;
-  color: #86868b;
-  font-size: 13.5px;
   max-width: 64ch;
-  line-height: 1.45;
 }
 
 .escenarios-aviso-exito {
@@ -163,7 +167,8 @@
 }
 
 .escenario-precio {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
   font-size: 1.85rem;
   font-weight: 700;
   letter-spacing: -0.025em;

@@ -19,11 +19,10 @@ export default function AlertasAccionables({ producto, monitoreos = [], onAplica
         <section className="alertas-panel" aria-labelledby="alertas-titulo">
             <header className="alertas-encabezado">
                 <div className="alertas-titulo-bloque">
-                    <span className="alertas-super-titulo">Inteligencia Comercial · Alertas en Vivo</span>
                     <h2 id="alertas-titulo" className="alertas-titulo">
                         {resumen.titular}
                     </h2>
-                    <p className="alertas-descripcion">{resumen.descripcion}</p>
+                    <p className="alertas-descripcion descripcion-seccion">{resumen.descripcion}</p>
                 </div>
 
                 <div className={`alertas-badge-estado ${badgeClase}`}>

@@ -35,14 +35,8 @@ export default function EscenariosPrecio({ costo, margenObjetivo, precioActual, 
         <section className="hoja escenarios" aria-labelledby="escenarios-titulo">
             <div className="escenarios-cabeza">
                 <div>
-                    <div className="escenarios-etiqueta-badge">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                        </svg>
-                        Inteligencia de Precios
-                    </div>
                     <h2 id="escenarios-titulo">Tres escenarios estratégicos</h2>
-                    <p className="mini">
+                    <p className="mini descripcion-seccion">
                         Proyecciones calculadas en tiempo real combinando tu costo real, tu margen objetivo y las publicaciones activas con stock.
                     </p>
                 </div>
