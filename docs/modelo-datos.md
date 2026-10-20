@@ -129,6 +129,7 @@ erDiagram
 - `alerta.usuario_id` está desnormalizado (se podría llegar por monitoreo → producto → usuario) para que la bandeja del vendedor (`GET /alertas?estado=`) sea una sola consulta con índice.
 - `decision_precio.alerta_id` es único: cada alerta se decide una sola vez.
 - `monitoreo.id_publicacion` (migración `V3`, SCRUM-36) guarda el identificador de la publicación vigilada por URL. El único `(producto_id, marketplace, id_publicacion)` impide vigilar dos veces la misma publicación en un producto, aunque la URL cambie. En palabra clave queda en `NULL`.
+- Tabla `trm` (migración `V4`, SCRUM-42): cada TRM consultada en datos.gov.co, con su vigencia (la del fin de semana cubre varios días). Si datos.gov.co no responde, se convierte con la última guardada. No tiene relación con otras tablas.
 - **Índices** para las consultas frecuentes: monitoreos vencidos (`estado, proxima_ejecucion`), histórico por monitoreo y fecha, y alertas por usuario y estado.
 
 ## Pendiente para migraciones futuras

@@ -80,7 +80,7 @@ public class MonitoreoService {
     /** Pausa o reactiva. ERROR no se puede elegir: lo pone el job (SCRUM-45). */
     @Transactional
     public MonitoreoResponse cambiarEstado(Long usuarioId, Long id, CambioEstadoRequest solicitud) {
-        Monitoreo monitoreo = monitoreoPropio(usuarioId, id);
+        Monitoreo monitoreo = buscarPropio(usuarioId, id);
         switch (solicitud.estado().trim().toUpperCase()) {
             case "PAUSADO" -> monitoreo.pausar();
             case "ACTIVO" -> monitoreo.reactivar();
@@ -92,7 +92,7 @@ public class MonitoreoService {
     /** La base de datos borra en cascada el histórico, las incidencias y las alertas del monitoreo. */
     @Transactional
     public void eliminar(Long usuarioId, Long id) {
-        monitoreos.delete(monitoreoPropio(usuarioId, id));
+        monitoreos.delete(buscarPropio(usuarioId, id));
         monitoreos.flush();
     }
 
@@ -100,7 +100,8 @@ public class MonitoreoService {
         return productos.findByIdAndUsuarioId(productoId, usuarioId).orElseThrow(ProductoNoEncontradoException::new);
     }
 
-    private Monitoreo monitoreoPropio(Long usuarioId, Long id) {
+    /** El monitoreo, si es de un producto del usuario; si no, 404. Lo usa también el histórico (SCRUM-42). */
+    public Monitoreo buscarPropio(Long usuarioId, Long id) {
         return monitoreos.findById(id)
                 .filter(m -> productos.findByIdAndUsuarioId(m.getProductoId(), usuarioId).isPresent())
                 .orElseThrow(() -> new ErrorDeNegocio(HttpStatus.NOT_FOUND, MENSAJE_NO_ENCONTRADO));
