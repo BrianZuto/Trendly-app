@@ -56,7 +56,7 @@ Docente: Cristian David Henao Hoyos. El usuario `yrivera` está como Lector en J
 | SCRUM-30 Registro con política de datos | RA | En revisión | `POST /api/v1/auth/registro` (`co.trendly.usuario`): entidades `Usuario` y `Plan` (compartidas con SCRUM-31), validación con Bean Validation (email válido, contraseña de 8 a 72 caracteres con letras y números, política aceptada), BCrypt, rol VENDEDOR y plan Gratuito por defecto, fecha de aceptación de la política. Email en minúsculas; repetido → 409. Errores en el mismo JSON que los 401/403 (`ManejadorErrores`). Pruebas unitarias del servicio y de integración del endpoint. Probado en MySQL 8.4 real. | Integrar el PR (después del de SCRUM-29). |
 | SCRUM-31 Login JWT y roles | BT | Por hacer | — | jjwt 0.12.6, `JwtService`, `JwtAuthFilter`, `SecurityConfig`, `AuthController` (`/login` y `/me`), manejo de 401/403 y pruebas con perfil `test` en H2. Hay que coordinar con Raquel la entidad `Usuario`. |
 | SCRUM-32 Pantallas de registro y login | JV | Por hacer | — | — |
-| SCRUM-33 CRUD de productos | RA | Por hacer | — | — |
+| SCRUM-33 CRUD de productos | RA | En revisión | CRUD `/api/v1/productos` (`co.trendly.producto`) con JWT: crear, listar los propios, consultar, editar y eliminar. Validación de nombre, costo > 0, precio > 0 y margen 0–100; SKU opcional y único por vendedor (sin distinguir mayúsculas, 409). Cupo del plan → 422 "Alcanzó el límite de su plan". Producto ajeno → 404. Devuelve `margenActual` en porcentaje. Pruebas unitarias y de integración. Probado en MySQL 8.4 real. | Integrar el PR (después de los de SCRUM-29 y SCRUM-30). |
 | SCRUM-34 Pantalla de productos | JV | Por hacer | — | — |
 | SCRUM-35 Despliegue en Vercel | JV | Por hacer | — | — |
 

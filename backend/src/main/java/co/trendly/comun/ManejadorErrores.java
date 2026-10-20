@@ -10,7 +10,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import co.trendly.producto.LimitePlanException;
+import co.trendly.producto.ProductoNoEncontradoException;
+import co.trendly.producto.SkuRepetidoException;
 import co.trendly.seguridad.RespuestaError;
 import co.trendly.usuario.EmailYaRegistradoException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,9 +47,25 @@ public class ManejadorErrores {
         return error(HttpStatus.BAD_REQUEST, e.getMessage(), request);
     }
 
-    @ExceptionHandler(EmailYaRegistradoException.class)
-    ResponseEntity<RespuestaError> emailRepetido(EmailYaRegistradoException e, HttpServletRequest request) {
+    @ExceptionHandler({EmailYaRegistradoException.class, SkuRepetidoException.class})
+    ResponseEntity<RespuestaError> repetido(RuntimeException e, HttpServletRequest request) {
         return error(HttpStatus.CONFLICT, e.getMessage(), request);
+    }
+
+    @ExceptionHandler(ProductoNoEncontradoException.class)
+    ResponseEntity<RespuestaError> noEncontrado(ProductoNoEncontradoException e, HttpServletRequest request) {
+        return error(HttpStatus.NOT_FOUND, e.getMessage(), request);
+    }
+
+    @ExceptionHandler(LimitePlanException.class)
+    ResponseEntity<RespuestaError> limitePlan(LimitePlanException e, HttpServletRequest request) {
+        return error(HttpStatus.UNPROCESSABLE_CONTENT, e.getMessage(), request);
+    }
+
+    /** Un id que no es número, por ejemplo {@code /productos/abc}. */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    ResponseEntity<RespuestaError> parametroInvalido(HttpServletRequest request) {
+        return error(HttpStatus.BAD_REQUEST, "Parámetro inválido", request);
     }
 
     private static ResponseEntity<RespuestaError> error(HttpStatus estado, String mensaje, HttpServletRequest request) {
