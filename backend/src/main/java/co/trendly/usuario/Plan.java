@@ -17,6 +17,9 @@ public class Plan {
     /** Plan que recibe todo vendedor nuevo (SCRUM-30). */
     public static final String GRATUITO = "Gratuito";
 
+    /** Único plan que puede bajar la frecuencia de los monitoreos (SCRUM-36). */
+    public static final String PRO = "Pro";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

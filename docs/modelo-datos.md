@@ -48,6 +48,7 @@ erDiagram
         BIGINT producto_id FK
         VARCHAR tipo "URL | PALABRA_CLAVE"
         VARCHAR valor
+        VARCHAR id_publicacion "MCO-… o ítem de AliExpress (V3)"
         VARCHAR marketplace "MERCADOLIBRE | ALIEXPRESS"
         INT top_n "1 a 10"
         INT frecuencia_horas
@@ -127,6 +128,7 @@ erDiagram
 - **Borrado en cascada** desde `usuario` y `producto`: al borrar un producto se van sus monitoreos, histórico, alertas y decisiones.
 - `alerta.usuario_id` está desnormalizado (se podría llegar por monitoreo → producto → usuario) para que la bandeja del vendedor (`GET /alertas?estado=`) sea una sola consulta con índice.
 - `decision_precio.alerta_id` es único: cada alerta se decide una sola vez.
+- `monitoreo.id_publicacion` (migración `V3`, SCRUM-36) guarda el identificador de la publicación vigilada por URL. El único `(producto_id, marketplace, id_publicacion)` impide vigilar dos veces la misma publicación en un producto, aunque la URL cambie. En palabra clave queda en `NULL`.
 - **Índices** para las consultas frecuentes: monitoreos vencidos (`estado, proxima_ejecucion`), histórico por monitoreo y fecha, y alertas por usuario y estado.
 
 ## Pendiente para migraciones futuras

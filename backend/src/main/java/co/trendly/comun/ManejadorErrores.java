@@ -12,11 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import co.trendly.producto.LimitePlanException;
-import co.trendly.producto.ProductoNoEncontradoException;
-import co.trendly.producto.SkuRepetidoException;
 import co.trendly.seguridad.RespuestaError;
-import co.trendly.usuario.EmailYaRegistradoException;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -25,6 +21,12 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @RestControllerAdvice
 public class ManejadorErrores {
+
+    /** Reglas del negocio: 400, 404, 409, 422... según el error. */
+    @ExceptionHandler(ErrorDeNegocio.class)
+    ResponseEntity<RespuestaError> errorDeNegocio(ErrorDeNegocio e, HttpServletRequest request) {
+        return error(e.getEstado(), e.getMessage(), request);
+    }
 
     /** Errores de Bean Validation: un mensaje por campo, ordenados por nombre de campo para que sea estable. */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -45,21 +47,6 @@ public class ManejadorErrores {
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<RespuestaError> argumentoInvalido(IllegalArgumentException e, HttpServletRequest request) {
         return error(HttpStatus.BAD_REQUEST, e.getMessage(), request);
-    }
-
-    @ExceptionHandler({EmailYaRegistradoException.class, SkuRepetidoException.class})
-    ResponseEntity<RespuestaError> repetido(RuntimeException e, HttpServletRequest request) {
-        return error(HttpStatus.CONFLICT, e.getMessage(), request);
-    }
-
-    @ExceptionHandler(ProductoNoEncontradoException.class)
-    ResponseEntity<RespuestaError> noEncontrado(ProductoNoEncontradoException e, HttpServletRequest request) {
-        return error(HttpStatus.NOT_FOUND, e.getMessage(), request);
-    }
-
-    @ExceptionHandler(LimitePlanException.class)
-    ResponseEntity<RespuestaError> limitePlan(LimitePlanException e, HttpServletRequest request) {
-        return error(HttpStatus.UNPROCESSABLE_CONTENT, e.getMessage(), request);
     }
 
     /** Un id que no es número, por ejemplo {@code /productos/abc}. */
