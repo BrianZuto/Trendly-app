@@ -49,7 +49,8 @@ public class RegistroService {
         }
     }
 
-    static String normalizarEmail(String email) {
+    /** Minúsculas y sin espacios. El login (SCRUM-31) lo usa para buscar el usuario igual que se guardó. */
+    public static String normalizarEmail(String email) {
         return email.trim().toLowerCase(Locale.ROOT);
     }
 }
