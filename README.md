@@ -3,7 +3,7 @@
 Plataforma web (con extensión móvil) de análisis de precios y productos para comercio electrónico y dropshipping en Colombia y Latinoamérica.
 
 [![CI](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml/badge.svg)](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml)
-<!-- SonarCloud: badge pendiente (Sprint 3) -->
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BrianZuto_Trendly-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=BrianZuto_Trendly-app)
 
 **Aplicación publicada:** https://trendlyapp.vercel.app (producción, se actualiza con cada cambio en `main`)
 
@@ -43,7 +43,7 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Pendiente (Sprint 3) |
 | Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Frontend en Vercel (SCRUM-35); backend pendiente (Sprint 5) |
-| Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud pendiente (Sprint 3) |
+| Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud configurado (SCRUM-44) |
 
 ### Estructura del monorepo
 

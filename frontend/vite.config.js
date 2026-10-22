@@ -21,7 +21,8 @@ export default defineConfig({
       provider: 'v8',
       include: ['src/**/*.{js,jsx}'],
       exclude: ['src/main.jsx', 'src/test/**', 'src/**/*.test.{js,jsx}'],
-      reporter: ['text', 'html', 'lcov'],
+      // lcov con rutas desde la raíz del repositorio (frontend/src/...) para SonarCloud
+      reporter: ['text', 'html', ['lcov', { projectRoot: '..' }]],
       reportsDirectory: 'coverage',
     },
   },
