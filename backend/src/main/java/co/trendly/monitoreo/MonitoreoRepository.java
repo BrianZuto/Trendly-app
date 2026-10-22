@@ -1,10 +1,16 @@
 package co.trendly.monitoreo;
 
+import java.time.Instant;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MonitoreoRepository extends JpaRepository<Monitoreo, Long> {
+
+    /** Lote del job (SCRUM-39): los ACTIVOS cuya próxima captura ya venció, los más atrasados primero. */
+    List<Monitoreo> findByEstadoAndProximaEjecucionLessThanEqualOrderByProximaEjecucionAscIdAsc(EstadoMonitoreo estado,
+            Instant hasta, Pageable lote);
 
     List<Monitoreo> findByProductoIdOrderByIdAsc(Long productoId);
 

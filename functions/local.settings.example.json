@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "BACKEND_URL": "http://localhost:8080",
+    "RECOLECCION_API_KEY": "la-misma-del-.env-del-backend"
+  }
+}

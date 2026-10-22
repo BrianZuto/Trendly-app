@@ -89,6 +89,28 @@ jobs:
           path: frontend/coverage/
           if-no-files-found: ignore
 
+  # Azure Function que dispara la recolección cada 6 h (SCRUM-39)
+  functions:
+    name: functions
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: functions
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Pruebas
+        run: npm test
+
   # Análisis de calidad (SCRUM-44). Reutiliza la compilación y la cobertura de los otros dos jobs.
   sonarcloud:
     name: sonarcloud

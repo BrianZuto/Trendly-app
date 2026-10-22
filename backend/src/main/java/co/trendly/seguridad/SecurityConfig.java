@@ -28,6 +28,7 @@ import tools.jackson.databind.json.JsonMapper;
  * Seguridad del API: sin sesión (stateless), autenticación con JWT y permisos por rol.
  * <ul>
  * <li>Públicas: {@code /api/v1/auth/**} (excepto {@code /api/v1/auth/me}) y {@code /actuator/health}.</li>
+ * <li>{@code /api/v1/interno/**}: sin JWT, protegidas con la API key del job (SCRUM-39).</li>
  * <li>Solo ADMIN: {@code /api/v1/admin/**}.</li>
  * <li>Todo lo demás exige un token válido.</li>
  * </ul>
@@ -51,6 +52,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(rutas -> rutas
                         .requestMatchers("/api/v1/auth/me").authenticated()
                         .requestMatchers("/api/v1/auth/**", "/actuator/health", "/error").permitAll()
+                        // El job de Azure no tiene usuario: el controlador exige la API key (SCRUM-39)
+                        .requestMatchers("/api/v1/interno/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(errores -> errores
