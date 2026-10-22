@@ -85,6 +85,11 @@ public class Monitoreo {
         return monitoreo;
     }
 
+    /** Hubo una captura nueva en el histórico (SCRUM-42). */
+    public void registrarCaptura(Instant cuando) {
+        ultimaCaptura = cuando;
+    }
+
     public void pausar() {
         estado = EstadoMonitoreo.PAUSADO;
     }
