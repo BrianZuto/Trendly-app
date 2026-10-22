@@ -1,7 +1,7 @@
 import { formatearPesos } from '@features/productos/formato'
 import { MARKETPLACES } from '@shared/utils/marketplaces'
 
-export { MARKETPLACES, SITIOS_REVENTA } from '@shared/utils/marketplaces'
+export { MARKETPLACES, SITIOS_REVENTA, SITIOS_SOPORTADOS } from '@shared/utils/marketplaces'
 
 export const ESTADOS = {
     ACTIVO: { texto: 'Activo', clase: 'estado-activo' },

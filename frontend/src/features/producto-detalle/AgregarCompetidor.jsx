@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { mensajeDeError } from '@core/api/errores'
 import Mensaje from '@shared/components/Mensaje'
 import { marketplaceDeUrl, validarCompetidorUrl, validarPalabraClave } from '@shared/utils/validaciones'
-import { MARKETPLACES, SITIOS_REVENTA } from './util'
+import { MARKETPLACES, SITIOS_SOPORTADOS } from './util'
 
 gsap.registerPlugin(useGSAP)
 
@@ -158,7 +158,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
                                         type="url"
                                         inputMode="url"
                                         autoComplete="off"
-                                        placeholder="https://articulo.mercadolibre.com.co/MCO-…"
+                                        placeholder="https://www.mercadolibre.com.co/…/p/MCO…"
                                         value={url}
                                         aria-invalid={Boolean(errores.url)}
                                         aria-describedby={errores.url ? 'url-error' : undefined}
@@ -183,7 +183,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
                                 {enviando ? 'Agregando…' : 'Agregar'}
                             </button>
                         </div>
-                        <p className="mini">Ejemplos válidos: articulo.mercadolibre.com.co/MCO-… · falabella.com.co/falabella-co/product/… · amazon.com/dp/…</p>
+                        <p className="mini">Abre el producto en MercadoLibre y copia la URL de catálogo: mercadolibre.com.co/…/p/MCO…</p>
                     </>
                 ) : (
                     <>
@@ -210,7 +210,7 @@ const AgregarCompetidor = forwardRef(function AgregarCompetidor({ onAgregar }, r
                             <div className="campo campo-mk">
                                 <label htmlFor="palabra-mk">Marketplace</label>
                                 <select id="palabra-mk" value={palabra.marketplace} onChange={(e) => setPalabra((p) => ({ ...p, marketplace: e.target.value }))}>
-                                    {SITIOS_REVENTA.map((sitio) => (
+                                    {SITIOS_SOPORTADOS.map((sitio) => (
                                         <option key={sitio} value={sitio}>
                                             {MARKETPLACES[sitio].nombre}
                                         </option>
