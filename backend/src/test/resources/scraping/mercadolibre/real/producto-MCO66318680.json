@@ -1,0 +1,1012 @@
+{
+ "id": "MCO66318680",
+ "catalog_product_id": "MCO66318680",
+ "status": "active",
+ "pdp_types": [
+  "traditional"
+ ],
+ "domain_id": "MCO-HEADPHONES",
+ "permalink": "",
+ "name": "Auriculares Xiaomi Redmi Buds 8 Active Bluetooth Blanco",
+ "family_name": "Auriculares in-ear inalámbricos Xiaomi Redmi Buds 8 Active",
+ "type": "catalog_product",
+ "buy_box_winner": null,
+ "pickers": [
+  {
+   "picker_id": "COLOR",
+   "picker_name": "Color",
+   "products": [
+    {
+     "product_id": "MCO67707950",
+     "picker_label": "Azul",
+     "picture_id": "671279-MLA110164531055_042026",
+     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_671279-MLA110164531055_042026-I.jpg",
+     "tags": [],
+     "changes": [
+      [
+       "COLOR",
+       "Azul"
+      ]
+     ],
+     "permalink": "",
+     "product_name": "Xiaomi Bluetooth Redmi Buds 8 Active M2537E1 - Azul - 1",
+     "auto_completed": true,
+     "rgb_meta": "1717FF"
+    },
+    {
+     "product_id": "MCO66318680",
+     "picker_label": "Blanco",
+     "picture_id": "629609-MLA111226674529_052026",
+     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_629609-MLA111226674529_052026-I.jpg",
+     "tags": [
+      "selected"
+     ],
+     "changes": [],
+     "permalink": "",
+     "product_name": "Xiaomi Bluetooth Redmi Buds 8 Active M2537E1 - Blanco - 1",
+     "auto_completed": true,
+     "rgb_meta": "FFFFFF"
+    },
+    {
+     "product_id": "MCO68111260",
+     "picker_label": "Celeste",
+     "picture_id": "634542-MLA110516611713_042026",
+     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_634542-MLA110516611713_042026-I.jpg",
+     "tags": [],
+     "changes": [
+      [
+       "COLOR",
+       "Celeste"
+      ]
+     ],
+     "permalink": "",
+     "product_name": "Xiaomi Bluetooth Redmi Buds 8 Active M2537E1 - Celeste - 1",
+     "auto_completed": true,
+     "rgb_meta": "83DDFF"
+    },
+    {
+     "product_id": "MCO66327698",
+     "picker_label": "Negro",
+     "picture_id": "630657-MLA107581162042_032026",
+     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_630657-MLA107581162042_032026-I.jpg",
+     "tags": [],
+     "changes": [
+      [
+       "COLOR",
+       "Negro"
+      ]
+     ],
+     "permalink": "",
+     "product_name": "Xiaomi Bluetooth Redmi Buds 8 Active M2537E1 - Negro - 1",
+     "auto_completed": true,
+     "rgb_meta": "000000"
+    }
+   ],
+   "tags": [],
+   "attributes": [
+    {
+     "attribute_id": "COLOR",
+     "template": "",
+     "position": 1
+    },
+    {
+     "attribute_id": "LIGHT_COLOR",
+     "template": "",
+     "position": 2
+    }
+   ],
+   "value_name_delimiter": " | ",
+   "hide_extra_decoration": false,
+   "secondary_picker_name": ""
+  },
+  {
+   "picker_id": "PAIRS_NUMBER",
+   "picker_name": "Cantidad de pares",
+   "products": [
+    {
+     "product_id": "MCO66318680",
+     "picker_label": "1",
+     "picture_id": "",
+     "thumbnail": "",
+     "tags": [
+      "selected"
+     ],
+     "changes": [],
+     "permalink": "",
+     "product_name": "Xiaomi Bluetooth Redmi Buds 8 Active M2537E1 - Blanco - 1",
+     "auto_completed": false,
+     "rgb_meta": "FFFFFF"
+    }
+   ],
+   "tags": [],
+   "attributes": [
+    {
+     "attribute_id": "PAIRS_NUMBER",
+     "template": "",
+     "position": 1
+    }
+   ],
+   "value_name_delimiter": "",
+   "hide_extra_decoration": false,
+   "secondary_picker_name": ""
+  }
+ ],
+ "pictures": [
+  {
+   "id": "629609-MLA111226674529_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_629609-MLA111226674529_052026-F.jpg",
+   "suggested_for_picker": [
+    "COLOR"
+   ],
+   "max_width": 900,
+   "max_height": 1200,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "908523-MLA111696124195_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_908523-MLA111696124195_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 1200,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "912256-MLA111695597073_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_912256-MLA111695597073_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 1200,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "651662-MLA111696004553_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_651662-MLA111696004553_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 1200,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "887314-MLA111696063901_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_887314-MLA111696063901_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 406,
+   "max_height": 550,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "692997-MLA111696564827_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_692997-MLA111696564827_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 537,
+   "max_height": 550,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "860513-MLA111696388259_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_860513-MLA111696388259_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 594,
+   "max_height": 512,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "932033-MLA110737836474_052026",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_932033-MLA110737836474_052026-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 546,
+   "max_height": 545,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  }
+ ],
+ "description_pictures": [],
+ "main_features": [
+  {
+   "text": "Alcance inalámbrico de 10 m.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "La duración máxima de la batería es 37 h.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "Su clasificación IP es IP54.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "Uso apto para deporte, profesional, entretenimiento.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "Tamaño del altavoz: 1.42cm.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "Posee 2 micrófonos para llamadas de voz más nítidas.",
+   "type": "key_value",
+   "metadata": {}
+  }
+ ],
+ "disclaimers": [],
+ "attributes": [
+  {
+   "id": "MANUFACTURER",
+   "name": "Fabricante",
+   "value_id": "59387",
+   "value_name": "Xiaomi",
+   "values": [
+    {
+     "id": "59387",
+     "name": "Xiaomi"
+    }
+   ]
+  },
+  {
+   "id": "BRAND",
+   "name": "Marca",
+   "value_id": "59387",
+   "value_name": "Xiaomi",
+   "values": [
+    {
+     "id": "59387",
+     "name": "Xiaomi"
+    }
+   ]
+  },
+  {
+   "id": "LINE",
+   "name": "Línea",
+   "value_id": "7446666",
+   "value_name": "Bluetooth",
+   "values": [
+    {
+     "id": "7446666",
+     "name": "Bluetooth"
+    }
+   ]
+  },
+  {
+   "id": "MODEL",
+   "name": "Modelo",
+   "value_id": "74328841",
+   "value_name": "Redmi Buds 8 Active",
+   "values": [
+    {
+     "id": "74328841",
+     "name": "Redmi Buds 8 Active"
+    }
+   ]
+  },
+  {
+   "id": "ALPHANUMERIC_MODEL",
+   "name": "Modelo alfanumérico",
+   "value_id": "77381772",
+   "value_name": "M2537E1",
+   "values": [
+    {
+     "id": "77381772",
+     "name": "M2537E1"
+    }
+   ]
+  },
+  {
+   "id": "COLOR",
+   "name": "Color",
+   "value_id": "52055",
+   "value_name": "Blanco",
+   "values": [
+    {
+     "id": "52055",
+     "name": "Blanco"
+    }
+   ]
+  },
+  {
+   "id": "PAIRS_NUMBER",
+   "name": "Cantidad de pares",
+   "value_id": "7386989",
+   "value_name": "1",
+   "values": [
+    {
+     "id": "7386989",
+     "name": "1"
+    }
+   ]
+  },
+  {
+   "id": "MAIN_COLOR",
+   "name": "Color principal",
+   "value_id": "2450308",
+   "value_name": "Blanco",
+   "values": [
+    {
+     "id": "2450308",
+     "name": "Blanco",
+     "meta": {
+      "rgb": "FFFFFF"
+     }
+    }
+   ],
+   "meta": {
+    "rgb": "FFFFFF"
+   }
+  },
+  {
+   "id": "HEADPHONE_FORMAT",
+   "name": "Formato del audífono",
+   "value_id": "182351",
+   "value_name": "In-ear",
+   "values": [
+    {
+     "id": "182351",
+     "name": "In-ear"
+    }
+   ]
+  },
+  {
+   "id": "IS_WIRELESS",
+   "name": "Es inalámbrico",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "WITH_BLUETOOTH",
+   "name": "Con Bluetooth",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "WITH_MICROPHONE",
+   "name": "Con micrófono",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "IS_MONAURAL",
+   "name": "Es monoaural",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "IS_INFANT",
+   "name": "Es infantil",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_LED_LIGHT",
+   "name": "Con luz LED",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "PACKAGE_DATA_SOURCE",
+   "name": "Orígen del dato del paquete de fábrica",
+   "value_id": "52228230",
+   "value_name": "CERTIFIED_MEASUREMENT",
+   "values": [
+    {
+     "id": "52228230",
+     "name": "CERTIFIED_MEASUREMENT"
+    }
+   ]
+  },
+  {
+   "id": "WIRELESS_RANGE",
+   "name": "Alcance inalámbrico",
+   "value_id": "2120609",
+   "value_name": "10 m",
+   "values": [
+    {
+     "id": "2120609",
+     "name": "10 m"
+    }
+   ]
+  },
+  {
+   "id": "DIAPHRAGM_UNIT",
+   "name": "Unidad de diafragma",
+   "value_id": "48538736",
+   "value_name": "1.42 cm",
+   "values": [
+    {
+     "id": "48538736",
+     "name": "1.42 cm"
+    }
+   ]
+  },
+  {
+   "id": "IMPEDANCE",
+   "name": "Impedancia",
+   "value_id": "447286",
+   "value_name": "32 Ω",
+   "values": [
+    {
+     "id": "447286",
+     "name": "32 Ω"
+    }
+   ]
+  },
+  {
+   "id": "FREQUENCY_RESPONSE",
+   "name": "Respuesta en frecuencia",
+   "value_id": "925820",
+   "value_name": "20 Hz - 20 kHz",
+   "values": [
+    {
+     "id": "925820",
+     "name": "20 Hz - 20 kHz"
+    }
+   ]
+  },
+  {
+   "id": "HEADPHONE_MAX_BATTERY_LIFE",
+   "name": "Duración de la batería del audífono",
+   "value_id": "46887446",
+   "value_name": "37 h",
+   "values": [
+    {
+     "id": "46887446",
+     "name": "37 h"
+    }
+   ]
+  },
+  {
+   "id": "HEADPHONE_BATTERY_CAPACITY",
+   "name": "Capacidad de la batería del audífono",
+   "value_id": "9929681",
+   "value_name": "37 mAh",
+   "values": [
+    {
+     "id": "9929681",
+     "name": "37 mAh"
+    }
+   ]
+  },
+  {
+   "id": "CHARGING_CASE_BATTERY_CAPACITY",
+   "name": "Capacidad de la batería del estuche de carga",
+   "value_id": "43553068",
+   "value_name": "475 mAh",
+   "values": [
+    {
+     "id": "43553068",
+     "name": "475 mAh"
+    }
+   ]
+  },
+  {
+   "id": "INCLUDES_CHARGING_CASE",
+   "name": "Incluye estuche de carga",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "WITH_WIRELESS_CHARGING",
+   "name": "Con carga inalámbrica",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_TWS_TECHNOLOGY",
+   "name": "Con tecnología TWS",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "WITH_PROXIMITY_SENSOR",
+   "name": "Con sensor de proximidad",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_HANDS_FREE_MODE",
+   "name": "Con modo manos libres",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "WITH_MP3_PLAYER",
+   "name": "Con reproductor de MP3",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_FM_RADIO",
+   "name": "Con radio FM",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_NOISE_CANCELLING",
+   "name": "Con cancelación de ruido",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "IS_WATER_RESISTANT",
+   "name": "Es resistente al agua",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "IS_WATERPROOF",
+   "name": "Es a prueba de agua",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "IS_DUST_RESISTANT",
+   "name": "Es resistente al polvo",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "WITH_DETACHABLE_MICROPHONE",
+   "name": "Con micrófono desmontable",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_FLEXIBLE_MICROPHONE",
+   "name": "Con micrófono flexible",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "MICROPHONES_NUMBER",
+   "name": "Cantidad de micrófonos",
+   "value_id": "288917",
+   "value_name": "2",
+   "values": [
+    {
+     "id": "288917",
+     "name": "2"
+    }
+   ]
+  },
+  {
+   "id": "IP_RATING",
+   "name": "Clasificación IP",
+   "value_id": "8875680",
+   "value_name": "IP54",
+   "values": [
+    {
+     "id": "8875680",
+     "name": "IP54"
+    }
+   ]
+  },
+  {
+   "id": "CONNECTOR_TYPES",
+   "name": "Tipos de conectores",
+   "value_id": "2113108",
+   "value_name": "USB-C",
+   "values": [
+    {
+     "id": "2113108",
+     "name": "USB-C"
+    }
+   ]
+  },
+  {
+   "id": "BLUETOOTH_VERSION",
+   "name": "Versión de Bluetooth",
+   "value_id": "34535958",
+   "value_name": "5.4",
+   "values": [
+    {
+     "id": "34535958",
+     "name": "5.4"
+    }
+   ]
+  },
+  {
+   "id": "MICROPHONE_ORIENTATIONS",
+   "name": "Orientaciones del micrófono",
+   "value_id": null,
+   "value_name": "Derecha, Izquierda",
+   "values": [
+    {
+     "id": "8847354",
+     "name": "Derecha"
+    },
+    {
+     "id": "8847355",
+     "name": "Izquierda"
+    }
+   ]
+  },
+  {
+   "id": "SUITABLE_USES",
+   "name": "Usos aptos",
+   "value_id": null,
+   "value_name": "Deporte, Profesional, Entretenimiento",
+   "values": [
+    {
+     "id": "8701148",
+     "name": "Deporte"
+    },
+    {
+     "id": "8701147",
+     "name": "Profesional"
+    },
+    {
+     "id": "19992751",
+     "name": "Entretenimiento"
+    }
+   ]
+  },
+  {
+   "id": "CONTROL_FUNCTIONS",
+   "name": "Funciones de control",
+   "value_id": null,
+   "value_name": "Control de volumen, Control de canciones, Control de llamadas, Play",
+   "values": [
+    {
+     "id": "11559796",
+     "name": "Control de volumen"
+    },
+    {
+     "id": "11616279",
+     "name": "Control de canciones"
+    },
+    {
+     "id": "11588393",
+     "name": "Control de llamadas"
+    },
+    {
+     "id": "11559795",
+     "name": "Play"
+    }
+   ]
+  }
+ ],
+ "short_description": {
+  "type": "plaintext",
+  "content": ""
+ },
+ "parent_id": "MCO66318678",
+ "children_ids": [],
+ "settings": {
+  "content": "fixed",
+  "listing_strategy": "catalog_required",
+  "exclusive": false,
+  "with_enhanced_pictures": false,
+  "base_site_product_id": null,
+  "ttr": "2026-10-22T03:05:36.509305115"
+ },
+ "quality_type": "COMPLETE",
+ "release_info": null,
+ "enhanced_content": {
+  "template_id": "192277fa-8c1d-438f-abd0-df36e150a494",
+  "version": "2.0",
+  "components": [
+   {
+    "type": "FLYER",
+    "ui_config": null,
+    "thumbnail": "",
+    "content": [
+     {
+      "id": "947540-MLA111543122301_052026",
+      "url": "https://http2.mlstatic.com/D_NQ_NP_947540-MLA111543122301_052026-F.jpg",
+      "max_width": 800,
+      "max_height": 473,
+      "source_metadata": null,
+      "status": "COMPLETED",
+      "tags": null
+     },
+     {
+      "id": "974480-MLA110595186658_052026",
+      "url": "https://http2.mlstatic.com/D_NQ_NP_974480-MLA110595186658_052026-F.jpg",
+      "max_width": 800,
+      "max_height": 914,
+      "source_metadata": null,
+      "status": "COMPLETED",
+      "tags": null
+     },
+     {
+      "id": "945426-MLA111542242951_052026",
+      "url": "https://http2.mlstatic.com/D_NQ_NP_945426-MLA111542242951_052026-F.jpg",
+      "max_width": 800,
+      "max_height": 510,
+      "source_metadata": null,
+      "status": "COMPLETED",
+      "tags": null
+     },
+     {
+      "id": "608611-MLA111542477827_052026",
+      "url": "https://http2.mlstatic.com/D_NQ_NP_608611-MLA111542477827_052026-F.jpg",
+      "max_width": 800,
+      "max_height": 883,
+      "source_metadata": null,
+      "status": "COMPLETED",
+      "tags": null
+     },
+     {
+      "id": "656352-MLA110595216156_052026",
+      "url": "https://http2.mlstatic.com/D_NQ_NP_656352-MLA110595216156_052026-F.jpg",
+      "max_width": 800,
+      "max_height": 523,
+      "source_metadata": null,
+      "status": "COMPLETED",
+      "tags": null
+     },
+     {
+      "id": "804092-MLA111542624479_052026",
+      "url": "https://http2.mlstatic.com/D_NQ_NP_804092-MLA111542624479_052026-F.jpg",
+      "max_width": 800,
+      "max_height": 376,
+      "source_metadata": null,
+      "status": "COMPLETED",
+      "tags": null
+     }
+    ]
+   }
+  ]
+ },
+ "tags": [],
+ "date_created": "2026-03-07T16:23:02Z",
+ "authorized_stores": null,
+ "last_updated": "2026-10-19T21:41:58Z",
+ "grouper_id": null,
+ "experiments": {},
+ "decoration_partial_content": false
+}
