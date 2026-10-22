@@ -42,7 +42,7 @@ Docente: Cristian David Henao Hoyos. El usuario `yrivera` está como Lector en J
 |---|---|
 | S1 · Definición del proyecto (10/09–23/09) | ✅ Completado. Documento v0100 entregado. |
 | S2 · Base técnica y usuarios (23/09–07/10) | 🔄 En curso. Ver el detalle abajo. |
-| S3 · Proceso 1 y recolección (08/10–21/10) | Planeado. Historias SCRUM-36 a 44 creadas en Jira. |
+| S3 · Proceso 1 y recolección (08/10–21/10) | 🔄 En curso. SCRUM-36 (competidores por URL, RA) en revisión: `POST`/`GET /api/v1/productos/{id}/monitoreos`, `PATCH`/`DELETE /api/v1/monitoreos/{id}`; MercadoLibre y AliExpress; 409 si se repite la publicación, 422 al pasar de 10 por producto; frecuencia de 6 h (solo Pro baja hasta 1 h); migración `V3` con `id_publicacion`. El tipo `PALABRA_CLAVE` responde 400 hasta SCRUM-37. |
 | S4 · Análisis y Proceso 3 (22/10–04/11) | Planeado. Historias SCRUM-45 a 52 creadas en Jira. |
 | S5 · Cierre (05/11–09/11) | Planeado. Historias SCRUM-53 a 55 creadas en Jira. |
 
