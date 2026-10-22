@@ -15,7 +15,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import co.trendly.producto.LimitePlanException;
 import co.trendly.producto.ProductoNoEncontradoException;
 import co.trendly.producto.SkuRepetidoException;
+import co.trendly.seguridad.CredencialesInvalidasException;
 import co.trendly.seguridad.RespuestaError;
+import co.trendly.seguridad.TokenSinUsuarioException;
 import co.trendly.usuario.EmailYaRegistradoException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -50,6 +52,11 @@ public class ManejadorErrores {
     @ExceptionHandler({EmailYaRegistradoException.class, SkuRepetidoException.class})
     ResponseEntity<RespuestaError> repetido(RuntimeException e, HttpServletRequest request) {
         return error(HttpStatus.CONFLICT, e.getMessage(), request);
+    }
+
+    @ExceptionHandler({CredencialesInvalidasException.class, TokenSinUsuarioException.class})
+    ResponseEntity<RespuestaError> noAutenticado(RuntimeException e, HttpServletRequest request) {
+        return error(HttpStatus.UNAUTHORIZED, e.getMessage(), request);
     }
 
     @ExceptionHandler(ProductoNoEncontradoException.class)
