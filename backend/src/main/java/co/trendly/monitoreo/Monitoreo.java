@@ -113,6 +113,15 @@ public class Monitoreo {
         ultimaCaptura = cuando;
     }
 
+    /**
+     * Resultado de un ciclo del job (SCRUM-39): la próxima captura queda en ahora + frecuencia. Un éxito reinicia los
+     * fallos seguidos; un fallo los suma (al llegar a 3 el monitoreo pasa a ERROR en SCRUM-45).
+     */
+    public void registrarCiclo(Instant ahora, boolean exito) {
+        proximaEjecucion = ahora.plus(frecuenciaHoras, ChronoUnit.HOURS);
+        fallosConsecutivos = exito ? 0 : fallosConsecutivos + 1;
+    }
+
     public void pausar() {
         estado = EstadoMonitoreo.PAUSADO;
     }

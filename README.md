@@ -59,6 +59,7 @@ trendly/
 ├── frontend/                # SPA (React + Vite)
 │   ├── package.json
 │   └── src/
+├── functions/               # Azure Function: dispara la recolección cada 6 h (SCRUM-39)
 ├── mobile/                  # App React Native + Expo (pendiente, Sprint 4)
 ├── docs/                    # BPMN, modelo de datos, pruebas de aceptación, resultados SUS
 ├── .github/                 # Plantilla de PR y workflows de CI
@@ -109,6 +110,8 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `CORS_ALLOWED_ORIGINS` | Orígenes del frontend permitidos, separados por comas | `http://localhost:5173` |
 | `ML_CLIENT_ID` | App ID de la aplicación de MercadoLibre (developers.mercadolibre.com.co) | `1234567890123456` |
 | `ML_CLIENT_SECRET` | Secret Key de esa aplicación | `cambia-esto` |
+| `RECOLECCION_API_KEY` | Clave que la Azure Function envía en `X-Api-Key` para disparar el job | salida de `openssl rand -hex 32` |
+| `TRENDLY_SCHEDULER_LOCAL` | `true` para correr el job en local cada 6 h, sin Azure | `false` |
 | `MAIL_HOST` | Servidor SMTP para las alertas | `smtp.gmail.com` |
 | `MAIL_PORT` | Puerto SMTP | `587` |
 | `MAIL_USERNAME` | Usuario SMTP | `alertas@ejemplo.com` |
@@ -212,6 +215,25 @@ Cada marketplace implementa `MarketplaceScraper.obtener(Monitoreo)`, que **nunca
 El histórico (SCRUM-42) guarda cada publicación como un punto ligado al monitoreo y a su `idPublicacion`, así se compara la misma publicación entre capturas. Se consulta en `GET /api/v1/monitoreos/{id}/historico`.
 
 **Limitaciones de MercadoLibre:** su HTML tiene verificación anti-bots, así que se usa la API oficial con las credenciales `ML_CLIENT_ID` y `ML_CLIENT_SECRET`. Con el token de la aplicación solo se leen ofertas de otros vendedores a través del catálogo; por eso solo se aceptan URLs de catálogo, y la palabra clave funciona con búsquedas específicas ("redmi buds"): en búsquedas genéricas los primeros productos del catálogo no tienen ofertas y la captura sale como `FALLO` (`NO_ENCONTRADO`).
+
+## Job de recolección (SCRUM-39)
+
+Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:
+
+1. Responde de inmediato: `202` (ciclo iniciado), `200` (ya hay un ciclo en curso: el disparo se ignora), `401` (clave inválida) o `503` (falta `RECOLECCION_API_KEY`).
+2. En segundo plano toma los monitoreos `ACTIVO` cuya próxima ejecución ya venció, por lotes de 20, y los captura con el scraper de su marketplace.
+3. Guarda cada resultado en el histórico y reprograma el monitoreo para ahora + su frecuencia. Una captura fallida suma un fallo seguido (el paso a `ERROR` es de SCRUM-45) y no detiene el ciclo.
+4. Registra en el log el inicio y el fin de cada ciclo con los procesados, exitosos, fallidos y puntos nuevos.
+
+Como cada monitoreo queda reprogramado al procesarlo, dos disparos seguidos no lo capturan dos veces.
+
+**En local, sin Azure:** `TRENDLY_SCHEDULER_LOCAL=true` corre el mismo ciclo con `@Scheduled` (`TRENDLY_SCHEDULER_CRON` cambia la frecuencia), o se dispara a mano:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/interno/recoleccion/ejecutar -H "X-Api-Key: $RECOLECCION_API_KEY"
+```
+
+**La Function:** `cd functions && npm ci && npm test`. En Azure necesita las variables `BACKEND_URL` (URL pública del backend) y `RECOLECCION_API_KEY` (la misma del backend).
 
 ## Flujo de trabajo con Git
 
