@@ -114,7 +114,7 @@ class MercadoLibreScraperTest {
 
         assertThat(rutas).filteredOn(r -> r.startsWith("/products/search")).containsExactly(
                 "/products/search?status=active&site_id=MCO&q=redmi%20buds&limit=20",
-                "/products/search?status=active&site_id=MCO&q=redmi%20buds&limit=50");
+                "/products/search?status=active&site_id=MCO&q=redmi%20buds&limit=40");
     }
 
     @Test
@@ -190,7 +190,7 @@ class MercadoLibreScraperTest {
                 .limitForPeriod(1).limitRefreshPeriod(Duration.ofHours(1)).timeoutDuration(Duration.ZERO).build());
         sinTurnos.acquirePermission();
 
-        ResultadoScraping resultado = new MercadoLibreScraper(this::responder, sinTurnos).obtener(porUrl(URL_REDMI));
+        ResultadoScraping resultado = new MercadoLibreScraper(MercadoLibreScraperTest::responder, sinTurnos).obtener(porUrl(URL_REDMI));
 
         assertThat(resultado.tipoFallo()).isEqualTo(TipoFallo.TIMEOUT);
         assertThat(rutas).isEmpty();
@@ -221,7 +221,7 @@ class MercadoLibreScraperTest {
     }
 
     private MercadoLibreScraper scraper() {
-        return scraper(this::responder);
+        return scraper(MercadoLibreScraperTest::responder);
     }
 
     private MercadoLibreScraper scraper(ApiMercadoLibre api) {
@@ -234,7 +234,7 @@ class MercadoLibreScraperTest {
     }
 
     /** Responde cada ruta con su respuesta real; los 404 reales se lanzan como lo hace el cliente HTTP. */
-    private JsonNode responder(String ruta) throws FalloDeScraping {
+    static JsonNode responder(String ruta) throws FalloDeScraping {
         JsonNode respuesta = json(fixturePara(ruta));
         if (respuesta.path("status").asInt(200) == 404) {
             throw new FalloDeScraping(TipoFallo.NO_ENCONTRADO, "La API de MercadoLibre respondió 404");

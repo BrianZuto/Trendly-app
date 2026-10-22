@@ -8,7 +8,7 @@ import { buscarOfertas } from '@core/services/proveedores.service'
 import CampoTexto from '@shared/components/CampoTexto'
 import Mensaje from '@shared/components/Mensaje'
 import Paletas from '@shared/components/Paletas'
-import { MARKETPLACES, SITIOS_REVENTA } from '@shared/utils/marketplaces'
+import { MARKETPLACES, SITIOS_SOPORTADOS } from '@shared/utils/marketplaces'
 import { validarProducto, validarReventa } from '@shared/utils/validaciones'
 import { calcularMargen, formatearDolares, formatearPesos, formatearPorcentaje, pesosEnPaletas, precioMinimo, TRM } from '@features/productos/formato'
 import BuscarProveedor from './BuscarProveedor'
@@ -376,7 +376,7 @@ export default function NuevoProducto() {
                         <p className="mini">Trendly vigila los primeros resultados de la búsqueda en cada sitio, cada 6 horas.</p>
                         <fieldset className="sitios" aria-describedby={errores.marketplaces ? 'sitios-error' : undefined}>
                             <legend className="sr-only">Sitios de reventa</legend>
-                            {SITIOS_REVENTA.map((sitio) => {
+                            {SITIOS_SOPORTADOS.map((sitio) => {
                                 const on = reventa.marketplaces.includes(sitio)
                                 return (
                                     <label key={sitio} className={`sitio${on ? ' on' : ''}`}>

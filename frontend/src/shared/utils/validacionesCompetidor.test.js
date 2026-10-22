@@ -1,11 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { MENSAJE_ES_PROVEEDOR, MENSAJE_MARKETPLACE, marketplaceDeUrl, validarCompetidorUrl, validarPalabraClave } from './validaciones'
+import { MENSAJE_ES_PROVEEDOR, MENSAJE_MARKETPLACE, MENSAJE_SOLO_CATALOGO, marketplaceDeUrl, validarCompetidorUrl, validarPalabraClave, validarReventa } from './validaciones'
 
 describe('validarCompetidorUrl (SCRUM-38)', () => {
-    it('acepta publicaciones de MercadoLibre, Falabella y Amazon', () => {
-        expect(validarCompetidorUrl('https://articulo.mercadolibre.com.co/MCO-123456-reloj')).toBe('')
-        expect(validarCompetidorUrl('https://www.falabella.com.co/falabella-co/product/123/reloj')).toBe('')
-        expect(validarCompetidorUrl('https://www.amazon.com/dp/B0ABC12345')).toBe('')
+    it('acepta productos de catálogo de MercadoLibre, con o sin el wid de la oferta (SCRUM-37)', () => {
+        expect(validarCompetidorUrl('https://www.mercadolibre.com.co/reloj-amoled/p/MCO123456')).toBe('')
+        expect(validarCompetidorUrl('https://www.mercadolibre.com.co/reloj/p/MCO66318680#position=5&wid=MCO3935884874')).toBe('')
+    })
+
+    it('una publicación suelta de MercadoLibre no se puede vigilar: pide la URL de catálogo', () => {
+        expect(validarCompetidorUrl('https://articulo.mercadolibre.com.co/MCO-123456-reloj')).toBe(MENSAJE_SOLO_CATALOGO)
+    })
+
+    it('Falabella y Amazon todavía no tienen scraper en el backend', () => {
+        expect(validarCompetidorUrl('https://www.falabella.com.co/falabella-co/product/123/reloj')).toBe(MENSAJE_MARKETPLACE)
+        expect(validarCompetidorUrl('https://www.amazon.com/dp/B0ABC12345')).toBe(MENSAJE_MARKETPLACE)
     })
 
     it('rechaza vacío y URLs mal escritas', () => {
@@ -48,8 +56,17 @@ describe('validarPalabraClave (SCRUM-38)', () => {
 
     it('exige marketplace y un top N entero entre 1 y 10', () => {
         expect(validarPalabraClave({ ...valida, marketplace: '' }).marketplace).toBe('Elige el marketplace')
+        expect(validarPalabraClave({ ...valida, marketplace: 'AMAZON' }).marketplace).toBe(MENSAJE_MARKETPLACE)
         expect(validarPalabraClave({ ...valida, topN: '0' }).topN).toMatch(/entre 1 y 10/)
         expect(validarPalabraClave({ ...valida, topN: '11' }).topN).toMatch(/entre 1 y 10/)
         expect(validarPalabraClave({ ...valida, topN: '2.5' }).topN).toMatch(/entre 1 y 10/)
+    })
+})
+
+describe('validarReventa (SCRUM-37)', () => {
+    it('solo acepta sitios que el API puede vigilar', () => {
+        expect(validarReventa({ palabraClave: 'reloj amoled', marketplaces: ['MERCADOLIBRE'] })).toEqual({})
+        expect(validarReventa({ palabraClave: 'reloj amoled', marketplaces: [] }).marketplaces).toMatch(/al menos un sitio/)
+        expect(validarReventa({ palabraClave: 'reloj amoled', marketplaces: ['MERCADOLIBRE', 'FALABELLA'] }).marketplaces).toMatch(/al menos un sitio/)
     })
 })

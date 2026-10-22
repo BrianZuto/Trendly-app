@@ -10,7 +10,8 @@ import { crearMonitoreo } from '@core/services/monitoreos.service'
 import ProductoDetalle from './ProductoDetalle'
 
 const EMAIL = 'vendedor@trendly.co'
-const URL_ML = 'https://articulo.mercadolibre.com.co/MCO-1342210987-smartwatch-amoled-_JM'
+const URL_ML = 'https://www.mercadolibre.com.co/smartwatch-amoled/p/MCO1342210987#position=2&wid=MCO1342210987'
+const URL_ML_SUELTA = 'https://articulo.mercadolibre.com.co/MCO-1342210987-smartwatch-amoled-_JM'
 const URL_AE = 'https://es.aliexpress.com/item/1005006123456789.html'
 const URL_FA = 'https://www.falabella.com.co/falabella-co/product/72345678/smartwatch-amoled'
 
@@ -77,7 +78,14 @@ describe('detalle del producto', () => {
         expect(screen.getByRole('alert')).toHaveTextContent('Esa URL no está bien escrita')
 
         await agregarPorUrl(user, 'https://www.ebay.com/itm/1234')
-        expect(screen.getByRole('alert')).toHaveTextContent('Solo se admiten publicaciones de MercadoLibre, Falabella o Amazon.')
+        expect(screen.getByRole('alert')).toHaveTextContent('Por ahora solo se vigilan productos de MercadoLibre.')
+
+        await agregarPorUrl(user, URL_FA)
+        expect(screen.getByRole('alert')).toHaveTextContent('Por ahora solo se vigilan productos de MercadoLibre.')
+
+        // Una publicación suelta no se puede leer con la API de MercadoLibre: solo productos de catálogo
+        await agregarPorUrl(user, URL_ML_SUELTA)
+        expect(screen.getByRole('alert')).toHaveTextContent('solo se pueden vigilar productos de catálogo')
 
         await agregarPorUrl(user, URL_AE)
         expect(screen.getByRole('alert')).toHaveTextContent('AliExpress es tu proveedor: aquí se vigilan sitios de reventa.')
@@ -132,7 +140,8 @@ describe('detalle del producto', () => {
         expect(screen.getByRole('alert')).toHaveTextContent('Escribe al menos 3 caracteres')
 
         await user.type(screen.getByLabelText('Palabra clave'), 'smartwatch amoled')
-        await user.selectOptions(screen.getByLabelText('Marketplace'), 'AMAZON')
+        // El API solo busca palabras clave en MercadoLibre (SCRUM-37)
+        expect(within(screen.getByLabelText('Marketplace')).getAllByRole('option').map((o) => o.value)).toEqual(['MERCADOLIBRE'])
         await user.selectOptions(screen.getByLabelText('Primeros'), '3')
         await user.click(screen.getByRole('button', { name: 'Agregar' }))
 
@@ -140,10 +149,10 @@ describe('detalle del producto', () => {
         // Encabezado, 3 publicaciones y la fila con tu precio
         expect(within(tabla).getAllByRole('row')).toHaveLength(5)
         expect(within(tabla).getByText('Puesto 1 de 3')).toBeInTheDocument()
-        expect(within(tabla).getAllByText(/^US\$/)).toHaveLength(3)
+        expect(within(tabla).getAllByText('MercadoLibre')).toHaveLength(3)
     })
 
-    it('filtra por sitio y por stock, y ordena por precio', async () => {
+    it('filtra por stock y ordena por precio', async () => {
         const user = userEvent.setup()
         await renderizar()
         await user.click(screen.getByRole('tab', { name: 'Por palabra clave' }))
@@ -151,16 +160,6 @@ describe('detalle del producto', () => {
         await user.click(screen.getByRole('button', { name: 'Agregar' }))
         const tabla = await screen.findByRole('table', { name: 'Publicaciones que vigilas' })
         expect(within(tabla).getAllByText('MercadoLibre')).toHaveLength(5)
-
-        await user.type(screen.getByLabelText('Palabra clave'), 'smartwatch amoled')
-        await user.selectOptions(screen.getByLabelText('Marketplace'), 'FALABELLA')
-        await user.selectOptions(screen.getByLabelText('Primeros'), '3')
-        await user.click(screen.getByRole('button', { name: 'Agregar' }))
-        await within(tabla).findAllByText('Falabella')
-
-        await user.click(screen.getByRole('button', { name: /^Falabella/, pressed: false }))
-        expect(within(tabla).queryAllByText('MercadoLibre')).toHaveLength(0)
-        expect(within(tabla).getAllByText('Falabella')).toHaveLength(3)
 
         const precios = () => within(tabla).getAllByText(/^\$[\d.]+$/, { selector: '.precio-vivo strong' }).map((n) => Number(n.textContent.replace(/\D/g, '')))
         const subiendo = precios()

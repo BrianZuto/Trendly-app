@@ -151,8 +151,10 @@ describe('nuevo producto desde el proveedor', () => {
 
         expect(screen.getByLabelText('Palabra clave').value).toMatch(/^Smartwatch amoled/)
         expect(screen.getByRole('checkbox', { name: 'MercadoLibre' })).toBeChecked()
-        await user.click(screen.getByRole('checkbox', { name: 'Falabella' }))
-        expect(document.querySelector('.reventa-resumen')).toHaveTextContent(/en MercadoLibre y Falabella\./)
+        // Por ahora el API solo vigila MercadoLibre (SCRUM-37)
+        expect(screen.queryByRole('checkbox', { name: 'Falabella' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('checkbox', { name: 'Amazon' })).not.toBeInTheDocument()
+        expect(document.querySelector('.reventa-resumen')).toHaveTextContent(/en MercadoLibre\./)
         await user.click(screen.getByRole('button', { name: 'Crear producto' }))
 
         const etiqueta = (await screen.findByText('Producto creado', {}, { timeout: 3000 })).closest('.llegada')

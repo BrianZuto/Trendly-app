@@ -1,3 +1,5 @@
+import { SITIOS_SOPORTADOS } from './marketplaces'
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const MENSAJE_POLITICA = 'Debe aceptar la política de tratamiento de datos'
@@ -55,8 +57,12 @@ export function validarProducto({ nombre, sku, costo, precioVenta, margenObjetiv
 }
 
 // SCRUM-38: se rechaza en el navegador lo que el API rechazaría con 400.
-// AliExpress es el proveedor; la reventa se vigila en MercadoLibre, Falabella y Amazon
-export const MENSAJE_MARKETPLACE = 'Solo se admiten publicaciones de MercadoLibre, Falabella o Amazon'
+// AliExpress es el proveedor; la reventa se vigila en MercadoLibre (productos de catálogo, SCRUM-37)
+export const MENSAJE_MARKETPLACE = 'Por ahora solo se vigilan productos de MercadoLibre'
+// Mismo texto que el backend (PublicacionUrl.MENSAJE_SOLO_CATALOGO)
+export const MENSAJE_SOLO_CATALOGO =
+    'En MercadoLibre solo se pueden vigilar productos de catálogo: abre el producto y copia la URL que tiene /p/MCO…'
+const CATALOGO_MERCADOLIBRE = /\/p\/MCO\d+/i
 export const MENSAJE_ES_PROVEEDOR = 'AliExpress es tu proveedor: aquí se vigilan sitios de reventa'
 
 const esDominio = (host, base) => host === base || host.endsWith(`.${base}`)
@@ -93,7 +99,8 @@ export function validarCompetidorUrl(valor) {
         return 'Esa URL no está bien escrita. Cópiala completa, con https://'
     }
     if (esUrlAliExpress(texto)) return MENSAJE_ES_PROVEEDOR
-    return marketplaceDeUrl(texto) ? '' : MENSAJE_MARKETPLACE
+    if (!SITIOS_SOPORTADOS.includes(marketplaceDeUrl(texto))) return MENSAJE_MARKETPLACE
+    return CATALOGO_MERCADOLIBRE.test(texto) ? '' : MENSAJE_SOLO_CATALOGO
 }
 
 // Búsqueda en el proveedor: palabra clave de 3 a 80 caracteres o una URL de AliExpress
@@ -109,7 +116,7 @@ export function validarReventa({ palabraClave, marketplaces }) {
     const largo = palabraClave.trim().length
     return quitarVacios({
     palabraClave: largo < 3 ? 'Escribe al menos 3 caracteres' : largo > 80 ? 'Usa máximo 80 caracteres' : '',
-    marketplaces: marketplaces.length ? '' : 'Elige al menos un sitio donde comparar',
+    marketplaces: marketplaces.length && marketplaces.every((m) => SITIOS_SOPORTADOS.includes(m)) ? '' : 'Elige al menos un sitio donde comparar',
     })
 }
 
@@ -118,7 +125,7 @@ export function validarPalabraClave({ valor, marketplace, topN }) {
     const n = Number(topN)
     return quitarVacios({
     valor: largo < 3 ? 'Escribe al menos 3 caracteres' : largo > 80 ? 'Usa máximo 80 caracteres' : '',
-    marketplace: marketplace ? '' : 'Elige el marketplace',
+    marketplace: !marketplace ? 'Elige el marketplace' : SITIOS_SOPORTADOS.includes(marketplace) ? '' : MENSAJE_MARKETPLACE,
     topN: Number.isInteger(n) && n >= 1 && n <= 10 ? '' : 'El Top N debe estar entre 1 y 10',
     })
 }

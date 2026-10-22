@@ -1,6 +1,7 @@
 package co.trendly.monitoreo;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,14 @@ public class MonitoreoService {
     static final String MENSAJE_FRECUENCIA_PLAN = "Solo el plan Pro puede cambiar la frecuencia";
     static final String MENSAJE_FRECUENCIA_RANGO = "La frecuencia debe estar entre 1 y 6 horas";
     static final String MENSAJE_TIPO = "El tipo debe ser URL o PALABRA_CLAVE";
-    static final String MENSAJE_PALABRA_CLAVE = "El monitoreo por palabra clave todavía no está disponible";
+    static final String MENSAJE_PALABRA_LARGO = "La palabra clave debe tener entre 3 y 80 caracteres";
+    static final String MENSAJE_MARKETPLACE_OBLIGATORIO = "Elige el marketplace donde buscar la palabra clave";
+    static final String MENSAJE_PALABRA_ALIEXPRESS = "En AliExpress solo se puede vigilar una publicación por URL";
+    static final String MENSAJE_TOP_N = "El Top N debe estar entre 1 y 10";
+    static final String MENSAJE_PALABRA_REPETIDA = "Ya vigilas esta palabra clave en este producto";
+
+    static final int PALABRA_MINIMO = 3;
+    static final int PALABRA_MAXIMO = 80;
 
     private final MonitoreoRepository monitoreos;
     private final ProductoRepository productos;
@@ -53,28 +61,57 @@ public class MonitoreoService {
     public MonitoreoResponse crear(Long usuarioId, Long productoId, MonitoreoRequest solicitud) {
         Producto producto = productoPropio(usuarioId, productoId);
         TipoMonitoreo tipo = tipoDe(solicitud.tipo());
-        if (tipo == TipoMonitoreo.PALABRA_CLAVE) {
-            // SCRUM-37 (Brian) completa este caso sobre el mismo endpoint
-            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, MENSAJE_PALABRA_CLAVE);
-        }
         int frecuencia = frecuenciaPermitida(usuarioId, solicitud.frecuenciaHoras());
         if (monitoreos.countByProductoId(producto.getId()) >= MAX_POR_PRODUCTO) {
             throw new ErrorDeNegocio(HttpStatus.UNPROCESSABLE_CONTENT, MENSAJE_LIMITE);
         }
-
-        String url = solicitud.valor().trim();
-        PublicacionUrl publicacion = PublicacionUrl.reconocer(url);
-        if (monitoreos.existsByProductoIdAndMarketplaceAndIdPublicacion(producto.getId(), publicacion.marketplace(),
-                publicacion.idPublicacion())) {
-            throw repetido();
-        }
+        Monitoreo nuevo = tipo == TipoMonitoreo.PALABRA_CLAVE
+                ? porPalabraClave(producto.getId(), solicitud, frecuencia)
+                : porUrl(producto.getId(), solicitud, frecuencia);
         try {
             // saveAndFlush: si llegan dos solicitudes iguales a la vez, el único de la BD frena la segunda aquí
-            return MonitoreoResponse.de(monitoreos.saveAndFlush(
-                    Monitoreo.porUrl(producto.getId(), url, publicacion, frecuencia)));
+            return MonitoreoResponse.de(monitoreos.saveAndFlush(nuevo));
         } catch (DataIntegrityViolationException e) {
             throw repetido();
         }
+    }
+
+    private Monitoreo porUrl(Long productoId, MonitoreoRequest solicitud, int frecuencia) {
+        String url = solicitud.valor().trim();
+        PublicacionUrl publicacion = PublicacionUrl.reconocer(url);
+        // Con la API de MercadoLibre solo se leen productos de catálogo: otra URL fallaría en cada captura (SCRUM-40)
+        if (publicacion.marketplace() == Marketplace.MERCADOLIBRE && !PublicacionUrl.esCatalogoMercadoLibre(url)) {
+            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, PublicacionUrl.MENSAJE_SOLO_CATALOGO);
+        }
+        if (monitoreos.existsByProductoIdAndMarketplaceAndIdPublicacion(productoId, publicacion.marketplace(),
+                publicacion.idPublicacion())) {
+            throw repetido();
+        }
+        return Monitoreo.porUrl(productoId, url, publicacion, frecuencia);
+    }
+
+    /**
+     * Palabra clave (SCRUM-37): de 3 a 80 caracteres, en MercadoLibre (el scraper de AliExpress solo lee URLs) y con
+     * un Top N de 1 a 10 (5 si no se envía). No se repite la misma palabra en el mismo producto y marketplace.
+     */
+    private Monitoreo porPalabraClave(Long productoId, MonitoreoRequest solicitud, int frecuencia) {
+        String palabra = solicitud.valor().trim().replaceAll("\\s+", " ");
+        if (palabra.length() < PALABRA_MINIMO || palabra.length() > PALABRA_MAXIMO) {
+            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, MENSAJE_PALABRA_LARGO);
+        }
+        Marketplace marketplace = marketplaceDe(solicitud.marketplace());
+        if (marketplace == Marketplace.ALIEXPRESS) {
+            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, MENSAJE_PALABRA_ALIEXPRESS);
+        }
+        int topN = solicitud.topN() == null ? Monitoreo.TOP_N_POR_DEFECTO : solicitud.topN();
+        if (topN < 1 || topN > Monitoreo.TOP_N_MAXIMO) {
+            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, MENSAJE_TOP_N);
+        }
+        if (monitoreos.existsByProductoIdAndTipoAndMarketplaceAndValorIgnoreCase(productoId,
+                TipoMonitoreo.PALABRA_CLAVE, marketplace, palabra)) {
+            throw new ErrorDeNegocio(HttpStatus.CONFLICT, MENSAJE_PALABRA_REPETIDA);
+        }
+        return Monitoreo.porPalabraClave(productoId, palabra, marketplace, topN, frecuencia);
     }
 
     /** Pausa o reactiva. ERROR no se puede elegir: lo pone el job (SCRUM-45). */
@@ -105,6 +142,17 @@ public class MonitoreoService {
         return monitoreos.findById(id)
                 .filter(m -> productos.findByIdAndUsuarioId(m.getProductoId(), usuarioId).isPresent())
                 .orElseThrow(() -> new ErrorDeNegocio(HttpStatus.NOT_FOUND, MENSAJE_NO_ENCONTRADO));
+    }
+
+    private static Marketplace marketplaceDe(String marketplace) {
+        if (marketplace == null || marketplace.isBlank()) {
+            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, MENSAJE_MARKETPLACE_OBLIGATORIO);
+        }
+        try {
+            return Marketplace.valueOf(marketplace.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, PublicacionUrl.MENSAJE_NO_SOPORTADO);
+        }
     }
 
     private static TipoMonitoreo tipoDe(String tipo) {
