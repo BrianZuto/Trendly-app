@@ -25,12 +25,12 @@ import co.trendly.usuario.Plan;
 import co.trendly.usuario.Usuario;
 import co.trendly.usuario.UsuarioRepository;
 
-/** Pruebas unitarias de los competidores por URL (SCRUM-36), sin Spring ni base de datos. */
+/** Pruebas unitarias de los competidores por URL (SCRUM-36) y por palabra clave (SCRUM-37), sin Spring ni base de datos. */
 class MonitoreoServiceTest {
 
     private static final long VENDEDOR = 5L;
     private static final long PRODUCTO = 9L;
-    private static final String URL_ML = "https://articulo.mercadolibre.com.co/MCO-123456-audifonos";
+    private static final String URL_ML = "https://www.mercadolibre.com.co/audifonos/p/MCO123456";
 
     private MonitoreoRepository monitoreos;
     private ProductoRepository productos;
@@ -115,12 +115,77 @@ class MonitoreoServiceTest {
     }
 
     @Test
-    void unTipoDesconocidoOPalabraClaveTodaviaNoSePuedenCrear() {
+    void unTipoDesconocidoResponde400() {
         assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, new MonitoreoRequest("RSS", URL_ML, null, null, null)),
                 HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_TIPO);
+    }
+
+    @Test
+    void unaUrlDeMercadoLibreQueNoEsDeCatalogoNoSeAcepta() {
         assertError(() -> servicio.crear(VENDEDOR, PRODUCTO,
-                new MonitoreoRequest("PALABRA_CLAVE", "audífonos", "MERCADOLIBRE", 5, null)),
-                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_PALABRA_CLAVE);
+                porUrl("https://articulo.mercadolibre.com.co/MCO-123456-audifonos", 6)),
+                HttpStatus.BAD_REQUEST, PublicacionUrl.MENSAJE_SOLO_CATALOGO);
+        verify(monitoreos, never()).saveAndFlush(any());
+    }
+
+    @Test
+    void creaUnMonitoreoPorPalabraClaveNormalizandoLosEspacios() {
+        MonitoreoResponse creado = servicio.crear(VENDEDOR, PRODUCTO, porPalabra("  redmi \t buds  ", "mercadolibre", 3));
+
+        assertThat(creado.tipo()).isEqualTo(TipoMonitoreo.PALABRA_CLAVE);
+        assertThat(creado.valor()).isEqualTo("redmi buds");
+        assertThat(creado.marketplace()).isEqualTo(Marketplace.MERCADOLIBRE);
+        assertThat(creado.topN()).isEqualTo(3);
+        assertThat(creado.idPublicacion()).isNull();
+        assertThat(creado.estado()).isEqualTo(EstadoMonitoreo.ACTIVO);
+        assertThat(creado.proximaEjecucion()).isEqualTo(creado.creadoEn());
+        verify(monitoreos).existsByProductoIdAndTipoAndMarketplaceAndValorIgnoreCase(PRODUCTO,
+                TipoMonitoreo.PALABRA_CLAVE, Marketplace.MERCADOLIBRE, "redmi buds");
+    }
+
+    @Test
+    void laPalabraClaveSinTopNTomaCincoYAceptaLosLimites() {
+        assertThat(servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "MERCADOLIBRE", null)).topN())
+                .isEqualTo(5);
+        assertThat(servicio.crear(VENDEDOR, PRODUCTO, porPalabra("abc", "MERCADOLIBRE", 1)).topN()).isEqualTo(1);
+        assertThat(servicio.crear(VENDEDOR, PRODUCTO, porPalabra("a".repeat(80), "MERCADOLIBRE", 10)).topN())
+                .isEqualTo(10);
+    }
+
+    @Test
+    void validaLaPalabraClaveElMarketplaceYElTopN() {
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("ab", "MERCADOLIBRE", 5)),
+                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_PALABRA_LARGO);
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("a".repeat(81), "MERCADOLIBRE", 5)),
+                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_PALABRA_LARGO);
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", " ", 5)),
+                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_MARKETPLACE_OBLIGATORIO);
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "FALABELLA", 5)),
+                HttpStatus.BAD_REQUEST, PublicacionUrl.MENSAJE_NO_SOPORTADO);
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "ALIEXPRESS", 5)),
+                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_PALABRA_ALIEXPRESS);
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "MERCADOLIBRE", 0)),
+                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_TOP_N);
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "MERCADOLIBRE", 11)),
+                HttpStatus.BAD_REQUEST, MonitoreoService.MENSAJE_TOP_N);
+        verify(monitoreos, never()).saveAndFlush(any());
+    }
+
+    @Test
+    void unaPalabraClaveRepetidaResponde409() {
+        when(monitoreos.existsByProductoIdAndTipoAndMarketplaceAndValorIgnoreCase(PRODUCTO, TipoMonitoreo.PALABRA_CLAVE,
+                Marketplace.MERCADOLIBRE, "redmi buds")).thenReturn(true);
+
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "MERCADOLIBRE", 5)),
+                HttpStatus.CONFLICT, MonitoreoService.MENSAJE_PALABRA_REPETIDA);
+    }
+
+    @Test
+    void laPalabraClaveTambienRespetaElLimiteDeCompetidores() {
+        when(monitoreos.countByProductoId(PRODUCTO)).thenReturn((long) MonitoreoService.MAX_POR_PRODUCTO);
+
+        assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porPalabra("redmi buds", "MERCADOLIBRE", 5)),
+                HttpStatus.UNPROCESSABLE_CONTENT, MonitoreoService.MENSAJE_LIMITE);
     }
 
     @Test
@@ -162,6 +227,10 @@ class MonitoreoServiceTest {
         Plan plan = instanciar(Plan.class);
         ReflectionTestUtils.setField(plan, "nombre", nombre);
         when(usuarios.findById(VENDEDOR)).thenReturn(Optional.of(Usuario.nuevoVendedor("Ana", "a@b.co", "h", plan)));
+    }
+
+    private static MonitoreoRequest porPalabra(String palabra, String marketplace, Integer topN) {
+        return new MonitoreoRequest("PALABRA_CLAVE", palabra, marketplace, topN, null);
     }
 
     private static MonitoreoRequest porUrl(String url, Integer frecuencia) {

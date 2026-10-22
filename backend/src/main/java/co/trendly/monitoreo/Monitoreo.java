@@ -18,6 +18,9 @@ import jakarta.persistence.Table;
 public class Monitoreo {
 
     public static final int FRECUENCIA_POR_DEFECTO = 6;
+    /** Palabra clave (SCRUM-37): cuántas publicaciones de la búsqueda se capturan; la BD lo limita a 1-10. */
+    public static final int TOP_N_POR_DEFECTO = 5;
+    public static final int TOP_N_MAXIMO = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,6 +81,26 @@ public class Monitoreo {
         monitoreo.valor = url;
         monitoreo.idPublicacion = publicacion.idPublicacion();
         monitoreo.marketplace = publicacion.marketplace();
+        monitoreo.frecuenciaHoras = frecuenciaHoras;
+        monitoreo.estado = EstadoMonitoreo.ACTIVO;
+        monitoreo.proximaEjecucion = ahora;
+        monitoreo.creadoEn = ahora;
+        return monitoreo;
+    }
+
+    /**
+     * Monitoreo de las N primeras publicaciones de una búsqueda (SCRUM-37). No tiene identificador de publicación:
+     * cada resultado se guarda en el histórico con el suyo. Queda ACTIVO y listo para capturarse de inmediato.
+     */
+    public static Monitoreo porPalabraClave(Long productoId, String palabraClave, Marketplace marketplace, int topN,
+            int frecuenciaHoras) {
+        Monitoreo monitoreo = new Monitoreo();
+        Instant ahora = Instant.now().truncatedTo(ChronoUnit.MICROS);
+        monitoreo.productoId = productoId;
+        monitoreo.tipo = TipoMonitoreo.PALABRA_CLAVE;
+        monitoreo.valor = palabraClave;
+        monitoreo.marketplace = marketplace;
+        monitoreo.topN = topN;
         monitoreo.frecuenciaHoras = frecuenciaHoras;
         monitoreo.estado = EstadoMonitoreo.ACTIVO;
         monitoreo.proximaEjecucion = ahora;

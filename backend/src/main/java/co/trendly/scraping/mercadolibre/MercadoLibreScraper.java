@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import co.trendly.monitoreo.Marketplace;
 import co.trendly.monitoreo.Monitoreo;
+import co.trendly.monitoreo.PublicacionUrl;
 import co.trendly.monitoreo.TipoMonitoreo;
 import co.trendly.scraping.FalloDeScraping;
 import co.trendly.scraping.MarketplaceScraper;
@@ -36,7 +37,7 @@ import tools.jackson.databind.JsonNode;
  * <li><b>Modo URL</b> (producto de catálogo, {@code mercadolibre.com.co/…/p/MCO…}): la oferta del vendedor que se
  * estaba viendo ({@code wid} en la URL) o, si no viene, la mejor oferta del producto.</li>
  * <li><b>Modo palabra clave (SCRUM-37):</b> los productos de catálogo de la búsqueda que tienen ofertas activas,
- * con la mejor oferta de cada uno, hasta N.</li>
+ * con la mejor oferta de cada uno, hasta N (5 por defecto, máximo 10).</li>
  * </ul>
  * Máximo 1 petición cada 2 s (Resilience4j). Nunca lanza excepciones: todo error es un FALLO con su motivo.
  */
@@ -45,21 +46,19 @@ public class MercadoLibreScraper implements MarketplaceScraper {
 
     private static final Logger log = LoggerFactory.getLogger(MercadoLibreScraper.class);
 
-    static final String SOLO_CATALOGO = "MercadoLibre solo permite consultar por API los productos de catálogo: "
-            + "usa la URL del producto (mercadolibre.com.co/…/p/MCO…)";
+    static final String SOLO_CATALOGO = PublicacionUrl.MENSAJE_SOLO_CATALOGO;
     static final String SIN_OFERTAS = "El producto no tiene ofertas activas";
     static final String BUSQUEDA_SIN_OFERTAS = "Ningún producto de catálogo de la búsqueda tiene ofertas activas; "
             + "prueba con una palabra clave más específica";
 
     /** Si el monitoreo por palabra clave no dice cuántas, se toman las 5 primeras. */
-    static final int TOP_N_POR_DEFECTO = 5;
-    static final int TOP_N_MAXIMO = 20;
+    static final int TOP_N_POR_DEFECTO = Monitoreo.TOP_N_POR_DEFECTO;
+    static final int TOP_N_MAXIMO = Monitoreo.TOP_N_MAXIMO;
     /** Muchos productos de catálogo no tienen ofertas: se revisan hasta 4 por cada resultado pedido. */
     static final int PRODUCTOS_POR_RESULTADO = 4;
     /** Máximo de resultados por página de la búsqueda de catálogo. */
     static final int LIMITE_BUSQUEDA = 50;
 
-    private static final Pattern CATALOGO = Pattern.compile("/p/MCO\\d+", Pattern.CASE_INSENSITIVE);
     /** Oferta que se estaba viendo: viene como {@code wid=MCO123} en la consulta o después del {@code #}. */
     private static final Pattern OFERTA_VISTA = Pattern.compile("[?#&]wid=(MCO\\d+)", Pattern.CASE_INSENSITIVE);
 
@@ -157,7 +156,7 @@ public class MercadoLibreScraper implements MarketplaceScraper {
 
     /** Las páginas de catálogo son {@code mercadolibre.com.co/<nombre>/p/MCO123}. */
     static boolean esCatalogo(String url) {
-        return url != null && CATALOGO.matcher(url).find();
+        return PublicacionUrl.esCatalogoMercadoLibre(url);
     }
 
     /** {@code ...#...&wid=MCO123&...} → {@code MCO123}; {@code null} si la URL no lo trae. */

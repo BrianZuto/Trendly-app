@@ -21,9 +21,14 @@ public record PublicacionUrl(Marketplace marketplace, String idPublicacion) {
     public static final String MENSAJE_URL_INVALIDA = "La URL no es válida";
     public static final String MENSAJE_NO_SOPORTADO = "Marketplace no soportado";
     public static final String MENSAJE_SIN_IDENTIFICADOR = "No encontramos el identificador de la publicación en la URL";
+    /** La API de MercadoLibre solo deja leer publicaciones de otros vendedores por catálogo (SCRUM-40). */
+    public static final String MENSAJE_SOLO_CATALOGO = "En MercadoLibre solo se pueden vigilar productos de catálogo: "
+            + "abre el producto y copia la URL que tiene /p/MCO…";
 
     // MercadoLibre: "MCO-123456" en articulo.mercadolibre.com.co, "MCO123456" en las páginas de catálogo (/p/)
     private static final Pattern ID_MERCADOLIBRE = Pattern.compile("MCO-?(\\d+)", Pattern.CASE_INSENSITIVE);
+    // MercadoLibre, producto de catálogo: mercadolibre.com.co/<nombre>/p/MCO123
+    private static final Pattern CATALOGO_MERCADOLIBRE = Pattern.compile("/p/MCO\\d+", Pattern.CASE_INSENSITIVE);
     // AliExpress: /item/1005001234567890.html
     private static final Pattern ID_ALIEXPRESS = Pattern.compile("/item/(\\d+)");
 
@@ -65,5 +70,10 @@ public record PublicacionUrl(Marketplace marketplace, String idPublicacion) {
 
     private static String sinIdentificador() {
         throw new ErrorDeNegocio(HttpStatus.BAD_REQUEST, MENSAJE_SIN_IDENTIFICADOR);
+    }
+
+    /** Si la URL es de un producto de catálogo de MercadoLibre ({@code /p/MCO…}), el único caso que se puede leer. */
+    public static boolean esCatalogoMercadoLibre(String url) {
+        return url != null && CATALOGO_MERCADOLIBRE.matcher(url).find();
     }
 }

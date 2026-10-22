@@ -12,4 +12,8 @@ public interface MonitoreoRepository extends JpaRepository<Monitoreo, Long> {
 
     boolean existsByProductoIdAndMarketplaceAndIdPublicacion(Long productoId, Marketplace marketplace,
             String idPublicacion);
+
+    /** Misma palabra clave en el mismo marketplace y producto, sin importar mayúsculas (SCRUM-37). */
+    boolean existsByProductoIdAndTipoAndMarketplaceAndValorIgnoreCase(Long productoId, TipoMonitoreo tipo,
+            Marketplace marketplace, String valor);
 }

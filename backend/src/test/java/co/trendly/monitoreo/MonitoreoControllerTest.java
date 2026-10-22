@@ -23,13 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 import co.trendly.seguridad.JwtService;
 import co.trendly.seguridad.UsuarioAutenticado;
 
-/** Prueba de integración de los competidores por URL con JWT, H2 y las migraciones de Flyway (SCRUM-36). */
+/**
+ * Prueba de integración de los competidores por URL (SCRUM-36) y por palabra clave (SCRUM-37), con JWT, H2 y las
+ * migraciones de Flyway.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class MonitoreoControllerTest {
 
-    private static final String URL_ML = "https://articulo.mercadolibre.com.co/MCO-123456789-audifonos-_JM";
+    private static final String URL_ML = "https://www.mercadolibre.com.co/audifonos-bluetooth/p/MCO123456789";
     private static final String URL_ALI = "https://es.aliexpress.com/item/1005001234567890.html";
 
     @Autowired
@@ -94,7 +97,7 @@ class MonitoreoControllerTest {
     void unCompetidorRepetidoResponde409AunqueLaUrlCambie() throws Exception {
         crear(ana, URL_ML).andExpect(status().isCreated());
 
-        crear(ana, "https://articulo.mercadolibre.com.co/MCO-123456789-otro-titulo?tracking=1")
+        crear(ana, "https://www.mercadolibre.com.co/otro-titulo/p/MCO123456789#position=3&wid=MCO999")
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_REPETIDO));
     }
@@ -138,6 +141,91 @@ class MonitoreoControllerTest {
     }
 
     @Test
+    void unaUrlDeMercadoLibreQueNoEsDeCatalogoResponde400() throws Exception {
+        crear(ana, "https://articulo.mercadolibre.com.co/MCO-123456789-audifonos-_JM")
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(PublicacionUrl.MENSAJE_SOLO_CATALOGO));
+    }
+
+    @Test
+    void creaUnMonitoreoPorPalabraClaveConSuMarketplaceYTopN() throws Exception {
+        crearPalabra(ana, "  audífonos   bluetooth ", "MERCADOLIBRE", 7)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.tipo").value("PALABRA_CLAVE"))
+                .andExpect(jsonPath("$.valor").value("audífonos bluetooth"))
+                .andExpect(jsonPath("$.marketplace").value("MERCADOLIBRE"))
+                .andExpect(jsonPath("$.topN").value(7))
+                .andExpect(jsonPath("$.idPublicacion").doesNotExist())
+                .andExpect(jsonPath("$.estado").value("ACTIVO"))
+                .andExpect(jsonPath("$.frecuenciaHoras").value(6));
+
+        assertThat(jdbc.queryForMap("SELECT tipo, valor, marketplace, top_n FROM monitoreo WHERE producto_id = ?",
+                productoDeAna)).containsEntry("tipo", "PALABRA_CLAVE").containsEntry("top_n", 7);
+    }
+
+    @Test
+    void sinTopNTomaCinco() throws Exception {
+        mockMvc.perform(post(rutaMonitoreos(productoDeAna)).header(HttpHeaders.AUTHORIZATION, ana)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"tipo\": \"PALABRA_CLAVE\", \"valor\": \"redmi buds\", \"marketplace\": \"mercadolibre\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.topN").value(5));
+    }
+
+    @Test
+    void unaPalabraClaveVaciaCortaOLargaResponde400() throws Exception {
+        crearPalabra(ana, "   ", "MERCADOLIBRE", 5)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("La URL o palabra clave es obligatoria"));
+        crearPalabra(ana, "ab", "MERCADOLIBRE", 5)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_PALABRA_LARGO));
+        crearPalabra(ana, "a".repeat(81), "MERCADOLIBRE", 5)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_PALABRA_LARGO));
+    }
+
+    @Test
+    void laPalabraClaveExigeMarketplaceSoportadoYTopNValido() throws Exception {
+        crearPalabra(ana, "redmi buds", null, 5)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_MARKETPLACE_OBLIGATORIO));
+        crearPalabra(ana, "redmi buds", "AMAZON", 5)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(PublicacionUrl.MENSAJE_NO_SOPORTADO));
+        crearPalabra(ana, "redmi buds", "ALIEXPRESS", 5)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_PALABRA_ALIEXPRESS));
+        crearPalabra(ana, "redmi buds", "MERCADOLIBRE", 0)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_TOP_N));
+        crearPalabra(ana, "redmi buds", "MERCADOLIBRE", 11)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_TOP_N));
+    }
+
+    @Test
+    void laMismaPalabraClaveEnElMismoProductoResponde409() throws Exception {
+        crearPalabra(ana, "Redmi Buds", "MERCADOLIBRE", 5).andExpect(status().isCreated());
+
+        crearPalabra(ana, "  redmi   buds ", "MERCADOLIBRE", 3)
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value(MonitoreoService.MENSAJE_PALABRA_REPETIDA));
+    }
+
+    @Test
+    void lasPalabrasClaveSeListanJuntoALasUrls() throws Exception {
+        crear(ana, URL_ML).andExpect(status().isCreated());
+        crearPalabra(ana, "redmi buds", "MERCADOLIBRE", 3).andExpect(status().isCreated());
+
+        mockMvc.perform(get(rutaMonitoreos(productoDeAna)).header(HttpHeaders.AUTHORIZATION, ana))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[1].tipo").value("PALABRA_CLAVE"))
+                .andExpect(jsonPath("$[1].topN").value(3));
+    }
+
+    @Test
     void sinTokenResponde401() throws Exception {
         mockMvc.perform(get(rutaMonitoreos(productoDeAna))).andExpect(status().isUnauthorized());
     }
@@ -160,6 +248,15 @@ class MonitoreoControllerTest {
         return mockMvc.perform(post(rutaMonitoreos(productoDeAna)).header(HttpHeaders.AUTHORIZATION, token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"tipo\": \"URL\", \"valor\": \"%s\", \"frecuenciaHoras\": 6}".formatted(url)));
+    }
+
+    private ResultActions crearPalabra(String token, String palabra, String marketplace, Integer topN)
+            throws Exception {
+        String json = "{\"tipo\": \"PALABRA_CLAVE\", \"valor\": \"%s\"%s%s}".formatted(palabra,
+                marketplace == null ? "" : ", \"marketplace\": \"" + marketplace + "\"",
+                topN == null ? "" : ", \"topN\": " + topN);
+        return mockMvc.perform(post(rutaMonitoreos(productoDeAna)).header(HttpHeaders.AUTHORIZATION, token)
+                .contentType(MediaType.APPLICATION_JSON).content(json));
     }
 
     private ResultActions cambiarEstado(String token, long id, String estado) throws Exception {

@@ -106,6 +106,9 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `DB_PORT` | Puerto local de MySQL en `docker-compose.yml` | `3306` |
 | `JWT_SECRET` | Clave para firmar los tokens JWT (mínimo 256 bits) | salida de `openssl rand -base64 64` |
 | `JWT_EXPIRATION_MS` | Vigencia del token en milisegundos | `3600000` (1 h) |
+| `CORS_ALLOWED_ORIGINS` | Orígenes del frontend permitidos, separados por comas | `http://localhost:5173` |
+| `ML_CLIENT_ID` | App ID de la aplicación de MercadoLibre (developers.mercadolibre.com.co) | `1234567890123456` |
+| `ML_CLIENT_SECRET` | Secret Key de esa aplicación | `cambia-esto` |
 | `MAIL_HOST` | Servidor SMTP para las alertas | `smtp.gmail.com` |
 | `MAIL_PORT` | Puerto SMTP | `587` |
 | `MAIL_USERNAME` | Usuario SMTP | `alertas@ejemplo.com` |
@@ -168,6 +171,47 @@ Variables de entorno, en Vercel → Settings → Environment Variables:
 | `VITE_USE_MOCK` | `true` mientras no haya backend publicado (la app funciona con datos simulados); `false` cuando el API esté arriba. |
 
 Las variables `VITE_` se leen al compilar: después de cambiarlas hay que volver a desplegar (Deployments → Redeploy). No hace falta tocar el código.
+
+## API de monitoreos (contrato)
+
+Todas las rutas exigen `Authorization: Bearer <token>` y solo el dueño del producto ve sus monitoreos (si no, 404). Los errores tienen la forma `{ "status", "error", "message", "path" }`; el frontend muestra `message`.
+
+### Crear un monitoreo: `POST /api/v1/productos/{id}/monitoreos`
+
+| Tipo | Cuerpo | Reglas |
+|---|---|---|
+| Por URL (SCRUM-36) | `{ "tipo": "URL", "valor": "https://…", "frecuenciaHoras": 6 }` | MercadoLibre: **solo productos de catálogo** (`mercadolibre.com.co/…/p/MCO…`); la oferta que se estaba viendo se toma del `wid` de la URL. AliExpress: `aliexpress.com/item/<número>.html`. |
+| Por palabra clave (SCRUM-37) | `{ "tipo": "PALABRA_CLAVE", "valor": "redmi buds", "marketplace": "MERCADOLIBRE", "topN": 5 }` | Palabra de 3 a 80 caracteres (se quitan espacios de más), `marketplace` obligatorio y solo `MERCADOLIBRE`, `topN` de 1 a 10 (5 si no se envía). |
+
+`frecuenciaHoras` es opcional (6 por defecto); solo el plan Pro puede bajarla, hasta 1 hora. Máximo 10 monitoreos por producto.
+
+Respuesta `201`:
+
+```json
+{ "id": 12, "productoId": 3, "tipo": "PALABRA_CLAVE", "valor": "redmi buds", "idPublicacion": null,
+  "marketplace": "MERCADOLIBRE", "topN": 5, "frecuenciaHoras": 6, "estado": "ACTIVO",
+  "proximaEjecucion": "2026-10-22T15:00:00Z", "ultimaCaptura": null, "creadoEn": "2026-10-22T15:00:00Z" }
+```
+
+| Código | Cuándo |
+|---|---|
+| `400` | Tipo desconocido; URL inválida, de otro sitio o de MercadoLibre sin catálogo; palabra vacía, de menos de 3 o más de 80 caracteres; falta el marketplace o no se soporta; palabra clave en AliExpress; `topN` fuera de 1–10; frecuencia no permitida. |
+| `404` | El producto no existe o es de otro vendedor. |
+| `409` | Ya se vigila esa publicación, o esa misma palabra clave en ese marketplace, en el producto. |
+| `422` | El producto ya tiene 10 monitoreos. |
+
+Las demás rutas: `GET /api/v1/productos/{id}/monitoreos` (lista), `PATCH /api/v1/monitoreos/{id}` con `{ "estado": "PAUSADO" | "ACTIVO" }` y `DELETE /api/v1/monitoreos/{id}`.
+
+### Contrato con los scrapers
+
+Cada marketplace implementa `MarketplaceScraper.obtener(Monitoreo)`, que **nunca lanza excepciones** y devuelve un `ResultadoScraping`:
+
+- `OK` con la lista de `PublicacionCapturada` (`idPublicacion`, `titulo`, `vendedor`, `posicion`, `precio`, `moneda`, `disponible`). En modo URL es una sola publicación (`posicion` en `null`); en modo palabra clave son las N primeras, con `posicion` desde 1.
+- `FALLO` con `tipoFallo` (`TIMEOUT`, `BLOQUEO`, `NO_ENCONTRADO`, `ESTRUCTURA`, `DATO_INVALIDO`) y el `motivo`.
+
+El histórico (SCRUM-42) guarda cada publicación como un punto ligado al monitoreo y a su `idPublicacion`, así se compara la misma publicación entre capturas. Se consulta en `GET /api/v1/monitoreos/{id}/historico`.
+
+**Limitaciones de MercadoLibre:** su HTML tiene verificación anti-bots, así que se usa la API oficial con las credenciales `ML_CLIENT_ID` y `ML_CLIENT_SECRET`. Con el token de la aplicación solo se leen ofertas de otros vendedores a través del catálogo; por eso solo se aceptan URLs de catálogo, y la palabra clave funciona con búsquedas específicas ("redmi buds"): en búsquedas genéricas los primeros productos del catálogo no tienen ofertas y la captura sale como `FALLO` (`NO_ENCONTRADO`).
 
 ## Flujo de trabajo con Git
 
