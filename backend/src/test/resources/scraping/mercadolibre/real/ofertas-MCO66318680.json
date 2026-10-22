@@ -1,0 +1,1476 @@
+{
+ "paging": {
+  "total": 21,
+  "offset": 0,
+  "limit": 100
+ },
+ "results": [
+  {
+   "item_id": "MCO3935884874",
+   "site_id": "MCO",
+   "seller_id": 530380977,
+   "accepts_mercadopago": true,
+   "price": 63400,
+   "category_id": "MCO5072",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 12 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "catalog_boost",
+    "kvs_primary",
+    "first_party",
+    "dynamic_standard_price",
+    "has_published_clips",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": 224,
+   "original_price": 150000,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "fulfillment",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NIQTk2OTI1",
+     "name": "Chapinero"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkNISTQ4NzUz",
+     "name": "Chicó Norte II"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 12,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "12 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU3918220882",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4555645712",
+   "site_id": "MCO",
+   "seller_id": 1467681384,
+   "accepts_mercadopago": true,
+   "price": 74900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": true,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ01FRGRjNjc4",
+     "name": "Medellín"
+    },
+    "state": {
+     "id": "TUNPUEFOVGFiZWI3",
+     "name": "Antioquia"
+    },
+    "neighborhood": {
+     "id": "TUNPQkzTUDQ4MDYxNw",
+     "name": "López de Mesa"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5551358993",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4321072486",
+   "site_id": "MCO",
+   "seller_id": 1971642403,
+   "accepts_mercadopago": true,
+   "price": 74999,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 6 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": 226306,
+   "original_price": 160000,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": true,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ01BUjU5NzU1",
+     "name": "Martires"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkVMODAyMTk",
+     "name": "El Listón"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 6,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "6 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4713778147",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2210402647",
+   "site_id": "MCO",
+   "seller_id": 825475401,
+   "accepts_mercadopago": true,
+   "price": 79900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NPVGFiYzZm",
+     "name": "Cota"
+    },
+    "state": {
+     "id": "TUNPUENVTmE3NmQ4",
+     "name": "Cundinamarca"
+    },
+    "neighborhood": {
+     "id": "",
+     "name": ""
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5213445550",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2212955907",
+   "site_id": "MCO",
+   "seller_id": 94814871,
+   "accepts_mercadopago": true,
+   "price": 79900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ01BUjU5NzU1",
+     "name": "Cota"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Cundinamarca"
+    },
+    "neighborhood": {
+     "id": "TUNPQlZPVDg5ODM0",
+     "name": "Voto Nacional"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5221211700",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2214937289",
+   "site_id": "MCO",
+   "seller_id": 3579294916,
+   "accepts_mercadopago": true,
+   "price": 79900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NPVGFiYzZm",
+     "name": "Cota"
+    },
+    "state": {
+     "id": "TUNPUENVTmE3NmQ4",
+     "name": "Cundinamarca"
+    },
+    "neighborhood": {
+     "id": "",
+     "name": ""
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5192744459",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4452830280",
+   "site_id": "MCO",
+   "seller_id": 1331387233,
+   "accepts_mercadopago": true,
+   "price": 79900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0ZPTjcyNzAz",
+     "name": "Fontibón"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkNBUDYxODUx",
+     "name": "Capellanía"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5183953357",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4452894722",
+   "site_id": "MCO",
+   "seller_id": 164788927,
+   "accepts_mercadopago": true,
+   "price": 79900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NPVGFiYzZm",
+     "name": "Cota"
+    },
+    "state": {
+     "id": "TUNPUENVTmE3NmQ4",
+     "name": "Cundinamarca"
+    },
+    "neighborhood": {
+     "id": "",
+     "name": ""
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5220454874",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2062057375",
+   "site_id": "MCO",
+   "seller_id": 3447125625,
+   "accepts_mercadopago": true,
+   "price": 84900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 3 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": 179900,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": true,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1NVQjUzNzQ4",
+     "name": "Suba"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQk5JWjYyODI0",
+     "name": "Niza Suba"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 3,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "3 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4413438437",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4513915272",
+   "site_id": "MCO",
+   "seller_id": 3121131043,
+   "accepts_mercadopago": true,
+   "price": 89910,
+   "category_id": "MCO5072",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 12 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": 224,
+   "original_price": 99900,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "fulfillment",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NIQTk2OTI1",
+     "name": "Chapinero"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkNISTkxODg3",
+     "name": "Chicó Norte"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 12,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "12 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4182569465",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2212957141",
+   "site_id": "MCO",
+   "seller_id": 20081454,
+   "accepts_mercadopago": true,
+   "price": 90493,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 12 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "user_product_unify",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": true,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NIQTk2OTI1",
+     "name": "Chapinero"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkNIQTEzODg5",
+     "name": "Chapinero Central"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 12,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "12 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5184807723",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO3933557374",
+   "site_id": "MCO",
+   "seller_id": 2923575120,
+   "accepts_mercadopago": true,
+   "price": 93700,
+   "category_id": "MCO5072",
+   "currency_id": "COP",
+   "warranty": "Sin garantía",
+   "condition": "new",
+   "listing_type_id": "gold_pro",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "cbt_item",
+    "standard_price_by_channel",
+    "cbt_fulfillment_us",
+    "net_proceeds_prices",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "fulfillment",
+    "tags": [
+     "mandatory_free_shipping",
+     "cbt_fulfillment"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "",
+     "name": "China Grove"
+    },
+    "state": {
+     "id": "",
+     "name": "Texas"
+    },
+    "neighborhood": {
+     "id": "",
+     "name": ""
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Sin garantía",
+     "value_id": "6150835"
+    }
+   ],
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4056303258",
+   "site_id": "MCO",
+   "seller_id": 183500696,
+   "accepts_mercadopago": true,
+   "price": 98900,
+   "category_id": "MCO5072",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "user_product_unify",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1NVQjUzNzQ4",
+     "name": "Suba"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQlBPTjg5NjYx",
+     "name": "Pontevedra"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    },
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    }
+   ],
+   "user_product_id": "MCOU4069974421",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4273917444",
+   "site_id": "MCO",
+   "seller_id": 52392766,
+   "accepts_mercadopago": true,
+   "price": 109900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 12 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": 149900,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1RFVTY1OTk1",
+     "name": "Teusaquillo"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkdSQTM5MTEx",
+     "name": "Gran América"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 12,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "12 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4607642668",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2138018821",
+   "site_id": "MCO",
+   "seller_id": 223471785,
+   "accepts_mercadopago": true,
+   "price": 115900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 1 meses",
+   "condition": "new",
+   "listing_type_id": "gold_pro",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": true,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0JBUjkzOTg0",
+     "name": "Barranquilla"
+    },
+    "state": {
+     "id": "TUNPUEFUTG9mNDk5",
+     "name": "Atlantico"
+    },
+    "neighborhood": {
+     "id": "TUNPQlZJTDg1ODg3Ng",
+     "name": "Villa Carolina"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 1,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "1 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4785268323",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO3881241548",
+   "site_id": "MCO",
+   "seller_id": 316229806,
+   "accepts_mercadopago": true,
+   "price": 119900,
+   "category_id": "MCO5072",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 90 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NIQTk2OTI1",
+     "name": "Usaquén"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQkxBRzg0NjU1",
+     "name": "Lago Gaitán"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 90,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "90 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU3922633240",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2226149677",
+   "site_id": "MCO",
+   "seller_id": 1135466811,
+   "accepts_mercadopago": true,
+   "price": 130000,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 3 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1NBTjkyOTU1",
+     "name": "Santa Fe"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TVhYU2FtcGVyVFVOUFExTkJUamt5T1RVMQ",
+     "name": "Samper"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 3,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "3 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5231449063",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4500474578",
+   "site_id": "MCO",
+   "seller_id": 1510468909,
+   "accepts_mercadopago": true,
+   "price": 140000,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 6 meses",
+   "condition": "new",
+   "listing_type_id": "gold_pro",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0FHVTlkYzQy",
+     "name": "Aguachica"
+    },
+    "state": {
+     "id": "TUNPUENFU3IxODA4Mg",
+     "name": "Cesar"
+    },
+    "neighborhood": {
+     "id": "",
+     "name": ""
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 6,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "6 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5339124571",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4355088584",
+   "site_id": "MCO",
+   "seller_id": 3410398462,
+   "accepts_mercadopago": true,
+   "price": 150000,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 30 días",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "self_service_in",
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1NBTjkyOTU1",
+     "name": "Santa Fe"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQlNBTjY0MjM3",
+     "name": "San Martín"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 30,
+      "unit": "días"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "30 días",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4870813301",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO2254315071",
+   "site_id": "MCO",
+   "seller_id": 2950476828,
+   "accepts_mercadopago": true,
+   "price": 186900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 3 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "has_published_clips",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": true,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ01FRGRjNjc4",
+     "name": "Medellín"
+    },
+    "state": {
+     "id": "TUNPUEFOVGFiZWI3",
+     "name": "Antioquia"
+    },
+    "neighborhood": {
+     "id": "TUNPQkJFTDMyODg5OA",
+     "name": "Belén"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 3,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "3 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5346690831",
+   "min_purchase_unit": 1
+  },
+  {
+   "item_id": "MCO4501693420",
+   "site_id": "MCO",
+   "seller_id": 2111978450,
+   "accepts_mercadopago": true,
+   "price": 186900,
+   "category_id": "MCO3697",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 3 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "has_published_clips",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": null,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ01FRGRjNjc4",
+     "name": "Medellín"
+    },
+    "state": {
+     "id": "TUNPUEFOVGFiZWI3",
+     "name": "Antioquia"
+    },
+    "neighborhood": {
+     "id": "TUNPQkJFTDMyODg5OA",
+     "name": "Belén"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 3,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "3 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5388116524",
+   "min_purchase_unit": 1
+  }
+ ],
+ "experiments": null
+}

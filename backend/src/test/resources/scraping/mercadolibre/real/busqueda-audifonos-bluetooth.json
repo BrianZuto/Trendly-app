@@ -1,0 +1,1883 @@
+{
+ "keywords": "audífonos bluetooth",
+ "paging": {
+  "total": 10000,
+  "limit": 6,
+  "offset": 0,
+  "last": "MCO70116064"
+ },
+ "results": [
+  {
+   "id": "MCO36701386",
+   "catalog_product_id": "MCO36701386",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Audífonos Bluetooth Disney Tws Audífonos Bluetooth Inalá Color Verde",
+   "parent_id": "MCO36701382",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "19543437",
+     "value_name": "Lo Necesito",
+     "values": [
+      {
+       "id": "19543437",
+       "name": "Lo Necesito"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "16032925",
+     "value_name": "wireless bluetooth",
+     "values": [
+      {
+       "id": "16032925",
+       "name": "wireless bluetooth"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "20476721",
+     "value_name": "H77",
+     "values": [
+      {
+       "id": "20476721",
+       "name": "H77"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "39424579",
+     "value_name": "Verde",
+     "values": [
+      {
+       "id": "39424579",
+       "name": "Verde"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450314",
+     "value_name": "Verde",
+     "values": [
+      {
+       "id": "2450314",
+       "name": "Verde"
+      }
+     ],
+     "meta": {
+      "rgb": "0DA600"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "37462292",
+     "value_name": "7500725590785",
+     "values": [
+      {
+       "id": "37462292",
+       "name": "7500725590785"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "FREQUENCY_RESPONSE",
+     "name": "Respuesta en frecuencia",
+     "value_id": "925820",
+     "value_name": "20 Hz - 20 kHz",
+     "values": [
+      {
+       "id": "925820",
+       "name": "20 Hz - 20 kHz"
+      }
+     ]
+    },
+    {
+     "id": "SENSITIVITY",
+     "name": "Sensibilidad",
+     "value_id": "7911166",
+     "value_name": "42 dB",
+     "values": [
+      {
+       "id": "7911166",
+       "name": "42 dB"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "9929866",
+     "value_name": "30 mAh",
+     "values": [
+      {
+       "id": "9929866",
+       "name": "30 mAh"
+      }
+     ]
+    },
+    {
+     "id": "WITH_DETACHABLE_CABLE",
+     "name": "Con cable desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_MICROPHONE",
+     "name": "Con micrófono desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FLEXIBLE_MICROPHONE",
+     "name": "Con micrófono flexible",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "13172815",
+     "value_name": "5.3",
+     "values": [
+      {
+       "id": "13172815",
+       "name": "5.3"
+      }
+     ]
+    },
+    {
+     "id": "ACCESSORIES_INCLUDED",
+     "name": "Accesorios incluidos",
+     "value_id": "34594822",
+     "value_name": "Cable de carga USB",
+     "values": [
+      {
+       "id": "34594822",
+       "name": "Cable de carga USB"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "En la calle, en el colectivo o en la oficina, ten siempre a mano tus audífonos H77 y ¡escápate de la rutina por un rato! Vas a poder disfrutar de la música que más te gusta y de tus podcasts favoritos cuando quieras y donde quieras.\n\nEl formato perfecto para ti\nAl ser in-ear, mejoran la calidad del audio y son de tamaño pequeño para poder insertarse en tu oreja. Son ideales para acompañarte a la hora de hacer ejercicio mientras te sumerges en el mejor sonido envolvente."
+   },
+   "pictures": [
+    {
+     "id": "801375-MLA82200409800_022025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_801375-MLA82200409800_022025-F.jpg",
+     "max_width": "1200",
+     "max_height": "1166"
+    },
+    {
+     "id": "841682-MLA82200409812_022025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_841682-MLA82200409812_022025-F.jpg",
+     "max_width": "1200",
+     "max_height": "1200"
+    },
+    {
+     "id": "611529-MLA82200409826_022025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_611529-MLA82200409826_022025-F.jpg",
+     "max_width": "1200",
+     "max_height": "900"
+    },
+    {
+     "id": "937299-MLA82483883753_022025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_937299-MLA82483883753_022025-F.jpg",
+     "max_width": "1200",
+     "max_height": "1200"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2024-05-08T04:30:27Z",
+   "last_updated": "2026-07-24T20:15:48Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO52167795",
+   "catalog_product_id": "MCO52167795",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Audifonos Bluetooth Blanco",
+   "parent_id": "MCO52167794",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "2147502",
+     "value_name": "Maxam",
+     "values": [
+      {
+       "id": "2147502",
+       "name": "Maxam"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "3484662",
+     "value_name": "Wireless",
+     "values": [
+      {
+       "id": "3484662",
+       "name": "Wireless"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "56678143",
+     "value_name": "EJ-BS04",
+     "values": [
+      {
+       "id": "56678143",
+       "name": "EJ-BS04"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52055",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "52055",
+       "name": "Blanco"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450308",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "2450308",
+       "name": "Blanco"
+      }
+     ],
+     "meta": {
+      "rgb": "FFFFFF"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_GAMER",
+     "name": "Es gamer",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "56678144",
+     "value_name": "6972244453819",
+     "values": [
+      {
+       "id": "56678144",
+       "name": "6972244453819"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "9850596",
+     "value_name": "3 h",
+     "values": [
+      {
+       "id": "9850596",
+       "name": "3 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "10322050",
+     "value_name": "70 mAh",
+     "values": [
+      {
+       "id": "10322050",
+       "name": "70 mAh"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "995948-MLA87206095478_072025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_995948-MLA87206095478_072025-F.jpg",
+     "max_width": "1200",
+     "max_height": "938"
+    },
+    {
+     "id": "653617-MLA87533065891_072025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_653617-MLA87533065891_072025-F.jpg",
+     "max_width": "900",
+     "max_height": "1200"
+    },
+    {
+     "id": "666891-MLA87533065923_072025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_666891-MLA87533065923_072025-F.jpg",
+     "max_width": "900",
+     "max_height": "1200"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2025-07-09T07:37:22Z",
+   "last_updated": "2026-03-23T05:37:13Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO42441514",
+   "catalog_product_id": "MCO42441514",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Sentry Audifonos Bluetooth",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "2427536",
+     "value_name": "Sentry",
+     "values": [
+      {
+       "id": "2427536",
+       "name": "Sentry"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182354",
+     "value_name": "Over-ear",
+     "values": [
+      {
+       "id": "182354",
+       "name": "Over-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "43895792",
+     "value_name": "80068541806",
+     "values": [
+      {
+       "id": "43895792",
+       "name": "80068541806"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "845763-MLA82481747901_022025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_845763-MLA82481747901_022025-F.jpg",
+     "max_width": "937",
+     "max_height": "1200"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2024-10-29T22:07:52Z",
+   "last_updated": "2025-12-29T20:46:45Z",
+   "quality_type": "PRIMITIVE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO60369343",
+   "catalog_product_id": "MCO60369343",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Audífonos Bluetooth Blanco",
+   "parent_id": "MCO60369330",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "36264847",
+     "value_name": "nebro",
+     "values": [
+      {
+       "id": "36264847",
+       "name": "nebro"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "8736865",
+     "value_name": "TWS",
+     "values": [
+      {
+       "id": "8736865",
+       "name": "TWS"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "65203137",
+     "value_name": "WE-005",
+     "values": [
+      {
+       "id": "65203137",
+       "name": "WE-005"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52055",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "52055",
+       "name": "Blanco"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450308",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "2450308",
+       "name": "Blanco"
+      }
+     ],
+     "meta": {
+      "rgb": "FFFFFF"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_GAMER",
+     "name": "Es gamer",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "65203147",
+     "value_name": "6972895046514",
+     "values": [
+      {
+       "id": "65203147",
+       "name": "6972895046514"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "9850504",
+     "value_name": "5 h",
+     "values": [
+      {
+       "id": "9850504",
+       "name": "5 h"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_WATERPROOF",
+     "name": "Es a prueba de agua",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "9809930",
+     "value_name": "5.0",
+     "values": [
+      {
+       "id": "9809930",
+       "name": "5.0"
+      }
+     ]
+    },
+    {
+     "id": "SUITABLE_USES",
+     "name": "Usos aptos",
+     "value_id": "19992751",
+     "value_name": "Entretenimiento",
+     "values": [
+      {
+       "id": "19992751",
+       "name": "Entretenimiento"
+      }
+     ]
+    },
+    {
+     "id": "ACCESSORIES_INCLUDED",
+     "name": "Accesorios incluidos",
+     "value_name": "Cable de carga micro-USB, Estuche de transporte",
+     "values": [
+      {
+       "id": "10832364",
+       "name": "Cable de carga micro-USB"
+      },
+      {
+       "id": "15953313",
+       "name": "Estuche de transporte"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "775185-MLA95474066501_102025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_775185-MLA95474066501_102025-F.jpg",
+     "max_width": "1037",
+     "max_height": "1197"
+    },
+    {
+     "id": "865087-MLA95038369416_102025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_865087-MLA95038369416_102025-F.jpg",
+     "max_width": "630",
+     "max_height": "713"
+    },
+    {
+     "id": "662644-MLA95473829867_102025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_662644-MLA95473829867_102025-F.jpg",
+     "max_width": "1125",
+     "max_height": "1106"
+    },
+    {
+     "id": "694296-MLA95473790345_102025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_694296-MLA95473790345_102025-F.jpg",
+     "max_width": "1125",
+     "max_height": "1096"
+    },
+    {
+     "id": "777770-MLA95474066521_102025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_777770-MLA95474066521_102025-F.jpg",
+     "max_width": "1125",
+     "max_height": "1093"
+    },
+    {
+     "id": "676604-MLA95038152424_102025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_676604-MLA95038152424_102025-F.jpg",
+     "max_width": "1125",
+     "max_height": "1104"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2025-10-17T15:04:37Z",
+   "last_updated": "2025-10-17T15:28:36Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO79187570",
+   "catalog_product_id": "MCO79187570",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Audífonos Bluetooth 6.0",
+   "parent_id": "MCO74982291",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "MANUFACTURER",
+     "name": "Fabricante",
+     "value_id": "276243",
+     "value_name": "Genérica",
+     "values": [
+      {
+       "id": "276243",
+       "name": "Genérica"
+      }
+     ]
+    },
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59173901",
+     "value_name": "Kaxws",
+     "values": [
+      {
+       "id": "59173901",
+       "name": "Kaxws"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "8736865",
+     "value_name": "TWS",
+     "values": [
+      {
+       "id": "8736865",
+       "name": "TWS"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "84259696",
+     "value_name": "Bluetooth007",
+     "values": [
+      {
+       "id": "84259696",
+       "name": "Bluetooth007"
+      }
+     ]
+    },
+    {
+     "id": "ALPHANUMERIC_MODEL",
+     "name": "Modelo alfanumérico",
+     "value_id": "48823168",
+     "value_name": "BT07",
+     "values": [
+      {
+       "id": "48823168",
+       "name": "BT07"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "51994",
+     "value_name": "Rosa",
+     "values": [
+      {
+       "id": "51994",
+       "name": "Rosa"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450307",
+     "value_name": "Rojo",
+     "values": [
+      {
+       "id": "2450307",
+       "name": "Rojo"
+      }
+     ],
+     "meta": {
+      "rgb": "FF0000"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "89129984",
+     "value_name": "00813439246914",
+     "values": [
+      {
+       "id": "89129984",
+       "name": "00813439246914"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "9850509",
+     "value_name": "40 h",
+     "values": [
+      {
+       "id": "9850509",
+       "name": "40 h"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_WIRELESS_CHARGING",
+     "name": "Con carga inalámbrica",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATERPROOF",
+     "name": "Es a prueba de agua",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_MICROPHONE",
+     "name": "Con micrófono desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FLEXIBLE_MICROPHONE",
+     "name": "Con micrófono flexible",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "17073050",
+     "value_name": "6",
+     "values": [
+      {
+       "id": "17073050",
+       "name": "6"
+      }
+     ]
+    },
+    {
+     "id": "CONTROL_FUNCTIONS",
+     "name": "Funciones de control",
+     "value_name": "Control de canciones, Control de llamadas, Control de volumen, Play, Silenciar",
+     "values": [
+      {
+       "id": "11616279",
+       "name": "Control de canciones"
+      },
+      {
+       "id": "11588393",
+       "name": "Control de llamadas"
+      },
+      {
+       "id": "11559796",
+       "name": "Control de volumen"
+      },
+      {
+       "id": "11559795",
+       "name": "Play"
+      },
+      {
+       "id": "11655376",
+       "name": "Silenciar"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "972206-MLA116021275438_092026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_972206-MLA116021275438_092026-F.jpg",
+     "suggested_for_picker": [
+      "COLOR"
+     ],
+     "max_width": "1200",
+     "max_height": "1200"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-09-11T02:10:22Z",
+   "last_updated": "2026-09-11T02:29:51Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO70116064",
+   "catalog_product_id": "MCO70116064",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Audífonos Bluetooth Pro5s",
+   "parent_id": "MCO70116063",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "3456814",
+     "value_name": "TWS",
+     "values": [
+      {
+       "id": "3456814",
+       "name": "TWS"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "28032454",
+     "value_name": "FreeClip",
+     "values": [
+      {
+       "id": "28032454",
+       "name": "FreeClip"
+      }
+     ]
+    },
+    {
+     "id": "ALPHANUMERIC_MODEL",
+     "name": "Modelo alfanumérico",
+     "value_id": "28032453",
+     "value_name": "Dove-T00",
+     "values": [
+      {
+       "id": "28032453",
+       "name": "Dove-T00"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52055",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "52055",
+       "name": "Blanco"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450308",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "2450308",
+       "name": "Blanco"
+      }
+     ],
+     "meta": {
+      "rgb": "FFFFFF"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "3602870",
+     "value_name": "Open-ear",
+     "values": [
+      {
+       "id": "3602870",
+       "name": "Open-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "78212680",
+     "value_name": "06956086012564",
+     "values": [
+      {
+       "id": "78212680",
+       "name": "06956086012564"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "729769-MLA112065268731_052026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_729769-MLA112065268731_052026-F.jpg",
+     "max_width": "1119",
+     "max_height": "1198"
+    },
+    {
+     "id": "649076-MLA112065298681_052026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_649076-MLA112065298681_052026-F.jpg",
+     "max_width": "662",
+     "max_height": "709"
+    },
+    {
+     "id": "932036-MLA111079252954_052026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_932036-MLA111079252954_052026-F.jpg",
+     "max_width": "800",
+     "max_height": "800"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-05-22T18:00:55Z",
+   "last_updated": "2026-05-22T18:13:12Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  }
+ ],
+ "query_type": "KEYWORDS"
+}
