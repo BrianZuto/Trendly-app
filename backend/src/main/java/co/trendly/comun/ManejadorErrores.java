@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import co.trendly.seguridad.CredencialesInvalidasException;
 import co.trendly.seguridad.RespuestaError;
+import co.trendly.seguridad.TokenSinUsuarioException;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -47,6 +49,12 @@ public class ManejadorErrores {
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<RespuestaError> argumentoInvalido(IllegalArgumentException e, HttpServletRequest request) {
         return error(HttpStatus.BAD_REQUEST, e.getMessage(), request);
+    }
+
+    /** Login fallido (SCRUM-31) o token cuyo usuario ya no existe. */
+    @ExceptionHandler({CredencialesInvalidasException.class, TokenSinUsuarioException.class})
+    ResponseEntity<RespuestaError> noAutenticado(RuntimeException e, HttpServletRequest request) {
+        return error(HttpStatus.UNAUTHORIZED, e.getMessage(), request);
     }
 
     /** Un id que no es número, por ejemplo {@code /productos/abc}. */
