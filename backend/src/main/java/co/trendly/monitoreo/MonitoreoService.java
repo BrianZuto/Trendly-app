@@ -1,5 +1,7 @@
 package co.trendly.monitoreo;
 
+import java.util.Map;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -44,17 +46,22 @@ public class MonitoreoService {
     private final MonitoreoRepository monitoreos;
     private final ProductoRepository productos;
     private final UsuarioRepository usuarios;
+    private final CompetenciaService competencia;
 
-    public MonitoreoService(MonitoreoRepository monitoreos, ProductoRepository productos, UsuarioRepository usuarios) {
+    public MonitoreoService(MonitoreoRepository monitoreos, ProductoRepository productos, UsuarioRepository usuarios,
+            CompetenciaService competencia) {
         this.monitoreos = monitoreos;
         this.productos = productos;
         this.usuarios = usuarios;
+        this.competencia = competencia;
     }
 
     @Transactional(readOnly = true)
     public List<MonitoreoResponse> listar(Long usuarioId, Long productoId) {
         Producto producto = productoPropio(usuarioId, productoId);
-        return monitoreos.findByProductoIdOrderByIdAsc(producto.getId()).stream().map(MonitoreoResponse::de).toList();
+        List<Monitoreo> lista = monitoreos.findByProductoIdOrderByIdAsc(producto.getId());
+        Map<Long, List<PublicacionVigente>> publicaciones = competencia.publicacionesDe(lista);
+        return lista.stream().map(m -> MonitoreoResponse.de(m, publicaciones.get(m.getId()))).toList();
     }
 
     @Transactional

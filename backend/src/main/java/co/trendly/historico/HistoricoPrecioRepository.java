@@ -1,5 +1,7 @@
 package co.trendly.historico;
 
+import java.util.Collection;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,10 @@ public interface HistoricoPrecioRepository extends JpaRepository<HistoricoPrecio
     /** Captura anterior de la misma publicación: de ahí sale el "precio anterior" del evento. */
     Optional<HistoricoPrecio> findFirstByMonitoreoIdAndPublicacionIdOrderByCapturadoEnDescIdDesc(Long monitoreoId,
             String publicacionId);
+
+    /** Capturas recientes de varios monitoreos, en orden de fecha (lista de competidores del producto). */
+    List<HistoricoPrecio> findByMonitoreoIdInAndCapturadoEnAfterOrderByCapturadoEnAscIdAsc(Collection<Long> monitoreoIds,
+            Instant desde);
 
     List<HistoricoPrecio> findByMonitoreoIdAndCapturadoEnBetweenOrderByCapturadoEnAscIdAsc(Long monitoreoId,
             Instant desde, Instant hasta);

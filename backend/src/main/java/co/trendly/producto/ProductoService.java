@@ -77,7 +77,7 @@ public class ProductoService {
     }
 
     private static void aplicar(Producto producto, ProductoRequest solicitud, String sku) {
-        producto.actualizar(solicitud.nombre().trim(), sku, solicitud.costo(), solicitud.precioVenta(),
+        producto.actualizar(solicitud.nombre().trim(), sku, solicitud.costoTotal(), solicitud.precioVenta(),
                 solicitud.margenObjetivo());
     }
 

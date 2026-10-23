@@ -31,11 +31,13 @@ function SieteDias({ historial }) {
     const camino = puntos
         .map((p, i) => `${i ? 'L' : 'M'}${((i / (puntos.length - 1)) * 56).toFixed(1)} ${(18 - ((p.precio - menor) / rango) * 16).toFixed(1)}`)
         .join(' ')
+    // Con una sola captura no hay tendencia: una línea plana en vez de un camino con NaN
+    const trazo = puntos.length > 1 ? camino : 'M0 10 L56 10'
     const clase = cambio < 0 ? 'baja' : cambio > 0 ? 'sube' : 'igual'
     return (
         <span className={`siete ${clase}`}>
             <svg className="spark" viewBox="0 0 56 20" aria-hidden="true">
-                <path d={camino} />
+                <path d={trazo} />
             </svg>
             <span className="num">{porcentaje(cambio)}</span>
         </span>
