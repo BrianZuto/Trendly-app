@@ -1,5 +1,5 @@
 # Pipeline de integración continua (SCRUM-28).
-# Los jobs "backend" y "frontend" son los checks obligatorios en main y develop.
+# Los jobs "backend", "frontend" y "sonarcloud" son los checks obligatorios en main y develop.
 name: CI
 
 on:
@@ -44,6 +44,16 @@ jobs:
           path: backend/target/site/jacoco/
           if-no-files-found: ignore
 
+      - name: Guardar clases compiladas y reporte XML para SonarCloud
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-backend
+          path: |
+            backend/target/classes/
+            backend/target/test-classes/
+            backend/target/site/jacoco/jacoco.xml
+          retention-days: 1
+
   frontend:
     name: frontend
     runs-on: ubuntu-latest
@@ -78,3 +88,54 @@ jobs:
           name: cobertura-frontend
           path: frontend/coverage/
           if-no-files-found: ignore
+
+  # Azure Function que dispara la recolección cada 6 h (SCRUM-39)
+  functions:
+    name: functions
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: functions
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Pruebas
+        run: npm test
+
+  # Análisis de calidad (SCRUM-44). Reutiliza la compilación y la cobertura de los otros dos jobs.
+  sonarcloud:
+    name: sonarcloud
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    # Los PR desde forks no tienen acceso al secreto SONAR_TOKEN
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # SonarCloud necesita el historial para detectar el código nuevo
+
+      - name: Descargar compilación y cobertura del backend
+        uses: actions/download-artifact@v4
+        with:
+          name: sonar-backend
+          path: backend/target
+
+      - name: Descargar cobertura del frontend
+        uses: actions/download-artifact@v4
+        with:
+          name: cobertura-frontend
+          path: frontend/coverage
+
+      - name: Análisis de SonarCloud y quality gate
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

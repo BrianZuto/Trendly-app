@@ -179,14 +179,14 @@ describe('productos', () => {
 
     it('con competidores muestra el mínimo, tu posición y cuántas publicaciones vigilas', async () => {
         sembrarProductos(EMAIL, [CAMISETA])
-        await crearMonitoreo(1, { tipo: 'URL', valor: 'https://articulo.mercadolibre.com.co/MCO-1342210987-camiseta-_JM' })
+        await crearMonitoreo(1, { tipo: 'URL', valor: 'https://www.mercadolibre.com.co/camiseta-basica/p/MCO1342210987' })
         await renderizar()
 
         const fila = within(screen.getByRole('row', { name: /Camiseta básica/ }))
         expect(fila.getByText('MercadoLibre')).toBeInTheDocument()
         expect(fila.getByText('Costo a mano')).toBeInTheDocument()
         expect(fila.getByText('1 publicación')).toBeInTheDocument()
-        expect(fila.getByText(/40\.100/)).toBeInTheDocument()
+        expect(fila.getByText(/41\.300/)).toBeInTheDocument()
         expect(fila.getByText('El más barato')).toBeInTheDocument()
         expect(fila.getByRole('link', { name: 'Ver detalle de Camiseta básica' })).toHaveAttribute('href', '/productos/1')
     })

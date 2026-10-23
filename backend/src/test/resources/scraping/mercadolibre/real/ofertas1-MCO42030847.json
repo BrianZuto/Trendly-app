@@ -1,0 +1,79 @@
+{
+ "paging": {
+  "total": 2,
+  "offset": 0,
+  "limit": 1
+ },
+ "results": [
+  {
+   "item_id": "MCO4443245004",
+   "site_id": "MCO",
+   "seller_id": 88507201,
+   "accepts_mercadopago": true,
+   "price": 103499,
+   "category_id": "MCO31377",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 3 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": 114999,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "xd_drop_off",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1RBQjk5NDRk",
+     "name": "Tabio"
+    },
+    "state": {
+     "id": "TUNPUENVTmE3NmQ4",
+     "name": "Cundinamarca"
+    },
+    "neighborhood": {
+     "id": "TUNPQlRBQjE3NzM0OQ",
+     "name": "Tabio"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 3,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "3 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU5192473362",
+   "min_purchase_unit": 1
+  }
+ ],
+ "experiments": null
+}

@@ -1,0 +1,30 @@
+# MySQL 8 para desarrollo local (SCRUM-29).
+# Uso: copiar .env.example como .env, completar DB_PASSWORD y DB_ROOT_PASSWORD, y ejecutar `docker compose up -d`.
+# Las tablas no se crean aquí: las crea Flyway cuando arranca el backend.
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: trendly-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: trendly
+      MYSQL_USER: ${DB_USERNAME:-trendly}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Define DB_ROOT_PASSWORD en .env}
+      TZ: UTC
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+00:00
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql-data:

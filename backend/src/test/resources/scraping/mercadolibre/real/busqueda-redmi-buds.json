@@ -1,0 +1,3825 @@
+{
+ "keywords": "redmi buds",
+ "paging": {
+  "total": 5692,
+  "limit": 8,
+  "offset": 0,
+  "last": "MCO23386351"
+ },
+ "results": [
+  {
+   "id": "MCO79239295",
+   "catalog_product_id": "MCO79239295",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Redmi Buds 8 Green",
+   "parent_id": "MCO73944446",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "13777381",
+     "value_name": "Buds",
+     "values": [
+      {
+       "id": "13777381",
+       "name": "Buds"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "90145157",
+     "value_name": "REDMI Buds 8",
+     "values": [
+      {
+       "id": "90145157",
+       "name": "REDMI Buds 8"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "2715794",
+     "value_name": "Green",
+     "values": [
+      {
+       "id": "2715794",
+       "name": "Green"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450314",
+     "value_name": "Verde",
+     "values": [
+      {
+       "id": "2450314",
+       "name": "Verde"
+      }
+     ],
+     "meta": {
+      "rgb": "0DA600"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "13592741",
+     "value_name": "Semi-In-ear",
+     "values": [
+      {
+       "id": "13592741",
+       "name": "Semi-In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "CONNECTOR_TYPES",
+     "name": "Tipos de conectores",
+     "value_id": "40957027",
+     "value_name": "USB C",
+     "values": [
+      {
+       "id": "40957027",
+       "name": "USB C"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "715201-MLA117568914419_092026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_715201-MLA117568914419_092026-F.jpg",
+     "max_width": "610",
+     "max_height": "766"
+    },
+    {
+     "id": "892362-MLA117569058391_092026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_892362-MLA117569058391_092026-F.jpg",
+     "max_width": "650",
+     "max_height": "767"
+    },
+    {
+     "id": "736771-MLA117568914439_092026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_736771-MLA117568914439_092026-F.jpg",
+     "max_width": "561",
+     "max_height": "766"
+    },
+    {
+     "id": "880444-MLA116088122530_092026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_880444-MLA116088122530_092026-F.jpg",
+     "max_width": "734",
+     "max_height": "613"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-09-12T11:01:34Z",
+   "last_updated": "2026-10-15T11:19:05Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO42030847",
+   "catalog_product_id": "MCO42030847",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Audifonos Redmi Buds 4 Blanco",
+   "parent_id": "MCO44186711",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "43648895",
+     "value_name": "BUDS4WH",
+     "values": [
+      {
+       "id": "43648895",
+       "name": "BUDS4WH"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52055",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "52055",
+       "name": "Blanco"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450308",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "2450308",
+       "name": "Blanco"
+      }
+     ],
+     "meta": {
+      "rgb": "FFFFFF"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "43648890",
+     "value_name": "2050003474542",
+     "values": [
+      {
+       "id": "43648890",
+       "name": "2050003474542"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "Los Audífonos Redmi Buds 4 tienen un diseño compacto con un elegante estuche de micro carga para hasta 21 horas de tiempo de reproducción. \n\nCuentan con controles táctiles de voz inteligentes para llamadas manos libres fáciles con una calidad de sonido superior. \n\nLa clasificación de resistencia al agua IPX5 los mantiene conectados mientras viajan, en la oficina o en el hogar, sin importar lo que les depare la vida."
+   },
+   "pictures": [
+    {
+     "id": "888926-MLA82441687087_022025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_888926-MLA82441687087_022025-F.jpg",
+     "max_width": "996",
+     "max_height": "1200"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2024-10-16T20:00:53Z",
+   "last_updated": "2024-11-29T23:32:18Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO68111260",
+   "catalog_product_id": "MCO68111260",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Redmi Buds 8 Active Celeste",
+   "parent_id": "MCO66318678",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "MANUFACTURER",
+     "name": "Fabricante",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "7446666",
+     "value_name": "Bluetooth",
+     "values": [
+      {
+       "id": "7446666",
+       "name": "Bluetooth"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "74328841",
+     "value_name": "Redmi Buds 8 Active",
+     "values": [
+      {
+       "id": "74328841",
+       "name": "Redmi Buds 8 Active"
+      }
+     ]
+    },
+    {
+     "id": "ALPHANUMERIC_MODEL",
+     "name": "Modelo alfanumérico",
+     "value_id": "77381772",
+     "value_name": "M2537E1",
+     "values": [
+      {
+       "id": "77381772",
+       "name": "M2537E1"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52021",
+     "value_name": "Celeste",
+     "values": [
+      {
+       "id": "52021",
+       "name": "Celeste"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450278",
+     "value_name": "Celeste",
+     "values": [
+      {
+       "id": "2450278",
+       "name": "Celeste"
+      }
+     ],
+     "meta": {
+      "rgb": "83DDFF"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "76374833",
+     "value_name": "06932554464257",
+     "values": [
+      {
+       "id": "76374833",
+       "name": "06932554464257"
+      }
+     ]
+    },
+    {
+     "id": "PACKAGE_DATA_SOURCE",
+     "name": "Orígen del dato del paquete de fábrica",
+     "value_id": "52228230",
+     "value_name": "CERTIFIED_MEASUREMENT",
+     "values": [
+      {
+       "id": "52228230",
+       "name": "CERTIFIED_MEASUREMENT"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "DIAPHRAGM_UNIT",
+     "name": "Unidad de diafragma",
+     "value_id": "48538736",
+     "value_name": "1.42 cm",
+     "values": [
+      {
+       "id": "48538736",
+       "name": "1.42 cm"
+      }
+     ]
+    },
+    {
+     "id": "IMPEDANCE",
+     "name": "Impedancia",
+     "value_id": "447286",
+     "value_name": "32 Ω",
+     "values": [
+      {
+       "id": "447286",
+       "name": "32 Ω"
+      }
+     ]
+    },
+    {
+     "id": "FREQUENCY_RESPONSE",
+     "name": "Respuesta en frecuencia",
+     "value_id": "925820",
+     "value_name": "20 Hz - 20 kHz",
+     "values": [
+      {
+       "id": "925820",
+       "name": "20 Hz - 20 kHz"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "46887446",
+     "value_name": "37 h",
+     "values": [
+      {
+       "id": "46887446",
+       "name": "37 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "9929681",
+     "value_name": "37 mAh",
+     "values": [
+      {
+       "id": "9929681",
+       "name": "37 mAh"
+      }
+     ]
+    },
+    {
+     "id": "CHARGING_CASE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del estuche de carga",
+     "value_id": "43553068",
+     "value_name": "475 mAh",
+     "values": [
+      {
+       "id": "43553068",
+       "name": "475 mAh"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_WIRELESS_CHARGING",
+     "name": "Con carga inalámbrica",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_PROXIMITY_SENSOR",
+     "name": "Con sensor de proximidad",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MP3_PLAYER",
+     "name": "Con reproductor de MP3",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FM_RADIO",
+     "name": "Con radio FM",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_NOISE_CANCELLING",
+     "name": "Con cancelación de ruido",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATERPROOF",
+     "name": "Es a prueba de agua",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_MICROPHONE",
+     "name": "Con micrófono desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FLEXIBLE_MICROPHONE",
+     "name": "Con micrófono flexible",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "MICROPHONES_NUMBER",
+     "name": "Cantidad de micrófonos",
+     "value_id": "288917",
+     "value_name": "2",
+     "values": [
+      {
+       "id": "288917",
+       "name": "2"
+      }
+     ]
+    },
+    {
+     "id": "IP_RATING",
+     "name": "Clasificación IP",
+     "value_id": "8875680",
+     "value_name": "IP54",
+     "values": [
+      {
+       "id": "8875680",
+       "name": "IP54"
+      }
+     ]
+    },
+    {
+     "id": "CONNECTOR_TYPES",
+     "name": "Tipos de conectores",
+     "value_id": "2113108",
+     "value_name": "USB-C",
+     "values": [
+      {
+       "id": "2113108",
+       "name": "USB-C"
+      }
+     ]
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "34535958",
+     "value_name": "5.4",
+     "values": [
+      {
+       "id": "34535958",
+       "name": "5.4"
+      }
+     ]
+    },
+    {
+     "id": "MICROPHONE_ORIENTATIONS",
+     "name": "Orientaciones del micrófono",
+     "value_name": "Derecha, Izquierda",
+     "values": [
+      {
+       "id": "8847354",
+       "name": "Derecha"
+      },
+      {
+       "id": "8847355",
+       "name": "Izquierda"
+      }
+     ]
+    },
+    {
+     "id": "SUITABLE_USES",
+     "name": "Usos aptos",
+     "value_name": "Deporte, Profesional, Entretenimiento",
+     "values": [
+      {
+       "id": "8701148",
+       "name": "Deporte"
+      },
+      {
+       "id": "8701147",
+       "name": "Profesional"
+      },
+      {
+       "id": "19992751",
+       "name": "Entretenimiento"
+      }
+     ]
+    },
+    {
+     "id": "CONTROL_FUNCTIONS",
+     "name": "Funciones de control",
+     "value_name": "Control de volumen, Control de canciones, Control de llamadas, Play",
+     "values": [
+      {
+       "id": "11559796",
+       "name": "Control de volumen"
+      },
+      {
+       "id": "11616279",
+       "name": "Control de canciones"
+      },
+      {
+       "id": "11588393",
+       "name": "Control de llamadas"
+      },
+      {
+       "id": "11559795",
+       "name": "Play"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": ""
+   },
+   "pictures": [
+    {
+     "id": "634542-MLA110516611713_042026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_634542-MLA110516611713_042026-F.jpg",
+     "max_width": "867",
+     "max_height": "1200"
+    },
+    {
+     "id": "836667-MLA109634602428_042026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_836667-MLA109634602428_042026-F.jpg",
+     "max_width": "839",
+     "max_height": "1109"
+    },
+    {
+     "id": "809670-MLA109634455018_042026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_809670-MLA109634455018_042026-F.jpg",
+     "max_width": "935",
+     "max_height": "1176"
+    },
+    {
+     "id": "620600-MLA109634455026_042026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_620600-MLA109634455026_042026-F.jpg",
+     "max_width": "1200",
+     "max_height": "1189"
+    },
+    {
+     "id": "695021-MLA110515907593_042026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_695021-MLA110515907593_042026-F.jpg",
+     "max_width": "1200",
+     "max_height": "1190"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-04-16T18:04:26Z",
+   "last_updated": "2026-10-19T21:41:34Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "enhanced_content_template_id": "192277fa-8c1d-438f-abd0-df36e150a494",
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO73944448",
+   "catalog_product_id": "MCO73944448",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Auriculares Xiaomi Redmi Buds 8 Blanco",
+   "parent_id": "MCO73944446",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "13777381",
+     "value_name": "Buds",
+     "values": [
+      {
+       "id": "13777381",
+       "name": "Buds"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "90145157",
+     "value_name": "REDMI Buds 8",
+     "values": [
+      {
+       "id": "90145157",
+       "name": "REDMI Buds 8"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52055",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "52055",
+       "name": "Blanco"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450308",
+     "value_name": "Blanco",
+     "values": [
+      {
+       "id": "2450308",
+       "name": "Blanco"
+      }
+     ],
+     "meta": {
+      "rgb": "FFFFFF"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "13592741",
+     "value_name": "Semi-In-ear",
+     "values": [
+      {
+       "id": "13592741",
+       "name": "Semi-In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "83064520",
+     "value_name": "06932554486532",
+     "values": [
+      {
+       "id": "83064520",
+       "name": "06932554486532"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "18890120",
+     "value_name": "44 h",
+     "values": [
+      {
+       "id": "18890120",
+       "name": "44 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "13730849",
+     "value_name": "54 mAh",
+     "values": [
+      {
+       "id": "13730849",
+       "name": "54 mAh"
+      }
+     ]
+    },
+    {
+     "id": "CHARGING_CASE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del estuche de carga",
+     "value_id": "43553068",
+     "value_name": "475 mAh",
+     "values": [
+      {
+       "id": "43553068",
+       "name": "475 mAh"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_NOISE_CANCELLING",
+     "name": "Con cancelación de ruido",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IP_RATING",
+     "name": "Clasificación IP",
+     "value_id": "8875680",
+     "value_name": "IP54",
+     "values": [
+      {
+       "id": "8875680",
+       "name": "IP54"
+      }
+     ]
+    },
+    {
+     "id": "CONNECTOR_TYPES",
+     "name": "Tipos de conectores",
+     "value_id": "40957027",
+     "value_name": "USB C",
+     "values": [
+      {
+       "id": "40957027",
+       "name": "USB C"
+      }
+     ]
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "34535958",
+     "value_name": "5.4",
+     "values": [
+      {
+       "id": "34535958",
+       "name": "5.4"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "- Cancelación de ruido mejorada\r\ncancelación activa de ruido. Experiencia auditiva inmersiva. Profundidad de reducción de ruido de hasta 50 dB y un rango de cancelación de ruido efectivo de hasta 4 kHz, además de 3 niveles de cancelación de ruido adaptativos para detectar con precisión el ruido ambiental y adaptarse de forma inteligente a diferentes escenarios de ruido. \r\n20% Nivel de cancelación de ruido\r\n\r\n- Cancelación de ruido personalizada para tus oídos\r\nCancelación de ruido adaptativa para cada ajuste. En función de las diferentes condiciones de uso y la estructura del canal auditivo, los algoritmos detectan de forma inteligente y ajustan automáticamente los parámetros de cancelación de ruido para ofrecer una experiencia personalizada.\r\n\r\n- 3 niveles de modo de transparencia\r\nSiente el mundo exterior. Incluso con los auriculares puestos, podrás escuchar los anuncios del metro o las llamadas de tus amigos. Chatea sin quitártelos y controla la cantidad de sonido ambiente que dejas pasar para una comunicación más segura y natural.\r\nModo normal - Mejorar el modo de voz - Mejorar el modo de sonido ambiental\r\n\r\n- Cancelación de ruido en llamadas mediante IA con 3 micrófonos\r\nLlamadas más claras. La resistencia mejorada al ruido del viento optimiza la reducción de ruido y la precisión del reconocimiento. Disfruta de llamadas nítidas en exteriores sin preocuparte por el ruido del viento.\r\nHasta 12 m / s resistencia al ruido del viento 2\r\n\r\n- Calidad de sonido mejorada\r\nPotente controlador dinámico de 11 mm con audio inalámbrico de alta resolución.\r\nDetalles de sonido más ricos y completos. El audio nítido y detallado ofrece una calidad de sonido impecable. Gracias al códec de alta resolución LHDC, reproduce con precisión cada matiz, desde los agudos hasta los graves, para una experiencia auditiva inmersiva y realista. \r\n\r\n- 5 modos de ecualización\r\nAdmite configuraciones personalizadas. Ajustados cuidadosamente por Xiaomi Acoustic Labs, con 5 preajustes de ecualización y compatibilidad con ajustes de ecualización personalizados, ofreciendo más opciones para diferentes tipos de música. \r\nSonido equilibrado - Realzar los agudos - Aumentar el volumen - Mejora los graves - Mejora la voz\r\n\r\n- Audio personalizado Sound ID \r\nPersonaliza tu experiencia auditiva.Gracias a las pruebas auditivas y la optimización personalizadas de Sound ID, el sonido se adapta al perfil auditivo y las preferencias de cada persona, creando una experiencia de audio verdaderamente personalizada.\r\n\r\n- Tira de luz indicadora de batería 2.0\r\nEstado de la batería de un vistazo. Abre la carcasa para comprobar al instante el nivel de batería mediante la tira indicadora LED, que te avisará puntualmente de la carga para que siempre sepas cuánta energía tienes disponible.\r\n\r\n- Batería de larga duración\r\nUsar durante más tiempo. Ofrece hasta 11 horas de autonomía con una sola carga y hasta 44 horas con el estuche de carga, para que puedas escuchar música durante más tiempo. Con la carga rápida, solo 10 minutos proporcionan hasta 4 horas de reproducción.\r\n11 horas Duración de la batería con una sola carga\r\n44 horas Con el estuche de carga\r\nCarga rápida de 10 minutos: 4 horas Reproducción de música\r\nCarga rápida de 10 minutos: 1,5 horas Llamadas\r\n\r\n- Conectividad inteligente\r\nConexión de dos dispositivos. Permite la conexión simultánea a dos dispositivos, eliminando la necesidad de alternar entre ellos y facilitando la multitarea.\r\n\r\n- Compartir audio\r\nAdmite la conexión de un segundo par de auriculares a tu dispositivo, lo que te permite compartir audio fácilmente con un amigo para que puedan sumergirse juntos en la música. \r\n\r\n- Fast Pair\r\nAbre el estuche para emparejar fácilmente tus auriculares con tu dispositivo Android mediante la configuración de un solo toque de Fast Pair.\r\n\r\n- IP54 Resistencia al agua y al polvo\r\nBluetooth 5.4 Conexión estable\r\n\r\n- Especificaciones Técnicas\r\nTipo de producto: Auriculares Bluetooth inalámbricos semi-  intraurales\r\nDimensiones de un solo auricular: 30,59mm x 21,33mm x 23,2mm \r\nPeso de un solo auricular: 5 g \r\nPeso total: 44,5 g \r\nCapacidad de la batería: Auriculares: 54 mAh\r\nEstuche de carga: 475 mAh\r\nPuerto de carga: Tipo C\r\nDuración de la batería de un solo auricular (cancelación de ruido desactivada) : 11 horas\r\nDuración de la batería con el estuche de carga (cancelación de ruido activa desactivada) : 44 horas\r\nDuración de la batería de un solo auricular (con cancelación activa de ruido activada) : 6,5 horas\r\nDuración de la batería con el estuche de carga (cancelación de ruido activada ): 28 horas\r\n*La duración de la batería se refiere al tiempo de reproducción de música. Condiciones de la prueba: códec Bluetooth configurado en AAC, volumen al 50%, con el resto de ajustes en su estado predeterminado.\r\nConexión inalámbrica: Bluetooth 5.4\r\nprotocolos Bluetooth: SBC / AAC / LHDC\r\nRango de comunicación: 10 m (espacio abierto libre de obstáculos)\r\nClasificación IP: IP54 (auriculares)\r\n\r\n- Contenido del paquete:\r\nRedmi Buds 8 x 1\r\nEstuche de carga x 1\r\nCable de carga tipo C x 1\r\nManual de usuario x 1\r\nTapones S (2 unidades) - Tapones L (2 unidades) - Tapones M (2 unidades)\n"
+   },
+   "pictures": [
+    {
+     "id": "969895-MLA112255931588_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_969895-MLA112255931588_062026-F.jpg",
+     "suggested_for_picker": [
+      "COLOR"
+     ],
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "859316-MLA112256478360_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_859316-MLA112256478360_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "667901-MLA113405331687_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_667901-MLA113405331687_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "658379-MLA112256105250_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_658379-MLA112256105250_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "877581-MLA112256105262_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_877581-MLA112256105262_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "628986-MLA113406091713_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_628986-MLA113406091713_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-06-17T15:39:45Z",
+   "last_updated": "2026-10-15T11:19:06Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO74954972",
+   "catalog_product_id": "MCO74954972",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Auriculares Redmi Buds 8",
+   "parent_id": "MCO74954971",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "83064518",
+     "value_name": "Buds 8",
+     "values": [
+      {
+       "id": "83064518",
+       "name": "Buds 8"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52015",
+     "value_name": "Verde claro",
+     "values": [
+      {
+       "id": "52015",
+       "name": "Verde claro"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450314",
+     "value_name": "Verde",
+     "values": [
+      {
+       "id": "2450314",
+       "name": "Verde"
+      }
+     ],
+     "meta": {
+      "rgb": "0DA600"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "84224970",
+     "value_name": "06932554486556",
+     "values": [
+      {
+       "id": "84224970",
+       "name": "06932554486556"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "18890120",
+     "value_name": "44 h",
+     "values": [
+      {
+       "id": "18890120",
+       "name": "44 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "13730849",
+     "value_name": "54 mAh",
+     "values": [
+      {
+       "id": "13730849",
+       "name": "54 mAh"
+      }
+     ]
+    },
+    {
+     "id": "CHARGING_CASE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del estuche de carga",
+     "value_id": "43553068",
+     "value_name": "475 mAh",
+     "values": [
+      {
+       "id": "43553068",
+       "name": "475 mAh"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_WIRELESS_CHARGING",
+     "name": "Con carga inalámbrica",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_NOISE_CANCELLING",
+     "name": "Con cancelación de ruido",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_MICROPHONE",
+     "name": "Con micrófono desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FLEXIBLE_MICROPHONE",
+     "name": "Con micrófono flexible",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IP_RATING",
+     "name": "Clasificación IP",
+     "value_id": "8875680",
+     "value_name": "IP54",
+     "values": [
+      {
+       "id": "8875680",
+       "name": "IP54"
+      }
+     ]
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "34535958",
+     "value_name": "5.4",
+     "values": [
+      {
+       "id": "34535958",
+       "name": "5.4"
+      }
+     ]
+    },
+    {
+     "id": "MICROPHONE_ORIENTATIONS",
+     "name": "Orientaciones del micrófono",
+     "value_name": "Derecha, Izquierda",
+     "values": [
+      {
+       "id": "8847354",
+       "name": "Derecha"
+      },
+      {
+       "id": "8847355",
+       "name": "Izquierda"
+      }
+     ]
+    },
+    {
+     "id": "SUITABLE_USES",
+     "name": "Usos aptos",
+     "value_name": "Deporte, Entretenimiento, Profesional",
+     "values": [
+      {
+       "id": "8701148",
+       "name": "Deporte"
+      },
+      {
+       "id": "19992751",
+       "name": "Entretenimiento"
+      },
+      {
+       "id": "8701147",
+       "name": "Profesional"
+      }
+     ]
+    },
+    {
+     "id": "CONTROL_FUNCTIONS",
+     "name": "Funciones de control",
+     "value_name": "Control de canciones, Control de llamadas, Control de volumen",
+     "values": [
+      {
+       "id": "11616279",
+       "name": "Control de canciones"
+      },
+      {
+       "id": "11588393",
+       "name": "Control de llamadas"
+      },
+      {
+       "id": "11559796",
+       "name": "Control de volumen"
+      }
+     ]
+    },
+    {
+     "id": "ACCESSORIES_INCLUDED",
+     "name": "Accesorios incluidos",
+     "value_name": "Cable de carga USB-C, Manual",
+     "values": [
+      {
+       "id": "9697497",
+       "name": "Cable de carga USB-C"
+      },
+      {
+       "id": "8117352",
+       "name": "Manual"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "Los Redmi Buds 8 de Xiaomi ofrecen sonido inalámbrico con tecnología TWS y conexión Bluetooth 5.4, pensados para disfrutar música, llamadas y contenido con una experiencia estable y cómoda. Su formato in-ear ayuda a lograr un ajuste seguro, mientras la reducción de ruido contribuye a escuchar con mayor claridad en distintos entornos. Incorporan micrófono y modo manos libres para una comunicación práctica en todo momento.\n\nCon hasta 44 horas de autonomía junto al estuche de carga, son una excelente opción para jornadas largas de trabajo, deporte y ocio. Cuentan con batería de 54 mAh en los auriculares y 475 mAh en el estuche, además de carga mediante USB-C. Su resistencia al polvo y al agua con certificación IP54 aporta tranquilidad en el uso diario, y sus controles integrados permiten gestionar volumen, canciones y llamadas con facilidad. El color verde claro añade un toque moderno y distintivo."
+   },
+   "pictures": [
+    {
+     "id": "945856-MLA114113386849_072026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_945856-MLA114113386849_072026-F.jpg",
+     "suggested_for_picker": [
+      "COLOR"
+     ],
+     "max_width": "1200",
+     "max_height": "1200"
+    },
+    {
+     "id": "698003-MLA112907679342_072026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_698003-MLA112907679342_072026-F.jpg",
+     "max_width": "1200",
+     "max_height": "1200"
+    },
+    {
+     "id": "686449-MLA114113238703_072026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_686449-MLA114113238703_072026-F.jpg",
+     "max_width": "1200",
+     "max_height": "1200"
+    },
+    {
+     "id": "919565-MLA114113060935_072026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_919565-MLA114113060935_072026-F.jpg",
+     "max_width": "1200",
+     "max_height": "1200"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-07-03T14:25:47Z",
+   "last_updated": "2026-10-15T11:29:47Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO62123824",
+   "catalog_product_id": "MCO62123824",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Xiaomi Redmi Buds 6 Active Negro",
+   "parent_id": "MCO51488894",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "199791",
+     "value_name": "Redmi",
+     "values": [
+      {
+       "id": "199791",
+       "name": "Redmi"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "40210966",
+     "value_name": "Buds 6 Active",
+     "values": [
+      {
+       "id": "40210966",
+       "name": "Buds 6 Active"
+      }
+     ]
+    },
+    {
+     "id": "ALPHANUMERIC_MODEL",
+     "name": "Modelo alfanumérico",
+     "value_id": "40210960",
+     "value_name": "M2344E1",
+     "values": [
+      {
+       "id": "40210960",
+       "name": "M2344E1"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52049",
+     "value_name": "Negro",
+     "values": [
+      {
+       "id": "52049",
+       "name": "Negro"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450295",
+     "value_name": "Negro",
+     "values": [
+      {
+       "id": "2450295",
+       "name": "Negro"
+      }
+     ],
+     "meta": {
+      "rgb": "000000"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "66890681",
+     "value_name": "934575092248",
+     "values": [
+      {
+       "id": "66890681",
+       "name": "934575092248"
+      }
+     ]
+    },
+    {
+     "id": "ANATEL_HOMOLOGATION_NUMBER",
+     "name": "Homologación Anatel Nº",
+     "value_id": "65950048",
+     "value_name": "99182414550",
+     "values": [
+      {
+       "id": "65950048",
+       "name": "99182414550"
+      }
+     ]
+    },
+    {
+     "id": "PACKAGE_DATA_SOURCE",
+     "name": "Orígen del dato del paquete de fábrica",
+     "value_id": "52228230",
+     "value_name": "CERTIFIED_MEASUREMENT",
+     "values": [
+      {
+       "id": "52228230",
+       "name": "CERTIFIED_MEASUREMENT"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "DIAPHRAGM_UNIT",
+     "name": "Unidad de diafragma",
+     "value_id": "2120638",
+     "value_name": "9 mm",
+     "values": [
+      {
+       "id": "2120638",
+       "name": "9 mm"
+      }
+     ]
+    },
+    {
+     "id": "FREQUENCY_RESPONSE",
+     "name": "Respuesta en frecuencia",
+     "value_id": "9925042",
+     "value_name": "20 Hz - 20000 Hz",
+     "values": [
+      {
+       "id": "9925042",
+       "name": "20 Hz - 20000 Hz"
+      }
+     ]
+    },
+    {
+     "id": "SENSITIVITY",
+     "name": "Sensibilidad",
+     "value_id": "12300499",
+     "value_name": "35 dB",
+     "values": [
+      {
+       "id": "12300499",
+       "name": "35 dB"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "9850506",
+     "value_name": "30 h",
+     "values": [
+      {
+       "id": "9850506",
+       "name": "30 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_CHARGING_TIME",
+     "name": "Tiempo de carga del audífono",
+     "value_id": "20959725",
+     "value_name": "1 h",
+     "values": [
+      {
+       "id": "20959725",
+       "name": "1 h"
+      }
+     ]
+    },
+    {
+     "id": "CASE_CHARGING_TIME",
+     "name": "Tiempo de carga del estuche",
+     "value_id": "21449825",
+     "value_name": "2 h",
+     "values": [
+      {
+       "id": "21449825",
+       "name": "2 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "9929681",
+     "value_name": "37 mAh",
+     "values": [
+      {
+       "id": "9929681",
+       "name": "37 mAh"
+      }
+     ]
+    },
+    {
+     "id": "CHARGING_CASE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del estuche de carga",
+     "value_id": "43553068",
+     "value_name": "475 mAh",
+     "values": [
+      {
+       "id": "43553068",
+       "name": "475 mAh"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MP3_PLAYER",
+     "name": "Con reproductor de MP3",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FM_RADIO",
+     "name": "Con radio FM",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_NOISE_CANCELLING",
+     "name": "Con cancelación de ruido",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATERPROOF",
+     "name": "Es a prueba de agua",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_CABLE",
+     "name": "Con cable desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_MICROPHONE",
+     "name": "Con micrófono desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FLEXIBLE_MICROPHONE",
+     "name": "Con micrófono flexible",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "MICROPHONES_NUMBER",
+     "name": "Cantidad de micrófonos",
+     "value_id": "288917",
+     "value_name": "2",
+     "values": [
+      {
+       "id": "288917",
+       "name": "2"
+      }
+     ]
+    },
+    {
+     "id": "IP_RATING",
+     "name": "Clasificación IP",
+     "value_id": "9809923",
+     "value_name": "IPX4",
+     "values": [
+      {
+       "id": "9809923",
+       "name": "IPX4"
+      }
+     ]
+    },
+    {
+     "id": "CONNECTOR_TYPES",
+     "name": "Tipos de conectores",
+     "value_id": "2113108",
+     "value_name": "USB-C",
+     "values": [
+      {
+       "id": "2113108",
+       "name": "USB-C"
+      }
+     ]
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "34535958",
+     "value_name": "5.4",
+     "values": [
+      {
+       "id": "34535958",
+       "name": "5.4"
+      }
+     ]
+    },
+    {
+     "id": "MICROPHONE_ORIENTATIONS",
+     "name": "Orientaciones del micrófono",
+     "value_id": "8847354",
+     "value_name": "Derecha",
+     "values": [
+      {
+       "id": "8847354",
+       "name": "Derecha"
+      }
+     ]
+    },
+    {
+     "id": "SUITABLE_USES",
+     "name": "Usos aptos",
+     "value_id": "19992751",
+     "value_name": "Entretenimiento",
+     "values": [
+      {
+       "id": "19992751",
+       "name": "Entretenimiento"
+      }
+     ]
+    },
+    {
+     "id": "CHANNEL_SETUP",
+     "name": "Configuración de canales",
+     "value_id": "11559798",
+     "value_name": "5.1",
+     "values": [
+      {
+       "id": "11559798",
+       "name": "5.1"
+      }
+     ]
+    },
+    {
+     "id": "ACCESSORIES_INCLUDED",
+     "name": "Accesorios incluidos",
+     "value_name": "Almohadillas, Base de carga, Manual",
+     "values": [
+      {
+       "id": "8752531",
+       "name": "Almohadillas"
+      },
+      {
+       "id": "8126914",
+       "name": "Base de carga"
+      },
+      {
+       "id": "8117352",
+       "name": "Manual"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "Los Auriculares Redmi Buds 6 Active en color blanco, gracias a su conectividad Bluetooth 5.4, ofrecen una conexión rápida y estable a dispositivos móviles hasta 10 metros de distancia. Su diseño in-ear garantiza una experiencia de audio envolvente y cómoda, ideal para aquellos que buscan calidad de sonido y confort en el día a día.\n\nEquipados con micrófonos integrados y tecnología de cancelación de ruido, estos auriculares son perfectos para disfrutar de música, realizar llamadas o jugar, manteniendo la claridad de audio en cualquier entorno. Adicionalmente, cuentan con asistente de voz Xiao Ai, lo que permite un acceso sencillo a diversas funciones mediante comandos de voz.\n\nLa duración máxima de la batería es de hasta 30 horas con el estuche de carga de 475 mAh, y los auriculares se cargan completamente en tan solo una hora. Su clasificación IPX4 los hace resistentes al agua y al polvo, brindando la tranquilidad de usarlos en diversas situaciones, como en el gimnasio o durante paseos.\n\nLos Redmi Buds 6 Active también incluyen almohadillas de diferentes tamaños para adaptarse a tus oídos, mejorando la experiencia de uso prolongado. Sin duda, son una elección excepcional para quienes buscan una combinación de estilo, funcionalidad y rendimiento en audífonos."
+   },
+   "pictures": [
+    {
+     "id": "624628-MLA97784998984_112025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_624628-MLA97784998984_112025-F.jpg",
+     "max_width": "561",
+     "max_height": "752"
+    },
+    {
+     "id": "648655-MLA97784703228_112025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_648655-MLA97784703228_112025-F.jpg",
+     "max_width": "562",
+     "max_height": "755"
+    },
+    {
+     "id": "679376-MLA98250741099_112025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_679376-MLA98250741099_112025-F.jpg",
+     "max_width": "536",
+     "max_height": "759"
+    },
+    {
+     "id": "962316-MLA97784723110_112025",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_962316-MLA97784723110_112025-F.jpg",
+     "max_width": "664",
+     "max_height": "759"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2025-11-13T18:56:31Z",
+   "last_updated": "2026-10-14T15:53:34Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO73944450",
+   "catalog_product_id": "MCO73944450",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Auriculares Xiaomi Redmi Buds 8 Negro",
+   "parent_id": "MCO73944446",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "59387",
+     "value_name": "Xiaomi",
+     "values": [
+      {
+       "id": "59387",
+       "name": "Xiaomi"
+      }
+     ]
+    },
+    {
+     "id": "LINE",
+     "name": "Línea",
+     "value_id": "13777381",
+     "value_name": "Buds",
+     "values": [
+      {
+       "id": "13777381",
+       "name": "Buds"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "90145157",
+     "value_name": "REDMI Buds 8",
+     "values": [
+      {
+       "id": "90145157",
+       "name": "REDMI Buds 8"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52049",
+     "value_name": "Negro",
+     "values": [
+      {
+       "id": "52049",
+       "name": "Negro"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "13592741",
+     "value_name": "Semi-In-ear",
+     "values": [
+      {
+       "id": "13592741",
+       "name": "Semi-In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "83064522",
+     "value_name": "06932554486518",
+     "values": [
+      {
+       "id": "83064522",
+       "name": "06932554486518"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "18890120",
+     "value_name": "44 h",
+     "values": [
+      {
+       "id": "18890120",
+       "name": "44 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "13730849",
+     "value_name": "54 mAh",
+     "values": [
+      {
+       "id": "13730849",
+       "name": "54 mAh"
+      }
+     ]
+    },
+    {
+     "id": "CHARGING_CASE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del estuche de carga",
+     "value_id": "43553068",
+     "value_name": "475 mAh",
+     "values": [
+      {
+       "id": "43553068",
+       "name": "475 mAh"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_TWS_TECHNOLOGY",
+     "name": "Con tecnología TWS",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_HANDS_FREE_MODE",
+     "name": "Con modo manos libres",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_NOISE_CANCELLING",
+     "name": "Con cancelación de ruido",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IP_RATING",
+     "name": "Clasificación IP",
+     "value_id": "8875680",
+     "value_name": "IP54",
+     "values": [
+      {
+       "id": "8875680",
+       "name": "IP54"
+      }
+     ]
+    },
+    {
+     "id": "CONNECTOR_TYPES",
+     "name": "Tipos de conectores",
+     "value_id": "40957027",
+     "value_name": "USB C",
+     "values": [
+      {
+       "id": "40957027",
+       "name": "USB C"
+      }
+     ]
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "34535958",
+     "value_name": "5.4",
+     "values": [
+      {
+       "id": "34535958",
+       "name": "5.4"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "- Cancelación de ruido mejorada\r\ncancelación activa de ruido. Experiencia auditiva inmersiva. Profundidad de reducción de ruido de hasta 50 dB y un rango de cancelación de ruido efectivo de hasta 4 kHz, además de 3 niveles de cancelación de ruido adaptativos para detectar con precisión el ruido ambiental y adaptarse de forma inteligente a diferentes escenarios de ruido. \r\n20% Nivel de cancelación de ruido\r\n\r\n- Cancelación de ruido personalizada para tus oídos\r\nCancelación de ruido adaptativa para cada ajuste. En función de las diferentes condiciones de uso y la estructura del canal auditivo, los algoritmos detectan de forma inteligente y ajustan automáticamente los parámetros de cancelación de ruido para ofrecer una experiencia personalizada.\r\n\r\n- 3 niveles de modo de transparencia\r\nSiente el mundo exterior. Incluso con los auriculares puestos, podrás escuchar los anuncios del metro o las llamadas de tus amigos. Chatea sin quitártelos y controla la cantidad de sonido ambiente que dejas pasar para una comunicación más segura y natural.\r\nModo normal - Mejorar el modo de voz - Mejorar el modo de sonido ambiental\r\n\r\n- Cancelación de ruido en llamadas mediante IA con 3 micrófonos\r\nLlamadas más claras. La resistencia mejorada al ruido del viento optimiza la reducción de ruido y la precisión del reconocimiento. Disfruta de llamadas nítidas en exteriores sin preocuparte por el ruido del viento.\r\nHasta 12 m / s resistencia al ruido del viento 2\r\n\r\n- Calidad de sonido mejorada\r\nPotente controlador dinámico de 11 mm con audio inalámbrico de alta resolución.\r\nDetalles de sonido más ricos y completos. El audio nítido y detallado ofrece una calidad de sonido impecable. Gracias al códec de alta resolución LHDC, reproduce con precisión cada matiz, desde los agudos hasta los graves, para una experiencia auditiva inmersiva y realista. \r\n\r\n- 5 modos de ecualización\r\nAdmite configuraciones personalizadas. Ajustados cuidadosamente por Xiaomi Acoustic Labs, con 5 preajustes de ecualización y compatibilidad con ajustes de ecualización personalizados, ofreciendo más opciones para diferentes tipos de música. \r\nSonido equilibrado - Realzar los agudos - Aumentar el volumen - Mejora los graves - Mejora la voz\r\n\r\n- Audio personalizado Sound ID \r\nPersonaliza tu experiencia auditiva.Gracias a las pruebas auditivas y la optimización personalizadas de Sound ID, el sonido se adapta al perfil auditivo y las preferencias de cada persona, creando una experiencia de audio verdaderamente personalizada.\r\n\r\n- Tira de luz indicadora de batería 2.0\r\nEstado de la batería de un vistazo. Abre la carcasa para comprobar al instante el nivel de batería mediante la tira indicadora LED, que te avisará puntualmente de la carga para que siempre sepas cuánta energía tienes disponible.\r\n\r\n- Batería de larga duración\r\nUsar durante más tiempo. Ofrece hasta 11 horas de autonomía con una sola carga y hasta 44 horas con el estuche de carga, para que puedas escuchar música durante más tiempo. Con la carga rápida, solo 10 minutos proporcionan hasta 4 horas de reproducción.\r\n11 horas Duración de la batería con una sola carga\r\n44 horas Con el estuche de carga\r\nCarga rápida de 10 minutos: 4 horas Reproducción de música\r\nCarga rápida de 10 minutos: 1,5 horas Llamadas\r\n\r\n- Conectividad inteligente\r\nConexión de dos dispositivos. Permite la conexión simultánea a dos dispositivos, eliminando la necesidad de alternar entre ellos y facilitando la multitarea.\r\n\r\n- Compartir audio\r\nAdmite la conexión de un segundo par de auriculares a tu dispositivo, lo que te permite compartir audio fácilmente con un amigo para que puedan sumergirse juntos en la música. \r\n\r\n- Fast Pair\r\nAbre el estuche para emparejar fácilmente tus auriculares con tu dispositivo Android mediante la configuración de un solo toque de Fast Pair.\r\n\r\n- IP54 Resistencia al agua y al polvo\r\nBluetooth 5.4 Conexión estable\r\n\r\n- Especificaciones Técnicas\r\nTipo de producto: Auriculares Bluetooth inalámbricos semi-  intraurales\r\nDimensiones de un solo auricular: 30,59mm x 21,33mm x 23,2mm \r\nPeso de un solo auricular: 5 g \r\nPeso total: 44,5 g \r\nCapacidad de la batería: Auriculares: 54 mAh\r\nEstuche de carga: 475 mAh\r\nPuerto de carga: Tipo C\r\nDuración de la batería de un solo auricular (cancelación de ruido desactivada) : 11 horas\r\nDuración de la batería con el estuche de carga (cancelación de ruido activa desactivada) : 44 horas\r\nDuración de la batería de un solo auricular (con cancelación activa de ruido activada) : 6,5 horas\r\nDuración de la batería con el estuche de carga (cancelación de ruido activada ): 28 horas\r\n*La duración de la batería se refiere al tiempo de reproducción de música. Condiciones de la prueba: códec Bluetooth configurado en AAC, volumen al 50%, con el resto de ajustes en su estado predeterminado.\r\nConexión inalámbrica: Bluetooth 5.4\r\nprotocolos Bluetooth: SBC / AAC / LHDC\r\nRango de comunicación: 10 m (espacio abierto libre de obstáculos)\r\nClasificación IP: IP54 (auriculares)\r\n\r\n- Contenido del paquete:\r\nRedmi Buds 8 x 1\r\nEstuche de carga x 1\r\nCable de carga tipo C x 1\r\nManual de usuario x 1\r\nTapones S (2 unidades) - Tapones L (2 unidades) - Tapones M (2 unidades)\n"
+   },
+   "pictures": [
+    {
+     "id": "731510-MLA112255931554_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_731510-MLA112255931554_062026-F.jpg",
+     "suggested_for_picker": [
+      "COLOR"
+     ],
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "721318-MLA113406119699_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_721318-MLA113406119699_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "850584-MLA113405709303_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_850584-MLA113405709303_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "765904-MLA112256077880_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_765904-MLA112256077880_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "643609-MLA113405680823_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_643609-MLA113405680823_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    },
+    {
+     "id": "736626-MLA113405680835_062026",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_736626-MLA113405680835_062026-F.jpg",
+     "max_width": "1000",
+     "max_height": "1000"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2026-06-17T15:39:46Z",
+   "last_updated": "2026-10-15T11:19:04Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  },
+  {
+   "id": "MCO23386351",
+   "catalog_product_id": "MCO23386351",
+   "domain_id": "MCO-HEADPHONES",
+   "name": "Xiaomi Audífonos Redmi Buds Lite",
+   "parent_id": "MCO23386272",
+   "settings": {
+    "content": "fixed",
+    "listing_strategy": "catalog_required",
+    "exclusive": false
+   },
+   "children_ids": [],
+   "attributes": [
+    {
+     "id": "BRAND",
+     "name": "Marca",
+     "value_id": "2503750",
+     "value_name": "Iusa",
+     "values": [
+      {
+       "id": "2503750",
+       "name": "Iusa"
+      }
+     ]
+    },
+    {
+     "id": "MODEL",
+     "name": "Modelo",
+     "value_id": "19294977",
+     "value_name": "Redmi Buds Lite",
+     "values": [
+      {
+       "id": "19294977",
+       "name": "Redmi Buds Lite"
+      }
+     ]
+    },
+    {
+     "id": "COLOR",
+     "name": "Color",
+     "value_id": "52049",
+     "value_name": "Negro",
+     "values": [
+      {
+       "id": "52049",
+       "name": "Negro"
+      }
+     ]
+    },
+    {
+     "id": "PAIRS_NUMBER",
+     "name": "Cantidad de pares",
+     "value_id": "7386989",
+     "value_name": "1",
+     "values": [
+      {
+       "id": "7386989",
+       "name": "1"
+      }
+     ]
+    },
+    {
+     "id": "MAIN_COLOR",
+     "name": "Color principal",
+     "value_id": "2450295",
+     "value_name": "Negro",
+     "values": [
+      {
+       "id": "2450295",
+       "name": "Negro"
+      }
+     ],
+     "meta": {
+      "rgb": "000000"
+     }
+    },
+    {
+     "id": "HEADPHONE_FORMAT",
+     "name": "Formato del audífono",
+     "value_id": "182351",
+     "value_name": "In-ear",
+     "values": [
+      {
+       "id": "182351",
+       "name": "In-ear"
+      }
+     ]
+    },
+    {
+     "id": "IS_WIRELESS",
+     "name": "Es inalámbrico",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_BLUETOOTH",
+     "name": "Con Bluetooth",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_MICROPHONE",
+     "name": "Con micrófono",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_MONAURAL",
+     "name": "Es monoaural",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_GAMER",
+     "name": "Es gamer",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_INFANT",
+     "name": "Es infantil",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_LED_LIGHT",
+     "name": "Con luz LED",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "GTIN",
+     "name": "Código universal de producto",
+     "value_id": "19295071",
+     "value_name": "791279163328",
+     "values": [
+      {
+       "id": "19295071",
+       "name": "791279163328"
+      }
+     ]
+    },
+    {
+     "id": "WIRELESS_RANGE",
+     "name": "Alcance inalámbrico",
+     "value_id": "2120609",
+     "value_name": "10 m",
+     "values": [
+      {
+       "id": "2120609",
+       "name": "10 m"
+      }
+     ]
+    },
+    {
+     "id": "DIAPHRAGM_UNIT",
+     "name": "Unidad de diafragma",
+     "value_id": "48546344",
+     "value_name": "1.24 cm",
+     "values": [
+      {
+       "id": "48546344",
+       "name": "1.24 cm"
+      }
+     ]
+    },
+    {
+     "id": "FREQUENCY_RESPONSE",
+     "name": "Respuesta en frecuencia",
+     "value_id": "9925042",
+     "value_name": "20 Hz - 20000 Hz",
+     "values": [
+      {
+       "id": "9925042",
+       "name": "20 Hz - 20000 Hz"
+      }
+     ]
+    },
+    {
+     "id": "SENSITIVITY",
+     "name": "Sensibilidad",
+     "value_id": "12300499",
+     "value_name": "35 dB",
+     "values": [
+      {
+       "id": "12300499",
+       "name": "35 dB"
+      }
+     ]
+    },
+    {
+     "id": "CABLE_LENGTH",
+     "name": "Largo del cable",
+     "value_id": "3157",
+     "value_name": "10 cm",
+     "values": [
+      {
+       "id": "3157",
+       "name": "10 cm"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_MAX_BATTERY_LIFE",
+     "name": "Duración de la batería del audífono",
+     "value_id": "9850509",
+     "value_name": "40 h",
+     "values": [
+      {
+       "id": "9850509",
+       "name": "40 h"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_CHARGING_TIME",
+     "name": "Tiempo de carga del audífono",
+     "value_id": "20977479",
+     "value_name": "2 h",
+     "values": [
+      {
+       "id": "20977479",
+       "name": "2 h"
+      }
+     ]
+    },
+    {
+     "id": "CASE_CHARGING_TIME",
+     "name": "Tiempo de carga del estuche",
+     "value_id": "49557927",
+     "value_name": "1.5 días",
+     "values": [
+      {
+       "id": "49557927",
+       "name": "1.5 días"
+      }
+     ]
+    },
+    {
+     "id": "HEADPHONE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del audífono",
+     "value_id": "13730849",
+     "value_name": "54 mAh",
+     "values": [
+      {
+       "id": "13730849",
+       "name": "54 mAh"
+      }
+     ]
+    },
+    {
+     "id": "CHARGING_CASE_BATTERY_CAPACITY",
+     "name": "Capacidad de la batería del estuche de carga",
+     "value_id": "34331887",
+     "value_name": "54 mAh",
+     "values": [
+      {
+       "id": "34331887",
+       "name": "54 mAh"
+      }
+     ]
+    },
+    {
+     "id": "INCLUDES_CHARGING_CASE",
+     "name": "Incluye estuche de carga",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_WIRELESS_CHARGING",
+     "name": "Con carga inalámbrica",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_PROXIMITY_SENSOR",
+     "name": "Con sensor de proximidad",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_MP3_PLAYER",
+     "name": "Con reproductor de MP3",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FM_RADIO",
+     "name": "Con radio FM",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_NOISE_CANCELLING",
+     "name": "Con cancelación de ruido",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATER_RESISTANT",
+     "name": "Es resistente al agua",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "IS_WATERPROOF",
+     "name": "Es a prueba de agua",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "IS_DUST_RESISTANT",
+     "name": "Es resistente al polvo",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_CABLE",
+     "name": "Con cable desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_DETACHABLE_MICROPHONE",
+     "name": "Con micrófono desmontable",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_FLEXIBLE_MICROPHONE",
+     "name": "Con micrófono flexible",
+     "value_id": "242084",
+     "value_name": "No",
+     "values": [
+      {
+       "id": "242084",
+       "name": "No"
+      }
+     ],
+     "meta": {
+      "value": false
+     }
+    },
+    {
+     "id": "WITH_INTEGRATED_VOICE_ASSISTANTS",
+     "name": "Con asistentes de voz integrados",
+     "value_id": "242085",
+     "value_name": "Sí",
+     "values": [
+      {
+       "id": "242085",
+       "name": "Sí"
+      }
+     ],
+     "meta": {
+      "value": true
+     }
+    },
+    {
+     "id": "MICROPHONES_NUMBER",
+     "name": "Cantidad de micrófonos",
+     "value_id": "288917",
+     "value_name": "2",
+     "values": [
+      {
+       "id": "288917",
+       "name": "2"
+      }
+     ]
+    },
+    {
+     "id": "IP_RATING",
+     "name": "Clasificación IP",
+     "value_id": "8875680",
+     "value_name": "IP54",
+     "values": [
+      {
+       "id": "8875680",
+       "name": "IP54"
+      }
+     ]
+    },
+    {
+     "id": "CONNECTOR_TYPES",
+     "name": "Tipos de conectores",
+     "value_id": "2113108",
+     "value_name": "USB-C",
+     "values": [
+      {
+       "id": "2113108",
+       "name": "USB-C"
+      }
+     ]
+    },
+    {
+     "id": "BLUETOOTH_VERSION",
+     "name": "Versión de Bluetooth",
+     "value_id": "10127819",
+     "value_name": "5.2",
+     "values": [
+      {
+       "id": "10127819",
+       "name": "5.2"
+      }
+     ]
+    },
+    {
+     "id": "MICROPHONE_ORIENTATIONS",
+     "name": "Orientaciones del micrófono",
+     "value_id": "8847354",
+     "value_name": "Derecha",
+     "values": [
+      {
+       "id": "8847354",
+       "name": "Derecha"
+      }
+     ]
+    },
+    {
+     "id": "SUITABLE_USES",
+     "name": "Usos aptos",
+     "value_id": "8701148",
+     "value_name": "Deporte",
+     "values": [
+      {
+       "id": "8701148",
+       "name": "Deporte"
+      }
+     ]
+    },
+    {
+     "id": "CHANNEL_SETUP",
+     "name": "Configuración de canales",
+     "value_id": "11559798",
+     "value_name": "5.1",
+     "values": [
+      {
+       "id": "11559798",
+       "name": "5.1"
+      }
+     ]
+    },
+    {
+     "id": "ACCESSORIES_INCLUDED",
+     "name": "Accesorios incluidos",
+     "value_id": "36714607",
+     "value_name": "Almohadillas, Cable de carga USB-C, Manual",
+     "values": [
+      {
+       "id": "36714607",
+       "name": "Almohadillas, Cable de carga USB-C, Manual"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "status": "active",
+   "short_description": {
+    "type": "plaintext",
+    "content": "En la calle, en el colectivo o en la oficina, ten siempre a mano tus audífonos Iusa y ¡escápate de la rutina por un rato! Vas a poder disfrutar de la música que más te gusta y de tus podcasts favoritos cuando quieras y donde quieras."
+   },
+   "pictures": [
+    {
+     "id": "612718-MLU77507990202_072024",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_612718-MLU77507990202_072024-F.jpg",
+     "max_width": "1198",
+     "max_height": "942"
+    },
+    {
+     "id": "785734-MLU77508198380_072024",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_785734-MLU77508198380_072024-F.jpg",
+     "max_width": "1046",
+     "max_height": "1200"
+    },
+    {
+     "id": "664270-MLU77507960656_072024",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_664270-MLU77507960656_072024-F.jpg",
+     "max_width": "1200",
+     "max_height": "828"
+    },
+    {
+     "id": "655308-MLU69759558909_062023",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_655308-MLU69759558909_062023-F.jpg",
+     "max_width": "500",
+     "max_height": "277"
+    },
+    {
+     "id": "722342-MLU69759726063_062023",
+     "url": "https://http2.mlstatic.com/D_NQ_NP_722342-MLU69759726063_062023-F.jpg",
+     "max_width": "500",
+     "max_height": "287"
+    }
+   ],
+   "authority_types": [
+    "COMMUNITY"
+   ],
+   "date_created": "2023-05-19T22:29:59Z",
+   "last_updated": "2026-10-18T19:03:50Z",
+   "quality_type": "COMPLETE",
+   "product_standard": false,
+   "search_type": "KEYWORD"
+  }
+ ],
+ "query_type": "KEYWORDS"
+}

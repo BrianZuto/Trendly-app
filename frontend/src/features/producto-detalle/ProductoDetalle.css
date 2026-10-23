@@ -1488,6 +1488,8 @@ div.competidores-vacio p {
 }
 
 .proveedor-vacio {
+  /* Solo trae el texto: una columna, no la de la foto (68 px) */
+  grid-template-columns: minmax(0, 1fr);
   padding: 18px 24px;
 }
 
@@ -1508,3 +1510,84 @@ div.competidores-vacio p {
 @media (prefers-reduced-motion: reduce) {
   .cifra-viva { animation: none; }
 }
+
+/* ─── Escala de precios ───
+   Se habían perdido en el rediseño (b13180e); restaurados de 532533c con las variables de la paleta actual */
+.escala-titulo { margin: 0 0 10px; font-size: 14px; font-weight: 600; }
+.escala-pista { position: relative; height: 62px; }
+.escala-zona {
+  position: absolute;
+  left: 0;
+  top: 30px;
+  height: 28px;
+  border-radius: 6px 0 0 6px;
+  background: #fcebe8;
+}
+.escala-zona span {
+  position: absolute;
+  left: 8px;
+  top: -20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #9b1c12;
+  white-space: nowrap;
+}
+.escala-linea { position: absolute; left: 0; right: 0; top: 42px; height: 4px; border-radius: 2px; background: var(--borde); }
+.escala-promedio { position: absolute; top: 32px; width: 3px; height: 24px; margin-left: -1.5px; border-radius: 2px; background: #6e7262; }
+.escala-punto {
+  position: absolute;
+  top: 37px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 3px var(--tomate);
+}
+.escala-punto.es-barata { background: var(--tomate); }
+.escala-tu {
+  position: absolute;
+  top: -2px;
+  z-index: 1;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.escala-tu b {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--verde);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.escala-tu i { width: 16px; height: 16px; margin-top: 10px; border-radius: 50%; background: var(--verde); box-shadow: 0 0 0 3px #fff; }
+.escala-lista .escala-punto,
+.escala-lista .escala-tu,
+.escala-lista .escala-promedio { transition: left 900ms cubic-bezier(0.22, 1, 0.36, 1); }
+.escala-extremos { display: flex; justify-content: space-between; gap: 12px; margin-top: 4px; font-size: 13px; }
+.escala-extremos span { display: flex; flex-direction: column; line-height: 1.25; font-size: 12px; font-weight: 600; color: var(--tinta-suave); }
+.escala-extremos span:last-child { text-align: right; }
+.escala-extremos strong { font-size: 13px; font-weight: 700; color: var(--tinta); }
+.escala-leyenda { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 10px 0 0; font-size: 13px; color: var(--tinta-media); }
+.escala-leyenda-punto { display: inline-block; width: 12px; height: 12px; margin-right: -10px; border-radius: 50%; box-shadow: inset 0 0 0 3px var(--tomate); }
+.escala-leyenda-promedio { display: inline-block; width: 3px; height: 14px; margin-right: -10px; border-radius: 2px; background: #6e7262; }
+
+/* ─── Galería sin fotos y nota (también perdidos en el rediseño b13180e) ─── */
+.galeria-nota { margin: 0; }
+.galeria-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  color: var(--tinta-suave);
+  background: repeating-linear-gradient(-45deg, #f3ede2 0 12px, #efe8da 12px 24px);
+}
+.galeria-vacia svg { width: 48px; height: 48px; }
+.galeria-vacia strong { color: var(--tinta); font-size: 16px; }

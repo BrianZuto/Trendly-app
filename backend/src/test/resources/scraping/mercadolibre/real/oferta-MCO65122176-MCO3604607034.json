@@ -1,0 +1,80 @@
+{
+ "paging": {
+  "total": 1,
+  "offset": 0,
+  "limit": 100
+ },
+ "results": [
+  {
+   "item_id": "MCO3604607034",
+   "site_id": "MCO",
+   "seller_id": 467853944,
+   "accepts_mercadopago": true,
+   "price": 51113,
+   "category_id": "MCO18116",
+   "currency_id": "COP",
+   "warranty": "Garantía del vendedor: 1 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "has_published_clips",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": 911,
+   "original_price": 69900,
+   "shipping": {
+    "free_shipping": false,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "fulfillment",
+    "tags": [
+     "self_service_in"
+    ],
+    "cost": 12591.7648
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ1BVRTg0NTU0",
+     "name": "Puente Aranda"
+    },
+    "state": {
+     "id": "TUNPUEJPR1gxMDljZA",
+     "name": "Bogotá D.C."
+    },
+    "neighborhood": {
+     "id": "TUNPQk9SVDYyNzMy",
+     "name": "Ortezal"
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía del vendedor",
+     "value_id": "2230280"
+    },
+    {
+     "value_struct": {
+      "number": 1,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "1 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU3796139221",
+   "min_purchase_unit": 1
+  }
+ ],
+ "experiments": null
+}

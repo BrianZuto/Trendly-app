@@ -8,3 +8,7 @@ export const MARKETPLACES = {
 }
 
 export const SITIOS_REVENTA = ['MERCADOLIBRE', 'FALABELLA', 'AMAZON']
+
+// Lo que el API acepta hoy para crear competidores (SCRUM-37): solo MercadoLibre, y por URL solo productos
+// de catálogo. Falabella y Amazon quedan para mostrar datos existentes hasta que tengan scraper en el backend
+export const SITIOS_SOPORTADOS = ['MERCADOLIBRE']

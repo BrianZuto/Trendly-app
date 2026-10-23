@@ -1,7 +1,7 @@
 import { formatearPesos } from '@features/productos/formato'
 import { MARKETPLACES } from '@shared/utils/marketplaces'
 
-export { MARKETPLACES, SITIOS_REVENTA } from '@shared/utils/marketplaces'
+export { MARKETPLACES, SITIOS_REVENTA, SITIOS_SOPORTADOS } from '@shared/utils/marketplaces'
 
 export const ESTADOS = {
     ACTIVO: { texto: 'Activo', clase: 'estado-activo' },
@@ -12,7 +12,8 @@ export const ESTADOS = {
 // Cada publicación es una fila; las acciones (pausar, eliminar) son del monitoreo que la trajo
 export function filasDe(monitoreos) {
     return monitoreos.flatMap((m) =>
-        m.publicaciones.length === 0
+        // Sin capturas todavía (o un monitoreo recién creado): una fila de "pendiente"
+        (m.publicaciones ?? []).length === 0
             ? [{ clave: `m${m.id}`, monitoreo: m, pub: null }]
             : m.publicaciones.map((pub) => ({ clave: `m${m.id}-${pub.idPublicacion}`, monitoreo: m, pub })),
     )

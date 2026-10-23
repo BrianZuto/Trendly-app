@@ -3,7 +3,7 @@
 Plataforma web (con extensión móvil) de análisis de precios y productos para comercio electrónico y dropshipping en Colombia y Latinoamérica.
 
 [![CI](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml/badge.svg)](https://github.com/BrianZuto/Trendly-app/actions/workflows/ci.yml)
-<!-- SonarCloud: badge pendiente (Sprint 3) -->
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BrianZuto_Trendly-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=BrianZuto_Trendly-app)
 
 **Aplicación publicada:** https://trendlyapp.vercel.app (producción, se actualiza con cada cambio en `main`)
 
@@ -36,14 +36,14 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 |---|---|---|
 | Backend | API REST con Spring Boot 4.1.1, Java 21, Maven. Spring Web MVC, Spring Security, Bean Validation, Spring Data JPA, Flyway, Lombok, Actuator. Paquete base `co.trendly`; rutas versionadas con `/api/v1` | Proyecto base creado |
 | Autenticación | JWT con jjwt | Pendiente (Sprint 2) |
-| Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker pendiente (SCRUM-29) |
+| Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker y migraciones Flyway (SCRUM-29) |
 | Frontend | SPA con React 19 + Vite 8, ESLint | Proyecto base creado |
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
 | Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Pendiente (Sprint 3) |
 | Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Frontend en Vercel (SCRUM-35); backend pendiente (Sprint 5) |
-| Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud pendiente (Sprint 3) |
+| Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud configurado (SCRUM-44) |
 
 ### Estructura del monorepo
 
@@ -59,6 +59,7 @@ trendly/
 ├── frontend/                # SPA (React + Vite)
 │   ├── package.json
 │   └── src/
+├── functions/               # Azure Function: dispara la recolección cada 6 h (SCRUM-39)
 ├── mobile/                  # App React Native + Expo (pendiente, Sprint 4)
 ├── docs/                    # BPMN, modelo de datos, pruebas de aceptación, resultados SUS
 ├── .github/                 # Plantilla de PR y workflows de CI
@@ -79,11 +80,13 @@ trendly/
 
 ### 1. Base de datos
 
+Primero crea el `.env` (paso 2) con `DB_PASSWORD` y `DB_ROOT_PASSWORD`; el contenedor los lee de ahí. Luego:
+
 ```bash
 docker compose up -d
 ```
 
-> El `docker-compose.yml` con MySQL 8 lo agrega Raquel en **SCRUM-29** (pendiente, Sprint 2).
+Levanta MySQL 8 en el puerto 3306. Las tablas las crea **Flyway** al arrancar el backend (`backend/src/main/resources/db/migration`), junto con los planes Gratuito y Pro y el administrador `admin@trendly.co` / `Trendly123`. El modelo de datos está en [`docs/modelo-datos.md`](docs/modelo-datos.md). Para borrar la base y empezar de cero: `docker compose down -v`.
 
 ### 2. Variables de entorno
 
@@ -100,8 +103,15 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `DB_URL` | URL JDBC de MySQL | `jdbc:mysql://localhost:3306/trendly` |
 | `DB_USERNAME` | Usuario de la base de datos | `trendly` |
 | `DB_PASSWORD` | Contraseña de la base de datos | `cambia-esto` |
+| `DB_ROOT_PASSWORD` | Contraseña de root del contenedor MySQL | `cambia-esto-tambien` |
+| `DB_PORT` | Puerto local de MySQL en `docker-compose.yml` | `3306` |
 | `JWT_SECRET` | Clave para firmar los tokens JWT (mínimo 256 bits) | salida de `openssl rand -base64 64` |
 | `JWT_EXPIRATION_MS` | Vigencia del token en milisegundos | `3600000` (1 h) |
+| `CORS_ALLOWED_ORIGINS` | Orígenes del frontend permitidos, separados por comas | `http://localhost:5173` |
+| `ML_CLIENT_ID` | App ID de la aplicación de MercadoLibre (developers.mercadolibre.com.co) | `1234567890123456` |
+| `ML_CLIENT_SECRET` | Secret Key de esa aplicación | `cambia-esto` |
+| `RECOLECCION_API_KEY` | Clave que la Azure Function envía en `X-Api-Key` para disparar el job | salida de `openssl rand -hex 32` |
+| `TRENDLY_SCHEDULER_LOCAL` | `true` para correr el job en local cada 6 h, sin Azure | `false` |
 | `MAIL_HOST` | Servidor SMTP para las alertas | `smtp.gmail.com` |
 | `MAIL_PORT` | Puerto SMTP | `587` |
 | `MAIL_USERNAME` | Usuario SMTP | `alertas@ejemplo.com` |
@@ -164,6 +174,66 @@ Variables de entorno, en Vercel → Settings → Environment Variables:
 | `VITE_USE_MOCK` | `true` mientras no haya backend publicado (la app funciona con datos simulados); `false` cuando el API esté arriba. |
 
 Las variables `VITE_` se leen al compilar: después de cambiarlas hay que volver a desplegar (Deployments → Redeploy). No hace falta tocar el código.
+
+## API de monitoreos (contrato)
+
+Todas las rutas exigen `Authorization: Bearer <token>` y solo el dueño del producto ve sus monitoreos (si no, 404). Los errores tienen la forma `{ "status", "error", "message", "path" }`; el frontend muestra `message`.
+
+### Crear un monitoreo: `POST /api/v1/productos/{id}/monitoreos`
+
+| Tipo | Cuerpo | Reglas |
+|---|---|---|
+| Por URL (SCRUM-36) | `{ "tipo": "URL", "valor": "https://…", "frecuenciaHoras": 6 }` | MercadoLibre: **solo productos de catálogo** (`mercadolibre.com.co/…/p/MCO…`); la oferta que se estaba viendo se toma del `wid` de la URL. AliExpress: `aliexpress.com/item/<número>.html`. |
+| Por palabra clave (SCRUM-37) | `{ "tipo": "PALABRA_CLAVE", "valor": "redmi buds", "marketplace": "MERCADOLIBRE", "topN": 5 }` | Palabra de 3 a 80 caracteres (se quitan espacios de más), `marketplace` obligatorio y solo `MERCADOLIBRE`, `topN` de 1 a 10 (5 si no se envía). |
+
+`frecuenciaHoras` es opcional (6 por defecto); solo el plan Pro puede bajarla, hasta 1 hora. Máximo 10 monitoreos por producto.
+
+Respuesta `201`:
+
+```json
+{ "id": 12, "productoId": 3, "tipo": "PALABRA_CLAVE", "valor": "redmi buds", "idPublicacion": null,
+  "marketplace": "MERCADOLIBRE", "topN": 5, "frecuenciaHoras": 6, "estado": "ACTIVO",
+  "proximaEjecucion": "2026-10-22T15:00:00Z", "ultimaCaptura": null, "creadoEn": "2026-10-22T15:00:00Z" }
+```
+
+| Código | Cuándo |
+|---|---|
+| `400` | Tipo desconocido; URL inválida, de otro sitio o de MercadoLibre sin catálogo; palabra vacía, de menos de 3 o más de 80 caracteres; falta el marketplace o no se soporta; palabra clave en AliExpress; `topN` fuera de 1–10; frecuencia no permitida. |
+| `404` | El producto no existe o es de otro vendedor. |
+| `409` | Ya se vigila esa publicación, o esa misma palabra clave en ese marketplace, en el producto. |
+| `422` | El producto ya tiene 10 monitoreos. |
+
+Las demás rutas: `GET /api/v1/productos/{id}/monitoreos` (lista), `PATCH /api/v1/monitoreos/{id}` con `{ "estado": "PAUSADO" | "ACTIVO" }` y `DELETE /api/v1/monitoreos/{id}`.
+
+### Contrato con los scrapers
+
+Cada marketplace implementa `MarketplaceScraper.obtener(Monitoreo)`, que **nunca lanza excepciones** y devuelve un `ResultadoScraping`:
+
+- `OK` con la lista de `PublicacionCapturada` (`idPublicacion`, `titulo`, `vendedor`, `posicion`, `precio`, `moneda`, `disponible`). En modo URL es una sola publicación (`posicion` en `null`); en modo palabra clave son las N primeras, con `posicion` desde 1.
+- `FALLO` con `tipoFallo` (`TIMEOUT`, `BLOQUEO`, `NO_ENCONTRADO`, `ESTRUCTURA`, `DATO_INVALIDO`) y el `motivo`.
+
+El histórico (SCRUM-42) guarda cada publicación como un punto ligado al monitoreo y a su `idPublicacion`, así se compara la misma publicación entre capturas. Se consulta en `GET /api/v1/monitoreos/{id}/historico`.
+
+**Limitaciones de MercadoLibre:** su HTML tiene verificación anti-bots, así que se usa la API oficial con las credenciales `ML_CLIENT_ID` y `ML_CLIENT_SECRET`. Con el token de la aplicación solo se leen ofertas de otros vendedores a través del catálogo; por eso solo se aceptan URLs de catálogo, y la palabra clave funciona con búsquedas específicas ("redmi buds"): en búsquedas genéricas los primeros productos del catálogo no tienen ofertas y la captura sale como `FALLO` (`NO_ENCONTRADO`).
+
+## Job de recolección (SCRUM-39)
+
+Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:
+
+1. Responde de inmediato: `202` (ciclo iniciado), `200` (ya hay un ciclo en curso: el disparo se ignora), `401` (clave inválida) o `503` (falta `RECOLECCION_API_KEY`).
+2. En segundo plano toma los monitoreos `ACTIVO` cuya próxima ejecución ya venció, por lotes de 20, y los captura con el scraper de su marketplace.
+3. Guarda cada resultado en el histórico y reprograma el monitoreo para ahora + su frecuencia. Una captura fallida suma un fallo seguido (el paso a `ERROR` es de SCRUM-45) y no detiene el ciclo.
+4. Registra en el log el inicio y el fin de cada ciclo con los procesados, exitosos, fallidos y puntos nuevos.
+
+Como cada monitoreo queda reprogramado al procesarlo, dos disparos seguidos no lo capturan dos veces.
+
+**En local, sin Azure:** `TRENDLY_SCHEDULER_LOCAL=true` corre el mismo ciclo con `@Scheduled` (`TRENDLY_SCHEDULER_CRON` cambia la frecuencia), o se dispara a mano:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/interno/recoleccion/ejecutar -H "X-Api-Key: $RECOLECCION_API_KEY"
+```
+
+**La Function:** `cd functions && npm ci && npm test`. En Azure necesita las variables `BACKEND_URL` (URL pública del backend) y `RECOLECCION_API_KEY` (la misma del backend).
 
 ## Flujo de trabajo con Git
 

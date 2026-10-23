@@ -1,0 +1,444 @@
+{
+ "id": "MCO36701386",
+ "catalog_product_id": "MCO36701386",
+ "status": "active",
+ "pdp_types": [
+  "traditional"
+ ],
+ "domain_id": "MCO-HEADPHONES",
+ "permalink": "",
+ "name": "Audífonos Bluetooth Disney Tws Audífonos Bluetooth Inalá Color Verde",
+ "family_name": "Auriculares Lo Necesito wireless bluetooth H77",
+ "type": "catalog_product",
+ "buy_box_winner": null,
+ "pickers": [
+  {
+   "picker_id": "COLOR",
+   "picker_name": "Color",
+   "products": [
+    {
+     "product_id": "MCO36701386",
+     "picker_label": "Verde",
+     "picture_id": "801375-MLA82200409800_022025",
+     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_801375-MLA82200409800_022025-I.jpg",
+     "tags": [
+      "selected"
+     ],
+     "changes": [],
+     "permalink": "",
+     "product_name": "Lo Necesito wireless bluetooth H77 - Verde - 1",
+     "auto_completed": true,
+     "rgb_meta": "0DA600"
+    }
+   ],
+   "tags": [],
+   "attributes": [
+    {
+     "attribute_id": "COLOR",
+     "template": "",
+     "position": 1
+    },
+    {
+     "attribute_id": "LIGHT_COLOR",
+     "template": "",
+     "position": 2
+    }
+   ],
+   "value_name_delimiter": " | ",
+   "hide_extra_decoration": false,
+   "secondary_picker_name": ""
+  },
+  {
+   "picker_id": "PAIRS_NUMBER",
+   "picker_name": "Cantidad de pares",
+   "products": [
+    {
+     "product_id": "MCO36701386",
+     "picker_label": "1",
+     "picture_id": "",
+     "thumbnail": "",
+     "tags": [
+      "selected"
+     ],
+     "changes": [],
+     "permalink": "",
+     "product_name": "Lo Necesito wireless bluetooth H77 - Verde - 1",
+     "auto_completed": false,
+     "rgb_meta": "0DA600"
+    }
+   ],
+   "tags": [],
+   "attributes": [
+    {
+     "attribute_id": "PAIRS_NUMBER",
+     "template": "",
+     "position": 1
+    }
+   ],
+   "value_name_delimiter": "",
+   "hide_extra_decoration": false,
+   "secondary_picker_name": ""
+  }
+ ],
+ "pictures": [
+  {
+   "id": "801375-MLA82200409800_022025",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_801375-MLA82200409800_022025-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 1166,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "841682-MLA82200409812_022025",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_841682-MLA82200409812_022025-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 1200,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "611529-MLA82200409826_022025",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_611529-MLA82200409826_022025-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 900,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  },
+  {
+   "id": "937299-MLA82483883753_022025",
+   "url": "https://http2.mlstatic.com/D_NQ_NP_937299-MLA82483883753_022025-F.jpg",
+   "suggested_for_picker": null,
+   "max_width": 1200,
+   "max_height": 1200,
+   "source_metadata": null,
+   "tags": [
+    "CAROUSEL"
+   ]
+  }
+ ],
+ "description_pictures": [],
+ "main_features": [
+  {
+   "text": "Alcance inalámbrico de 10 m.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "Sonido superior y sin límites.",
+   "type": "key_value",
+   "metadata": {}
+  },
+  {
+   "text": "Cómodos y prácticos.",
+   "type": "key_value",
+   "metadata": {}
+  }
+ ],
+ "disclaimers": [],
+ "attributes": [
+  {
+   "id": "BRAND",
+   "name": "Marca",
+   "value_id": "19543437",
+   "value_name": "Lo Necesito",
+   "values": [
+    {
+     "id": "19543437",
+     "name": "Lo Necesito"
+    }
+   ]
+  },
+  {
+   "id": "LINE",
+   "name": "Línea",
+   "value_id": "16032925",
+   "value_name": "wireless bluetooth",
+   "values": [
+    {
+     "id": "16032925",
+     "name": "wireless bluetooth"
+    }
+   ]
+  },
+  {
+   "id": "MODEL",
+   "name": "Modelo",
+   "value_id": "20476721",
+   "value_name": "H77",
+   "values": [
+    {
+     "id": "20476721",
+     "name": "H77"
+    }
+   ]
+  },
+  {
+   "id": "COLOR",
+   "name": "Color",
+   "value_id": "39424579",
+   "value_name": "Verde",
+   "values": [
+    {
+     "id": "39424579",
+     "name": "Verde"
+    }
+   ]
+  },
+  {
+   "id": "PAIRS_NUMBER",
+   "name": "Cantidad de pares",
+   "value_id": "7386989",
+   "value_name": "1",
+   "values": [
+    {
+     "id": "7386989",
+     "name": "1"
+    }
+   ]
+  },
+  {
+   "id": "MAIN_COLOR",
+   "name": "Color principal",
+   "value_id": "2450314",
+   "value_name": "Verde",
+   "values": [
+    {
+     "id": "2450314",
+     "name": "Verde",
+     "meta": {
+      "rgb": "0DA600"
+     }
+    }
+   ],
+   "meta": {
+    "rgb": "0DA600"
+   }
+  },
+  {
+   "id": "HEADPHONE_FORMAT",
+   "name": "Formato del audífono",
+   "value_id": "182351",
+   "value_name": "In-ear",
+   "values": [
+    {
+     "id": "182351",
+     "name": "In-ear"
+    }
+   ]
+  },
+  {
+   "id": "IS_WIRELESS",
+   "name": "Es inalámbrico",
+   "value_id": "242085",
+   "value_name": "Sí",
+   "values": [
+    {
+     "id": "242085",
+     "name": "Sí",
+     "meta": {
+      "value": true
+     }
+    }
+   ],
+   "meta": {
+    "value": true
+   }
+  },
+  {
+   "id": "IS_MONAURAL",
+   "name": "Es monoaural",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "IS_INFANT",
+   "name": "Es infantil",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WIRELESS_RANGE",
+   "name": "Alcance inalámbrico",
+   "value_id": "2120609",
+   "value_name": "10 m",
+   "values": [
+    {
+     "id": "2120609",
+     "name": "10 m"
+    }
+   ]
+  },
+  {
+   "id": "FREQUENCY_RESPONSE",
+   "name": "Respuesta en frecuencia",
+   "value_id": "925820",
+   "value_name": "20 Hz - 20 kHz",
+   "values": [
+    {
+     "id": "925820",
+     "name": "20 Hz - 20 kHz"
+    }
+   ]
+  },
+  {
+   "id": "SENSITIVITY",
+   "name": "Sensibilidad",
+   "value_id": "7911166",
+   "value_name": "42 dB",
+   "values": [
+    {
+     "id": "7911166",
+     "name": "42 dB"
+    }
+   ]
+  },
+  {
+   "id": "HEADPHONE_BATTERY_CAPACITY",
+   "name": "Capacidad de la batería del audífono",
+   "value_id": "9929866",
+   "value_name": "30 mAh",
+   "values": [
+    {
+     "id": "9929866",
+     "name": "30 mAh"
+    }
+   ]
+  },
+  {
+   "id": "WITH_DETACHABLE_CABLE",
+   "name": "Con cable desmontable",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_DETACHABLE_MICROPHONE",
+   "name": "Con micrófono desmontable",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "WITH_FLEXIBLE_MICROPHONE",
+   "name": "Con micrófono flexible",
+   "value_id": "242084",
+   "value_name": "No",
+   "values": [
+    {
+     "id": "242084",
+     "name": "No",
+     "meta": {
+      "value": false
+     }
+    }
+   ],
+   "meta": {
+    "value": false
+   }
+  },
+  {
+   "id": "BLUETOOTH_VERSION",
+   "name": "Versión de Bluetooth",
+   "value_id": "13172815",
+   "value_name": "5.3",
+   "values": [
+    {
+     "id": "13172815",
+     "name": "5.3"
+    }
+   ]
+  },
+  {
+   "id": "ACCESSORIES_INCLUDED",
+   "name": "Accesorios incluidos",
+   "value_id": "34594822",
+   "value_name": "Cable de carga USB",
+   "values": [
+    {
+     "id": "34594822",
+     "name": "Cable de carga USB"
+    }
+   ]
+  }
+ ],
+ "short_description": {
+  "type": "plaintext",
+  "content": "En la calle, en el colectivo o en la oficina, ten siempre a mano tus audífonos H77 y ¡escápate de la rutina por un rato! Vas a poder disfrutar de la música que más te gusta y de tus podcasts favoritos cuando quieras y donde quieras.\n\nEl formato perfecto para ti\nAl ser in-ear, mejoran la calidad del audio y son de tamaño pequeño para poder insertarse en tu oreja. Son ideales para acompañarte a la hora de hacer ejercicio mientras te sumerges en el mejor sonido envolvente."
+ },
+ "parent_id": "MCO36701382",
+ "children_ids": [],
+ "settings": {
+  "content": "fixed",
+  "listing_strategy": "catalog_required",
+  "exclusive": false,
+  "with_enhanced_pictures": false,
+  "base_site_product_id": null,
+  "ttr": "2026-10-22T12:45:08.685183701"
+ },
+ "quality_type": "COMPLETE",
+ "release_info": null,
+ "enhanced_content": null,
+ "tags": [],
+ "date_created": "2024-05-08T04:30:27Z",
+ "authorized_stores": null,
+ "last_updated": "2026-07-24T20:15:48Z",
+ "grouper_id": null,
+ "experiments": {},
+ "decoration_partial_content": false
+}

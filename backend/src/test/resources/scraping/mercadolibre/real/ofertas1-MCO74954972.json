@@ -1,0 +1,81 @@
+{
+ "paging": {
+  "total": 7,
+  "offset": 0,
+  "limit": 1
+ },
+ "results": [
+  {
+   "item_id": "MCO4408890072",
+   "site_id": "MCO",
+   "seller_id": 394887418,
+   "accepts_mercadopago": true,
+   "price": 163900,
+   "category_id": "MCO5072",
+   "currency_id": "COP",
+   "warranty": "Garantía de fábrica: 12 meses",
+   "condition": "new",
+   "listing_type_id": "gold_special",
+   "international_delivery_mode": "none",
+   "tier": "",
+   "inventory_id": "",
+   "tags": [
+    "has_published_clips",
+    "user_product_unify",
+    "kvs_primary",
+    "immediate_payment",
+    "cart_eligible"
+   ],
+   "deal_ids": [],
+   "official_store_id": null,
+   "original_price": 299900,
+   "shipping": {
+    "free_shipping": true,
+    "store_pick_up": false,
+    "local_pick_up": false,
+    "mode": "me2",
+    "logistic_type": "cross_docking",
+    "tags": [
+     "mandatory_free_shipping"
+    ],
+    "cost": 0
+   },
+   "seller_address": {
+    "city": {
+     "id": "TUNPQ0NPVGFiYzZm",
+     "name": "Cota"
+    },
+    "state": {
+     "id": "TUNPUENVTmE3NmQ4",
+     "name": "Cundinamarca"
+    },
+    "neighborhood": {
+     "id": "",
+     "name": ""
+    }
+   },
+   "sale_terms": [
+    {
+     "value_struct": null,
+     "id": "WARRANTY_TYPE",
+     "name": "Tipo de garantía",
+     "value_name": "Garantía de fábrica",
+     "value_id": "2230279"
+    },
+    {
+     "value_struct": {
+      "number": 12,
+      "unit": "meses"
+     },
+     "id": "WARRANTY_TIME",
+     "name": "Tiempo de garantía",
+     "value_name": "12 meses",
+     "value_id": null
+    }
+   ],
+   "user_product_id": "MCOU4160224132",
+   "min_purchase_unit": 1
+  }
+ ],
+ "experiments": null
+}

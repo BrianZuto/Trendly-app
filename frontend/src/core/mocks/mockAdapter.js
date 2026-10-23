@@ -11,6 +11,8 @@ import {
     reconocerMarketplace,
     TRM,
 } from './mercadoSimulado'
+import { SITIOS_SOPORTADOS } from '@shared/utils/marketplaces'
+import { MENSAJE_SOLO_CATALOGO } from '@shared/utils/validaciones'
 
 const VIGENCIA_SEGUNDOS = 3600
 const PLAN_GRATUITO = { id: 1, nombre: 'Gratuito', maxProductos: 10 }
@@ -31,7 +33,6 @@ const EN_PRUEBAS = import.meta.env.MODE === 'test'
 const RETRASO_PRIMERA_CAPTURA = EN_PRUEBAS ? 0 : 2800
 const CADA_CUANTO_SE_MUEVE = EN_PRUEBAS ? Infinity : 16000
 const MAX_MONITOREOS_POR_PRODUCTO = 10
-const SITIOS_REVENTA = ['MERCADOLIBRE', 'FALABELLA', 'AMAZON']
 
 export function reiniciarMock() {
     usuarios = []
@@ -242,7 +243,8 @@ function crearMonitoreo(producto, { tipo, valor, marketplace, topN = 5, frecuenc
     if (tipo === 'URL') {
         if (esUrlAliExpress(valor ?? '')) return [400, { message: 'AliExpress es tu proveedor: aquí se vigilan sitios de reventa' }]
         const encontrado = reconocerMarketplace(valor ?? '')
-        if (!encontrado) return [400, { message: 'Marketplace no soportado' }]
+        if (!SITIOS_SOPORTADOS.includes(encontrado)) return [400, { message: 'Marketplace no soportado' }]
+        if (!/\/p\/MCO\d+/i.test(valor)) return [400, { message: MENSAJE_SOLO_CATALOGO }]
         const idPublicacion = identificadorDePublicacion(valor, encontrado)
         if (!idPublicacion) return [400, { message: 'No encontramos el identificador de la publicación en la URL' }]
         if (delProducto.some((m) => m.idPublicacion === idPublicacion)) return [409, { message: 'Ya vigilas esta publicación en este producto' }]
@@ -250,11 +252,12 @@ function crearMonitoreo(producto, { tipo, valor, marketplace, topN = 5, frecuenc
     } else if (tipo === 'PALABRA_CLAVE') {
         const palabra = (valor ?? '').trim()
         if (palabra.length < 3 || palabra.length > 80) return [400, { message: 'La palabra clave debe tener entre 3 y 80 caracteres' }]
-        if (!SITIOS_REVENTA.includes(marketplace)) return [400, { message: 'El marketplace es obligatorio' }]
+        if (!marketplace) return [400, { message: 'Elige el marketplace donde buscar la palabra clave' }]
+        if (!SITIOS_SOPORTADOS.includes(marketplace)) return [400, { message: 'Marketplace no soportado' }]
         const n = Number(topN)
         if (!Number.isInteger(n) || n < 1 || n > 10) return [400, { message: 'El Top N debe estar entre 1 y 10' }]
         const repetido = delProducto.some((m) => m.tipo === tipo && m.marketplace === marketplace && m.valor.toLowerCase() === palabra.toLowerCase())
-        if (repetido) return [409, { message: 'Ya vigilas esta búsqueda en este producto' }]
+        if (repetido) return [409, { message: 'Ya vigilas esta palabra clave en este producto' }]
         nuevo = { tipo, valor: palabra, marketplace, idPublicacion: null, topN: n }
     } else {
         return [400, { message: 'Tipo de monitoreo no válido' }]
@@ -365,7 +368,7 @@ const manejadores = {
         if (reventa) {
             const largo = (reventa.palabraClave ?? '').trim().length
             if (largo < 3 || largo > 80) return [400, { message: 'La palabra clave debe tener entre 3 y 80 caracteres' }]
-            if (!reventa.marketplaces?.length || reventa.marketplaces.some((m) => !SITIOS_REVENTA.includes(m))) {
+            if (!reventa.marketplaces?.length || reventa.marketplaces.some((m) => !SITIOS_SOPORTADOS.includes(m))) {
                 return [400, { message: 'Elige al menos un sitio de reventa' }]
             }
         }
