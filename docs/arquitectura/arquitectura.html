@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Trendly · Documento de Arquitectura</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  :root { --tinta: #1d1d1f; --suave: #6e6e73; --borde: #d2d2d7; --acento: #0a6c4f; --fondo: #f5f5f7; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: var(--tinta); font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1 { font-size: 26pt; margin: 0 0 6pt; letter-spacing: -0.5pt; }
+  h2 { font-size: 16pt; margin: 22pt 0 8pt; padding-bottom: 4pt; border-bottom: 2px solid var(--tinta); break-after: avoid; }
+  h3 { font-size: 12pt; margin: 14pt 0 6pt; break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  ul { margin: 0 0 8pt; padding-left: 16pt; } li { margin-bottom: 2pt; }
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; break-inside: avoid; }
+  th, td { text-align: left; vertical-align: top; padding: 4pt 6pt; border-bottom: 1px solid var(--borde); }
+  th { background: var(--fondo); font-weight: 600; }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 8.8pt; background: var(--fondo); padding: 0 3pt; border-radius: 3pt; }
+  pre { font-family: "SF Mono", Menlo, monospace; font-size: 8.6pt; background: var(--fondo); padding: 8pt; border-radius: 6pt; white-space: pre-wrap; break-inside: avoid; }
+  figure { margin: 8pt 0 12pt; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; border: 1px solid var(--borde); border-radius: 6pt; }
+  figcaption { font-size: 9pt; color: var(--suave); margin-top: 4pt; }
+  .portada { height: 250mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; }
+  .portada .marca { font-size: 13pt; font-weight: 700; letter-spacing: 1pt; color: var(--acento); }
+  .portada h1 { font-size: 40pt; margin-top: 60mm; }
+  .portada .sub { font-size: 15pt; color: var(--suave); }
+  .meta td { border: none; padding: 2pt 0; font-size: 10pt; } .meta td:first-child { color: var(--suave); width: 38mm; }
+  .nota { background: var(--fondo); border-left: 3px solid var(--acento); padding: 6pt 9pt; border-radius: 0 6pt 6pt 0; font-size: 9.5pt; margin: 6pt 0 10pt; }
+  .salto { break-before: page; }
+  svg text { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .indice li { margin-bottom: 1pt; }
+</style>
+</head>
+<body>
+
+<section class="portada">
+  <div class="marca">TRENDLY</div>
+  <div>
+    <h1>Documento de Arquitectura</h1>
+    <p class="sub">Plataforma de análisis de precios para comercio electrónico y dropshipping en Colombia</p>
+  </div>
+  <table class="meta">
+    <tr><td>Curso</td><td>Ingeniería de Software III · Universidad del Quindío · 2026-2</td></tr>
+    <tr><td>Docente</td><td>Cristian David Henao Hoyos</td></tr>
+    <tr><td>Equipo</td><td>Brian Zuleta Tobón (Scrum Master, backend) · Raquel López Aristizábal (Product Owner, datos y análisis) · Juan David Martínez Valencia (frontend)</td></tr>
+    <tr><td>Versión</td><td>1.0 · Avance del proyecto (Sprints 1 a 3) · 23 de octubre de 2026</td></tr>
+    <tr><td>Repositorio</td><td>https://github.com/BrianZuto/Trendly-app</td></tr>
+    <tr><td>Jira</td><td>https://uqvirtual-team-q8za891n.atlassian.net/jira/software/projects/SCRUM/boards/1</td></tr>
+  </table>
+</section>
+
+<h2>Contenido</h2>
+<ol class="indice">
+  <li>Propósito y alcance</li>
+  <li>Atributos de calidad que guían la arquitectura</li>
+  <li>Vista de contexto (C4 nivel 1)</li>
+  <li>Vista de contenedores (C4 nivel 2)</li>
+  <li>Vista de componentes del backend</li>
+  <li>Modelo de datos</li>
+  <li>Flujos principales</li>
+  <li>Vista de despliegue</li>
+  <li>Seguridad</li>
+  <li>Reglas de negocio implementadas</li>
+  <li>Calidad, pruebas e integración continua</li>
+  <li>Decisiones de arquitectura (ADR)</li>
+  <li>Estado actual, riesgos y siguientes pasos</li>
+</ol>
+
+<h2>1. Propósito y alcance</h2>
+<p>Los vendedores en línea fijan sus precios revisando a mano, una por una, las publicaciones de la competencia. Es lento, se desactualiza y les hace perder margen o ventas. <b>Trendly</b> automatiza ese seguimiento: vigila cada 6 horas el precio y la disponibilidad de los competidores en MercadoLibre y AliExpress, guarda el histórico en pesos colombianos y lo presenta en un tablero para decidir el precio propio.</p>
+<p>El sistema soporta tres procesos de negocio encadenados (modelados en BPMN en la Definición del Proyecto):</p>
+<table>
+  <tr><th>Proceso</th><th>Qué hace</th><th>Estado en este avance</th></tr>
+  <tr><td>P1 · Registro de usuarios y productos a monitorear</td><td>Registro con aceptación de la política de datos, inicio de sesión por rol, registro del producto propio (costo, precio, margen objetivo) y de sus competidores por URL o palabra clave.</td><td>Implementado</td></tr>
+  <tr><td>P2 · Monitoreo, recolección y análisis de precios</td><td>Job programado cada 6 h, scrapers por marketplace, conversión a COP con la TRM e histórico de precios.</td><td>Recolección e histórico implementados; precio sugerido en el Sprint 4</td></tr>
+  <tr><td>P3 · Alertas, reportes y toma de decisiones</td><td>Alertas por correo y push, decisiones de precio y reportes.</td><td>Planeado (Sprints 4 y 5)</td></tr>
+</table>
+<p>Este documento describe la arquitectura <b>tal como está construida y desplegada</b> al cierre del Sprint 3, y las decisiones que la explican.</p>
+
+<h2>2. Atributos de calidad que guían la arquitectura</h2>
+<table>
+  <tr><th>Atributo</th><th>Escenario</th><th>Cómo se atiende</th></tr>
+  <tr><td>Seguridad</td><td>Un vendedor nunca ve ni modifica datos de otro; las contraseñas y secretos no se exponen.</td><td>JWT sin sesión, autorización por rol, dueño tomado del token (nunca del cuerpo), BCrypt, secretos solo en variables de entorno.</td></tr>
+  <tr><td>Mantenibilidad</td><td>Si un marketplace cambia su sitio o su API, solo se toca su adaptador.</td><td>Patrón Strategy/Adapter: interfaz <code>MarketplaceScraper</code> con una implementación por marketplace.</td></tr>
+  <tr><td>Disponibilidad del monitoreo</td><td>Un fallo en una captura no detiene el ciclo ni corrompe el histórico.</td><td>Los scrapers nunca lanzan excepciones (devuelven <code>FALLO</code> con motivo); un ciclo a la vez; reprogramación por monitoreo.</td></tr>
+  <tr><td>Cumplimiento legal</td><td>El registro deja constancia de la autorización de datos (Ley 1581 de 2012) y la recolección respeta las condiciones de los sitios.</td><td>RN-02; uso de la API oficial de MercadoLibre en lugar de rastrear su HTML.</td></tr>
+  <tr><td>Calidad verificable</td><td>Ningún cambio llega a <code>develop</code> sin pruebas en verde y cobertura suficiente.</td><td>CI en GitHub Actions con checks obligatorios, JaCoCo ≥ 70 % y quality gate de SonarCloud.</td></tr>
+  <tr><td>Costo</td><td>Operar con presupuesto de estudiante.</td><td>Azure Functions con consumo flexible, MySQL Flexible B1ms (capa gratuita), frontend en Vercel.</td></tr>
+</table>
+
+<h2 class="salto">3. Vista de contexto (C4 nivel 1)</h2>
+<p>Quién usa Trendly y con qué sistemas externos se comunica.</p>
+<figure>
+<svg viewBox="0 0 760 360" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d1d1f"/></marker></defs>
+  <g font-size="12">
+    <rect x="20" y="30" width="150" height="70" rx="10" fill="#f5f5f7" stroke="#1d1d1f"/>
+    <text x="95" y="60" text-anchor="middle" font-weight="700">Vendedor</text>
+    <text x="95" y="78" text-anchor="middle" fill="#6e6e73">[Persona]</text>
+    <rect x="20" y="250" width="150" height="70" rx="10" fill="#f5f5f7" stroke="#1d1d1f"/>
+    <text x="95" y="280" text-anchor="middle" font-weight="700">Administrador</text>
+    <text x="95" y="298" text-anchor="middle" fill="#6e6e73">[Persona]</text>
+    <rect x="290" y="120" width="190" height="110" rx="12" fill="#0a6c4f"/>
+    <text x="385" y="165" text-anchor="middle" fill="#fff" font-weight="700" font-size="16">Trendly</text>
+    <text x="385" y="186" text-anchor="middle" fill="#e8f5ef">Monitoreo y análisis</text>
+    <text x="385" y="202" text-anchor="middle" fill="#e8f5ef">de precios</text>
+    <rect x="590" y="10" width="155" height="62" rx="10" fill="#fff" stroke="#6e6e73" stroke-dasharray="4 3"/>
+    <text x="667" y="37" text-anchor="middle" font-weight="700">API MercadoLibre</text>
+    <text x="667" y="55" text-anchor="middle" fill="#6e6e73">Catálogo y ofertas</text>
+    <rect x="590" y="95" width="155" height="62" rx="10" fill="#fff" stroke="#6e6e73" stroke-dasharray="4 3"/>
+    <text x="667" y="122" text-anchor="middle" font-weight="700">AliExpress</text>
+    <text x="667" y="140" text-anchor="middle" fill="#6e6e73">Páginas de producto</text>
+    <rect x="590" y="180" width="155" height="62" rx="10" fill="#fff" stroke="#6e6e73" stroke-dasharray="4 3"/>
+    <text x="667" y="207" text-anchor="middle" font-weight="700">datos.gov.co</text>
+    <text x="667" y="225" text-anchor="middle" fill="#6e6e73">TRM del día</text>
+    <rect x="590" y="265" width="155" height="62" rx="10" fill="#fff" stroke="#6e6e73" stroke-dasharray="4 3"/>
+    <text x="667" y="292" text-anchor="middle" font-weight="700">Correo SMTP</text>
+    <text x="667" y="310" text-anchor="middle" fill="#6e6e73">Alertas (Sprint 4)</text>
+  </g>
+  <g stroke="#1d1d1f" fill="none" marker-end="url(#f)">
+    <path d="M170 70 L290 150"/><path d="M170 285 L290 205"/>
+    <path d="M480 150 L590 45"/><path d="M480 165 L590 126"/><path d="M480 185 L590 210"/><path d="M480 205 L590 290" stroke-dasharray="4 3"/>
+  </g>
+  <g font-size="10.5" fill="#1d1d1f">
+    <text x="185" y="98">Registra productos,</text><text x="185" y="111">consulta el tablero</text>
+    <text x="190" y="262">Administra</text>
+    <text x="495" y="88">Precios (HTTPS, OAuth)</text>
+    <text x="500" y="135">Scraping</text>
+    <text x="508" y="192">TRM</text>
+  </g>
+</svg>
+<figcaption>Figura 1. Contexto del sistema. Las líneas punteadas son sistemas externos; el correo entra en el Sprint 4.</figcaption>
+</figure>
+
+<h2>4. Vista de contenedores (C4 nivel 2)</h2>
+<figure>
+<svg viewBox="0 0 760 400" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d1d1f"/></marker></defs>
+  <rect x="150" y="10" width="600" height="380" rx="14" fill="none" stroke="#0a6c4f" stroke-dasharray="6 4"/>
+  <text x="165" y="32" font-size="11" fill="#0a6c4f" font-weight="700">Trendly</text>
+  <g font-size="11.5">
+    <rect x="10" y="150" width="120" height="60" rx="10" fill="#f5f5f7" stroke="#1d1d1f"/>
+    <text x="70" y="177" text-anchor="middle" font-weight="700">Vendedor</text><text x="70" y="194" text-anchor="middle" fill="#6e6e73">Navegador</text>
+    <rect x="180" y="55" width="200" height="80" rx="10" fill="#e8f5ef" stroke="#0a6c4f"/>
+    <text x="280" y="82" text-anchor="middle" font-weight="700">Aplicación web (SPA)</text>
+    <text x="280" y="100" text-anchor="middle">React 19 + Vite 8</text>
+    <text x="280" y="117" text-anchor="middle" fill="#6e6e73">Vercel</text>
+    <rect x="180" y="210" width="200" height="100" rx="10" fill="#e8f5ef" stroke="#0a6c4f"/>
+    <text x="280" y="238" text-anchor="middle" font-weight="700">API REST</text>
+    <text x="280" y="256" text-anchor="middle">Spring Boot 4.1 · Java 21</text>
+    <text x="280" y="273" text-anchor="middle">JWT · JPA · Flyway</text>
+    <text x="280" y="291" text-anchor="middle" fill="#6e6e73">Azure Container Apps</text>
+    <rect x="430" y="300" width="160" height="70" rx="10" fill="#e8f5ef" stroke="#0a6c4f"/>
+    <text x="510" y="327" text-anchor="middle" font-weight="700">Base de datos</text>
+    <text x="510" y="345" text-anchor="middle">MySQL 8 · Flexible Server</text>
+    <text x="510" y="361" text-anchor="middle" fill="#6e6e73">Azure</text>
+    <rect x="430" y="55" width="160" height="80" rx="10" fill="#e8f5ef" stroke="#0a6c4f"/>
+    <text x="510" y="82" text-anchor="middle" font-weight="700">Job de recolección</text>
+    <text x="510" y="100" text-anchor="middle">Azure Function · Node 22</text>
+    <text x="510" y="117" text-anchor="middle" fill="#6e6e73">Temporizador cada 6 h</text>
+    <rect x="620" y="190" width="120" height="90" rx="10" fill="#fff" stroke="#6e6e73" stroke-dasharray="4 3"/>
+    <text x="680" y="215" text-anchor="middle" font-weight="700">Externos</text>
+    <text x="680" y="233" text-anchor="middle">MercadoLibre API</text><text x="680" y="250" text-anchor="middle">AliExpress</text><text x="680" y="267" text-anchor="middle">datos.gov.co</text>
+  </g>
+  <g stroke="#1d1d1f" fill="none" marker-end="url(#g)">
+    <path d="M130 170 L180 105"/><path d="M280 135 L280 210"/><path d="M380 285 L430 325"/><path d="M510 135 Q480 190 382 240"/><path d="M380 245 L620 235"/>
+  </g>
+  <g font-size="10" fill="#1d1d1f">
+    <text x="120" y="128">HTTPS</text>
+    <text x="290" y="178">JSON / HTTPS</text><text x="290" y="192">Bearer JWT</text>
+    <text x="392" y="300">JDBC / TLS</text>
+    <text x="470" y="170">POST /interno/…</text><text x="470" y="183">X-Api-Key</text>
+    <text x="470" y="228">Scrapers</text>
+  </g>
+</svg>
+<figcaption>Figura 2. Contenedores. El frontend solo habla con el API; el job no tiene lógica: dispara el ciclo en el backend.</figcaption>
+</figure>
+<table>
+  <tr><th>Contenedor</th><th>Responsabilidad</th><th>Tecnología</th></tr>
+  <tr><td>Aplicación web</td><td>Registro, inicio de sesión, productos, competidores, tablero de precios. Guarda el token y lo envía en cada petición; redirige al login ante un 401.</td><td>React 19, Vite 8, React Router, Axios, Recharts, GSAP</td></tr>
+  <tr><td>API REST</td><td>Reglas de negocio, seguridad, persistencia, scrapers, histórico y el ciclo de recolección.</td><td>Spring Boot 4.1 (Web MVC, Security, Data JPA, Validation, Actuator), jjwt 0.12, Flyway, Jsoup, Selenium, Resilience4j</td></tr>
+  <tr><td>Base de datos</td><td>Usuarios, planes, productos, monitoreos, histórico de precios, TRM. Esquema versionado con Flyway (V1 a V4).</td><td>MySQL 8 (H2 en modo MySQL para pruebas)</td></tr>
+  <tr><td>Job de recolección</td><td>Cada 6 h llama al endpoint interno con una API key. Si el backend responde con error, la ejecución queda fallida en el historial de Azure.</td><td>Azure Functions (Consumo flexible), Node.js 22</td></tr>
+</table>
+
+<h2 class="salto">5. Vista de componentes del backend</h2>
+<p>El backend es un monolito modular: un paquete por área del negocio, todos bajo <code>co.trendly</code>. Los controladores no tienen lógica; las reglas viven en los servicios.</p>
+<table>
+  <tr><th>Paquete</th><th>Componentes principales</th><th>Responsabilidad</th></tr>
+  <tr><td><code>seguridad</code></td><td><code>SecurityConfig</code>, <code>JwtAuthFilter</code>, <code>JwtService</code>, <code>AuthController</code>, <code>AuthService</code></td><td>Cadena de seguridad sin sesión, emisión y validación de JWT, login y <code>/me</code>, errores 401/403 en JSON, CORS.</td></tr>
+  <tr><td><code>usuario</code></td><td><code>RegistroController</code>, <code>RegistroService</code>, <code>Usuario</code>, <code>Plan</code>, <code>Rol</code></td><td>Registro con política de datos (RN-02), BCrypt, plan Gratuito por defecto.</td></tr>
+  <tr><td><code>producto</code></td><td><code>ProductoController</code>, <code>ProductoService</code>, <code>AltaProductoService</code></td><td>CRUD del producto propio, margen actual, cupo del plan (RN-01), alta con monitoreos de reventa en una transacción.</td></tr>
+  <tr><td><code>monitoreo</code></td><td><code>MonitoreoController</code>, <code>MonitoreoService</code>, <code>PublicacionUrl</code>, <code>CompetenciaService</code></td><td>Competidores por URL o palabra clave, reconocimiento del marketplace, publicaciones vigentes y resumen de competencia.</td></tr>
+  <tr><td><code>scraping</code></td><td><code>MarketplaceScraper</code> (interfaz), <code>MercadoLibreScraper</code>, <code>AliExpressScraper</code>, <code>ClienteApiMercadoLibre</code>, <code>FuenteHttp</code>, <code>NavegadorHeadless</code></td><td>Patrón Strategy/Adapter: una implementación por marketplace que nunca lanza excepciones y devuelve <code>ResultadoScraping</code> (OK con publicaciones o FALLO con motivo). Límite de 1 petición cada 2 s con Resilience4j.</td></tr>
+  <tr><td><code>historico</code></td><td><code>HistoricoService</code>, <code>TrmService</code>, <code>DatosGovTrmCliente</code></td><td>Guarda cada captura en COP con la TRM del día, evita duplicados y publica el evento <code>PrecioActualizado</code> (base de las alertas del Sprint 4).</td></tr>
+  <tr><td><code>recoleccion</code></td><td><code>RecoleccionController</code>, <code>RecoleccionService</code>, <code>RecoleccionLocal</code></td><td>Endpoint interno protegido con API key, ciclo por lotes de 20 en segundo plano, un ciclo a la vez, registro de cada ciclo.</td></tr>
+  <tr><td><code>comun</code></td><td><code>ManejadorErrores</code>, <code>ErrorDeNegocio</code></td><td>Traduce las excepciones a un JSON uniforme <code>{ status, error, message, path }</code>.</td></tr>
+</table>
+<figure>
+<svg viewBox="0 0 760 250" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d1d1f"/></marker></defs>
+  <g font-size="11.5">
+    <rect x="10" y="95" width="140" height="56" rx="9" fill="#e8f5ef" stroke="#0a6c4f"/><text x="80" y="120" text-anchor="middle" font-weight="700">RecoleccionService</text><text x="80" y="137" text-anchor="middle" fill="#6e6e73">ciclo cada 6 h</text>
+    <rect x="215" y="95" width="160" height="56" rx="9" fill="#fff" stroke="#1d1d1f"/><text x="295" y="120" text-anchor="middle" font-weight="700">«interfaz»</text><text x="295" y="137" text-anchor="middle" font-weight="700">MarketplaceScraper</text>
+    <rect x="440" y="20" width="170" height="56" rx="9" fill="#e8f5ef" stroke="#0a6c4f"/><text x="525" y="45" text-anchor="middle" font-weight="700">MercadoLibreScraper</text><text x="525" y="62" text-anchor="middle" fill="#6e6e73">API oficial de catálogo</text>
+    <rect x="440" y="170" width="170" height="56" rx="9" fill="#e8f5ef" stroke="#0a6c4f"/><text x="525" y="195" text-anchor="middle" font-weight="700">AliExpressScraper</text><text x="525" y="212" text-anchor="middle" fill="#6e6e73">Jsoup + Chrome headless</text>
+    <rect x="640" y="95" width="110" height="56" rx="9" fill="#e8f5ef" stroke="#0a6c4f"/><text x="695" y="120" text-anchor="middle" font-weight="700">Historico</text><text x="695" y="137" text-anchor="middle" font-weight="700">Service</text>
+  </g>
+  <g stroke="#1d1d1f" fill="none" marker-end="url(#h)">
+    <path d="M150 123 L215 123"/><path d="M375 112 L440 52"/><path d="M375 134 L440 196"/><path d="M150 140 C 300 245, 560 245, 650 151"/>
+  </g>
+  <g font-size="10"><text x="160" y="115">obtener(m)</text><text x="300" y="240">guardar(monitoreo, resultado)</text></g>
+</svg>
+<figcaption>Figura 3. Strategy de los scrapers: el ciclo no conoce el marketplace, solo la interfaz.</figcaption>
+</figure>
+
+<h2>6. Modelo de datos</h2>
+<p>El esquema se crea y versiona con Flyway (<code>V1__esquema_inicial</code>, <code>V2__datos_iniciales</code>, <code>V3__monitoreo_id_publicacion</code>, <code>V4__trm</code>). Los enumerados se guardan como texto con <code>CHECK</code>; los montos en COP como <code>DECIMAL(14,2)</code>; las fechas en UTC.</p>
+<figure><img src="img/modelo-datos.png" alt="Diagrama entidad-relación"><figcaption>Figura 4. Diagrama entidad-relación (SCRUM-29).</figcaption></figure>
+<table>
+  <tr><th>Tabla</th><th>Qué guarda</th><th>Restricciones clave</th></tr>
+  <tr><td><code>plan</code></td><td>Gratuito (10 productos) y Pro (100)</td><td>Nombre único; <code>max_productos &gt; 0</code></td></tr>
+  <tr><td><code>usuario</code></td><td>Vendedores y administradores, hash BCrypt, constancia de la política de datos</td><td>Email único; rol ADMIN o VENDEDOR</td></tr>
+  <tr><td><code>producto</code></td><td>Producto propio: costo, precio de venta, margen objetivo</td><td>SKU único por vendedor; costo y precio &gt; 0; margen 0–100</td></tr>
+  <tr><td><code>monitoreo</code></td><td>Competidor por URL o palabra clave, marketplace, frecuencia, estado, próxima ejecución</td><td>Publicación única por producto; top N 1–10</td></tr>
+  <tr><td><code>historico_precio</code></td><td>Cada captura: publicación, posición, precio original, moneda, precio en COP, disponibilidad</td><td>Precio y precio COP &gt; 0; borrado en cascada con el monitoreo</td></tr>
+  <tr><td><code>trm</code></td><td>TRM del día usada en las conversiones</td><td>Una por vigencia</td></tr>
+  <tr><td><code>sugerencia_precio</code>, <code>alerta</code>, <code>decision_precio</code>, <code>incidencia_scraping</code></td><td>Creadas para los Sprints 4 y 5</td><td>—</td></tr>
+</table>
+
+<h2 class="salto">7. Flujos principales</h2>
+<h3>7.1 Inicio de sesión y petición autenticada</h3>
+<pre>Navegador                API (Spring Security)                  MySQL
+   │ POST /auth/login {email, password}                            │
+   │──────────────────────────▶ AuthService: normaliza el email     │
+   │                            findByEmail ──────────────────────▶│
+   │                            BCrypt.matches (hash de relleno si  │
+   │                            el email no existe: mismo tiempo)   │
+   │◀── 200 {token (JWT HS256, 1 h: sub=id, email, rol)}           │
+   │ GET /productos  Authorization: Bearer &lt;token&gt;                 │
+   │──────────────────────────▶ JwtAuthFilter valida firma, emisor  │
+   │                            y vencimiento → ROLE_&lt;rol&gt;          │
+   │                            ProductoService (dueño = id del JWT)▶│
+   │◀── 200 [productos con su competencia]   (401 sin token / 403 rol)</pre>
+
+<h3>7.2 Ciclo de recolección (cada 6 horas)</h3>
+<pre>Azure Function (timer 0 0 */6 * * *)
+   │ POST /api/v1/interno/recoleccion/ejecutar   X-Api-Key
+   ▼
+RecoleccionService.iniciar() ── ya hay un ciclo? ──▶ 200 EN_CURSO (se ignora)
+   │ 202 INICIADO (responde de inmediato) y sigue en segundo plano:
+   ├─ lote = monitoreos ACTIVOS con proxima_ejecucion ≤ inicio (20 por consulta)
+   ├─ por cada monitoreo:
+   │    scraper = el de su marketplace (Strategy)
+   │    resultado = scraper.obtener(m)        ── nunca lanza: OK o FALLO(motivo)
+   │    OK    → HistoricoService.guardar: COP con la TRM, sin duplicados (1 h),
+   │            evento PrecioActualizado
+   │    FALLO → suma un fallo seguido (a los 3 → ERROR, Sprint 4)
+   │    proxima_ejecucion = ahora + frecuencia
+   └─ log: procesados, exitosos, fallidos, puntos nuevos</pre>
+
+<h2 class="salto">8. Vista de despliegue</h2>
+<figure>
+<svg viewBox="0 0 760 330" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d1d1f"/></marker></defs>
+  <rect x="250" y="10" width="500" height="310" rx="14" fill="#f5f9ff" stroke="#0078d4"/>
+  <text x="265" y="32" font-size="12" font-weight="700" fill="#0078d4">Microsoft Azure · grupo trendly-rg · East US 2</text>
+  <g font-size="11.5">
+    <rect x="10" y="40" width="200" height="80" rx="10" fill="#fff" stroke="#1d1d1f"/>
+    <text x="110" y="66" text-anchor="middle" font-weight="700">Vercel</text><text x="110" y="84" text-anchor="middle">SPA React (build de Vite)</text><text x="110" y="101" text-anchor="middle" fill="#6e6e73">trendlyapp.vercel.app</text>
+    <rect x="10" y="200" width="200" height="90" rx="10" fill="#fff" stroke="#1d1d1f"/>
+    <text x="110" y="225" text-anchor="middle" font-weight="700">GitHub</text><text x="110" y="243" text-anchor="middle">Repositorio monorepo</text><text x="110" y="260" text-anchor="middle">Actions: CI + SonarCloud</text><text x="110" y="277" text-anchor="middle" fill="#6e6e73">BrianZuto/Trendly-app</text>
+    <rect x="275" y="50" width="210" height="100" rx="10" fill="#fff" stroke="#0078d4"/>
+    <text x="380" y="75" text-anchor="middle" font-weight="700">Container Apps</text><text x="380" y="93" text-anchor="middle">trendly-api (Spring Boot)</text><text x="380" y="110" text-anchor="middle">0,5 vCPU · 1 GiB · 1 réplica</text><text x="380" y="127" text-anchor="middle" fill="#6e6e73">imagen en trendlyacrbz (ACR)</text>
+    <rect x="520" y="50" width="210" height="100" rx="10" fill="#fff" stroke="#0078d4"/>
+    <text x="625" y="75" text-anchor="middle" font-weight="700">Azure Functions</text><text x="625" y="93" text-anchor="middle">trendly-recoleccion-bz</text><text x="625" y="110" text-anchor="middle">Consumo flexible · Node 22</text><text x="625" y="127" text-anchor="middle" fill="#6e6e73">+ Application Insights</text>
+    <rect x="275" y="200" width="210" height="90" rx="10" fill="#fff" stroke="#0078d4"/>
+    <text x="380" y="225" text-anchor="middle" font-weight="700">MySQL Flexible Server</text><text x="380" y="243" text-anchor="middle">trendly-mysql-bz · MySQL 8</text><text x="380" y="260" text-anchor="middle">Standard_B1ms · 20 GB</text><text x="380" y="277" text-anchor="middle" fill="#6e6e73">TLS obligatorio</text>
+    <rect x="520" y="200" width="210" height="90" rx="10" fill="#fff" stroke="#0078d4"/>
+    <text x="625" y="225" text-anchor="middle" font-weight="700">Secretos</text><text x="625" y="243" text-anchor="middle">Secretos de Container Apps</text><text x="625" y="260" text-anchor="middle">y variables de la Function</text><text x="625" y="277" text-anchor="middle" fill="#6e6e73">(nunca en el repositorio)</text>
+  </g>
+  <g stroke="#1d1d1f" fill="none" marker-end="url(#k)">
+    <path d="M210 80 L275 95"/><path d="M380 150 L380 200"/><path d="M520 100 L485 100"/><path d="M110 200 L110 120"/>
+  </g>
+  <g font-size="10"><text x="214" y="76">HTTPS + JWT</text><text x="388" y="180">JDBC/TLS</text><text x="487" y="90">API key</text><text x="118" y="165">despliegue de main</text></g>
+</svg>
+<figcaption>Figura 5. Despliegue. Vercel publica el frontend desde la rama <code>main</code>; el backend corre como contenedor.</figcaption>
+</figure>
+<table>
+  <tr><th>Elemento</th><th>Dirección</th></tr>
+  <tr><td>Aplicación web</td><td>https://trendlyapp.vercel.app</td></tr>
+  <tr><td>API REST</td><td>https://trendly-api.prouddune-5a774dac.eastus2.azurecontainerapps.io/api/v1 (salud: https://trendly-api.prouddune-5a774dac.eastus2.azurecontainerapps.io/actuator/health)</td></tr>
+  <tr><td>Job de recolección</td><td>Function <code>trendly-recoleccion-bz</code>, función <code>recoleccion</code> (temporizador)</td></tr>
+  <tr><td>Calidad</td><td>https://sonarcloud.io/summary/new_code?id=BrianZuto_Trendly-app</td></tr>
+</table>
+<div class="nota"><b>Por qué Container Apps y no App Service.</b> La suscripción nueva de Azure no tiene cuota para máquinas App Service (ni Basic ni Free) en ninguna región. Container Apps usa otra cuota, cuesta lo mismo con una réplica encendida y permite, más adelante, incluir Chrome en la imagen para el scraper de AliExpress.</div>
+
+<h2>9. Seguridad</h2>
+<ul>
+  <li><b>Autenticación sin sesión:</b> JWT HS256 de 1 hora con <code>sub</code> (id), <code>email</code>, <code>rol</code> e <code>iss</code>. La clave sale solo de <code>JWT_SECRET</code> (mínimo 256 bits); si falta o es débil, el backend no arranca.</li>
+  <li><b>Autorización:</b> públicas solo <code>/api/v1/auth/**</code> (menos <code>/me</code>) y <code>/actuator/health</code>; <code>/api/v1/admin/**</code> solo ADMIN; el resto exige token. El dueño de cada recurso sale del token, nunca del cuerpo: un recurso ajeno responde 404.</li>
+  <li><b>Contraseñas:</b> BCrypt. El login responde igual y tarda lo mismo si el email no existe, para no revelar qué cuentas están registradas.</li>
+  <li><b>Endpoint interno del job:</b> sin JWT, protegido con <code>X-Api-Key</code> comparada en tiempo constante; sin clave configurada responde 503.</li>
+  <li><b>CORS:</b> solo los orígenes del frontend (<code>CORS_ALLOWED_ORIGINS</code>).</li>
+  <li><b>Secretos:</b> en <code>.env</code> local (ignorado por Git) y en los secretos de Azure en producción. La contraseña del administrador inicial se cambió en producción.</li>
+  <li><b>Datos personales:</b> constancia de la autorización (RN-02).</li>
+  <li><b>Análisis estático:</b> SonarCloud en cada PR (seguridad y confiabilidad en A sobre el código nuevo).</li>
+</ul>
+
+<h2>10. Reglas de negocio implementadas</h2>
+<p>La especificación completa (casos, implementación y evidencia) está en <code>docs/reglas-de-negocio.md</code>.</p>
+<h3>RN-01 · Cupo de productos según el plan</h3>
+<p>Un vendedor puede tener como máximo tantos productos como permita su plan: <b>10 en Gratuito</b> y <b>100 en Pro</b>.</p>
+<pre>SI productos_registrados(vendedor) ≥ plan(vendedor).max_productos
+ENTONCES rechazar con 422 "Alcanzó el límite de su plan" (sin crear el producto ni su reventa)
+SI NO    registrar el producto</pre>
+<p>Implementación: <code>ProductoService.crear</code> → <code>LimitePlanException</code> → 422. Pruebas: <code>ProductoServiceTest.alLlegarAlCupoDelPlanNoCrea</code>, <code>ProductoControllerTest.alSuperarElCupoDelPlanResponde422</code>.</p>
+<h3>RN-02 · Autorización de tratamiento de datos (Ley 1581 de 2012)</h3>
+<p>No se crea una cuenta sin aceptar de forma expresa la política de datos; al aceptarla queda la constancia con fecha y hora.</p>
+<pre>SI aceptaPolitica ≠ true
+ENTONCES rechazar con 400 "Debe aceptar la política de tratamiento de datos" (sin crear la cuenta)
+SI NO    crear la cuenta con acepta_politica_datos = true y fecha_aceptacion = ahora</pre>
+<p>Implementación: <code>RegistroRequest</code> (<code>@AssertTrue</code>) y <code>RegistroService.registrar</code>; columnas <code>usuario.acepta_politica_datos</code> y <code>usuario.fecha_aceptacion</code>. Pruebas: <code>RegistroServiceTest.sinAceptarLaPoliticaNoSeRegistra</code>, <code>RegistroControllerTest.sinAceptarLaPoliticaResponde400ConElMensaje</code>.</p>
+<p>Otras reglas ya implementadas: SKU único por vendedor, aislamiento de datos entre vendedores, máximo 10 competidores por producto, frecuencia según el plan, solo productos de catálogo en MercadoLibre, conversión a COP con la TRM y sin duplicados en el histórico.</p>
+
+<h2 class="salto">11. Calidad, pruebas e integración continua</h2>
+<table>
+  <tr><th>Práctica</th><th>Cómo funciona</th></tr>
+  <tr><td>Ramas y revisión</td><td><code>main</code> (producción) y <code>develop</code> (integración) protegidas: solo cambian por pull request con los checks en verde. Ramas <code>feature/SCRUM-XX-…</code> y commits <code>SCRUM-XX: …</code> enlazados con Jira.</td></tr>
+  <tr><td>Integración continua</td><td>GitHub Actions en cada PR: jobs <code>backend</code> (<code>mvn verify</code> + JaCoCo), <code>frontend</code> (lint, Vitest con cobertura, build), <code>functions</code> (pruebas de la Function) y <code>sonarcloud</code>. Los checks son obligatorios para hacer merge.</td></tr>
+  <tr><td>Cobertura</td><td>JaCoCo falla el build si la cobertura de líneas del backend baja de 70 %. SonarCloud exige 80 % sobre el código nuevo (quality gate Sonar way).</td></tr>
+  <tr><td>Pruebas sin red</td><td>Los scrapers se prueban con respuestas reales guardadas como fixtures; el cliente de la API de MercadoLibre, contra un servidor HTTP local que la imita; la base de datos, con H2 en modo MySQL y las mismas migraciones de Flyway.</td></tr>
+</table>
+<table>
+  <tr><th>Parte</th><th>Pruebas</th><th>Cobertura</th></tr>
+  <tr><td>Backend (Spring Boot)</td><td>207, todas en verde</td><td>94 % de líneas</td></tr>
+  <tr><td>Frontend (React)</td><td>164, todas en verde</td><td>78 % de líneas</td></tr>
+  <tr><td>Azure Function</td><td>5, todas en verde</td><td>—</td></tr>
+</table>
+<p>Además de las pruebas automáticas, cada historia se verificó de punta a punta: 35 comprobaciones del API contra el backend real, capturas reales de MercadoLibre, AliExpress y la TRM, una ejecución del job disparada desde Azure y un recorrido completo de la aplicación en Chrome contra el backend real.</p>
+
+<h2>12. Decisiones de arquitectura (ADR)</h2>
+<table>
+  <tr><th>#</th><th>Decisión</th><th>Motivo</th><th>Consecuencia</th></tr>
+  <tr><td>1</td><td>Monorepo con <code>backend/</code>, <code>frontend/</code> y <code>functions/</code></td><td>Un solo pipeline, un solo historial y PR que cambian el contrato de ambos lados a la vez.</td><td>Cada servicio de despliegue apunta a su carpeta.</td></tr>
+  <tr><td>2</td><td>Monolito modular en Spring Boot en lugar de microservicios</td><td>Equipo de tres personas y cinco sprints: menos infraestructura y despliegues más simples.</td><td>Paquetes por área con dependencias claras; separable más adelante.</td></tr>
+  <tr><td>3</td><td>JWT sin sesión</td><td>El frontend está en otro dominio y el API escala sin sesión compartida.</td><td>No hay cierre de sesión en el servidor: el token vence en 1 h.</td></tr>
+  <tr><td>4</td><td>API oficial de MercadoLibre en lugar de leer su HTML</td><td>El HTML tiene verificación anti-bots y el robots.txt no permite rastreadores; la API es la vía autorizada.</td><td>Solo se pueden vigilar productos de catálogo (RN-07) y la búsqueda por palabra clave funciona mejor con términos específicos.</td></tr>
+  <tr><td>5</td><td>Strategy/Adapter para los scrapers</td><td>Cada marketplace cambia por su lado.</td><td>Agregar un marketplace es agregar una clase; el ciclo no cambia.</td></tr>
+  <tr><td>6</td><td>Job en Azure Functions que solo dispara un endpoint interno</td><td>El temporizador queda fuera del backend y con historial propio; la lógica sigue en un solo lugar y se prueba con el resto.</td><td>Endpoint protegido con API key y un ciclo a la vez.</td></tr>
+  <tr><td>7</td><td>Flyway para el esquema</td><td>Esquema versionado y reproducible en MySQL y en H2.</td><td>Hibernate solo valida (<code>ddl-auto=validate</code>).</td></tr>
+  <tr><td>8</td><td>Backend en Azure Container Apps</td><td>Sin cuota para App Service en la suscripción (ver sección 8).</td><td>La imagen se construye en Azure Container Registry, sin Docker local.</td></tr>
+</table>
+
+<h2>13. Estado actual, riesgos y siguientes pasos</h2>
+<table>
+  <tr><th>Sprint</th><th>Resultado</th></tr>
+  <tr><td>S1 · Definición del proyecto</td><td>Documento de definición, procesos en BPMN, backlog en Jira.</td></tr>
+  <tr><td>S2 · Base técnica y usuarios</td><td>Repositorio y convenciones, CI con cobertura, modelo de datos, registro con política de datos, login JWT por rol, CRUD de productos, pantallas de registro, login y productos, despliegue en Vercel.</td></tr>
+  <tr><td>S3 · Proceso 1 y recolección</td><td>Competidores por URL y palabra clave, scrapers de MercadoLibre y AliExpress, histórico en COP con TRM, job cada 6 h en Azure, tablero de precios, SonarCloud.</td></tr>
+  <tr><td>S4 · Análisis y Proceso 3 (siguiente)</td><td>Precio y margen sugeridos, detección de cambios por umbral, alertas por correo, decisiones de precio, reportes y app móvil.</td></tr>
+</table>
+<table>
+  <tr><th>Riesgo o deuda</th><th>Plan</th></tr>
+  <tr><td>El scraper de AliExpress necesita Chrome para páginas que arman el precio con JavaScript; en producción está desactivado.</td><td>Incluir Chromium en la imagen del contenedor.</td></tr>
+  <tr><td>La API de MercadoLibre limita la frecuencia de consultas (respuestas 429).</td><td>El job lo registra como fallo y lo reintenta en el siguiente ciclo; en el Sprint 4, reintentos con espera.</td></tr>
+  <tr><td>La búsqueda de proveedor en AliExpress y la foto del producto existen solo en el prototipo del frontend.</td><td>Proponerlas como historias del Sprint 4.</td></tr>
+  <tr><td>SonarCloud reporta problemas en el código anterior al quality gate.</td><td>Corregirlos en el Sprint 4 (el gate ya protege el código nuevo).</td></tr>
+</table>
+
+<h2 class="salto">Anexo · La aplicación funcionando con el backend real</h2>
+<figure><img src="img/productos.png" alt="Lista de productos"><figcaption>Lista de productos con el resumen de la competencia (precio más bajo y publicaciones vigiladas).</figcaption></figure>
+<figure><img src="img/detalle.png" alt="Detalle del producto"><figcaption>Detalle del producto: margen actual frente al objetivo y posición del precio frente a los competidores de MercadoLibre.</figcaption></figure>
+<figure><img src="img/tablero.png" alt="Tablero de precios"><figcaption>Tablero de precios: mínimo y promedio de la competencia, precio propio y diferencia.</figcaption></figure>
+
+</body>
+</html>
