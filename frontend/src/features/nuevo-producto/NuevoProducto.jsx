@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { mensajeDeError } from '@core/api/errores'
+import { hayBusquedaDeProveedor } from '@core/api/client'
 import { crearProducto } from '@core/services/productos.service'
 import { buscarOfertas } from '@core/services/proveedores.service'
 import CampoTexto from '@shared/components/CampoTexto'
@@ -104,11 +105,14 @@ export default function NuevoProducto() {
     const tendencia = location.state?.productoTendencia ?? tendenciaDesdeUrl
     const idTendencia = tendencia?.id
     const nombreTendencia = tendencia?.nombre
-    const [paso, setPaso] = useState(tendencia ? 1 : 0)
+    // Con el backend real no hay búsqueda de proveedor: se empieza directo en los datos, con el costo a mano
+    const [conProveedor] = useState(hayBusquedaDeProveedor)
+    const inicio = conProveedor ? 0 : 1
+    const [paso, setPaso] = useState(tendencia || !conProveedor ? 1 : 0)
     // null: aún no elige · 'manual': sin proveedor · oferta: la elegida
-    const [proveedor, setProveedor] = useState(null)
+    const [proveedor, setProveedor] = useState(conProveedor ? null : 'manual')
     const [busqueda, setBusqueda] = useState({ consulta: '', ofertas: null })
-    const [buscandoProveedorTendencia, setBuscandoProveedorTendencia] = useState(Boolean(tendencia))
+    const [buscandoProveedorTendencia, setBuscandoProveedorTendencia] = useState(Boolean(tendencia) && conProveedor)
     const [datos, setDatos] = useState(() => (tendencia ? {
         nombre: tendencia.nombre,
         sku: tendencia.id.toLocaleUpperCase('es-CO'),
@@ -128,7 +132,7 @@ export default function NuevoProducto() {
     const [hecho, setHecho] = useState(false)
 
     useEffect(() => {
-        if (!idTendencia || !nombreTendencia) return undefined
+        if (!idTendencia || !nombreTendencia || !conProveedor) return undefined
         let vigente = true
 
         async function seleccionarProveedor() {
@@ -152,7 +156,7 @@ export default function NuevoProducto() {
         return () => {
             vigente = false
         }
-    }, [idTendencia, nombreTendencia])
+    }, [idTendencia, nombreTendencia, conProveedor])
 
     const manual = proveedor === 'manual'
     const extra = Number(datos.costosExtra) || 0
@@ -256,7 +260,11 @@ export default function NuevoProducto() {
             <div className="nuevo-cabeza">
                 <div>
                     <h1 id="nuevo-titulo">Nuevo producto</h1>
-                    <p>Empieza por el proveedor al que le vas a comprar. Después Trendly compara tu precio con la reventa.</p>
+                    <p>
+                        {conProveedor
+                            ? 'Empieza por el proveedor al que le vas a comprar. Después Trendly compara tu precio con la reventa.'
+                            : 'Registra tu producto con su costo. Después Trendly compara tu precio con la reventa.'}
+                    </p>
                 </div>
                 <Pasos actual={paso} />
             </div>
@@ -299,7 +307,7 @@ export default function NuevoProducto() {
                                     Escribe tu costo a mano. Podrás vigilar la reventa igual.
                                 </span>
                             </div>
-                            {!tendencia && (
+                            {!tendencia && conProveedor && (
                                 <button type="button" className="app-boton app-boton-claro app-boton-chico" onClick={() => ir(0)}>
                                     Buscar proveedor
                                 </button>
@@ -359,9 +367,11 @@ export default function NuevoProducto() {
                     </div>
 
                     <div className="nuevo-acciones">
-                        <button type="button" className="app-boton app-boton-claro" onClick={() => ir(0)}>
-                            Atrás
-                        </button>
+                        {inicio === 0 && (
+                            <button type="button" className="app-boton app-boton-claro" onClick={() => ir(0)}>
+                                Atrás
+                            </button>
+                        )}
                         <button type="submit" className="app-boton">
                             Siguiente
                         </button>

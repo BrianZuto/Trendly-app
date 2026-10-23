@@ -36,8 +36,9 @@ function fotosDe(monitoreos, proveedor) {
     const vistas = new Map()
     if (proveedor) vistas.set(proveedor.imagen, { imagen: proveedor.imagen, vendedor: proveedor.tienda, marketplace: 'ALIEXPRESS' })
     monitoreos.forEach((m) =>
-        m.publicaciones.forEach((p) => {
-            if (!vistas.has(p.imagen)) vistas.set(p.imagen, { imagen: p.imagen, vendedor: p.vendedor, marketplace: m.marketplace })
+        (m.publicaciones ?? []).forEach((p) => {
+            // Las publicaciones sin foto (los scrapers todavía no la capturan) no entran a la galería
+            if (p.imagen && !vistas.has(p.imagen)) vistas.set(p.imagen, { imagen: p.imagen, vendedor: p.vendedor, marketplace: m.marketplace })
         }),
     )
     return [...vistas.values()].slice(0, 8)

@@ -17,6 +17,10 @@ const client = axios.create({
 
 if (USAR_MOCK) client.defaults.adapter = mockAdapter
 
+// Con el API simulado existen funciones que el backend todavía no tiene (búsqueda de proveedor en AliExpress y
+// elegir la foto del producto). Con el backend real se registra el producto con su costo a mano
+export const hayBusquedaDeProveedor = () => client.defaults.adapter === mockAdapter
+
 let manejadorNoAutorizado = null
 export function setManejadorNoAutorizado(fn) {
     manejadorNoAutorizado = fn

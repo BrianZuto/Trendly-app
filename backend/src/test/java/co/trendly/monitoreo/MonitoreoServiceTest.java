@@ -42,7 +42,7 @@ class MonitoreoServiceTest {
         monitoreos = mock(MonitoreoRepository.class);
         productos = mock(ProductoRepository.class);
         usuarios = mock(UsuarioRepository.class);
-        servicio = new MonitoreoService(monitoreos, productos, usuarios);
+        servicio = new MonitoreoService(monitoreos, productos, usuarios, mock(CompetenciaService.class));
 
         Producto producto = new Producto(VENDEDOR);
         ReflectionTestUtils.setField(producto, "id", PRODUCTO);

@@ -1,6 +1,7 @@
 package co.trendly.producto;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.trendly.monitoreo.CompetenciaService;
+import co.trendly.monitoreo.ResumenCompetencia;
 import co.trendly.seguridad.UsuarioAutenticado;
 import jakarta.validation.Valid;
 
@@ -23,26 +26,36 @@ import jakarta.validation.Valid;
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final AltaProductoService altaProducto;
+    private final CompetenciaService competencia;
 
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService, AltaProductoService altaProducto,
+            CompetenciaService competencia) {
         this.productoService = productoService;
+        this.altaProducto = altaProducto;
+        this.competencia = competencia;
     }
 
+    /** Cada producto con el resumen de su competencia (cuántos competidores y el más barato). */
     @GetMapping
     public List<ProductoResponse> listar(@AuthenticationPrincipal UsuarioAutenticado usuario) {
-        return productoService.listar(usuario.id());
+        List<ProductoResponse> lista = productoService.listar(usuario.id());
+        Map<Long, ResumenCompetencia> resumenes = competencia.resumenes(lista.stream().map(ProductoResponse::id).toList());
+        return lista.stream().map(p -> p.conCompetencia(resumenes.get(p.id()))).toList();
     }
 
     @GetMapping("/{id}")
     public ProductoResponse consultar(@AuthenticationPrincipal UsuarioAutenticado usuario, @PathVariable Long id) {
-        return productoService.consultar(usuario.id(), id);
+        ProductoResponse producto = productoService.consultar(usuario.id(), id);
+        return producto.conCompetencia(competencia.resumenes(List.of(producto.id())).get(producto.id()));
     }
 
+    /** Con {@code reventa}, crea también los monitoreos por palabra clave (todo o nada). */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductoResponse crear(@AuthenticationPrincipal UsuarioAutenticado usuario,
             @Valid @RequestBody ProductoRequest solicitud) {
-        return productoService.crear(usuario.id(), solicitud);
+        return altaProducto.crear(usuario.id(), solicitud);
     }
 
     @PutMapping("/{id}")

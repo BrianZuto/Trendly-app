@@ -23,6 +23,12 @@ describe('landing', () => {
   })
 
   it('al elegir un paso lo marca como actual', async () => {
+    // Con movimiento reducido el recorrido no anima con requestAnimationFrame: en jsdom no hay scroll real y la
+    // animación podía pisar el paso elegido según el tiempo (la prueba fallaba a veces)
+    const original = window.matchMedia
+    window.matchMedia = (query) => ({ ...original(query), matches: query.includes('prefers-reduced-motion') })
+    const desplazar = Element.prototype.scrollIntoView
+    Element.prototype.scrollIntoView = () => {}
     const user = userEvent.setup()
     renderizarLanding()
 
@@ -30,6 +36,8 @@ describe('landing', () => {
 
     expect(screen.getByRole('button', { name: /decides/i })).toHaveAttribute('aria-current', 'step')
     expect(screen.getByRole('button', { name: /registra/i })).not.toHaveAttribute('aria-current')
+    window.matchMedia = original
+    Element.prototype.scrollIntoView = desplazar
   })
 
   it('no muestra planes ni precios de suscripción', () => {
