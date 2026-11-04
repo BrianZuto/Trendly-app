@@ -41,8 +41,8 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
 | Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
-| Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Pendiente (Sprint 3) |
-| Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Frontend en Vercel (SCRUM-35); backend pendiente (Sprint 5) |
+| Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Desplegado (SCRUM-39) |
+| Despliegue | Backend en Azure Container Apps con MySQL Flexible Server; frontend en Vercel | Desplegado; un merge a `main` publica el backend solo (SCRUM-54) |
 | Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud configurado (SCRUM-44) |
 
 ### Estructura del monorepo
@@ -265,6 +265,14 @@ curl -X POST http://localhost:8080/api/v1/interno/recoleccion/ejecutar -H "X-Api
 ```
 
 **La Function:** `cd functions && npm ci && npm test`. En Azure necesita las variables `BACKEND_URL` (URL pública del backend) y `RECOLECCION_API_KEY` (la misma del backend).
+
+## Despliegue del backend (SCRUM-54)
+
+Cuando el CI de `main` termina en verde, [`cd.yml`](.github/workflows/cd.yml) compila el jar, publica la imagen en Azure Container Registry con el commit como etiqueta, actualiza la Container App `trendly-api` y comprueba que la revisión nueva quede sana. Si no arranca, el trabajo queda en rojo y el tráfico sigue en la revisión anterior. También se puede lanzar a mano desde **Actions → CD → Run workflow**, sobre `develop`.
+
+- **Acceso a Azure:** sin contraseñas guardadas. Usa OIDC con la identidad `trendly-github`, con rol Contributor solo sobre `trendly-rg` y credencial federada de la rama `develop`.
+- **Secrets de GitHub:** `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` y `AZURE_SUBSCRIPTION_ID`.
+- **Migraciones:** Flyway las aplica al arrancar. Una imagen anterior no arranca sobre una base con migraciones más nuevas, así que para revertir hay que corregir hacia adelante o restaurar la base.
 
 ## Flujo de trabajo con Git
 
