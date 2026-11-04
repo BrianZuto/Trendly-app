@@ -116,8 +116,10 @@ jobs:
     name: sonarcloud
     needs: [backend, frontend]
     runs-on: ubuntu-latest
-    # Los PR desde forks no tienen acceso al secreto SONAR_TOKEN
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    # Los PR desde forks no tienen acceso al secreto SONAR_TOKEN.
+    # Al llegar a main no se analiza: el plan gratuito solo da el quality gate de la rama principal del proyecto en
+    # SonarCloud (develop), y ese código ya pasó el análisis en su PR. Si fallara aquí, CD no desplegaría nunca.
+    if: github.ref != 'refs/heads/main' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     steps:
       - uses: actions/checkout@v5
         with:
