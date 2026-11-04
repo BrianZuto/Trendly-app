@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import co.trendly.historico.HistoricoService;
@@ -44,6 +45,7 @@ class RecoleccionServiceTest {
 
     private MonitoreoRepository monitoreos;
     private HistoricoService historico;
+    private final ApplicationEventPublisher eventos = mock(ApplicationEventPublisher.class);
     /** "Base de datos" de la prueba: el repositorio simulado lee y guarda aquí. */
     private final Map<Long, Monitoreo> tabla = new HashMap<>();
     private final List<Long> capturados = new ArrayList<>();
@@ -91,6 +93,18 @@ class RecoleccionServiceTest {
     }
 
     @Test
+    void alTerminarAvisaSoloSiGuardoPreciosNuevos() {
+        agregar(1L, URL_ML, AHORA.minusSeconds(1));
+
+        servicio(20, mon -> ResultadoScraping.fallo(TipoFallo.TIMEOUT, "lento")).ejecutarAhora();
+        verify(eventos, never()).publishEvent(any(CicloTerminado.class));
+
+        ReflectionTestUtils.setField(tabla.get(1L), "proximaEjecucion", AHORA.minusSeconds(1));
+        ResumenCiclo resumen = servicio(20, ok()).ejecutarAhora().orElseThrow();
+        verify(eventos).publishEvent(new CicloTerminado(resumen));
+    }
+
+    @Test
     void unFalloSumaFallosYUnExitoLosReinicia() {
         Monitoreo m = agregar(1L, URL_ML, AHORA.minusSeconds(1));
         ReflectionTestUtils.setField(m, "fallosConsecutivos", 2);
@@ -118,7 +132,7 @@ class RecoleccionServiceTest {
             return ok().obtener(mon);
         });
 
-        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, List.of(explota), 20, reloj(), Runnable::run)
+        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, eventos, List.of(explota), 20, reloj(), Runnable::run)
                 .ejecutarAhora().orElseThrow();
 
         assertThat(resumen.procesados()).isEqualTo(3);
@@ -147,7 +161,7 @@ class RecoleccionServiceTest {
             return ok().obtener(mon);
         });
 
-        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, List.of(borra), 20, reloj(), Runnable::run)
+        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, eventos, List.of(borra), 20, reloj(), Runnable::run)
                 .ejecutarAhora().orElseThrow();
 
         assertThat(resumen.procesados()).isEqualTo(1);
@@ -157,7 +171,7 @@ class RecoleccionServiceTest {
     @Test
     void mientrasUnCicloEstaEnCursoLosDemasDisparosSeIgnoran() {
         agregar(1L, URL_ML, AHORA.minusSeconds(1));
-        RecoleccionService servicio = new RecoleccionService(monitoreos, historico,
+        RecoleccionService servicio = new RecoleccionService(monitoreos, historico, eventos,
                 List.of(scraper(Marketplace.MERCADOLIBRE, ok())), 20, reloj(), pendientes::add);
 
         Optional<CompletableFuture<ResumenCiclo>> primero = servicio.iniciar();
@@ -176,7 +190,7 @@ class RecoleccionServiceTest {
 
     @Test
     void siElEjecutorRechazaElCicloSeLiberaElBloqueo() {
-        RecoleccionService servicio = new RecoleccionService(monitoreos, historico, List.of(), 20, reloj(), tarea -> {
+        RecoleccionService servicio = new RecoleccionService(monitoreos, historico, eventos, List.of(), 20, reloj(), tarea -> {
             throw new java.util.concurrent.RejectedExecutionException("sin hilos");
         });
 
@@ -199,7 +213,7 @@ class RecoleccionServiceTest {
     }
 
     private RecoleccionService servicio(int lote, Captura comportamiento) {
-        return new RecoleccionService(monitoreos, historico,
+        return new RecoleccionService(monitoreos, historico, eventos,
                 List.of(scraper(Marketplace.MERCADOLIBRE, comportamiento)), lote, reloj(), Runnable::run);
     }
 

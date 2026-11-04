@@ -14,5 +14,7 @@ public record ReglaAlertaRequest(
         @Digits(integer = 3, fraction = 2, message = "El umbral admite hasta 2 decimales")
         BigDecimal umbralPct,
         @NotNull(message = "Indique si quiere avisos de disponibilidad")
-        Boolean avisarDisponibilidad) {
+        Boolean avisarDisponibilidad,
+        @NotNull(message = "Indique si quiere recibir correos")
+        Boolean recibirCorreos) {
 }

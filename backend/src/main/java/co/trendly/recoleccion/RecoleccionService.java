@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,7 @@ public class RecoleccionService {
 
     private final MonitoreoRepository monitoreos;
     private final HistoricoService historico;
+    private final ApplicationEventPublisher eventos;
     private final List<MarketplaceScraper> scrapers;
     private final int tamanoLote;
     private final Clock reloj;
@@ -51,16 +53,17 @@ public class RecoleccionService {
     private final AtomicBoolean enEjecucion = new AtomicBoolean(false);
 
     @Autowired
-    public RecoleccionService(MonitoreoRepository monitoreos, HistoricoService historico,
+    public RecoleccionService(MonitoreoRepository monitoreos, HistoricoService historico, ApplicationEventPublisher eventos,
             List<MarketplaceScraper> scrapers, RecoleccionProperties propiedades) {
-        this(monitoreos, historico, scrapers, propiedades.tamanoLote(), Clock.systemUTC(),
+        this(monitoreos, historico, eventos, scrapers, propiedades.tamanoLote(), Clock.systemUTC(),
                 Executors.newSingleThreadExecutor(Thread.ofPlatform().name("recoleccion").daemon().factory()));
     }
 
-    RecoleccionService(MonitoreoRepository monitoreos, HistoricoService historico, List<MarketplaceScraper> scrapers,
-            int tamanoLote, Clock reloj, Executor ejecutor) {
+    RecoleccionService(MonitoreoRepository monitoreos, HistoricoService historico, ApplicationEventPublisher eventos,
+            List<MarketplaceScraper> scrapers, int tamanoLote, Clock reloj, Executor ejecutor) {
         this.monitoreos = monitoreos;
         this.historico = historico;
+        this.eventos = eventos;
         this.scrapers = List.copyOf(scrapers);
         this.tamanoLote = tamanoLote;
         this.reloj = reloj;
@@ -138,6 +141,9 @@ public class RecoleccionService {
         ResumenCiclo resumen = new ResumenCiclo(inicio, reloj.instant(), procesados, exitosos, fallidos, puntos);
         log.info("Recolección: fin del ciclo. Procesados {}, exitosos {}, fallidos {}, puntos nuevos {}",
                 procesados, exitosos, fallidos, puntos);
+        if (puntos > 0) {
+            eventos.publishEvent(new CicloTerminado(resumen));
+        }
         return resumen;
     }
 

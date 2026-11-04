@@ -25,6 +25,10 @@ public class ReglaAlerta {
     @Column(name = "avisar_disponibilidad", nullable = false)
     private boolean avisarDisponibilidad;
 
+    /** Ley 1581 de 2012: el vendedor puede dejar de recibir los correos (SCRUM-48). */
+    @Column(name = "recibir_correos", nullable = false)
+    private boolean recibirCorreos;
+
     @Column(name = "actualizado_en", nullable = false)
     private Instant actualizadoEn;
 
@@ -36,11 +40,13 @@ public class ReglaAlerta {
         this.usuarioId = usuarioId;
         this.umbralPct = UMBRAL_POR_DEFECTO;
         this.avisarDisponibilidad = true;
+        this.recibirCorreos = true;
     }
 
-    void actualizar(BigDecimal umbralPct, boolean avisarDisponibilidad, Instant ahora) {
+    void actualizar(BigDecimal umbralPct, boolean avisarDisponibilidad, boolean recibirCorreos, Instant ahora) {
         this.umbralPct = umbralPct;
         this.avisarDisponibilidad = avisarDisponibilidad;
+        this.recibirCorreos = recibirCorreos;
         this.actualizadoEn = ahora;
     }
 
@@ -54,5 +60,9 @@ public class ReglaAlerta {
 
     public boolean isAvisarDisponibilidad() {
         return avisarDisponibilidad;
+    }
+
+    public boolean isRecibirCorreos() {
+        return recibirCorreos;
     }
 }
