@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@core/auth/useAuth'
+import { EVENTO_ALERTAS, listarAlertas } from '@core/services/alertas.service'
 import { LogoTrendly } from './PublicNavbar'
 import './MainLayout.css'
 
@@ -11,6 +13,29 @@ const iniciales = (nombre = '') =>
         .map((parte) => parte[0].toUpperCase())
         .join('')
 
+// Contador de alertas nuevas (SCRUM-49): se consulta al cambiar de página y cuando la bandeja avisa un cambio
+function useAlertasNuevas(pathname) {
+    const [nuevas, setNuevas] = useState(0)
+
+    useEffect(() => {
+        let vigente = true
+        const contar = () =>
+            listarAlertas({ estado: 'NUEVA' })
+                .then((lista) => vigente && setNuevas(lista.length))
+                .catch(() => {
+                    // Sin contador si falla: no debe romper la navegación
+                })
+        contar()
+        window.addEventListener(EVENTO_ALERTAS, contar)
+        return () => {
+            vigente = false
+            window.removeEventListener(EVENTO_ALERTAS, contar)
+        }
+    }, [pathname])
+
+    return nuevas
+}
+
 // La barra de la app es la pizarra de la plaza; el contenido va sobre papel
 export default function MainLayout() {
     const { usuario, cerrarSesion } = useAuth()
@@ -18,6 +43,7 @@ export default function MainLayout() {
     const { pathname } = useLocation()
     const [parametros] = useSearchParams()
     const busqueda = pathname === '/productos' ? (parametros.get('q') ?? '') : ''
+    const nuevas = useAlertasNuevas(pathname)
 
     function salir() {
         cerrarSesion()
@@ -75,6 +101,14 @@ export default function MainLayout() {
                 <nav className="app-barra-nav" aria-label="Principal">
                     <NavLink to="/dashboard">Panel</NavLink>
                     <NavLink to="/productos">Productos</NavLink>
+                    <NavLink to="/alertas" aria-label={nuevas > 0 ? `Alertas, ${nuevas} nuevas` : 'Alertas'}>
+                        Alertas
+                        {nuevas > 0 && (
+                            <span className="app-barra-contador" aria-hidden="true">
+                                {nuevas > 99 ? '99+' : nuevas}
+                            </span>
+                        )}
+                    </NavLink>
                 </nav>
             </header>
             <main className="app-contenido">

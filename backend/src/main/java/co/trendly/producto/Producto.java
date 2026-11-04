@@ -63,9 +63,19 @@ public class Producto {
         this.margenObjetivo = margenObjetivo;
     }
 
+    /** Nuevo precio de venta decidido desde la bandeja de alertas (SCRUM-49). */
+    public void cambiarPrecioVenta(BigDecimal precioVenta) {
+        this.precioVenta = precioVenta;
+    }
+
     /** Margen actual en porcentaje: (precio − costo) / precio × 100. Es negativo si se vende por debajo del costo. */
     public BigDecimal getMargenActual() {
-        return precioVenta.subtract(costo).multiply(CIEN).divide(precioVenta, 2, RoundingMode.HALF_UP);
+        return margenCon(precioVenta);
+    }
+
+    /** El margen que tendría el producto si se vendiera a {@code precio}. */
+    public BigDecimal margenCon(BigDecimal precio) {
+        return precio.subtract(costo).multiply(CIEN).divide(precio, 2, RoundingMode.HALF_UP);
     }
 
     public Long getId() {
