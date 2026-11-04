@@ -21,6 +21,7 @@ import co.trendly.comun.ErrorDeNegocio;
 import co.trendly.producto.Producto;
 import co.trendly.producto.ProductoNoEncontradoException;
 import co.trendly.producto.ProductoRepository;
+import co.trendly.seguridad.TokenSinUsuarioException;
 import co.trendly.usuario.Plan;
 import co.trendly.usuario.Usuario;
 import co.trendly.usuario.UsuarioRepository;
@@ -101,6 +102,15 @@ class MonitoreoServiceTest {
     void elPlanGratuitoNoPuedeCambiarLaFrecuencia() {
         assertError(() -> servicio.crear(VENDEDOR, PRODUCTO, porUrl(URL_ML, 3)), HttpStatus.BAD_REQUEST,
                 MonitoreoService.MENSAJE_FRECUENCIA_PLAN);
+    }
+
+    @Test
+    void unTokenDeUnUsuarioBorradoRespondeNoAutenticadoYNoErrorInterno() {
+        when(usuarios.findById(VENDEDOR)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> servicio.crear(VENDEDOR, PRODUCTO, porUrl(URL_ML, 3)))
+                .isInstanceOf(TokenSinUsuarioException.class);
+        verify(monitoreos, never()).saveAndFlush(any(Monitoreo.class));
     }
 
     @Test

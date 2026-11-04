@@ -90,7 +90,8 @@ describe('detalle del producto', () => {
         await agregarPorUrl(user, URL_AE)
         expect(screen.getByRole('alert')).toHaveTextContent('AliExpress es tu proveedor: aquí se vigilan sitios de reventa.')
         expect(screen.getByLabelText('URL de la publicación')).toHaveAttribute('aria-invalid', 'true')
-    })
+        // Escribe seis URLs letra por letra: con la máquina ocupada supera los 5 s por defecto de Vitest
+    }, 15000)
 
     it('reconoce el marketplace mientras se escribe la URL', async () => {
         const user = userEvent.setup()
