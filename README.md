@@ -233,6 +233,20 @@ El histórico (SCRUM-42) guarda cada publicación como un punto ligado al monito
 - **Sugerido:** si el mínimo de la competencia alcanza el mínimo rentable, ese mínimo × 0,99 sin bajar del mínimo rentable. Si no, el mínimo rentable, con `competitivo: false`.
 - **Comisiones (solo ADMIN):** `GET /api/v1/admin/comisiones` y `PUT /api/v1/admin/comisiones/{marketplace}` con `{ "comisionPct": 15 }`.
 
+## Alertas por cambios de precio (SCRUM-47)
+
+Después de cada captura se compara cada publicación con su captura anterior, en COP. Se crea una alerta en estos casos:
+
+| Tipo | Cuándo |
+|---|---|
+| `BAJA_PRECIO`, `SUBIDA_PRECIO` | La variación absoluta es mayor o igual al umbral del vendedor y la publicación está disponible. |
+| `AGOTADO`, `DISPONIBLE` | Cambió la disponibilidad y el vendedor pidió esos avisos. Manda sobre el cambio de precio. |
+
+- **Relevancia:** `ALTA` si la variación es de al menos el doble del umbral; si no, `NORMAL`.
+- **Sin duplicados:** máximo 1 alerta por monitoreo en cada captura. Se guarda la más importante: primero la relevancia alta y luego la mayor variación.
+- **Contenido:** publicación, precio anterior y nuevo, variación y precio sugerido de SCRUM-46 (`null` si la sugerencia está pendiente o no hay precio posible).
+- **Reglas del vendedor:** `GET` y `PUT /api/v1/usuarios/me/reglas-alerta` con `{ "umbralPct": 5, "avisarDisponibilidad": true }`. Sin configurar, valen esos mismos valores. El cambio se aplica desde la siguiente captura.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:

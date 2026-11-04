@@ -132,7 +132,7 @@ class HistoricoIntegracionTest {
 
         assertThat(unaHoraDespues.guardar(monitoreo, ok("1.20", "USD", false))).isEqualTo(1);
 
-        List<PrecioActualizado> avisos = eventos.stream(PrecioActualizado.class).toList();
+        List<PrecioActualizado> avisos = eventos.stream(CapturaGuardada.class).flatMap(c -> c.precios().stream()).toList();
         assertThat(avisos).hasSize(2);
         PrecioActualizado primero = avisos.get(0);
         assertThat(primero.precioAnteriorCop()).isNull();
@@ -152,7 +152,7 @@ class HistoricoIntegracionTest {
         assertThat(historicoRepo.findAll().getFirst().getPrecioCop()).isEqualByComparingTo("6090.00");
 
         assertThat(historicoService.guardar(monitoreo, ResultadoScraping.fallo(TipoFallo.TIMEOUT, "lento"))).isZero();
-        assertThat(eventos.stream(PrecioActualizado.class)).hasSize(1);
+        assertThat(eventos.stream(CapturaGuardada.class).flatMap(c -> c.precios().stream())).hasSize(1);
     }
 
     @Test
