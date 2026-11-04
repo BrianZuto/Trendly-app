@@ -51,4 +51,9 @@ public class Plan {
     public BigDecimal getPrecioSimulado() {
         return precioSimulado;
     }
+
+    /** Solo el plan Pro puede bajar la frecuencia de los monitoreos (SCRUM-36). */
+    public boolean esPro() {
+        return PRO.equals(nombre);
+    }
 }
