@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alertas de Trendly</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f5;font-family:Arial,Helvetica,sans-serif;color:#18181b;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;">
+    <tr>
+        <td align="center" style="padding:24px 12px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+                <tr>
+                    <td style="padding:0 4px 16px;font-size:24px;font-weight:bold;">Trendly</td>
+                </tr>
+                <tr>
+                    <td style="padding:0 4px 16px;font-size:15px;line-height:22px;">
+                        Hola, <span th:text="${nombre}">Ana</span>. Esto cambió en la competencia de tus productos:
+                    </td>
+                </tr>
+                <tr th:each="fila : ${filas}">
+                    <td style="padding:0 0 12px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e4e4e7;border-radius:8px;">
+                            <tr>
+                                <td style="padding:16px;">
+                                    <div style="font-size:16px;font-weight:bold;" th:text="${fila.producto}">Audífonos</div>
+                                    <div style="padding-top:4px;font-size:14px;line-height:20px;">
+                                        <strong th:text="${fila.tipo}">Bajó de precio</strong>
+                                        <span th:if="${fila.alta}" style="margin-left:6px;padding:2px 8px;background:#f7d23d;border-radius:10px;font-size:12px;font-weight:bold;">Importante</span>
+                                    </div>
+                                    <div style="padding-top:4px;font-size:13px;line-height:18px;color:#52525b;">
+                                        <span th:text="${fila.competidor}">Tienda</span><span th:if="${fila.publicacion}"> · </span><span th:text="${fila.publicacion}">Publicación</span>
+                                    </div>
+                                    <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:12px;font-size:14px;line-height:22px;">
+                                        <tr>
+                                            <td style="padding-right:16px;color:#52525b;">Antes</td>
+                                            <td th:text="${fila.precioAnterior}">$ 100.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right:16px;color:#52525b;">Ahora</td>
+                                            <td><strong th:text="${fila.precioNuevo}">$ 90.000</strong> (<span th:text="${fila.variacion}">-10 %</span>)</td>
+                                        </tr>
+                                        <tr th:if="${fila.precioSugerido}">
+                                            <td style="padding-right:16px;color:#52525b;">Precio sugerido</td>
+                                            <td><strong th:text="${fila.precioSugerido}">$ 89.100</strong></td>
+                                        </tr>
+                                    </table>
+                                    <div style="padding-top:14px;">
+                                        <a th:href="${baseUrl + '/productos/' + fila.productoId}" href="#" style="display:inline-block;padding:10px 18px;background:#18181b;border-radius:18px;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none;">Ver en Trendly</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:8px 4px;font-size:12px;line-height:18px;color:#71717a;">
+                        Recibes este correo porque tienes activas las alertas de Trendly. Puedes desactivarlas en tus reglas de alerta (Ley 1581 de 2012).
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -41,8 +41,8 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
 | Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
-| Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Pendiente (Sprint 3) |
-| Despliegue | Backend en Azure App Service con MySQL; frontend en Vercel | Frontend en Vercel (SCRUM-35); backend pendiente (Sprint 5) |
+| Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Desplegado (SCRUM-39) |
+| Despliegue | Backend en Azure Container Apps con MySQL Flexible Server; frontend en Vercel | Desplegado; un merge a `main` publica el backend solo (SCRUM-54) |
 | Calidad | GitHub Actions (CI), JaCoCo (cobertura ≥ 70 %), SonarCloud (quality gate) | CI y JaCoCo configurados (SCRUM-28); SonarCloud configurado (SCRUM-44) |
 
 ### Estructura del monorepo
@@ -112,10 +112,12 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `ML_CLIENT_SECRET` | Secret Key de esa aplicación | `cambia-esto` |
 | `RECOLECCION_API_KEY` | Clave que la Azure Function envía en `X-Api-Key` para disparar el job | salida de `openssl rand -hex 32` |
 | `TRENDLY_SCHEDULER_LOCAL` | `true` para correr el job en local cada 6 h, sin Azure | `false` |
-| `MAIL_HOST` | Servidor SMTP para las alertas | `smtp.gmail.com` |
-| `MAIL_PORT` | Puerto SMTP | `587` |
-| `MAIL_USERNAME` | Usuario SMTP | `alertas@ejemplo.com` |
-| `MAIL_PASSWORD` | Contraseña o contraseña de aplicación SMTP | `cambia-esto` |
+| `SMTP_HOST` | Servidor SMTP para las alertas | `smtp-relay.brevo.com` |
+| `SMTP_PORT` | Puerto SMTP | `587` |
+| `SMTP_USERNAME` | Usuario SMTP | `usuario@smtp-brevo.com` |
+| `SMTP_PASSWORD` | Clave SMTP | `cambia-esto` |
+| `SMTP_FROM` | Remitente verificado; sin él no se envían correos | `alertas@ejemplo.com` |
+| `FRONTEND_URL` | Base de los enlaces del correo | `https://trendlyapp.vercel.app` |
 | `VITE_API_URL` | URL base del API para el frontend | `http://localhost:8080/api/v1` |
 
 Para generar `JWT_SECRET`:
@@ -216,6 +218,45 @@ El histórico (SCRUM-42) guarda cada publicación como un punto ligado al monito
 
 **Limitaciones de MercadoLibre:** su HTML tiene verificación anti-bots, así que se usa la API oficial con las credenciales `ML_CLIENT_ID` y `ML_CLIENT_SECRET`. Con el token de la aplicación solo se leen ofertas de otros vendedores a través del catálogo; por eso solo se aceptan URLs de catálogo, y la palabra clave funciona con búsquedas específicas ("redmi buds"): en búsquedas genéricas los primeros productos del catálogo no tienen ofertas y la captura sale como `FALLO` (`NO_ENCONTRADO`).
 
+## Precio sugerido (SCRUM-46)
+
+`GET /api/v1/productos/{id}/sugerencia` (JWT; un producto ajeno responde `404`). Se recalcula con cada precio nuevo y al consultarlo.
+
+| Campo | Significado |
+|---|---|
+| `estado` | `CALCULADA`, o `PENDIENTE` si no hay al menos 2 capturas de la competencia en 7 días o nada está disponible. Con `PENDIENTE` los demás campos van en `null`. |
+| `precioSugerido`, `margenResultante` | Margen después de la comisión. Van en `null` si margen objetivo + comisión llegan al 100 %. |
+| `posicion` | Precio de venta actual frente a la competencia: `MAS_BARATO` (menor que el mínimo), `MAS_CARO` (mayor que el máximo) o `EN_RANGO`. |
+| `competitivo` | `false` = "no competitivo con el margen objetivo". |
+| `precioMinimoRentable`, `minimoCompetencia`, `promedioCompetencia`, `medianaCompetencia` | En COP. |
+
+- **Competencia:** lo disponible en la última captura de cada monitoreo no pausado.
+- **Precio mínimo rentable** = costo ÷ (1 − margen objetivo − comisión). Se usa la comisión del marketplace de la publicación más barata.
+- **Sugerido:** si el mínimo de la competencia alcanza el mínimo rentable, ese mínimo × 0,99 sin bajar del mínimo rentable. Si no, el mínimo rentable, con `competitivo: false`.
+- **Comisiones (solo ADMIN):** `GET /api/v1/admin/comisiones` y `PUT /api/v1/admin/comisiones/{marketplace}` con `{ "comisionPct": 15 }`.
+
+## Alertas por cambios de precio (SCRUM-47)
+
+Después de cada captura se compara cada publicación con su captura anterior, en COP. Se crea una alerta en estos casos:
+
+| Tipo | Cuándo |
+|---|---|
+| `BAJA_PRECIO`, `SUBIDA_PRECIO` | La variación absoluta es mayor o igual al umbral del vendedor y la publicación está disponible. |
+| `AGOTADO`, `DISPONIBLE` | Cambió la disponibilidad y el vendedor pidió esos avisos. Manda sobre el cambio de precio. |
+
+- **Relevancia:** `ALTA` si la variación es de al menos el doble del umbral; si no, `NORMAL`.
+- **Sin duplicados:** máximo 1 alerta por monitoreo en cada captura. Se guarda la más importante: primero la relevancia alta y luego la mayor variación.
+- **Contenido:** publicación, precio anterior y nuevo, variación y precio sugerido de SCRUM-46 (`null` si la sugerencia está pendiente o no hay precio posible).
+- **Reglas del vendedor:** `GET` y `PUT /api/v1/usuarios/me/reglas-alerta` con `{ "umbralPct": 5, "avisarDisponibilidad": true, "recibirCorreos": true }`. Sin configurar, valen esos mismos valores. El cambio se aplica desde la siguiente captura.
+
+### Correo de alertas (SCRUM-48)
+
+Al terminar un ciclo que guardó precios nuevos, cada vendedor recibe un solo correo con todas sus alertas pendientes. El envío va en segundo plano y no frena la recolección.
+
+- **Preferencia:** con `recibirCorreos: false` no se envía nada (Ley 1581 de 2012).
+- **Fallos:** si el SMTP falla, la alerta queda pendiente y se reintenta en el siguiente ciclo. Después de 24 horas ya no se envía.
+- **Configuración:** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM` y `FRONTEND_URL`. Sin `SMTP_FROM` no se envían correos y la API funciona igual.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:
@@ -234,6 +275,14 @@ curl -X POST http://localhost:8080/api/v1/interno/recoleccion/ejecutar -H "X-Api
 ```
 
 **La Function:** `cd functions && npm ci && npm test`. En Azure necesita las variables `BACKEND_URL` (URL pública del backend) y `RECOLECCION_API_KEY` (la misma del backend).
+
+## Despliegue del backend (SCRUM-54)
+
+Cuando el CI de `main` termina en verde, [`cd.yml`](.github/workflows/cd.yml) compila el jar, publica la imagen en Azure Container Registry con el commit como etiqueta, actualiza la Container App `trendly-api` y comprueba que la revisión nueva quede sana. Si no arranca, el trabajo queda en rojo y el tráfico sigue en la revisión anterior. También se puede lanzar a mano desde **Actions → CD → Run workflow**, sobre `develop`.
+
+- **Acceso a Azure:** sin contraseñas guardadas. Usa OIDC con la identidad `trendly-github`, con rol Contributor solo sobre `trendly-rg` y credencial federada de la rama `develop`.
+- **Secrets de GitHub:** `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` y `AZURE_SUBSCRIPTION_ID`.
+- **Migraciones:** Flyway las aplica al arrancar. Una imagen anterior no arranca sobre una base con migraciones más nuevas, así que para revertir hay que corregir hacia adelante o restaurar la base.
 
 ## Flujo de trabajo con Git
 
