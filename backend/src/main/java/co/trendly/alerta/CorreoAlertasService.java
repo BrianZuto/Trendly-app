@@ -13,6 +13,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -102,7 +103,7 @@ public class CorreoAlertasService {
     }
 
     private String baseUrl() {
-        return propiedades.frontendUrl().replaceAll("/+$", "");
+        return StringUtils.trimTrailingCharacter(propiedades.frontendUrl(), '/');
     }
 
     private static String asunto(int alertas) {
