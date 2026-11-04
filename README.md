@@ -112,10 +112,12 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `ML_CLIENT_SECRET` | Secret Key de esa aplicación | `cambia-esto` |
 | `RECOLECCION_API_KEY` | Clave que la Azure Function envía en `X-Api-Key` para disparar el job | salida de `openssl rand -hex 32` |
 | `TRENDLY_SCHEDULER_LOCAL` | `true` para correr el job en local cada 6 h, sin Azure | `false` |
-| `MAIL_HOST` | Servidor SMTP para las alertas | `smtp.gmail.com` |
-| `MAIL_PORT` | Puerto SMTP | `587` |
-| `MAIL_USERNAME` | Usuario SMTP | `alertas@ejemplo.com` |
-| `MAIL_PASSWORD` | Contraseña o contraseña de aplicación SMTP | `cambia-esto` |
+| `SMTP_HOST` | Servidor SMTP para las alertas | `smtp-relay.brevo.com` |
+| `SMTP_PORT` | Puerto SMTP | `587` |
+| `SMTP_USERNAME` | Usuario SMTP | `usuario@smtp-brevo.com` |
+| `SMTP_PASSWORD` | Clave SMTP | `cambia-esto` |
+| `SMTP_FROM` | Remitente verificado; sin él no se envían correos | `alertas@ejemplo.com` |
+| `FRONTEND_URL` | Base de los enlaces del correo | `https://trendlyapp.vercel.app` |
 | `VITE_API_URL` | URL base del API para el frontend | `http://localhost:8080/api/v1` |
 
 Para generar `JWT_SECRET`:
@@ -245,7 +247,15 @@ Después de cada captura se compara cada publicación con su captura anterior, e
 - **Relevancia:** `ALTA` si la variación es de al menos el doble del umbral; si no, `NORMAL`.
 - **Sin duplicados:** máximo 1 alerta por monitoreo en cada captura. Se guarda la más importante: primero la relevancia alta y luego la mayor variación.
 - **Contenido:** publicación, precio anterior y nuevo, variación y precio sugerido de SCRUM-46 (`null` si la sugerencia está pendiente o no hay precio posible).
-- **Reglas del vendedor:** `GET` y `PUT /api/v1/usuarios/me/reglas-alerta` con `{ "umbralPct": 5, "avisarDisponibilidad": true }`. Sin configurar, valen esos mismos valores. El cambio se aplica desde la siguiente captura.
+- **Reglas del vendedor:** `GET` y `PUT /api/v1/usuarios/me/reglas-alerta` con `{ "umbralPct": 5, "avisarDisponibilidad": true, "recibirCorreos": true }`. Sin configurar, valen esos mismos valores. El cambio se aplica desde la siguiente captura.
+
+### Correo de alertas (SCRUM-48)
+
+Al terminar un ciclo que guardó precios nuevos, cada vendedor recibe un solo correo con todas sus alertas pendientes. El envío va en segundo plano y no frena la recolección.
+
+- **Preferencia:** con `recibirCorreos: false` no se envía nada (Ley 1581 de 2012).
+- **Fallos:** si el SMTP falla, la alerta queda pendiente y se reintenta en el siguiente ciclo. Después de 24 horas ya no se envía.
+- **Configuración:** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM` y `FRONTEND_URL`. Sin `SMTP_FROM` no se envían correos y la API funciona igual.
 
 ## Job de recolección (SCRUM-39)
 

@@ -25,7 +25,8 @@ public class ReglaAlertaService {
     @Transactional
     public ReglaAlertaResponse actualizar(Long usuarioId, ReglaAlertaRequest solicitud) {
         ReglaAlerta regla = deUsuario(usuarioId);
-        regla.actualizar(solicitud.umbralPct(), solicitud.avisarDisponibilidad(), Instant.now().truncatedTo(ChronoUnit.MICROS));
+        regla.actualizar(solicitud.umbralPct(), solicitud.avisarDisponibilidad(), solicitud.recibirCorreos(),
+                Instant.now().truncatedTo(ChronoUnit.MICROS));
         return ReglaAlertaResponse.de(reglas.save(regla));
     }
 }

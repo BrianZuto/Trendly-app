@@ -156,7 +156,7 @@ class AlertaIntegracionTest {
     @Test
     void elVendedorCambiaSuUmbralYSeAplicaEnLaSiguienteCaptura() throws Exception {
         mockMvc.perform(put("/api/v1/usuarios/me/reglas-alerta").header(HttpHeaders.AUTHORIZATION, token)
-                .contentType(MediaType.APPLICATION_JSON).content("{\"umbralPct\": 20, \"avisarDisponibilidad\": false}"))
+                .contentType(MediaType.APPLICATION_JSON).content("{\"umbralPct\": 20, \"avisarDisponibilidad\": false, \"recibirCorreos\": true}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.umbralPct").value(20));
         capturaAnterior("MCO-A", 100000, true);
@@ -173,13 +173,14 @@ class AlertaIntegracionTest {
         mockMvc.perform(get("/api/v1/usuarios/me/reglas-alerta").header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.umbralPct").value(5.0))
-                .andExpect(jsonPath("$.avisarDisponibilidad").value(true));
+                .andExpect(jsonPath("$.avisarDisponibilidad").value(true))
+                .andExpect(jsonPath("$.recibirCorreos").value(true));
     }
 
     @Test
     void unUmbralFueraDeRangoResponde400() throws Exception {
         mockMvc.perform(put("/api/v1/usuarios/me/reglas-alerta").header(HttpHeaders.AUTHORIZATION, token)
-                .contentType(MediaType.APPLICATION_JSON).content("{\"umbralPct\": 0, \"avisarDisponibilidad\": true}"))
+                .contentType(MediaType.APPLICATION_JSON).content("{\"umbralPct\": 0, \"avisarDisponibilidad\": true, \"recibirCorreos\": true}"))
                 .andExpect(status().isBadRequest());
     }
 

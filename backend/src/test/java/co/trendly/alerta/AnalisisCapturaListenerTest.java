@@ -14,13 +14,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import co.trendly.historico.CapturaGuardada;
+import co.trendly.recoleccion.CicloTerminado;
+import co.trendly.recoleccion.ResumenCiclo;
 import co.trendly.sugerencia.SugerenciaService;
 
 class AnalisisCapturaListenerTest {
 
     private final SugerenciaService sugerencias = mock(SugerenciaService.class);
     private final AlertaService alertas = mock(AlertaService.class);
-    private final AnalisisCapturaListener listener = new AnalisisCapturaListener(sugerencias, alertas, Runnable::run);
+    private final CorreoAlertasService correos = mock(CorreoAlertasService.class);
+    private final AnalisisCapturaListener listener = new AnalisisCapturaListener(sugerencias, alertas, correos, Runnable::run);
     private final CapturaGuardada captura = new CapturaGuardada(2L, 3L, Instant.EPOCH, List.of());
 
     @Test
@@ -46,5 +49,16 @@ class AnalisisCapturaListenerTest {
         doThrow(new IllegalStateException("BD")).when(alertas).evaluar(any());
 
         assertThatCode(() -> listener.alGuardarCaptura(captura)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void alTerminarElCicloEnviaLosCorreosYUnFalloNoSePropaga() {
+        CicloTerminado ciclo = new CicloTerminado(new ResumenCiclo(Instant.EPOCH, Instant.EPOCH, 1, 1, 0, 1));
+
+        listener.alTerminarCiclo(ciclo);
+        verify(correos).enviarPendientes();
+
+        doThrow(new IllegalStateException("SMTP")).when(correos).enviarPendientes();
+        assertThatCode(() -> listener.alTerminarCiclo(ciclo)).doesNotThrowAnyException();
     }
 }
