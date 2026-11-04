@@ -78,6 +78,18 @@ public class Alerta {
         this.creadoEn = cambio.precio().capturadoEn();
     }
 
+    /** El vendedor la abrió en la bandeja (SCRUM-49). Una alerta cerrada no vuelve atrás. */
+    void marcarLeida() {
+        if (estado == EstadoAlerta.NUEVA) {
+            estado = EstadoAlerta.LEIDA;
+        }
+    }
+
+    /** El vendedor tomó una decisión sobre ella (SCRUM-49). */
+    void cerrar() {
+        estado = EstadoAlerta.CERRADA;
+    }
+
     public Long getId() {
         return id;
     }

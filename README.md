@@ -257,6 +257,21 @@ Al terminar un ciclo que guardó precios nuevos, cada vendedor recibe un solo co
 - **Fallos:** si el SMTP falla, la alerta queda pendiente y se reintenta en el siguiente ciclo. Después de 24 horas ya no se envía.
 - **Configuración:** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM` y `FRONTEND_URL`. Sin `SMTP_FROM` no se envían correos y la API funciona igual.
 
+### Bandeja de alertas y decisión de precio (SCRUM-49)
+
+Cada vendedor solo ve sus alertas; una alerta ajena responde 404. La página `/alertas` del frontend las muestra con filtros, y el menú lleva un contador de alertas nuevas.
+
+| Endpoint | Qué hace |
+|---|---|
+| `GET /api/v1/alertas?estado=&relevancia=` | Lista las alertas, la más reciente primero. `estado`: `NUEVA`, `LEIDA` o `CERRADA`; `relevancia`: `NORMAL` o `ALTA`. Los dos filtros son opcionales. Cada alerta trae el producto con su precio y margen, el competidor, el cambio, el precio sugerido con su margen y, si está cerrada, la decisión. |
+| `PATCH /api/v1/alertas/{id}/leida` | Pasa una alerta `NUEVA` a `LEIDA`. El frontend lo llama al abrirla. |
+| `PATCH /api/v1/alertas/{id}/decision` | Registra la decisión en `decision_precio` y cierra la alerta. Cuerpo: `{ "accion": "ACEPTAR \| AJUSTAR \| DESCARTAR", "precioFinal": 104900, "motivo": "..." }`. |
+
+- **ACEPTAR:** pone como precio de venta el precio sugerido de la alerta. Si la alerta no tiene sugerido, responde 400.
+- **AJUSTAR:** exige `precioFinal` mayor que cero y lo pone como precio de venta.
+- **DESCARTAR:** exige `motivo` y no cambia el precio.
+- Una alerta se decide una sola vez: la segunda decisión responde 409. Al cambiar el precio se recalcula la sugerencia del producto.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:
