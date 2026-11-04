@@ -183,16 +183,22 @@ function DetalleAlerta({ alerta, onDecidida }) {
         }
     }
 
-    function enviarAjuste(evento) {
+    async function enviarAjuste(evento) {
         evento.preventDefault()
-        if (!(Number(precio) > 0)) return setError('Escribe el precio final, mayor que cero')
-        decidir({ accion: 'AJUSTAR', precioFinal: Number(precio) })
+        if (Number(precio) > 0) {
+            await decidir({ accion: 'AJUSTAR', precioFinal: Number(precio) })
+        } else {
+            setError('Escribe el precio final, mayor que cero')
+        }
     }
 
-    function enviarDescarte(evento) {
+    async function enviarDescarte(evento) {
         evento.preventDefault()
-        if (!motivo.trim()) return setError('Escribe el motivo para descartar la alerta')
-        decidir({ accion: 'DESCARTAR', motivo: motivo.trim() })
+        if (motivo.trim()) {
+            await decidir({ accion: 'DESCARTAR', motivo: motivo.trim() })
+        } else {
+            setError('Escribe el motivo para descartar la alerta')
+        }
     }
 
     return (
