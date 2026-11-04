@@ -69,7 +69,13 @@ public class SugerenciaService {
         return SugerenciaResponse.de(calcular(producto));
     }
 
-    /** Lo llama el evento de precio nuevo. El producto pudo borrarse mientras tanto: entonces no hace nada. */
+    /** Precio sugerido de la última sugerencia; vacío si está pendiente o si ningún precio cumple el margen. */
+    @Transactional(readOnly = true)
+    public Optional<BigDecimal> sugeridoVigente(Long productoId) {
+        return sugerencias.findFirstByProductoIdOrderByCalculadoEnDescIdDesc(productoId).map(SugerenciaPrecio::getSugerido);
+    }
+
+    /** Lo llama cada captura nueva. El producto pudo borrarse mientras tanto: entonces no hace nada. */
     @Transactional
     public void recalcular(Long productoId) {
         productos.findById(productoId).ifPresent(this::calcular);

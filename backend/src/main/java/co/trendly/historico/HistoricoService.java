@@ -6,6 +6,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ import co.trendly.scraping.PublicacionCapturada;
 import co.trendly.scraping.ResultadoScraping;
 
 /**
- * Histórico de precios (SCRUM-42): guarda cada captura en pesos, sin duplicados, y avisa que hay un precio nuevo.
+ * Histórico de precios (SCRUM-42): guarda cada captura en pesos, sin duplicados, y avisa que hay precios nuevos.
  * El job (SCRUM-39) llama a {@link #guardar} con el resultado de cada scraper.
  */
 @Service
@@ -66,7 +67,7 @@ public class HistoricoService {
 
     /**
      * Guarda las publicaciones de un resultado OK (un FALLO no deja punto en el histórico; las incidencias son
-     * de SCRUM-45). Actualiza la última captura del monitoreo y publica {@link PrecioActualizado} por cada punto.
+     * de SCRUM-45). Actualiza la última captura del monitoreo y, si guardó algo, publica {@link CapturaGuardada}.
      *
      * @return cuántos puntos se guardaron (0 si falló, si todo era duplicado o si no hay TRM para convertir)
      */
@@ -76,7 +77,7 @@ public class HistoricoService {
             return 0;
         }
         Instant ahora = reloj.instant().truncatedTo(ChronoUnit.MICROS);
-        int guardados = 0;
+        List<PrecioActualizado> guardados = new ArrayList<>();
         for (PublicacionCapturada publicacion : resultado.publicaciones()) {
             String idPublicacion = publicacion.idPublicacion() != null ? publicacion.idPublicacion()
                     : monitoreo.getIdPublicacion();
@@ -96,15 +97,15 @@ public class HistoricoService {
                     publicacion.titulo(), publicacion.vendedor(), publicacion.posicion(), publicacion.precio(),
                     publicacion.moneda(), precioCop.get(), publicacion.disponible(), monitoreo.getMarketplace().name(),
                     ahora));
-            eventos.publishEvent(new PrecioActualizado(punto.getId(), monitoreo.getId(), monitoreo.getProductoId(),
+            guardados.add(new PrecioActualizado(punto.getId(), monitoreo.getId(), monitoreo.getProductoId(),
                     idPublicacion, anterior.map(HistoricoPrecio::getPrecioCop).orElse(null), punto.getPrecioCop(),
                     anterior.map(HistoricoPrecio::isDisponible).orElse(null), punto.isDisponible(), ahora));
-            guardados++;
         }
-        if (guardados > 0) {
+        if (!guardados.isEmpty()) {
             monitoreos.findById(monitoreo.getId()).ifPresent(m -> m.registrarCaptura(ahora));
+            eventos.publishEvent(new CapturaGuardada(monitoreo.getId(), monitoreo.getProductoId(), ahora, List.copyOf(guardados)));
         }
-        return guardados;
+        return guardados.size();
     }
 
     /** {@code GET /api/v1/monitoreos/{id}/historico}: los puntos del monitoreo, ordenados por fecha. */
