@@ -1,0 +1,82 @@
+# Despliegue continuo del backend (SCRUM-54): cuando el CI de main termina en verde, publica la imagen en Azure.
+# Sin contraseñas guardadas: entra a Azure con OIDC (identidad "trendly-github", con permisos solo sobre trendly-rg).
+# workflow_run siempre corre el archivo de la rama por defecto, por eso la credencial federada es de develop.
+name: CD
+
+on:
+  workflow_run:
+    workflows: [CI]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+# Dos merges seguidos no despliegan a la vez; el último es el que queda
+concurrency:
+  group: cd-backend
+
+env:
+  RESOURCE_GROUP: trendly-rg
+  CONTAINER_APP: trendly-api
+  REGISTRY: trendlyacrbz
+
+jobs:
+  backend:
+    name: desplegar backend
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || 'main' }}
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Compilar el jar
+        working-directory: backend
+        run: ./mvnw -B -DskipTests package
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Construir y publicar la imagen
+        id: imagen
+        run: |
+          TAG="$(git rev-parse --short=12 HEAD)"
+          az acr build --registry "$REGISTRY" --image "trendly-api:$TAG" backend/
+          echo "imagen=$REGISTRY.azurecr.io/trendly-api:$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Actualizar la Container App
+        env:
+          IMAGEN: ${{ steps.imagen.outputs.imagen }}
+        run: |
+          az extension add --name containerapp --upgrade --yes
+          az containerapp update --resource-group "$RESOURCE_GROUP" --name "$CONTAINER_APP" --image "$IMAGEN" --output none
+
+      # Si la revisión nueva no arranca, el trabajo falla y se ve en rojo; el tráfico sigue en la anterior
+      - name: Comprobar que la revisión nueva quedó sana
+        run: |
+          HOST="$(az containerapp show -g "$RESOURCE_GROUP" -n "$CONTAINER_APP" --query properties.configuration.ingress.fqdn -o tsv)"
+          for _ in $(seq 1 30); do
+            ULTIMA="$(az containerapp show -g "$RESOURCE_GROUP" -n "$CONTAINER_APP" --query properties.latestRevisionName -o tsv)"
+            LISTA="$(az containerapp show -g "$RESOURCE_GROUP" -n "$CONTAINER_APP" --query properties.latestReadyRevisionName -o tsv)"
+            if [ "$ULTIMA" = "$LISTA" ] && curl --silent --fail --max-time 10 "https://$HOST/actuator/health" > /dev/null; then
+              echo "Revisión $ULTIMA en línea"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "La revisión nueva no quedó sana a tiempo" >&2
+          exit 1
