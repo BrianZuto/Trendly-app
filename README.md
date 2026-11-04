@@ -216,6 +216,23 @@ El histórico (SCRUM-42) guarda cada publicación como un punto ligado al monito
 
 **Limitaciones de MercadoLibre:** su HTML tiene verificación anti-bots, así que se usa la API oficial con las credenciales `ML_CLIENT_ID` y `ML_CLIENT_SECRET`. Con el token de la aplicación solo se leen ofertas de otros vendedores a través del catálogo; por eso solo se aceptan URLs de catálogo, y la palabra clave funciona con búsquedas específicas ("redmi buds"): en búsquedas genéricas los primeros productos del catálogo no tienen ofertas y la captura sale como `FALLO` (`NO_ENCONTRADO`).
 
+## Precio sugerido (SCRUM-46)
+
+`GET /api/v1/productos/{id}/sugerencia` (JWT; un producto ajeno responde `404`). Se recalcula con cada precio nuevo y al consultarlo.
+
+| Campo | Significado |
+|---|---|
+| `estado` | `CALCULADA`, o `PENDIENTE` si no hay al menos 2 capturas de la competencia en 7 días o nada está disponible. Con `PENDIENTE` los demás campos van en `null`. |
+| `precioSugerido`, `margenResultante` | Margen después de la comisión. Van en `null` si margen objetivo + comisión llegan al 100 %. |
+| `posicion` | Precio de venta actual frente a la competencia: `MAS_BARATO` (menor que el mínimo), `MAS_CARO` (mayor que el máximo) o `EN_RANGO`. |
+| `competitivo` | `false` = "no competitivo con el margen objetivo". |
+| `precioMinimoRentable`, `minimoCompetencia`, `promedioCompetencia`, `medianaCompetencia` | En COP. |
+
+- **Competencia:** lo disponible en la última captura de cada monitoreo no pausado.
+- **Precio mínimo rentable** = costo ÷ (1 − margen objetivo − comisión). Se usa la comisión del marketplace de la publicación más barata.
+- **Sugerido:** si el mínimo de la competencia alcanza el mínimo rentable, ese mínimo × 0,99 sin bajar del mínimo rentable. Si no, el mínimo rentable, con `competitivo: false`.
+- **Comisiones (solo ADMIN):** `GET /api/v1/admin/comisiones` y `PUT /api/v1/admin/comisiones/{marketplace}` con `{ "comisionPct": 15 }`.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:
