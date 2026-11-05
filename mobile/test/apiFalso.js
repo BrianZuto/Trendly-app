@@ -28,7 +28,7 @@ export function tokenQueVenceEn(ms) {
     return `${base64url({ alg: 'HS256' })}.${base64url({ sub: '1', exp: Math.floor((Date.now() + ms) / 1000) })}.firma`
 }
 
-export const USUARIO = { id: 1, nombre: 'Juan David', email: 'vendedor@trendly.co', rol: 'VENDEDOR', plan: 'GRATIS' }
+export const USUARIO = { id: 1, nombre: 'Juan David', email: 'vendedor@trendly.co', rol: 'VENDEDOR', plan: { id: 1, nombre: 'Gratuito', maxProductos: 10 } }
 
 export const PRODUCTO = {
     id: 7,

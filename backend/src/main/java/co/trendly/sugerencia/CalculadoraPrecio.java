@@ -52,7 +52,8 @@ final class CalculadoraPrecio {
         return costo.multiply(CIEN).divide(restante, 2, RoundingMode.CEILING);
     }
 
-    private static BigDecimal margen(BigDecimal precio, BigDecimal costo, BigDecimal comision) {
+    /** Margen después de la comisión, en porcentaje del precio. */
+    static BigDecimal margen(BigDecimal precio, BigDecimal costo, BigDecimal comision) {
         BigDecimal cobrado = precio.multiply(comision).divide(CIEN, MathContext.DECIMAL64);
         return precio.subtract(costo).subtract(cobrado).multiply(CIEN).divide(precio, 2, RoundingMode.HALF_UP);
     }

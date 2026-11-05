@@ -158,7 +158,8 @@ public class BandejaAlertasService {
         Map<Long, DecisionPrecio> deLaAlerta = decisiones.findByAlertaIdIn(lista.stream().map(Alerta::getId).toList())
                 .stream().collect(Collectors.toMap(DecisionPrecio::getAlertaId, Function.identity()));
         return lista.stream().map(alerta -> {
-            Producto producto = delProducto.get(delMonitoreo.get(alerta.getMonitoreoId()).getProductoId());
+            Monitoreo monitoreo = delMonitoreo.get(alerta.getMonitoreoId());
+            Producto producto = delProducto.get(monitoreo.getProductoId());
             HistoricoPrecio publicacion = historico.findFirstByMonitoreoIdAndPublicacionIdOrderByCapturadoEnDescIdDesc(
                     alerta.getMonitoreoId(), alerta.getPublicacionId()).orElse(null);
             BigDecimal sugerido = alerta.getPrecioSugerido();
@@ -169,7 +170,8 @@ public class BandejaAlertasService {
                     competidor(publicacion),
                     publicacion == null ? null : publicacion.getTitulo(), alerta.getPrecioAnterior(),
                     alerta.getPrecioNuevo(), alerta.getVariacionPct(), sugerido,
-                    sugerido == null ? null : producto.margenCon(sugerido),
+                    // Neto de la comisión del marketplace del competidor, igual que el margen resultante de la sugerencia
+                    sugerido == null ? null : sugerencias.margenNeto(producto, sugerido, monitoreo.getMarketplace()),
                     AlertaResponse.Decision.de(deLaAlerta.get(alerta.getId())));
         }).toList();
     }
