@@ -39,7 +39,7 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker y migraciones Flyway (SCRUM-29) |
 | Frontend | SPA con React 19 + Vite 8, ESLint | Proyecto base creado |
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
-| Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
+| Móvil | React Native con Expo SDK 58: Expo Router, expo-secure-store para el JWT, react-native-gifted-charts, Jest | Login, productos, detalle y alertas (SCRUM-51); notificaciones push pendientes (SCRUM-52) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Desplegado (SCRUM-39) |
 | Despliegue | Backend en Azure Container Apps con MySQL Flexible Server; frontend en Vercel | Desplegado; un merge a `main` publica el backend solo (SCRUM-54) |
@@ -60,7 +60,7 @@ trendly/
 │   ├── package.json
 │   └── src/
 ├── functions/               # Azure Function: dispara la recolección cada 6 h (SCRUM-39)
-├── mobile/                  # App React Native + Expo (pendiente, Sprint 4)
+├── mobile/                  # App React Native + Expo (SCRUM-51)
 ├── docs/                    # BPMN, modelo de datos, pruebas de aceptación, resultados SUS
 ├── .github/                 # Plantilla de PR y workflows de CI
 ├── .env.example
@@ -74,6 +74,7 @@ trendly/
 - Maven 3.9+ (o el wrapper incluido `./mvnw`, que no requiere instalar Maven)
 - Node.js 20+ y npm
 - Docker Desktop (para MySQL local)
+- Expo Go en el celular (Android o iOS) para la app móvil
 - Git
 
 ## Cómo correr el proyecto en local
@@ -155,6 +156,11 @@ cd backend && ./mvnw verify
 cd frontend && npm test       # Vitest
 cd frontend && npm run coverage  # Vitest con reporte en frontend/coverage/
 cd frontend && npm run lint   # ESLint
+
+# App móvil
+cd mobile && npm test         # Jest
+cd mobile && npm run coverage # Jest con reporte en mobile/coverage/
+cd mobile && npm run lint     # ESLint (expo lint)
 ```
 
 `./mvnw verify` también genera el reporte de cobertura de JaCoCo en `backend/target/site/jacoco/index.html` y falla si la cobertura de líneas baja del 70 %. El pipeline de GitHub Actions (`.github/workflows/ci.yml`) ejecuta lo mismo en cada PR y publica los reportes como artefactos.
@@ -176,6 +182,29 @@ Variables de entorno, en Vercel → Settings → Environment Variables:
 | `VITE_USE_MOCK` | `true` mientras no haya backend publicado (la app funciona con datos simulados); `false` cuando el API esté arriba. |
 
 Las variables `VITE_` se leen al compilar: después de cambiarlas hay que volver a desplegar (Deployments → Redeploy). No hace falta tocar el código.
+
+## App móvil (SCRUM-51)
+
+App de Expo (React Native) en `mobile/` para consultar Trendly desde el celular. Usa el mismo API y la misma cuenta de la web.
+
+```bash
+cd mobile
+npm install
+npx expo start
+```
+
+Se escanea el código QR con **Expo Go** (en iOS, con la cámara). El celular y el computador deben estar en la misma red wifi; si la red no lo permite, `npx expo start --tunnel`. No hace falta publicarla en las tiendas.
+
+| Pantalla | Qué muestra | API |
+|---|---|---|
+| Login | Correo y contraseña de la cuenta web | `POST /auth/login`, `GET /auth/me` |
+| Mis productos | Precio de venta y margen frente al objetivo; se recarga deslizando hacia abajo | `GET /productos` |
+| Detalle | Gráfica de 30 días con el precio más bajo de la competencia por día frente a tu precio, y el precio sugerido con su margen y posición | `GET /productos/{id}`, `/sugerencia`, `/monitoreos`, `GET /monitoreos/{id}/historico` |
+| Alertas | Alertas con filtro por estado; tocar una abre su producto | `GET /alertas?estado=` |
+
+- **Sesión:** el JWT se guarda cifrado con `expo-secure-store` (Keychain en iOS, Keystore en Android) y viaja como `Authorization: Bearer`. La app vuelve al login con el aviso "Tu sesión venció" si el token ya venció al abrirla, al llegar su hora de vencimiento, al volver a la app con el token vencido o si el API responde 401.
+- **Backend:** por defecto apunta al API desplegado en Azure. Para usar un backend local, copia `mobile/.env.example` como `mobile/.env` y pon la IP del computador en `EXPO_PUBLIC_API_URL` (en el celular, `localhost` es el propio teléfono). La app no necesita CORS.
+- **Pruebas:** Jest con `jest-expo` y Testing Library. Montan la app completa con Expo Router y reemplazan la red con un adaptador de axios (`mobile/test/apiFalso.js`). El job `mobile` del CI corre el lint y las pruebas, y SonarCloud analiza `mobile/src` con su cobertura.
 
 ## API de monitoreos (contrato)
 
