@@ -15,6 +15,10 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
     /** Alertas recientes que todavía no salieron por correo. */
     List<Alerta> findByEnviadaCorreoEnIsNullAndCreadoEnAfterOrderByCreadoEnAscIdAsc(Instant desde);
 
+    /** Alertas de un producto en un periodo, para el reporte (SCRUM-50). */
+    List<Alerta> findByMonitoreoIdInAndCreadoEnBetweenOrderByCreadoEnAscIdAsc(Collection<Long> monitoreoIds, Instant desde,
+            Instant hasta);
+
     /** Bandeja del vendedor (SCRUM-49): las más recientes primero. */
     List<Alerta> findByUsuarioIdOrderByCreadoEnDescIdDesc(Long usuarioId);
 
