@@ -25,16 +25,21 @@ export default function DescargarReporte({ productoId, dias }) {
     const [formato, setFormato] = useState('xlsx')
     const [descargando, setDescargando] = useState(false)
     const [error, setError] = useState('')
+    // Confirmación visible de la descarga: en el piloto SUS nadie sabía si el archivo ya se había generado
+    const [descargado, setDescargado] = useState('')
 
     async function descargar() {
         setDescargando(true)
         setError('')
+        setDescargado('')
         try {
             const hasta = new Date()
             const desde = new Date(hasta.getTime() - dias * DIA)
             const archivo = await descargarReporte({ formato, productoId, desde: desde.toISOString(), hasta: hasta.toISOString() })
             // en-CA escribe AAAA-MM-DD, con la fecha local y no la de UTC (de noche en Colombia, ya es mañana en UTC)
-            guardarArchivo(archivo, `reporte-trendly-${productoId}-${hasta.toLocaleDateString('en-CA')}.${formato}`)
+            const nombre = `reporte-trendly-${productoId}-${hasta.toLocaleDateString('en-CA')}.${formato}`
+            guardarArchivo(archivo, nombre)
+            setDescargado(nombre)
         } catch (fallo) {
             setError(mensajeDeError(fallo))
         } finally {
@@ -48,7 +53,14 @@ export default function DescargarReporte({ productoId, dias }) {
                 <label className="tablero-etiqueta" htmlFor="tablero-formato">
                     Formato
                 </label>
-                <select id="tablero-formato" value={formato} onChange={(e) => setFormato(e.target.value)}>
+                <select
+                    id="tablero-formato"
+                    value={formato}
+                    onChange={(e) => {
+                        setFormato(e.target.value)
+                        setDescargado('')
+                    }}
+                >
                     {FORMATOS.map((f) => (
                         <option key={f.valor} value={f.valor}>
                             {f.nombre}
@@ -62,6 +74,13 @@ export default function DescargarReporte({ productoId, dias }) {
             {error && (
                 <div className="tablero-reporte-error">
                     <Mensaje tipo="error">{error}</Mensaje>
+                </div>
+            )}
+            {descargado && (
+                <div className="tablero-reporte-error">
+                    <Mensaje tipo="exito">
+                        Reporte descargado: <strong>{descargado}</strong>. Lo encuentras en tu carpeta de descargas.
+                    </Mensaje>
                 </div>
             )}
         </div>

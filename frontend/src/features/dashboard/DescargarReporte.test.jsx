@@ -53,6 +53,16 @@ describe('botón Descargar reporte', () => {
         expect(descargarReporte).toHaveBeenCalledWith(expect.objectContaining({ formato: 'pdf', desde: '2026-08-06T15:00:00.000Z' }))
     })
 
+    it('confirma la descarga con el nombre del archivo y la quita al cambiar de formato', async () => {
+        render(<DescargarReporte productoId={7} dias={30} />)
+
+        await userEvent.click(screen.getByRole('button', { name: 'Descargar reporte' }))
+
+        expect(await screen.findByRole('status')).toHaveTextContent('Reporte descargado: reporte-trendly-7-2026-11-04.xlsx')
+        await userEvent.selectOptions(screen.getByLabelText('Formato'), 'PDF')
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    })
+
     it('muestra el error del API y deja volver a intentar', async () => {
         vi.mocked(descargarReporte).mockRejectedValueOnce({ response: { status: 404, data: { message: 'Producto no encontrado' } } })
         render(<DescargarReporte productoId={7} dias={30} />)

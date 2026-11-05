@@ -6,7 +6,7 @@ export async function iniciarSesion({ email, password }) {
     return data
 }
 
-// GET /auth/me → 200 { id, nombre, email, rol, plan }
+// GET /auth/me → 200 { id, nombre, email, rol, plan: { id, nombre, maxProductos } }
 export async function obtenerPerfil() {
     const { data } = await client.get('/auth/me')
     return data

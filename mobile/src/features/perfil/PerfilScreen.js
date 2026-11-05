@@ -9,8 +9,6 @@ import { actualizarReglas, obtenerReglas } from '@/core/services/api'
 import { Boton, Cargando, ErrorConReintento, Etiqueta, Tarjeta, colores, espacio, tipo } from '@/core/ui'
 import { useCarga } from '@/core/useCarga'
 
-const PLAN = { GRATIS: 'Gratuito', GRATUITO: 'Gratuito', PRO: 'Pro' }
-
 // Si el usuario negó el permiso, iOS no vuelve a preguntar: solo se puede cambiar en Ajustes. Se revisa al volver a la app
 function usePermisoNotificaciones() {
     const [permiso, setPermiso] = useState(null)
@@ -81,7 +79,7 @@ export default function PerfilScreen() {
                         </Text>
                         <Text style={tipo.nota}>
                             {usuario?.email}
-                            {usuario?.plan ? ` · Plan ${PLAN[usuario.plan] ?? usuario.plan}` : ''}
+                            {usuario?.plan?.nombre ? ` · Plan ${usuario.plan.nombre}` : ''}
                         </Text>
                     </View>
                 </View>

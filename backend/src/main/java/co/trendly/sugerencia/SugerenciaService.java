@@ -61,6 +61,15 @@ public class SugerenciaService {
         this.reloj = reloj;
     }
 
+    /**
+     * Margen del producto si se vende a {@code precio} en {@code marketplace}, ya descontada su comisión: el mismo
+     * cálculo del margen resultante de la sugerencia, para que se pueda comparar con el margen objetivo.
+     */
+    @Transactional(readOnly = true)
+    public BigDecimal margenNeto(Producto producto, BigDecimal precio, Marketplace marketplace) {
+        return CalculadoraPrecio.margen(precio, producto.getCosto(), comisionDe(marketplace));
+    }
+
     /** {@code GET /api/v1/productos/{id}/sugerencia}. Un producto ajeno responde 404. */
     @Transactional
     public SugerenciaResponse consultar(Long usuarioId, Long productoId) {

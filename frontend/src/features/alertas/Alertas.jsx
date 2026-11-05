@@ -162,9 +162,28 @@ function FilaAlerta({ alerta, activa, onAbrir }) {
     )
 }
 
+// El precio final se escribe con separador de miles; por dentro solo se guardan los dígitos
+const soloDigitos = (texto) => String(texto).replace(/\D/g, '')
+const conMiles = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 })
+const precioLegible = (digitos) => (digitos ? conMiles.format(Number(digitos)) : '')
+
+/**
+ * Por qué Trendly sugiere ese precio (regla de SCRUM-46) y qué cambia frente al actual. En el piloto SUS, los usuarios
+ * no entendían por qué se les sugería bajar el precio si su margen ya superaba el objetivo.
+ */
+function motivoSugerido({ precioSugerido, precioVentaActual, margenSugerido, margenObjetivo }) {
+    if (!precioSugerido) return null
+    const regla = 'Trendly sugiere quedar 1 % por debajo de la oferta más baja de la competencia. Si ese precio no te deja tu margen objetivo, sugiere el precio más bajo que sí lo deja.'
+    if (precioSugerido < precioVentaActual && margenSugerido !== null && margenSugerido >= margenObjetivo) {
+        return `${regla} Bajar es opcional: con este precio tu margen seguiría en ${formatearPorcentaje(margenSugerido)}, por encima de tu objetivo.`
+    }
+    if (precioSugerido > precioVentaActual) return `${regla} Subir tu precio te deja más margen.`
+    return regla
+}
+
 function DetalleAlerta({ alerta, onDecidida }) {
     const [modo, setModo] = useState(null) // null | 'AJUSTAR' | 'DESCARTAR'
-    const [precio, setPrecio] = useState(alerta.precioSugerido ?? alerta.precioVentaActual)
+    const [precio, setPrecio] = useState(soloDigitos(Math.round(alerta.precioSugerido ?? alerta.precioVentaActual)))
     const [motivo, setMotivo] = useState('')
     const [enviando, setEnviando] = useState(false)
     const [error, setError] = useState('')
@@ -248,6 +267,7 @@ function DetalleAlerta({ alerta, onDecidida }) {
                     )}
                 </div>
             </dl>
+            {alerta.precioSugerido && <p className="bandeja-motivo">{motivoSugerido(alerta)}</p>}
 
             {cerrada ? (
                 <Decision decision={alerta.decision} />
@@ -273,10 +293,20 @@ function DetalleAlerta({ alerta, onDecidida }) {
 
                     {modo === 'AJUSTAR' && (
                         <form className="bandeja-form" onSubmit={enviarAjuste}>
-                            <label>
-                                Precio final
-                                <input type="number" min="1" step="any" inputMode="decimal" value={precio} onChange={(e) => setPrecio(e.target.value)} />
-                            </label>
+                            <div className="bandeja-campo">
+                                <label htmlFor={`precio-final-${alerta.id}`}>Precio final</label>
+                                <span className="bandeja-pesos">
+                                    <span aria-hidden="true">$</span>
+                                    <input
+                                        id={`precio-final-${alerta.id}`}
+                                        type="text"
+                                        inputMode="numeric"
+                                        autoComplete="off"
+                                        value={precioLegible(precio)}
+                                        onChange={(e) => setPrecio(soloDigitos(e.target.value))}
+                                    />
+                                </span>
+                            </div>
                             <button type="submit" className="app-boton" disabled={enviando}>
                                 Guardar precio
                             </button>

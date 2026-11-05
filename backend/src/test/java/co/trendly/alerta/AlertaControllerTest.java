@@ -80,7 +80,8 @@ class AlertaControllerTest {
                 .andExpect(jsonPath("$[0].precioAnterior").value(110000))
                 .andExpect(jsonPath("$[0].precioNuevo").value(99000))
                 .andExpect(jsonPath("$[0].precioSugerido").value(98000))
-                .andExpect(jsonPath("$[0].margenSugerido").value(48.98))
+                // (98.000 − 50.000 − 15 % de comisión de MercadoLibre) / 98.000: igual que el margen resultante de la sugerencia
+                .andExpect(jsonPath("$[0].margenSugerido").value(33.98))
                 .andExpect(jsonPath("$[0].monitoreoId").value(monitoreo))
                 .andExpect(jsonPath("$[0].publicacionId").value("MCO-1"))
                 .andExpect(jsonPath("$[0].decision").doesNotExist());

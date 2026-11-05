@@ -115,6 +115,8 @@ describe('sesión guardada', () => {
         expect(screen.getByText('Hola, Juan')).toBeOnTheScreen()
 
         await fireEvent.press(screen.getByRole('button', { name: /^Perfil/ }))
+        // El plan llega como objeto desde /auth/me: se muestra su nombre
+        expect(await screen.findByText(/Plan Gratuito/)).toBeOnTheScreen()
         await fireEvent.press(await screen.findByRole('button', { name: 'Cerrar sesión' }))
         expect(await screen.findByText('Entra con la misma cuenta de la web')).toBeOnTheScreen()
         expect(await SecureStore.getItemAsync('trendly.token')).toBeNull()

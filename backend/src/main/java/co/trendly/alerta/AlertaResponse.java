@@ -8,7 +8,8 @@ import java.time.Instant;
  * el producto con su precio y margen actuales, el competidor, el cambio y el precio sugerido con su margen.
  * La mini gráfica se arma con {@code GET /monitoreos/{monitoreoId}/historico}, filtrando por {@code publicacionId}.
  *
- * @param margenSugerido margen del producto si se vende al precio sugerido; {@code null} si no hay sugerido
+ * @param margenSugerido margen del producto si se vende al precio sugerido, descontada la comisión del marketplace
+ *        (comparable con {@code margenObjetivo}); {@code null} si no hay sugerido
  * @param decision {@code null} mientras la alerta no esté cerrada
  */
 public record AlertaResponse(Long id, TipoAlerta tipo, RelevanciaAlerta relevancia, EstadoAlerta estado,
