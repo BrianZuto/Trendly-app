@@ -35,16 +35,24 @@ export function AuthProvider({ children }) {
     // Al abrir la app se recupera la sesión guardada, solo si el token sigue vigente
     useEffect(() => {
         let vigente = true
-        leerSesionGuardada().then(async (guardada) => {
-            if (!vigente) return
-            if (guardada && tokenVigente(guardada.token)) {
-                aplicar(guardada)
-            } else if (guardada) {
-                setAviso(AVISO_SESION_VENCIDA)
-                await limpiarSesion()
+        async function recuperar() {
+            try {
+                const guardada = await leerSesionGuardada()
+                if (!vigente) return
+                if (guardada && tokenVigente(guardada.token)) {
+                    aplicar(guardada)
+                } else if (guardada) {
+                    setAviso(AVISO_SESION_VENCIDA)
+                    await limpiarSesion()
+                }
+            } catch {
+                // Si el almacén seguro falla, se pide iniciar sesión otra vez
+            } finally {
+                if (vigente) setCargando(false)
             }
-            setCargando(false)
-        })
+        }
+        // recuperar() maneja sus propios errores, así que no hay promesa que pueda quedar rechazada
+        void recuperar()
         return () => {
             vigente = false
         }

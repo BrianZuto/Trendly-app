@@ -7,7 +7,8 @@ import { LogoTrendly } from '@/core/Logo'
 import { Aparecer, vibrar } from '@/core/movimiento'
 import { Boton, colores, tipo } from '@/core/ui'
 
-const EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Las partes del dominio no incluyen el punto, así la expresión no retrocede (tiempo lineal)
+const EMAIL_VALIDO = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/
 
 export default function LoginScreen() {
     const { entrar, aviso } = useAuth()

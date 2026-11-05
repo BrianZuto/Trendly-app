@@ -1,5 +1,14 @@
 // Formato a mano: el Intl de Hermes no se comporta igual en todos los Android
-const miles = (entero) => String(entero).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+// Punto de miles recorriendo los dígitos una sola vez (sin expresiones regulares con retroceso)
+function miles(entero) {
+    const digitos = String(entero)
+    let resultado = ''
+    for (let i = 0; i < digitos.length; i++) {
+        if (i > 0 && (digitos.length - i) % 3 === 0) resultado += '.'
+        resultado += digitos[i]
+    }
+    return resultado
+}
 
 export function formatearPesos(valor) {
     if (valor === null || valor === undefined || Number.isNaN(Number(valor))) return '—'
