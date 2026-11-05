@@ -38,8 +38,30 @@ public class ReporteService {
     static final Duration PERIODO_POR_DEFECTO = Duration.ofDays(30);
     static final String MENSAJE_RANGO = "El rango de fechas no es válido";
 
-    /** Un archivo listo para descargar. */
-    public record ArchivoReporte(byte[] contenido, String nombre, String tipoContenido) {
+    /** Un archivo listo para descargar. No es un record porque lleva un arreglo, y un record no compararía su contenido. */
+    public static final class ArchivoReporte {
+
+        private final byte[] contenido;
+        private final String nombre;
+        private final String tipoContenido;
+
+        ArchivoReporte(byte[] contenido, String nombre, String tipoContenido) {
+            this.contenido = contenido;
+            this.nombre = nombre;
+            this.tipoContenido = tipoContenido;
+        }
+
+        public byte[] contenido() {
+            return contenido;
+        }
+
+        public String nombre() {
+            return nombre;
+        }
+
+        public String tipoContenido() {
+            return tipoContenido;
+        }
     }
 
     private final ProductoRepository productos;
