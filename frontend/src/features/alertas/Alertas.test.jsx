@@ -94,6 +94,8 @@ describe('bandeja de alertas', () => {
         expect(within(detalle).getByRole('heading', { name: 'Smartwatch AMOLED' })).toBeInTheDocument()
         expect(within(detalle).getByText(/149\.900/)).toBeInTheDocument()
         expect(within(detalle).getByText(/Margen 25,28%/)).toBeInTheDocument()
+        // Explica por qué sugiere bajar si el margen ya supera el objetivo (hallazgo del piloto SUS)
+        expect(within(detalle).getByText(/Bajar es opcional: con este precio tu margen seguiría en 25,28%, por encima de tu objetivo/)).toBeInTheDocument()
         expect(await screen.findByRole('link', { name: 'Alertas, 1 nuevas' })).toBeInTheDocument()
     })
 
@@ -121,6 +123,7 @@ describe('bandeja de alertas', () => {
         const campo = within(detalle).getByLabelText('Precio final')
         await user.clear(campo)
         await user.type(campo, '174900')
+        expect(campo).toHaveValue('174.900')
         await user.click(within(detalle).getByRole('button', { name: 'Guardar precio' }))
 
         expect(await within(detalle).findByRole('status')).toHaveTextContent('Ajustaste el precio')
