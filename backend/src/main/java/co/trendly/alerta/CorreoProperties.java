@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("trendly.correo")
 public record CorreoProperties(String remitente, String frontendUrl) {
 
-    boolean habilitado() {
+    public boolean habilitado() {
         return remitente != null && !remitente.isBlank();
     }
 }

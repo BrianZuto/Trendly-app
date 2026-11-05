@@ -74,7 +74,7 @@ public class AliExpressScraper implements MarketplaceScraper {
             }
             return leer(navegador.get(), url, monitoreo.getIdPublicacion());
         } catch (FalloDeScraping e) {
-            return ResultadoScraping.fallo(e.getTipo(), e.getMessage());
+            return ResultadoScraping.fallo(e);
         } catch (RuntimeException e) {
             log.warn("Error inesperado leyendo {}", url, e);
             return ResultadoScraping.fallo(TipoFallo.ESTRUCTURA, "Error inesperado: " + e.getMessage());

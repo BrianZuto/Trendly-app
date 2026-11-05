@@ -129,7 +129,7 @@ public class ClienteApiMercadoLibre implements ApiMercadoLibre {
             case 401, 403, 429 -> TipoFallo.BLOQUEO;
             default -> TipoFallo.TIMEOUT;
         };
-        throw new FalloDeScraping(tipo, "La API de MercadoLibre respondió " + estado);
+        throw FalloDeScraping.porEstadoHttp(tipo, estado, "La API de MercadoLibre respondió " + estado, null);
     }
 
     private static JsonNode leer(String cuerpo) throws FalloDeScraping {

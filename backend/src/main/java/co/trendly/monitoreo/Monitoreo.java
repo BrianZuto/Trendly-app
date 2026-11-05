@@ -21,6 +21,8 @@ public class Monitoreo {
     /** Palabra clave (SCRUM-37): cuántas publicaciones de la búsqueda se capturan; la BD lo limita a 1-10. */
     public static final int TOP_N_POR_DEFECTO = 5;
     public static final int TOP_N_MAXIMO = 10;
+    /** Ciclos seguidos con fallo tras los cuales el monitoreo pasa a ERROR y el job deja de capturarlo (SCRUM-45). */
+    public static final int MAXIMO_FALLOS_SEGUIDOS = 3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,11 +117,15 @@ public class Monitoreo {
 
     /**
      * Resultado de un ciclo del job (SCRUM-39): la próxima captura queda en ahora + frecuencia. Un éxito reinicia los
-     * fallos seguidos; un fallo los suma (al llegar a 3 el monitoreo pasa a ERROR en SCRUM-45).
+     * fallos seguidos; un fallo los suma y, al llegar a {@link #MAXIMO_FALLOS_SEGUIDOS}, el monitoreo pasa a ERROR
+     * (SCRUM-45). Si el vendedor lo pausó durante el ciclo, se respeta la pausa.
      */
     public void registrarCiclo(Instant ahora, boolean exito) {
         proximaEjecucion = ahora.plus(frecuenciaHoras, ChronoUnit.HOURS);
         fallosConsecutivos = exito ? 0 : fallosConsecutivos + 1;
+        if (fallosConsecutivos >= MAXIMO_FALLOS_SEGUIDOS && estado == EstadoMonitoreo.ACTIVO) {
+            estado = EstadoMonitoreo.ERROR;
+        }
     }
 
     public void pausar() {
