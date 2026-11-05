@@ -65,6 +65,11 @@ public class BandejaAlertasService {
         return respuestas(lista);
     }
 
+    @Transactional(readOnly = true)
+    public AlertaResponse obtener(Long usuarioId, Long id) {
+        return respuestas(List.of(alertaPropia(usuarioId, id))).getFirst();
+    }
+
     /** Abrir una alerta nueva la pasa a LEIDA, para que baje el contador del menú. */
     @Transactional
     public AlertaResponse marcarLeida(Long usuarioId, Long id) {

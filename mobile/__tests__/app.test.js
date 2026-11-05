@@ -36,6 +36,9 @@ const RUTAS = {
         ],
     },
     'GET /alertas': ({ params }) => ({ data: params.estado === 'CERRADA' ? [] : [ALERTA] }),
+    'POST /usuarios/me/dispositivos': { status: 204 },
+    'DELETE /usuarios/me/dispositivos': { status: 204 },
+    'GET /usuarios/me/reglas-alerta': { data: { umbralPct: 5, avisarDisponibilidad: true, recibirCorreos: true, recibirPush: true } },
 }
 
 async function abrirApp() {
@@ -103,7 +106,7 @@ describe('inicio de sesión', () => {
 })
 
 describe('sesión guardada', () => {
-    it('con un token vigente abre directo en Mis productos y Salir vuelve al login', async () => {
+    it('con un token vigente abre directo en Mis productos y Cerrar sesión (en Perfil) vuelve al login', async () => {
         simularApi(RUTAS)
         await sesionGuardada(tokenQueVenceEn(UNA_HORA))
         await abrirApp()
@@ -111,7 +114,8 @@ describe('sesión guardada', () => {
         expect(await screen.findByText('Smartwatch AMOLED')).toBeOnTheScreen()
         expect(screen.getByText('Hola, Juan')).toBeOnTheScreen()
 
-        await fireEvent.press(screen.getByRole('button', { name: 'Salir' }))
+        await fireEvent.press(screen.getByRole('button', { name: /^Perfil/ }))
+        await fireEvent.press(await screen.findByRole('button', { name: 'Cerrar sesión' }))
         expect(await screen.findByText('Entra con la misma cuenta de la web')).toBeOnTheScreen()
         expect(await SecureStore.getItemAsync('trendly.token')).toBeNull()
     })
@@ -181,7 +185,7 @@ describe('productos, detalle y alertas', () => {
 
         await fireEvent.press(await screen.findByRole('button', { name: /Smartwatch AMOLED/ }))
 
-        expect(await screen.findByText(/Pendiente: hacen falta al menos 2 capturas/)).toBeOnTheScreen()
+        expect(await screen.findByText(/Hacen falta al menos 2 capturas/)).toBeOnTheScreen()
         expect(screen.getByText(/no tiene competidores vigilados/)).toBeOnTheScreen()
     })
 

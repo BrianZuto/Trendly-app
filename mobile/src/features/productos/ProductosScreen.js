@@ -56,7 +56,7 @@ function FilaProducto({ producto, onPress }) {
                 <View style={estilos.fila}>
                     <Text style={estilos.precio}>{formatearPesos(producto.precioVenta)}</Text>
                     <Pastilla
-                        tono={bajoObjetivo ? 'peligro' : 'exito'}
+                        tono={bajoObjetivo ? 'contorno' : 'neutro'}
                         texto={`Margen ${formatearPorcentaje(producto.margenActual)} · obj. ${formatearPorcentaje(producto.margenObjetivo)}`}
                     />
                 </View>
@@ -73,7 +73,7 @@ const estilos = StyleSheet.create({
     tarjeta: { ...tarjeta, flexDirection: 'row', alignItems: 'center', gap: 12 },
     cuerpo: { flex: 1, gap: 4 },
     fila: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginTop: 6, flexWrap: 'wrap' },
-    nombre: { fontSize: 17, fontWeight: '600', letterSpacing: -0.2, color: colores.tinta },
+    nombre: tipo.titular,
     sku: tipo.nota,
-    precio: { fontSize: 20, fontWeight: '700', letterSpacing: -0.4, color: colores.tinta, ...tipo.cifra },
+    precio: tipo.titulo2,
 })

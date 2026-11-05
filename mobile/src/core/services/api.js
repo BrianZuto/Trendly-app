@@ -49,3 +49,37 @@ export async function listarAlertas({ estado } = {}) {
     const { data } = await client.get('/alertas', { params: { estado: estado || undefined } })
     return data
 }
+
+// GET /alertas/:id → 200 alerta | 404 (SCRUM-52: la abre la app al tocar la notificación)
+export async function obtenerAlerta(id) {
+    const { data } = await client.get(`/alertas/${id}`)
+    return data
+}
+
+// PATCH /alertas/:id/leida → 200 alerta (una NUEVA pasa a LEIDA)
+export async function marcarAlertaLeida(id) {
+    const { data } = await client.patch(`/alertas/${id}/leida`)
+    return data
+}
+
+// POST /usuarios/me/dispositivos { token, plataforma: IOS | ANDROID } → 204 (SCRUM-52)
+export async function registrarDispositivo(token, plataforma) {
+    await client.post('/usuarios/me/dispositivos', { token, plataforma })
+}
+
+// DELETE /usuarios/me/dispositivos?token= → 204, al cerrar sesión
+export async function quitarDispositivo(token) {
+    await client.delete('/usuarios/me/dispositivos', { params: { token } })
+}
+
+// GET /usuarios/me/reglas-alerta → 200 { umbralPct, avisarDisponibilidad, recibirCorreos, recibirPush }
+export async function obtenerReglas() {
+    const { data } = await client.get('/usuarios/me/reglas-alerta')
+    return data
+}
+
+// PUT /usuarios/me/reglas-alerta → 200 con las reglas guardadas
+export async function actualizarReglas(reglas) {
+    const { data } = await client.put('/usuarios/me/reglas-alerta', reglas)
+    return data
+}

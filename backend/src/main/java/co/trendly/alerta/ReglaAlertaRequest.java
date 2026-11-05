@@ -16,5 +16,7 @@ public record ReglaAlertaRequest(
         @NotNull(message = "Indique si quiere avisos de disponibilidad")
         Boolean avisarDisponibilidad,
         @NotNull(message = "Indique si quiere recibir correos")
-        Boolean recibirCorreos) {
+        Boolean recibirCorreos,
+        // Opcional: si no viene, se conserva el valor actual (SCRUM-52)
+        Boolean recibirPush) {
 }

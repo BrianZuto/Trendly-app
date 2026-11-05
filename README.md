@@ -39,7 +39,7 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker y migraciones Flyway (SCRUM-29) |
 | Frontend | SPA con React 19 + Vite 8, ESLint | Proyecto base creado |
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
-| Móvil | React Native con Expo SDK 58: Expo Router, expo-secure-store para el JWT, react-native-gifted-charts, Jest | Login, productos, detalle y alertas (SCRUM-51); notificaciones push pendientes (SCRUM-52) |
+| Móvil | React Native con Expo SDK 58: Expo Router, expo-secure-store para el JWT, react-native-gifted-charts, Jest | Login, productos, detalle y alertas (SCRUM-51); notificaciones push con expo-notifications y perfil (SCRUM-52) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Desplegado (SCRUM-39) |
 | Despliegue | Backend en Azure Container Apps con MySQL Flexible Server; frontend en Vercel | Desplegado; un merge a `main` publica el backend solo (SCRUM-54) |
@@ -119,6 +119,8 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `SMTP_PASSWORD` | Clave SMTP | `cambia-esto` |
 | `SMTP_FROM` | Remitente verificado; sin él no se envían correos | `alertas@ejemplo.com` |
 | `FRONTEND_URL` | Base de los enlaces del correo | `https://trendlyapp.vercel.app` |
+| `PUSH_HABILITADO` | `false` para no enviar notificaciones push (las alertas quedan pendientes) | `true` |
+| `EXPO_ACCESS_TOKEN` | Token de acceso de Expo; solo si el proyecto activó "enhanced push security" | vacío |
 | `VITE_API_URL` | URL base del API para el frontend | `http://localhost:8080/api/v1` |
 
 Para generar `JWT_SECRET`:
@@ -200,11 +202,33 @@ Se escanea el código QR con **Expo Go** (en iOS, con la cámara). El celular y 
 | Login | Correo y contraseña de la cuenta web | `POST /auth/login`, `GET /auth/me` |
 | Mis productos | Precio de venta y margen frente al objetivo; se recarga deslizando hacia abajo | `GET /productos` |
 | Detalle | Gráfica de 30 días con el precio más bajo de la competencia por día frente a tu precio, y el precio sugerido con su margen y posición | `GET /productos/{id}`, `/sugerencia`, `/monitoreos`, `GET /monitoreos/{id}/historico` |
-| Alertas | Alertas con filtro por estado; tocar una abre su producto | `GET /alertas?estado=` |
+| Alertas | Alertas con filtro por estado y contador de nuevas en la pestaña; tocar una abre su detalle | `GET /alertas?estado=` |
+| Detalle de alerta | Qué cambió, el competidor, el precio antes y ahora, el precio sugerido con su margen y la decisión si ya se tomó; al abrirla queda leída (SCRUM-52) | `GET /alertas/{id}`, `PATCH /alertas/{id}/leida` |
+| Perfil | Datos de la cuenta, interruptor de notificaciones push y cerrar sesión (SCRUM-52) | `GET` y `PUT /usuarios/me/reglas-alerta` |
 
 - **Sesión:** el JWT se guarda cifrado con `expo-secure-store` (Keychain en iOS, Keystore en Android) y viaja como `Authorization: Bearer`. La app vuelve al login con el aviso "Tu sesión venció" si el token ya venció al abrirla, al llegar su hora de vencimiento, al volver a la app con el token vencido o si el API responde 401.
 - **Backend:** por defecto apunta al API desplegado en Azure. Para usar un backend local, copia `mobile/.env.example` como `mobile/.env` y pon la IP del computador en `EXPO_PUBLIC_API_URL` (en el celular, `localhost` es el propio teléfono). La app no necesita CORS.
 - **Pruebas:** Jest con `jest-expo` y Testing Library. Montan la app completa con Expo Router y reemplazan la red con un adaptador de axios (`mobile/test/apiFalso.js`). El job `mobile` del CI corre el lint y las pruebas, y SonarCloud analiza `mobile/src` con su cobertura.
+
+### Notificaciones push (SCRUM-52)
+
+Cada alerta llega al celular como notificación, en el mismo momento que el correo de SCRUM-48: al terminar cada ciclo de recolección.
+
+1. **Registro:** al iniciar sesión (o al abrir la app con la sesión guardada), la app pide permiso, obtiene su token de Expo Push y lo registra en el backend. Si el vendedor niega el permiso, la app funciona igual.
+2. **Envío:** el backend manda una notificación por alerta y por celular con la [Expo Push API](https://docs.expo.dev/push-notifications/sending-notifications/) (`trendly.push.url`), con la ruta de la alerta en `data.url`. Lo que no se pudo enviar queda pendiente para el próximo ciclo durante 24 h. Si Expo responde `DeviceNotRegistered`, el celular se olvida.
+3. **Al tocarla:** se abre el detalle de esa alerta (`/alerta/{id}`), con la app abierta o cerrada. Si la sesión había vencido, se abre después de iniciar sesión.
+4. **Desactivarlas:** en *Perfil* → *Notificaciones push*. Al cerrar sesión el celular se quita del servidor y deja de recibir las alertas de esa cuenta.
+
+| Endpoint | Qué hace |
+|---|---|
+| `POST /api/v1/usuarios/me/dispositivos` | Registra el celular: `{ "token": "ExponentPushToken[...]", "plataforma": "IOS | ANDROID" }` → 204. Es idempotente; si otra cuenta inicia sesión en el mismo celular, el token pasa a ser suyo. |
+| `DELETE /api/v1/usuarios/me/dispositivos?token=` | Quita el celular al cerrar sesión → 204. Un token de otro vendedor no se toca. |
+| `PUT /api/v1/usuarios/me/reglas-alerta` | Acepta además `recibirPush` (opcional: si no viene, se conserva el valor; la web no lo envía). |
+| `GET /api/v1/alertas/{id}` | Detalle de una alerta propia; una ajena responde 404. |
+
+- **Expo Go y development build:** según la documentación de Expo, desde el SDK 53 Expo Go **no recibe notificaciones push en Android**; para Android hace falta un *development build* (`npx eas-cli build --profile development`) con credenciales de FCM. La app está vinculada al proyecto de Expo `@trendlyproject/trendly` (`extra.eas.projectId` en `mobile/app.json`), que es lo que pide el token.
+- **Base de datos:** migración `V8__notificaciones_push.sql`: tabla `dispositivo_push`, columna `regla_alerta.recibir_push` y columna `alerta.enviada_push_en`.
+- **Pruebas:** el backend prueba el cliente contra un servidor HTTP local que hace de Expo y el envío con un doble de `ClienteExpoPush`; la app reemplaza `expo-notifications` en `jest.setup.js` y simula el toque de una notificación.
 
 ## API de monitoreos (contrato)
 

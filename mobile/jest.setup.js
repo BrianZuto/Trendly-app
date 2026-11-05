@@ -19,3 +19,29 @@ jest.mock('expo-haptics', () => ({
     notificationAsync: jest.fn(async () => {}),
     NotificationFeedbackType: { Success: 'success', Warning: 'warning', Error: 'error' },
 }))
+
+// Notificaciones (SCRUM-52): un doble que entrega un token fijo y deja simular que el vendedor toca una notificación
+jest.mock('expo-device', () => ({ isDevice: true }))
+jest.mock('expo-notifications', () => {
+    const oyentes = new Set()
+    const respuesta = (url) => ({
+        actionIdentifier: 'expo.modules.notifications.actions.DEFAULT',
+        notification: { request: { content: { data: { url } } } },
+    })
+    return {
+        __respuesta: respuesta,
+        __tocar: (url) => oyentes.forEach((oyente) => oyente(respuesta(url))),
+        setNotificationHandler: jest.fn(),
+        setNotificationChannelAsync: jest.fn(async () => null),
+        getPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+        requestPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+        getExpoPushTokenAsync: jest.fn(async () => ({ type: 'expo', data: 'ExponentPushToken[prueba]' })),
+        getLastNotificationResponseAsync: jest.fn(async () => null),
+        clearLastNotificationResponseAsync: jest.fn(async () => {}),
+        addNotificationResponseReceivedListener: jest.fn((oyente) => {
+            oyentes.add(oyente)
+            return { remove: () => oyentes.delete(oyente) }
+        }),
+        AndroidImportance: { HIGH: 4 },
+    }
+})

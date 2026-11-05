@@ -17,10 +17,10 @@ const FILTROS = [
 
 // Qué pasó, con un ícono que se lee sin depender solo del color
 export const QUE_PASO = {
-    BAJA_PRECIO: { texto: 'Bajó de precio', icono: 'trending-down', color: colores.exito, fondo: colores.exitoSuave },
-    SUBIDA_PRECIO: { texto: 'Subió de precio', icono: 'trending-up', color: colores.peligro, fondo: colores.peligroSuave },
-    AGOTADO: { texto: 'Se agotó', icono: 'remove-circle-outline', color: colores.tintaMedia, fondo: colores.humo },
-    DISPONIBLE: { texto: 'Volvió a estar disponible', icono: 'checkmark-circle-outline', color: colores.tintaMedia, fondo: colores.humo },
+    BAJA_PRECIO: { texto: 'Bajó de precio', icono: 'trending-down' },
+    SUBIDA_PRECIO: { texto: 'Subió de precio', icono: 'trending-up' },
+    AGOTADO: { texto: 'Se agotó', icono: 'remove-circle-outline' },
+    DISPONIBLE: { texto: 'Volvió a estar disponible', icono: 'checkmark-circle-outline' },
 }
 
 const ESTADO = { NUEVA: 'Nueva', LEIDA: 'Leída', CERRADA: 'Cerrada' }
@@ -67,7 +67,7 @@ function Lista({ datos, error, cargando, refrescando, actualizando, recargar, re
                 keyExtractor={(alerta) => String(alerta.id)}
                 refreshControl={<RefreshControl refreshing={refrescando} onRefresh={refrescar} tintColor={colores.tinta} />}
                 ListEmptyComponent={<Vacio icono="notifications-off-outline" texto="No hay alertas con este filtro." />}
-                renderItem={({ item }) => <FilaAlerta alerta={item} onPress={() => router.push(`/producto/${item.productoId}`)} />}
+                renderItem={({ item }) => <FilaAlerta alerta={item} onPress={() => router.push(`/alerta/${item.id}`)} />}
             />
         </Aparecer>
     )
@@ -76,17 +76,17 @@ function Lista({ datos, error, cargando, refrescando, actualizando, recargar, re
 function FilaAlerta({ alerta, onPress }) {
     const nueva = alerta.estado === 'NUEVA'
     const hayPrecios = alerta.precioAnterior !== null && alerta.precioNuevo !== null
-    const paso = QUE_PASO[alerta.tipo] ?? { texto: alerta.tipo, icono: 'alert-circle-outline', color: colores.tintaMedia, fondo: colores.humo }
+    const paso = QUE_PASO[alerta.tipo] ?? { texto: alerta.tipo, icono: 'alert-circle-outline' }
     return (
         <Presionable
             accessibilityRole="button"
-            accessibilityHint="Abre el producto"
+            accessibilityHint="Abre el detalle de la alerta"
             onPress={onPress}
             escala={0.98}
             style={[estilos.tarjeta, nueva && estilos.tarjetaNueva]}
         >
-            <View style={[estilos.icono, { backgroundColor: paso.fondo }]}>
-                <Ionicons name={paso.icono} size={20} color={paso.color} />
+            <View style={estilos.icono}>
+                <Ionicons name={paso.icono} size={20} color={colores.tinta} />
             </View>
             <View style={estilos.cuerpo}>
                 <View style={estilos.fila}>
@@ -94,7 +94,7 @@ function FilaAlerta({ alerta, onPress }) {
                         {paso.texto}
                     </Text>
                     <View style={estilos.etiquetas}>
-                        {alerta.relevancia === 'ALTA' && <Pastilla tono="alerta" texto="Alta" />}
+                        {alerta.relevancia === 'ALTA' && <Pastilla tono="contorno" texto="Alta" />}
                         <Pastilla tono={nueva ? 'oscuro' : 'neutro'} texto={ESTADO[alerta.estado]} />
                     </View>
                 </View>
@@ -126,12 +126,12 @@ const estilos = StyleSheet.create({
     contenido: { padding: 16, gap: 10, flexGrow: 1 },
     tarjeta: { ...tarjeta, flexDirection: 'row', gap: 12, alignItems: 'flex-start' },
     tarjetaNueva: { borderColor: colores.tinta, borderWidth: 1 },
-    icono: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+    icono: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: colores.humo },
     cuerpo: { flex: 1, gap: 3 },
     fila: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
-    tipo: { flexShrink: 1, fontSize: 16, fontWeight: '700', letterSpacing: -0.2, color: colores.tinta },
+    tipo: { ...tipo.titular, flexShrink: 1 },
     etiquetas: { flexDirection: 'row', gap: 6 },
-    producto: { fontSize: 15, color: colores.tinta },
-    precios: { fontSize: 15, fontWeight: '600', color: colores.tinta, marginTop: 6, ...tipo.cifra },
-    sugerido: { fontSize: 14, fontWeight: '500', color: colores.tintaMedia, ...tipo.cifra },
+    producto: { ...tipo.cuerpo, color: colores.tinta },
+    precios: { ...tipo.cuerpoFuerte, marginTop: 6 },
+    sugerido: { ...tipo.nota, ...tipo.cifra },
 })

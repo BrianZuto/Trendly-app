@@ -116,11 +116,11 @@ const estilos = StyleSheet.create({
     pantalla: { flex: 1, backgroundColor: colores.humo },
     contenido: { flex: 1, justifyContent: 'center', paddingHorizontal: 24, gap: 36 },
     encabezado: { gap: 6 },
-    marca: { fontSize: 40, fontWeight: '800', color: colores.tinta, letterSpacing: -1.4, marginTop: 14 },
-    subtitulo: { ...tipo.cuerpo, fontSize: 17 },
+    marca: { ...tipo.destacado, marginTop: 14 },
+    subtitulo: tipo.cuerpo,
     formulario: { gap: 16 },
     campo: { gap: 6 },
-    etiqueta: { fontSize: 13, fontWeight: '600', color: colores.tintaMedia, letterSpacing: 0.1 },
+    etiqueta: tipo.etiqueta,
     input: {
         backgroundColor: colores.papel,
         borderRadius: 14,
@@ -129,9 +129,10 @@ const estilos = StyleSheet.create({
         borderColor: colores.borde,
         minHeight: 52,
         paddingHorizontal: 16,
-        fontSize: 17,
+        // 17 = cuerpo de iOS; con menos, iOS hace zoom al enfocar el campo
+        fontSize: tipo.titular.fontSize,
         color: colores.tinta,
     },
     inputEnfocado: { borderColor: colores.tinta },
-    error: { color: colores.peligro, fontSize: 15, lineHeight: 21 },
+    error: { ...tipo.cuerpo, color: colores.peligro },
 })
