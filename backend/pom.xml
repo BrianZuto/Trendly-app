@@ -32,6 +32,8 @@
 		<jjwt.version>0.12.6</jjwt.version>
 		<jsoup.version>1.18.1</jsoup.version>
 		<resilience4j.version>2.2.0</resilience4j.version>
+		<poi.version>5.3.0</poi.version>
+		<openpdf.version>2.0.3</openpdf.version>
 		<!-- Meta de cobertura del proyecto (SCRUM-28) -->
 		<jacoco.minimo.lineas>0.70</jacoco.minimo.lineas>
 	</properties>
@@ -115,6 +117,18 @@
 			<groupId>io.github.resilience4j</groupId>
 			<artifactId>resilience4j-retry</artifactId>
 			<version>${resilience4j.version}</version>
+		</dependency>
+
+		<!-- Reportes (SCRUM-50): Excel con Apache POI y PDF con OpenPDF -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.librepdf</groupId>
+			<artifactId>openpdf</artifactId>
+			<version>${openpdf.version}</version>
 		</dependency>
 
 		<dependency>

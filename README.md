@@ -272,6 +272,15 @@ Cada vendedor solo ve sus alertas; una alerta ajena responde 404. La página `/a
 - **DESCARTAR:** exige `motivo` y no cambia el precio.
 - Una alerta se decide una sola vez: la segunda decisión responde 409. Al cambiar el precio se recalcula la sugerencia del producto.
 
+## Reportes en Excel y PDF (SCRUM-50)
+
+`GET /api/v1/reportes?formato=xlsx|pdf&productoId=&desde=&hasta=` descarga el reporte de un producto propio; uno ajeno responde 404. `desde` y `hasta` son opcionales y se escriben como en el histórico; sin ellos, cubre los últimos 30 días. En el tablero, el botón **Descargar reporte** usa el producto y el rango elegidos.
+
+- **Excel (Apache POI):** tres hojas. **Resumen** con las métricas, **Histórico** con cada captura del periodo y **Alertas y decisiones**. Los precios y las fechas son números y fechas de Excel, no texto.
+- **PDF (OpenPDF):** logo, resumen, histórico con una fila por día y fecha de generación. El detalle de cada captura solo va en el Excel: con todas, el PDF tendría cientos de páginas.
+- **Métricas:** el mínimo, el promedio, la diferencia y la variación usan las mismas fórmulas que el tablero (`CalculoCompetencia.java` y `tablero.js`). Si cambia una, debe cambiar la otra. El mínimo y el promedio miran la última captura con stock de cada publicación en los 90 días anteriores a `hasta`, aunque el periodo sea más corto.
+- **Fechas:** en hora de Colombia.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:

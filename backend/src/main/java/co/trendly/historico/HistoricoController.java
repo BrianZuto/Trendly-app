@@ -37,7 +37,7 @@ public class HistoricoController {
         return historicoService.consultar(usuario.id(), id, instante(desde, false), instante(hasta, true));
     }
 
-    static Instant instante(String texto, boolean finDelDia) {
+    public static Instant instante(String texto, boolean finDelDia) {
         if (texto == null || texto.isBlank()) {
             return null;
         }

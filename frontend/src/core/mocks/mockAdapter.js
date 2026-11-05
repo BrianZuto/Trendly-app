@@ -517,6 +517,9 @@ const manejadores = {
         return [201, conResumen(conMargen(sinDueno(producto)))]
     },
 
+    // Un Excel o un PDF de verdad solo los genera el backend (SCRUM-50)
+    'GET /reportes': () => [503, { message: 'La descarga de reportes necesita el servidor real; no está disponible con datos simulados' }],
+
     'GET /alertas': (config) => {
         const usuario = usuarioDelToken(config)
         if (!usuario) return [401, { message: 'Token vencido o ausente' }]
