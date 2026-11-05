@@ -85,7 +85,7 @@ public class MercadoLibreScraper implements MarketplaceScraper {
         try {
             return monitoreo.getTipo() == TipoMonitoreo.PALABRA_CLAVE ? buscar(monitoreo) : publicacion(monitoreo);
         } catch (FalloDeScraping e) {
-            return ResultadoScraping.fallo(e.getTipo(), e.getMessage());
+            return ResultadoScraping.fallo(e);
         } catch (RuntimeException e) {
             log.warn("Error inesperado capturando el monitoreo {} de MercadoLibre", monitoreo.getId(), e);
             return ResultadoScraping.fallo(TipoFallo.ESTRUCTURA, "Error inesperado: " + e.getMessage());

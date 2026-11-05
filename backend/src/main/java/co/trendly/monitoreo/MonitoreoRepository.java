@@ -16,6 +16,9 @@ public interface MonitoreoRepository extends JpaRepository<Monitoreo, Long> {
 
     List<Monitoreo> findByProductoIdOrderByIdAsc(Long productoId);
 
+    /** Monitoreos en ERROR que debe revisar el administrador (SCRUM-45). */
+    List<Monitoreo> findByEstadoOrderByIdAsc(EstadoMonitoreo estado);
+
     long countByProductoId(Long productoId);
 
     List<Monitoreo> findByProductoIdInOrderByIdAsc(Collection<Long> productoIds);

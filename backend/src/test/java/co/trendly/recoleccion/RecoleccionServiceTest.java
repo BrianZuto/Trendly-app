@@ -25,7 +25,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import io.github.resilience4j.core.IntervalFunction;
+
+import co.trendly.historico.HistoricoPrecioRepository;
 import co.trendly.historico.HistoricoService;
+import co.trendly.historico.ValidadorCaptura;
+import co.trendly.incidencia.IncidenciaService;
 import co.trendly.monitoreo.EstadoMonitoreo;
 import co.trendly.monitoreo.Marketplace;
 import co.trendly.monitoreo.Monitoreo;
@@ -46,6 +51,10 @@ class RecoleccionServiceTest {
     private MonitoreoRepository monitoreos;
     private HistoricoService historico;
     private final ApplicationEventPublisher eventos = mock(ApplicationEventPublisher.class);
+    /** Los reintentos de verdad, pero sin esperar los segundos. */
+    private final CapturaConReintentos capturador = new CapturaConReintentos(IntervalFunction.of(1L));
+    private final ValidadorCaptura validador = new ValidadorCaptura(mock(HistoricoPrecioRepository.class));
+    private final IncidenciaService incidencias = mock(IncidenciaService.class);
     /** "Base de datos" de la prueba: el repositorio simulado lee y guarda aquí. */
     private final Map<Long, Monitoreo> tabla = new HashMap<>();
     private final List<Long> capturados = new ArrayList<>();
@@ -107,17 +116,120 @@ class RecoleccionServiceTest {
     @Test
     void unFalloSumaFallosYUnExitoLosReinicia() {
         Monitoreo m = agregar(1L, URL_ML, AHORA.minusSeconds(1));
-        ReflectionTestUtils.setField(m, "fallosConsecutivos", 2);
+        ReflectionTestUtils.setField(m, "fallosConsecutivos", 1);
 
         ResumenCiclo conFallo = servicio(20, mon -> ResultadoScraping.fallo(TipoFallo.TIMEOUT, "lento")).ejecutarAhora().orElseThrow();
 
         assertThat(conFallo.fallidos()).isEqualTo(1);
-        assertThat(m.getFallosConsecutivos()).isEqualTo(3);
+        assertThat(m.getFallosConsecutivos()).isEqualTo(2);
+        assertThat(m.getEstado()).isEqualTo(EstadoMonitoreo.ACTIVO);
         verify(historico, never()).guardar(any(), any());
 
         ReflectionTestUtils.setField(m, "proximaEjecucion", AHORA.minusSeconds(1));
         servicio(20, ok()).ejecutarAhora();
         assertThat(m.getFallosConsecutivos()).isZero();
+    }
+
+    @Test
+    void unTimeoutSeReintentaTresVecesYQuedaComoIncidencia() {
+        agregar(1L, URL_ML, AHORA.minusSeconds(1));
+
+        servicio(20, mon -> ResultadoScraping.fallo(TipoFallo.TIMEOUT, "lento")).ejecutarAhora();
+
+        assertThat(capturados).hasSize(4); // el intento inicial y 3 reintentos
+        verify(incidencias).registrar(1L, TipoFallo.TIMEOUT, "lento", 4);
+    }
+
+    @Test
+    void siUnReintentoFuncionaNoHayIncidencia() {
+        agregar(1L, URL_ML, AHORA.minusSeconds(1));
+        ResumenCiclo resumen = servicio(20, mon -> capturados.size() < 3
+                ? ResultadoScraping.fallo(TipoFallo.TIMEOUT, "lento")
+                : ok().obtener(mon)).ejecutarAhora().orElseThrow();
+
+        assertThat(capturados).hasSize(3);
+        assertThat(resumen.exitosos()).isEqualTo(1);
+        verify(incidencias, never()).registrar(any(), any(), any(), org.mockito.ArgumentMatchers.anyInt());
+    }
+
+    @Test
+    void unBloqueoNoSeReintentaPeroQuedaComoIncidencia() {
+        agregar(1L, URL_ML, AHORA.minusSeconds(1));
+
+        servicio(20, mon -> ResultadoScraping.fallo(TipoFallo.BLOQUEO, "403")).ejecutarAhora();
+
+        assertThat(capturados).hasSize(1);
+        verify(incidencias).registrar(1L, TipoFallo.BLOQUEO, "403", 1);
+    }
+
+    @Test
+    void trasTresCiclosSeguidosConFalloPasaAErrorYElJobLoDejaDeCapturar() {
+        Monitoreo m = agregar(1L, URL_ML, AHORA.minusSeconds(1));
+        RecoleccionService servicio = servicio(20, mon -> ResultadoScraping.fallo(TipoFallo.NO_ENCONTRADO, "no existe"));
+
+        for (int ciclo = 1; ciclo <= 3; ciclo++) {
+            assertThat(m.getEstado()).isEqualTo(EstadoMonitoreo.ACTIVO);
+            servicio.ejecutarAhora();
+            ReflectionTestUtils.setField(m, "proximaEjecucion", AHORA.minusSeconds(1));
+        }
+
+        assertThat(m.getEstado()).isEqualTo(EstadoMonitoreo.ERROR);
+        assertThat(m.getFallosConsecutivos()).isEqualTo(3);
+        assertThat(servicio.ejecutarAhora().orElseThrow().procesados()).isZero();
+    }
+
+    @Test
+    void unPrecioInvalidoNoEntraAlHistoricoQuedaComoIncidenciaYCuentaComoFallo() {
+        Monitoreo m = agregar(1L, URL_ML, AHORA.minusSeconds(1));
+
+        ResumenCiclo resumen = servicio(20, mon -> capturaDe(publicacion("MCO-1", "0"))).ejecutarAhora().orElseThrow();
+
+        assertThat(resumen.fallidos()).isEqualTo(1);
+        assertThat(resumen.puntos()).isZero();
+        assertThat(m.getFallosConsecutivos()).isEqualTo(1);
+        verify(historico, never()).guardar(any(), any());
+        verify(incidencias).registrar(eq(1L), eq(TipoFallo.DATO_INVALIDO), org.mockito.ArgumentMatchers.contains("MCO-1"), eq(1));
+    }
+
+    @Test
+    void siSeDescartaSoloUnaPublicacionLasDemasSeGuardanYNoEsFallo() {
+        Monitoreo m = agregar(1L, URL_ML, AHORA.minusSeconds(1));
+
+        ResumenCiclo resumen = servicio(20, mon -> capturaDe(publicacion("MCO-1", "1000"), publicacion("MCO-2", "0")))
+                .ejecutarAhora().orElseThrow();
+
+        assertThat(resumen.exitosos()).isEqualTo(1);
+        assertThat(resumen.puntos()).isEqualTo(1);
+        assertThat(m.getFallosConsecutivos()).isZero();
+        verify(historico).guardar(any(), eq(capturaDe(publicacion("MCO-1", "1000"))));
+        verify(incidencias).registrar(eq(1L), eq(TipoFallo.DATO_INVALIDO), org.mockito.ArgumentMatchers.contains("MCO-2"), eq(1));
+    }
+
+    @Test
+    void siNoSePuedeRegistrarLaIncidenciaElCicloSigue() {
+        agregar(1L, URL_ML, AHORA.minusSeconds(2));
+        agregar(2L, URL_ML, AHORA.minusSeconds(1));
+        org.mockito.Mockito.doThrow(new IllegalStateException("borrado")).when(incidencias)
+                .registrar(any(), any(), any(), org.mockito.ArgumentMatchers.anyInt());
+
+        ResumenCiclo resumen = servicio(20, mon -> ResultadoScraping.fallo(TipoFallo.BLOQUEO, "403")).ejecutarAhora().orElseThrow();
+
+        assertThat(resumen.procesados()).isEqualTo(2);
+    }
+
+    @Test
+    void avisaAlAdministradorSoloSiFallaMasDelDiezPorCiento() {
+        for (long id = 1; id <= 10; id++) {
+            agregar(id, URL_ML, AHORA.minusSeconds(id));
+        }
+        Captura unaDeDiez = mon -> mon.getId() == 1L ? ResultadoScraping.fallo(TipoFallo.BLOQUEO, "403") : ok().obtener(mon);
+        servicio(20, unaDeDiez).ejecutarAhora();
+        verify(eventos, never()).publishEvent(any(CicloConMuchosFallos.class));
+
+        tabla.values().forEach(m -> ReflectionTestUtils.setField(m, "proximaEjecucion", AHORA.minusSeconds(1)));
+        Captura dosDeDiez = mon -> mon.getId() <= 2L ? ResultadoScraping.fallo(TipoFallo.BLOQUEO, "403") : ok().obtener(mon);
+        ResumenCiclo resumen = servicio(20, dosDeDiez).ejecutarAhora().orElseThrow();
+        verify(eventos).publishEvent(new CicloConMuchosFallos(resumen));
     }
 
     @Test
@@ -132,7 +244,7 @@ class RecoleccionServiceTest {
             return ok().obtener(mon);
         });
 
-        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, eventos, List.of(explota), 20, reloj(), Runnable::run)
+        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, eventos, List.of(explota), capturador, validador, incidencias, 20, reloj(), Runnable::run)
                 .ejecutarAhora().orElseThrow();
 
         assertThat(resumen.procesados()).isEqualTo(3);
@@ -161,7 +273,7 @@ class RecoleccionServiceTest {
             return ok().obtener(mon);
         });
 
-        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, eventos, List.of(borra), 20, reloj(), Runnable::run)
+        ResumenCiclo resumen = new RecoleccionService(monitoreos, historico, eventos, List.of(borra), capturador, validador, incidencias, 20, reloj(), Runnable::run)
                 .ejecutarAhora().orElseThrow();
 
         assertThat(resumen.procesados()).isEqualTo(1);
@@ -172,7 +284,7 @@ class RecoleccionServiceTest {
     void mientrasUnCicloEstaEnCursoLosDemasDisparosSeIgnoran() {
         agregar(1L, URL_ML, AHORA.minusSeconds(1));
         RecoleccionService servicio = new RecoleccionService(monitoreos, historico, eventos,
-                List.of(scraper(Marketplace.MERCADOLIBRE, ok())), 20, reloj(), pendientes::add);
+                List.of(scraper(Marketplace.MERCADOLIBRE, ok())), capturador, validador, incidencias, 20, reloj(), pendientes::add);
 
         Optional<CompletableFuture<ResumenCiclo>> primero = servicio.iniciar();
         assertThat(primero).isPresent();
@@ -190,7 +302,7 @@ class RecoleccionServiceTest {
 
     @Test
     void siElEjecutorRechazaElCicloSeLiberaElBloqueo() {
-        RecoleccionService servicio = new RecoleccionService(monitoreos, historico, eventos, List.of(), 20, reloj(), tarea -> {
+        RecoleccionService servicio = new RecoleccionService(monitoreos, historico, eventos, List.of(), capturador, validador, incidencias, 20, reloj(), tarea -> {
             throw new java.util.concurrent.RejectedExecutionException("sin hilos");
         });
 
@@ -214,12 +326,20 @@ class RecoleccionServiceTest {
 
     private RecoleccionService servicio(int lote, Captura comportamiento) {
         return new RecoleccionService(monitoreos, historico, eventos,
-                List.of(scraper(Marketplace.MERCADOLIBRE, comportamiento)), lote, reloj(), Runnable::run);
+                List.of(scraper(Marketplace.MERCADOLIBRE, comportamiento)), capturador, validador, incidencias, lote, reloj(), Runnable::run);
     }
 
     private Captura ok() {
         return mon -> ResultadoScraping.ok(List.of(new PublicacionCapturada("MCO-" + mon.getId(), "x", null, null,
                 java.math.BigDecimal.TEN, "COP", true)));
+    }
+
+    private static PublicacionCapturada publicacion(String id, String precio) {
+        return new PublicacionCapturada(id, "x", null, null, new java.math.BigDecimal(precio), "COP", true);
+    }
+
+    private static ResultadoScraping capturaDe(PublicacionCapturada... publicaciones) {
+        return ResultadoScraping.ok(List.of(publicaciones));
     }
 
     private MarketplaceScraper scraper(Marketplace marketplace, Captura comportamiento) {

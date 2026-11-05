@@ -291,6 +291,18 @@ curl -X POST http://localhost:8080/api/v1/interno/recoleccion/ejecutar -H "X-Api
 
 **La Function:** `cd functions && npm ci && npm test`. En Azure necesita las variables `BACKEND_URL` (URL pública del backend) y `RECOLECCION_API_KEY` (la misma del backend).
 
+### Validación, reintentos e incidencias (SCRUM-45)
+
+En cada ciclo, un dato malo o un fallo del sitio no llega al histórico ni genera alertas:
+
+- **Reintentos:** timeout, 5xx y 429 se reintentan 3 veces, con esperas de 2, 4 y 8 s. Lo demás (403, 404, página cambiada) no se reintenta.
+- **Validación antes de guardar:** identificador y título presentes, precio mayor que 0, moneda esperada (COP en MercadoLibre, USD en AliExpress) y variación de máximo ±70 % frente a la captura anterior de la misma publicación, comparada en su moneda original.
+- **Incidencias:** lo que falla tras los reintentos o se descarta queda en `incidencia_scraping`, con su tipo: `TIMEOUT`, `BLOQUEO`, `NO_ENCONTRADO`, `ESTRUCTURA` o `DATO_INVALIDO`.
+- **Estado ERROR:** tras 3 ciclos seguidos con fallo, el monitoreo pasa a `ERROR` y el job deja de capturarlo hasta que se reactive (`PATCH /api/v1/monitoreos/{id}` con `{ "estado": "ACTIVO" }`). Un ciclo cuenta como fallo si falló la captura o si se descartó todo lo capturado.
+- **Aviso:** si en un ciclo falla más del 10 % de los monitoreos, queda una advertencia en el log y se envía un correo a los usuarios ADMIN activos (requiere `SMTP_FROM`).
+
+**`GET /api/v1/admin/incidencias?tipo=&limite=100`** (solo ADMIN) responde `{ monitoreosEnError: [...], incidencias: [...] }`, con las incidencias de la más reciente a la más antigua. `tipo` es opcional y `limite` admite hasta 500.
+
 ## Despliegue del backend (SCRUM-54)
 
 Cuando el CI de `main` termina en verde, [`cd.yml`](.github/workflows/cd.yml) compila el jar, publica la imagen en Azure Container Registry con el commit como etiqueta, actualiza la Container App `trendly-api` y comprueba que la revisión nueva quede sana. Si no arranca, el trabajo queda en rojo y el tráfico sigue en la revisión anterior. También se puede lanzar a mano desde **Actions → CD → Run workflow**, sobre `develop`.
