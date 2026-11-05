@@ -33,8 +33,21 @@
         }
       ],
       "expo-font",
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-notifications",
+        {
+          "color": "#000000",
+          "defaultChannel": "alertas"
+        }
+      ]
     ],
-    "scheme": "trendly"
+    "scheme": "trendly",
+    "owner": "trendlyproject",
+    "extra": {
+      "eas": {
+        "projectId": "67d78f44-a66c-4481-a392-97de3549e73f"
+      }
+    }
   }
 }

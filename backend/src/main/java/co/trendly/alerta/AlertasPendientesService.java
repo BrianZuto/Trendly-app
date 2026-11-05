@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import co.trendly.producto.ProductoRepository;
 import co.trendly.usuario.Usuario;
 import co.trendly.usuario.UsuarioRepository;
 
-/** Arma los correos que faltan por enviar y marca los enviados. Sin SMTP de por medio: las transacciones son cortas. */
+/** Arma los correos y las notificaciones push que faltan por enviar y marca los enviados. Sin SMTP de por medio: las transacciones son cortas. */
 @Service
 public class AlertasPendientesService {
 
@@ -51,22 +52,42 @@ public class AlertasPendientesService {
     /** Un correo por vendedor activo que quiera recibirlos, con sus alertas creadas después de {@code desde}. */
     @Transactional(readOnly = true)
     public List<CorreoVendedor> correosDesde(Instant desde) {
-        Map<Long, List<Alerta>> porUsuario = alertas.findByEnviadaCorreoEnIsNullAndCreadoEnAfterOrderByCreadoEnAscIdAsc(desde)
-                .stream().collect(Collectors.groupingBy(Alerta::getUsuarioId, LinkedHashMap::new, Collectors.toList()));
-        List<CorreoVendedor> correos = new ArrayList<>();
-        Map<Long, Usuario> vendedores = porId(usuarios.findAllById(porUsuario.keySet()), Usuario::getId);
-        porUsuario.forEach((usuarioId, delUsuario) -> {
-            Usuario vendedor = vendedores.get(usuarioId);
-            if (vendedor != null && vendedor.isActivo() && reglas.deUsuario(usuarioId).isRecibirCorreos()) {
-                correos.add(new CorreoVendedor(usuarioId, vendedor.getEmail(), vendedor.getNombre(), filas(delUsuario)));
-            }
-        });
-        return correos;
+        return porVendedor(alertas.findByEnviadaCorreoEnIsNullAndCreadoEnAfterOrderByCreadoEnAscIdAsc(desde),
+                ReglaAlerta::isRecibirCorreos);
+    }
+
+    /**
+     * Lo mismo para las notificaciones push (SCRUM-52): las alertas sin notificar de cada vendedor activo que no las
+     * desactivó. Si el vendedor no tiene la app, quedan pendientes y caducan igual que los correos.
+     */
+    @Transactional(readOnly = true)
+    public List<CorreoVendedor> pushDesde(Instant desde) {
+        return porVendedor(alertas.findByEnviadaPushEnIsNullAndCreadoEnAfterOrderByCreadoEnAscIdAsc(desde),
+                ReglaAlerta::isRecibirPush);
     }
 
     @Transactional
     public void marcarEnviadas(Collection<Long> alertaIds, Instant cuando) {
         alertas.marcarEnviadas(alertaIds, cuando);
+    }
+
+    @Transactional
+    public void marcarEnviadasPush(Collection<Long> alertaIds, Instant cuando) {
+        alertas.marcarEnviadasPush(alertaIds, cuando);
+    }
+
+    private List<CorreoVendedor> porVendedor(List<Alerta> pendientes, Predicate<ReglaAlerta> quiere) {
+        Map<Long, List<Alerta>> porUsuario = pendientes.stream()
+                .collect(Collectors.groupingBy(Alerta::getUsuarioId, LinkedHashMap::new, Collectors.toList()));
+        List<CorreoVendedor> resultado = new ArrayList<>();
+        Map<Long, Usuario> vendedores = porId(usuarios.findAllById(porUsuario.keySet()), Usuario::getId);
+        porUsuario.forEach((usuarioId, delUsuario) -> {
+            Usuario vendedor = vendedores.get(usuarioId);
+            if (vendedor != null && vendedor.isActivo() && quiere.test(reglas.deUsuario(usuarioId))) {
+                resultado.add(new CorreoVendedor(usuarioId, vendedor.getEmail(), vendedor.getNombre(), filas(delUsuario)));
+            }
+        });
+        return resultado;
     }
 
     private List<CorreoVendedor.Fila> filas(List<Alerta> delUsuario) {

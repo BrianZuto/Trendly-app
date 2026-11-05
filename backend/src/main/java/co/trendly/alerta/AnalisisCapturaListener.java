@@ -18,7 +18,8 @@ import co.trendly.sugerencia.SugerenciaService;
  * Analiza cada captura después del commit y en otro hilo, para no frenar la recolección: primero recalcula la
  * sugerencia (SCRUM-46), porque la alerta la incluye, y luego evalúa las alertas (SCRUM-47). Un solo hilo mantiene las
  * capturas en orden; un fallo en la sugerencia no impide la alerta. Los correos (SCRUM-48) van en la misma cola al
- * terminar el ciclo: así salen después de analizar todas sus capturas, en un solo correo por vendedor.
+ * terminar el ciclo: así salen después de analizar todas sus capturas, en un solo correo por vendedor. Las notificaciones
+ * push (SCRUM-52) salen en el mismo momento que el correo; si una de las dos falla, la otra sale igual.
  */
 @Component
 public class AnalisisCapturaListener {
@@ -28,18 +29,21 @@ public class AnalisisCapturaListener {
     private final SugerenciaService sugerencias;
     private final AlertaService alertas;
     private final CorreoAlertasService correos;
+    private final PushAlertasService push;
     private final Executor ejecutor;
 
     @Autowired
-    public AnalisisCapturaListener(SugerenciaService sugerencias, AlertaService alertas, CorreoAlertasService correos) {
-        this(sugerencias, alertas, correos, Executors.newSingleThreadExecutor(Thread.ofPlatform().name("analisis").daemon().factory()));
+    public AnalisisCapturaListener(SugerenciaService sugerencias, AlertaService alertas, CorreoAlertasService correos,
+            PushAlertasService push) {
+        this(sugerencias, alertas, correos, push, Executors.newSingleThreadExecutor(Thread.ofPlatform().name("analisis").daemon().factory()));
     }
 
     AnalisisCapturaListener(SugerenciaService sugerencias, AlertaService alertas, CorreoAlertasService correos,
-            Executor ejecutor) {
+            PushAlertasService push, Executor ejecutor) {
         this.sugerencias = sugerencias;
         this.alertas = alertas;
         this.correos = correos;
+        this.push = push;
         this.ejecutor = ejecutor;
     }
 
@@ -50,14 +54,19 @@ public class AnalisisCapturaListener {
 
     @EventListener
     void alTerminarCiclo(CicloTerminado ciclo) {
-        ejecutor.execute(this::enviarCorreos);
+        ejecutor.execute(this::avisar);
     }
 
-    private void enviarCorreos() {
+    private void avisar() {
         try {
             correos.enviarPendientes();
         } catch (RuntimeException e) {
             log.error("No se pudieron enviar los correos de alertas", e);
+        }
+        try {
+            push.enviarPendientes();
+        } catch (RuntimeException e) {
+            log.error("No se pudieron enviar las notificaciones push de alertas", e);
         }
     }
 

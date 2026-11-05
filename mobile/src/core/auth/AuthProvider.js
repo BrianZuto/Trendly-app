@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { AppState } from 'react-native'
 import { setManejadorNoAutorizado, setToken } from '@/core/api/client'
+import { olvidarCelular, registrarParaPush } from '@/core/notificaciones'
 import { iniciarSesion, obtenerPerfil } from '@/core/services/api'
 import { guardarSesion, leerSesionGuardada, limpiarSesion, msParaVencer, tokenVigente } from './token'
 
@@ -9,12 +10,16 @@ const AuthContext = createContext(null)
 export const AVISO_SESION_VENCIDA = 'Tu sesión venció. Vuelve a iniciar sesión.'
 // setTimeout no admite más de ~24,8 días; si el token dura más, el chequeo al volver a la app lo cubre
 const MAX_TIMER_MS = 2_147_483_647
+// Salir no espera más que esto a que el servidor olvide el celular
+const ESPERA_OLVIDAR_MS = 3000
 
 export function AuthProvider({ children }) {
     const [cargando, setCargando] = useState(true)
     const [sesion, setSesion] = useState(null)
     const [aviso, setAviso] = useState(null)
     const sesionRef = useRef(null)
+    // Token de Expo Push de este celular, para quitarlo del servidor al cerrar sesión (SCRUM-52)
+    const tokenPushRef = useRef(null)
 
     const aplicar = useCallback((nueva) => {
         sesionRef.current = nueva
@@ -25,6 +30,13 @@ export function AuthProvider({ children }) {
     const cerrarSesion = useCallback(
         async ({ vencida = false } = {}) => {
             if (!sesionRef.current) return
+            const tokenPush = tokenPushRef.current
+            tokenPushRef.current = null
+            // Al salir a propósito el celular deja de recibir las alertas de esta cuenta. Con la sesión vencida el
+            // servidor ya no acepta la solicitud: el token se reasigna cuando otra cuenta inicie sesión en el celular
+            if (!vencida && tokenPush) {
+                await Promise.race([olvidarCelular(tokenPush), new Promise((listo) => setTimeout(listo, ESPERA_OLVIDAR_MS))])
+            }
             aplicar(null)
             setAviso(vencida ? AVISO_SESION_VENCIDA : null)
             await limpiarSesion()
@@ -57,6 +69,19 @@ export function AuthProvider({ children }) {
             vigente = false
         }
     }, [aplicar])
+
+    // Con sesión (al iniciarla o al recuperarla) el celular se registra para recibir las alertas como notificación
+    const tokenSesion = sesion?.token
+    useEffect(() => {
+        if (!tokenSesion) return undefined
+        let vigente = true
+        registrarParaPush().then((token) => {
+            if (vigente) tokenPushRef.current = token
+        })
+        return () => {
+            vigente = false
+        }
+    }, [tokenSesion])
 
     // Si el API responde 401, el token venció o lo invalidaron: de vuelta al login
     useEffect(() => {

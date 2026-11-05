@@ -113,6 +113,21 @@ class AlertaControllerTest {
     }
 
     @Test
+    void elDetalleDeUnaAlertaEsSoloParaSuDuenoYNoLaMarcaComoLeida() throws Exception {
+        long id = alerta("ALTA", "NUEVA", new BigDecimal("98000"), "2026-11-03 10:00:00");
+
+        mockMvc.perform(get(RUTA + "/" + id).header(HttpHeaders.AUTHORIZATION, ana))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.estado").value("NUEVA"))
+                .andExpect(jsonPath("$.productoNombre").value("Audífonos"))
+                .andExpect(jsonPath("$.precioSugerido").value(98000));
+        mockMvc.perform(get(RUTA + "/" + id).header(HttpHeaders.AUTHORIZATION, beto))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(AlertaNoEncontradaException.MENSAJE));
+    }
+
+    @Test
     void abrirUnaAlertaNuevaLaMarcaComoLeida() throws Exception {
         long id = alerta("ALTA", "NUEVA", null, "2026-11-03 10:00:00");
 

@@ -31,6 +31,12 @@ public class AlertaController {
         return bandeja.listar(usuario.id(), estado, relevancia);
     }
 
+    /** Detalle de una alerta: lo abre la app al tocar la notificación push (SCRUM-52). */
+    @GetMapping("/{id}")
+    public AlertaResponse obtener(@AuthenticationPrincipal UsuarioAutenticado usuario, @PathVariable Long id) {
+        return bandeja.obtener(usuario.id(), id);
+    }
+
     @PatchMapping("/{id}/leida")
     public AlertaResponse marcarLeida(@AuthenticationPrincipal UsuarioAutenticado usuario, @PathVariable Long id) {
         return bandeja.marcarLeida(usuario.id(), id);

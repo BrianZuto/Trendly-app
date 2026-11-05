@@ -1,28 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { Tabs } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useAuth } from '@/core/auth/AuthProvider'
 import { LogoTrendly } from '@/core/Logo'
-import { Presionable } from '@/core/movimiento'
 import { listarAlertas } from '@/core/services/api'
-import { colores } from '@/core/ui'
-
-function BotonSalir() {
-    const { cerrarSesion } = useAuth()
-    return (
-        <Presionable
-            accessibilityRole="button"
-            accessibilityLabel="Salir"
-            onPress={() => cerrarSesion()}
-            hitSlop={12}
-            style={estilos.salir}
-        >
-            <Ionicons name="log-out-outline" size={18} color={colores.tinta} />
-            <Text style={estilos.salirTexto}>Salir</Text>
-        </Presionable>
-    )
-}
+import { colores, tipo } from '@/core/ui'
 
 function Marca() {
     return (
@@ -59,7 +42,6 @@ export default function TabsLayout() {
             screenListeners={{ focus: actualizarNuevas }}
             screenOptions={{
                 headerLeft: Marca,
-                headerRight: BotonSalir,
                 headerTintColor: colores.tinta,
                 headerTitleAlign: 'left',
                 headerTitleStyle: estilos.titulo,
@@ -91,24 +73,15 @@ export default function TabsLayout() {
                     tabBarAccessibilityLabel: nuevas > 0 ? `Alertas, ${nuevas} nuevas` : 'Alertas',
                 }}
             />
+            <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: icono('person-circle', 'person-circle-outline') }} />
         </Tabs>
     )
 }
 
 const estilos = StyleSheet.create({
     marca: { paddingLeft: 16, paddingRight: 4 },
-    titulo: { fontSize: 20, fontWeight: '700', letterSpacing: -0.4 },
-    salir: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-        marginRight: 16,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 999,
-        backgroundColor: colores.humoOscuro,
-    },
-    salirTexto: { fontSize: 15, fontWeight: '500', color: colores.tinta },
-    etiqueta: { fontSize: 11, fontWeight: '600' },
-    contador: { backgroundColor: colores.etiqueta, color: colores.tinta, fontSize: 11, fontWeight: '700' },
+    titulo: tipo.titulo2,
+    // Sin color: lo ponen las pestañas (activa en negro, inactiva en gris)
+    etiqueta: { fontSize: tipo.mini.fontSize, fontWeight: tipo.mini.fontWeight, letterSpacing: tipo.mini.letterSpacing },
+    contador: { ...tipo.mini, fontWeight: '700', backgroundColor: colores.tinta, color: colores.papel },
 })

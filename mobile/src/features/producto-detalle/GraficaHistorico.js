@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import { LineChart } from 'react-native-gifted-charts'
 import { formatearFecha, formatearPesos } from '@/core/formato'
-import { colores } from '@/core/ui'
+import { colores, tipo } from '@/core/ui'
 import { DIAS_GRAFICA } from './historico'
 
 // Precio más bajo de la competencia por día frente al precio de venta del vendedor
@@ -36,7 +36,7 @@ export default function GraficaHistorico({ serie, precioVenta }) {
                 initialSpacing={0}
                 endSpacing={0}
                 color1={colores.tinta}
-                color2={colores.etiqueta}
+                color2={colores.tintaTenue}
                 thickness1={2}
                 thickness2={2}
                 strokeDashArray2={[6, 4]}
@@ -54,7 +54,7 @@ export default function GraficaHistorico({ serie, precioVenta }) {
             />
             <View style={estilos.leyenda}>
                 <Leyenda color={colores.tinta} texto="Competencia (mínimo del día)" />
-                <Leyenda color={colores.etiqueta} texto="Tu precio" />
+                <Leyenda color={colores.tintaTenue} texto="Tu precio" />
             </View>
         </View>
     )
@@ -71,10 +71,10 @@ function Leyenda({ color, texto }) {
 
 const estilos = StyleSheet.create({
     contenedor: { gap: 12, overflow: 'hidden' },
-    vacio: { color: colores.tintaSuave, fontSize: 14 },
-    eje: { color: colores.tintaSuave, fontSize: 11 },
+    vacio: tipo.nota,
+    eje: { ...tipo.mini, fontWeight: '400' },
     leyenda: { flexDirection: 'row', flexWrap: 'wrap', gap: 16 },
     leyendaItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     muestra: { width: 14, height: 3, borderRadius: 2 },
-    leyendaTexto: { color: colores.tintaMedia, fontSize: 13 },
+    leyendaTexto: tipo.nota,
 })

@@ -15,6 +15,9 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
     /** Alertas recientes que todavía no salieron por correo. */
     List<Alerta> findByEnviadaCorreoEnIsNullAndCreadoEnAfterOrderByCreadoEnAscIdAsc(Instant desde);
 
+    /** Alertas recientes que todavía no salieron como notificación push (SCRUM-52). */
+    List<Alerta> findByEnviadaPushEnIsNullAndCreadoEnAfterOrderByCreadoEnAscIdAsc(Instant desde);
+
     /** Alertas de un producto en un periodo, para el reporte (SCRUM-50). */
     List<Alerta> findByMonitoreoIdInAndCreadoEnBetweenOrderByCreadoEnAscIdAsc(Collection<Long> monitoreoIds, Instant desde,
             Instant hasta);
@@ -30,4 +33,8 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
     @Modifying
     @Query("UPDATE Alerta a SET a.enviadaCorreoEn = :cuando WHERE a.id IN :ids")
     int marcarEnviadas(@Param("ids") Collection<Long> ids, @Param("cuando") Instant cuando);
+
+    @Modifying
+    @Query("UPDATE Alerta a SET a.enviadaPushEn = :cuando WHERE a.id IN :ids")
+    int marcarEnviadasPush(@Param("ids") Collection<Long> ids, @Param("cuando") Instant cuando);
 }
