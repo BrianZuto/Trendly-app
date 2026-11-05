@@ -11,13 +11,13 @@ import jakarta.validation.constraints.Pattern;
  */
 public record DispositivoRequest(
         @NotBlank(message = "El token es obligatorio")
-        @Pattern(regexp = TOKEN_EXPO, message = MENSAJE_TOKEN)
+        @Pattern(regexp = FORMATO_EXPO_PUSH, message = MENSAJE_FORMATO)
         String token,
         @NotBlank(message = "La plataforma es obligatoria")
         @Pattern(regexp = "IOS|ANDROID", message = "La plataforma debe ser IOS o ANDROID")
         String plataforma) {
 
     /** Sin cuantificadores anidados: la validación es lineal en el tamaño del token. */
-    static final String TOKEN_EXPO = "Expo(nent)?PushToken\\[[A-Za-z0-9_-]{1,180}]";
-    static final String MENSAJE_TOKEN = "El token no es un token de Expo Push válido";
+    static final String FORMATO_EXPO_PUSH = "Expo(nent)?PushToken\\[[A-Za-z0-9_-]{1,180}]";
+    static final String MENSAJE_FORMATO = "El token no es un token de Expo Push válido";
 }

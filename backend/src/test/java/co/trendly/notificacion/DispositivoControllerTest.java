@@ -79,7 +79,7 @@ class DispositivoControllerTest {
     void rechazaTokensQueNoSonDeExpoYPlataformasDesconocidas() throws Exception {
         registrar(ana, "abc", "IOS")
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(DispositivoRequest.MENSAJE_TOKEN));
+                .andExpect(jsonPath("$.message").value(DispositivoRequest.MENSAJE_FORMATO));
         registrar(ana, TOKEN, "WINDOWS")
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("La plataforma debe ser IOS o ANDROID"));
