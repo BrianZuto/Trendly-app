@@ -1,11 +1,11 @@
 import { View } from 'react-native'
 import Svg, { Rect } from 'react-native-svg'
 
-const AMARILLO = '#ffd23f'
-const TINTA = '#15120b'
+const FONDO = '#000000'
+const MARCA = '#ffffff'
 
 // El logo de la web (frontend/public/favicon.svg): cuatro paletas, la última encendida
-export function MarcaTrendly({ tamano = 24, color = TINTA }) {
+export function MarcaTrendly({ tamano = 24, color = MARCA }) {
     return (
         <Svg width={tamano} height={tamano} viewBox="5 5 22 22" accessibilityElementsHidden importantForAccessibility="no">
             <Rect x="5" y="5" width="10" height="10" rx="2" fill={color} />
@@ -16,7 +16,7 @@ export function MarcaTrendly({ tamano = 24, color = TINTA }) {
     )
 }
 
-// La marca sobre su baldosa amarilla, igual que el ícono de la app
+// La marca blanca sobre baldosa negra, igual que el ícono de la app y la barra del tablero web
 export function LogoTrendly({ tamano = 56 }) {
     return (
         <View
@@ -27,7 +27,7 @@ export function LogoTrendly({ tamano = 56 }) {
                 width: tamano,
                 height: tamano,
                 borderRadius: tamano * 0.24,
-                backgroundColor: AMARILLO,
+                backgroundColor: FONDO,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderCurve: 'continuous',
