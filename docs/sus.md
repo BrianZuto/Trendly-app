@@ -8,6 +8,7 @@ Mide la usabilidad de Trendly con la escala SUS (System Usability Scale). La met
 - **Versión probada:** la versión desplegada, o la local con los datos de ejemplo del manual de usuario.
 - **Sesión (unos 20 minutos):** la persona sigue las 4 tareas sin ayuda. Quien modera solo lee la tarea, anota si la completó, cuánto tardó y dónde dudó. Al terminar, la persona responde el cuestionario.
 - **Manual de usuario:** no se entrega antes de la sesión, para medir si la interfaz se entiende sola.
+- **Guion:** lo que dice y hace quien modera está en [sus-guion-moderador.md](sus-guion-moderador.md). Cada participante usa una cuenta de prueba propia (P1 a P5) con los mismos datos de ejemplo.
 
 ### Tareas guiadas
 
@@ -15,7 +16,7 @@ Mide la usabilidad de Trendly con la escala SUS (System Usability Scale). La met
 |---|---|---|
 | T1 | Crear una cuenta e iniciar sesión | Llega al Panel con su cuenta |
 | T2 | Registrar el producto «Mouse inalámbrico» (costo 25.000, precio de venta 59.900, margen objetivo 35 %) y agregarle un competidor de MercadoLibre | El producto aparece en Productos con su competidor |
-| T3 | En el Panel, decir cuál es el precio más bajo de la competencia para «Audífonos Bluetooth Pro» y descargar el reporte de 30 días en Excel | Dice el precio correcto y el archivo .xlsx queda descargado |
+| T3 | En el Panel, decir cuál es el precio más bajo de la competencia para «Audífonos Bluetooth Pro» y descargar el reporte de 30 días en Excel | Dice el precio correcto ($108.900 en las cuentas P1 a P5) y el archivo .xlsx queda descargado |
 | T4 | Atender la alerta nueva de «Audífonos Bluetooth Pro»: revisar el precio sugerido y ajustar el precio a 115.900 | La alerta queda cerrada con la decisión «Ajustaste el precio» |
 
 ### Cuestionario
@@ -104,6 +105,36 @@ Corregimos los cuatro problemas más baratos de resolver. Las sesiones con usuar
 | Jerga en Nuevo producto | Ayudas cortas debajo de SKU, Costo y Margen objetivo, y un texto más claro cuando no hay proveedor en AliExpress |
 
 Quedan para después: poner primero la búsqueda por palabra clave al agregar un competidor, achicar el banner patrocinado del Panel y aclarar el texto de la diferencia de precio.
+
+## Piloto simulado 2 (versión con las mejoras, no cuenta para la meta)
+
+Repetimos el piloto con los mismos 5 perfiles simulados por IA sobre las capturas de la versión con las cuatro mejoras aplicadas. Igual que el primero, **no reemplaza a los usuarios reales y su puntaje no se usa para la meta**. Tiene la misma limitación: los perfiles vieron capturas estáticas.
+
+| Perfil simulado | T1 | T2 | T3 | T4 | Respuestas (1–10) | Piloto 1 | Piloto 2 |
+|---|---|---|---|---|---|---|---|
+| Valentina, 22 años, estudiante que revende gadgets, muy digital | Sí | Con dificultad | Sí | Con dificultad | 4, 2, 4, 1, 3, 3, 4, 2, 3, 2 | 70,0 | 70,0 |
+| Carolina, 35 años, emprendedora de accesorios para el hogar | Sí | Con dificultad | Sí | Con dificultad | 3, 2, 4, 2, 3, 4, 4, 2, 2, 2 | 70,0 | 60,0 |
+| Andrés, 28 años, dropshipper con 60 productos | Con dificultad | Con dificultad | Con dificultad | Sí | 3, 2, 4, 1, 3, 4, 4, 2, 2, 1 | 62,5 | 65,0 |
+| Marta, 45 años, vendedora con poca experiencia digital | Sí | Con dificultad | Sí | Con dificultad | 4, 3, 3, 4, 3, 3, 3, 3, 2, 3 | 50,0 | 47,5 |
+| Jorge, 58 años, tendero que empezó a vender en línea | Con dificultad | Con dificultad | Sí | Con dificultad | 3, 3, 3, 4, 3, 4, 2, 3, 2, 4 | 35,0 | 37,5 |
+| | | | | | **Promedio simulado** | **57,5** | **56,0** |
+
+### Qué cambió frente al primer piloto
+
+- **Mejoró:** la tarea 1 (registro) pasó de «con dificultad» a «sí» en tres perfiles. Ninguno volvió a quejarse del precio final sin formato, de la falta de confirmación al descargar ni de que no se explique por qué se sugiere bajar el precio.
+- **El puntaje no subió.** La causa principal fue un error de los **datos de ejemplo**, no de la aplicación: la alerta decía que ELECTRO_HOGAR bajó a $108.900, mientras el Panel mostraba $114.000 como mínimo y la lista de competidores lo mostraba en $121.900. Los cinco perfiles dijeron que no sabían qué número creer y por eso desconfiaron del precio sugerido. Corregimos esos datos en las cuentas P1 a P5 de las sesiones reales, y ahora Panel, lista y alerta muestran el mismo precio.
+
+### Problemas que siguen
+
+| Problema | Pantalla | Perfiles | Mejora propuesta |
+|---|---|---|---|
+| Agregar un competidor exige copiar la URL de catálogo /p/MCO… de MercadoLibre | Agregar competidor | 4 de 5 | Poner primero la búsqueda por palabra clave y explicar con un ejemplo de dónde sale la URL |
+| El banner patrocinado ocupa la parte principal del Panel y se confunde con datos propios | Panel | 5 de 5 | Banner más pequeño o al final del Panel |
+| SKU obligatorio y el paso «Proveedor» de AliExpress confunden a quien no compra allá | Nuevo producto | 5 de 5 | SKU opcional o generado, y el paso de proveedor después de los datos de venta |
+| La lista de alertas no marca cuáles son nuevas (solo la relevancia «Alta») | Alertas | 3 de 5 | Etiqueta «Nueva» en la tarjeta |
+| El margen del precio sugerido no dice que ya descuenta la comisión de MercadoLibre, y no cuadra con el margen del producto | Detalle de alerta | 2 de 5 | Texto «después de la comisión de MercadoLibre (15 %)» junto al margen |
+| «Necesitan tu decisión: 0» en el Panel aunque hay una alerta alta sin decidir (ya leída) | Panel | 2 de 5 | Contar también las alertas leídas que siguen abiertas |
+| El precio final viene lleno con el sugerido y hay que borrarlo para escribir otro | Ajustar precio | 2 de 5 | Seleccionar el valor al enfocar el campo |
 
 ### Ajustes al protocolo antes de las sesiones reales
 
