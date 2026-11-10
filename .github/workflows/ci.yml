@@ -111,10 +111,43 @@ jobs:
       - name: Pruebas
         run: npm test
 
-  # Análisis de calidad (SCRUM-44). Reutiliza la compilación y la cobertura de los otros dos jobs.
+  # App móvil con Expo (SCRUM-51)
+  mobile:
+    name: mobile
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Pruebas con cobertura (Jest)
+        run: npm run coverage
+
+      - name: Publicar reporte de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-mobile
+          path: mobile/coverage/
+          if-no-files-found: ignore
+
+  # Análisis de calidad (SCRUM-44). Reutiliza la compilación y la cobertura de los jobs anteriores.
   sonarcloud:
     name: sonarcloud
-    needs: [backend, frontend]
+    needs: [backend, frontend, mobile]
     runs-on: ubuntu-latest
     # Los PR desde forks no tienen acceso al secreto SONAR_TOKEN.
     # Al llegar a main no se analiza: el plan gratuito solo da el quality gate de la rama principal del proyecto en
@@ -136,6 +169,12 @@ jobs:
         with:
           name: cobertura-frontend
           path: frontend/coverage
+
+      - name: Descargar cobertura de la app móvil
+        uses: actions/download-artifact@v4
+        with:
+          name: cobertura-mobile
+          path: mobile/coverage
 
       - name: Análisis de SonarCloud y quality gate
         uses: SonarSource/sonarqube-scan-action@v5

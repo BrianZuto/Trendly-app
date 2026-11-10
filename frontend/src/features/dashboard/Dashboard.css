@@ -70,6 +70,22 @@
   gap: 16px;
 }
 
+/* Descargar reporte (SCRUM-50) */
+.tablero-reporte {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.tablero-reporte .tablero-campo select {
+  width: 110px;
+}
+
+.tablero-reporte-error {
+  flex-basis: 100%;
+}
+
 .tablero-campo {
   display: grid;
   gap: 6px;

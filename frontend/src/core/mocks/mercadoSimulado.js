@@ -203,4 +203,5 @@ export function moverUnPrecio(monitoreos, ahora = Date.now()) {
     if (pub.precioUsd !== null) pub.precioUsd = Math.round((pub.precio / TRM) * 100) / 100
     pub.historial.push({ fecha: new Date(ahora).toISOString(), precio: pub.precio, disponible: pub.disponible })
     monitoreo.ultimaCaptura = new Date(ahora).toISOString()
+    return { monitoreo, pub }
 }

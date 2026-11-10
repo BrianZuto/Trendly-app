@@ -23,7 +23,9 @@ class AnalisisCapturaListenerTest {
     private final SugerenciaService sugerencias = mock(SugerenciaService.class);
     private final AlertaService alertas = mock(AlertaService.class);
     private final CorreoAlertasService correos = mock(CorreoAlertasService.class);
-    private final AnalisisCapturaListener listener = new AnalisisCapturaListener(sugerencias, alertas, correos, Runnable::run);
+    private final PushAlertasService push = mock(PushAlertasService.class);
+    private final AnalisisCapturaListener listener = new AnalisisCapturaListener(sugerencias, alertas, correos, push,
+            Runnable::run);
     private final CapturaGuardada captura = new CapturaGuardada(2L, 3L, Instant.EPOCH, List.of());
 
     @Test
@@ -59,6 +61,21 @@ class AnalisisCapturaListenerTest {
         verify(correos).enviarPendientes();
 
         doThrow(new IllegalStateException("SMTP")).when(correos).enviarPendientes();
+        assertThatCode(() -> listener.alTerminarCiclo(ciclo)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void alTerminarElCicloEnviaLasNotificacionesPushAunqueFalleElCorreo() {
+        CicloTerminado ciclo = new CicloTerminado(new ResumenCiclo(Instant.EPOCH, Instant.EPOCH, 1, 1, 0, 1));
+        doThrow(new IllegalStateException("SMTP")).when(correos).enviarPendientes();
+
+        listener.alTerminarCiclo(ciclo);
+
+        InOrder orden = inOrder(correos, push);
+        orden.verify(correos).enviarPendientes();
+        orden.verify(push).enviarPendientes();
+
+        doThrow(new IllegalStateException("Expo")).when(push).enviarPendientes();
         assertThatCode(() -> listener.alTerminarCiclo(ciclo)).doesNotThrowAnyException();
     }
 }

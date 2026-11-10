@@ -30,7 +30,8 @@ public class FuenteHttp implements FuenteHtml {
             }
             return conexion.get().outerHtml();
         } catch (HttpStatusException e) {
-            throw new FalloDeScraping(tipoPorEstado(e.getStatusCode()), "El sitio respondió " + e.getStatusCode(), e);
+            throw FalloDeScraping.porEstadoHttp(tipoPorEstado(e.getStatusCode()), e.getStatusCode(),
+                    "El sitio respondió " + e.getStatusCode(), e);
         } catch (SocketTimeoutException e) {
             throw new FalloDeScraping(TipoFallo.TIMEOUT, "El sitio no respondió en " + propiedades.timeoutMs() + " ms", e);
         } catch (IOException e) {

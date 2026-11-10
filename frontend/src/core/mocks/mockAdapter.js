@@ -24,6 +24,10 @@ let siguienteProductoId = 1
 let monitoreos = []
 let siguienteMonitoreoId = 1
 let ultimoMovimiento = Date.now()
+let alertas = []
+let siguienteAlertaId = 1
+// Reglas de alerta por usuario (SCRUM-47, SCRUM-48); sin fila, las de por defecto
+let reglas = new Map()
 // Ofertas del proveedor que ya devolvió una búsqueda: crear un producto exige elegir una de ellas
 let ofertasVistas = new Map()
 
@@ -42,6 +46,9 @@ export function reiniciarMock() {
     monitoreos = []
     siguienteMonitoreoId = 1
     ofertasVistas = new Map()
+    alertas = []
+    siguienteAlertaId = 1
+    reglas = new Map()
     sembrarUsuarios()
 }
 
@@ -158,6 +165,7 @@ const manejadoresConId = [
     [/^DELETE \/productos\/(\d+)$/, (config, id) => conProducto(config, id, (p) => {
         productos = productos.filter((otro) => otro !== p)
         monitoreos = monitoreos.filter((m) => m.productoId !== p.id)
+        alertas = alertas.filter((a) => a.productoId !== p.id)
         return [204, null]
     })],
     // Propuesta para el backend: la foto del producto se elige entre las de sus competidores
@@ -183,8 +191,14 @@ const manejadoresConId = [
     [/^GET \/monitoreos\/(\d+)\/historico$/, (config, id) => conMonitoreo(config, id, (m) => historicoDe(m, config.params ?? {}))],
     [/^DELETE \/monitoreos\/(\d+)$/, (config, id) => conMonitoreo(config, id, (m) => {
         monitoreos = monitoreos.filter((otro) => otro !== m)
+        alertas = alertas.filter((a) => a.monitoreoId !== m.id)
         return [204, null]
     })],
+    [/^PATCH \/alertas\/(\d+)\/leida$/, (config, id) => conAlerta(config, id, (a) => {
+        if (a.estado === 'NUEVA') a.estado = 'LEIDA'
+        return [200, publicoAlerta(a)]
+    })],
+    [/^PATCH \/alertas\/(\d+)\/decision$/, (config, id) => conAlerta(config, id, (a) => decidirAlerta(a, leerCuerpo(config)))],
 ]
 
 // ─── Monitoreos de competidores: SCRUM-36 (por URL) y SCRUM-37 (por palabra clave) ───
@@ -299,8 +313,126 @@ function avanzarMercado(producto) {
         ultimoMovimiento = ahora
         // A veces se mueve el proveedor (cambia tu costo); casi siempre, la reventa
         if (producto.proveedor && Math.random() < 0.25) moverProveedor(producto.proveedor)
-        else moverUnPrecio(monitoreos.filter((m) => m.productoId === producto.id), ahora)
+        else {
+            const movido = moverUnPrecio(monitoreos.filter((m) => m.productoId === producto.id), ahora)
+            if (movido) alertarCambio(producto, movido, ahora)
+        }
     }
+}
+
+// ─── Bandeja de alertas y decisión de precio: SCRUM-49 ───
+// Mismas reglas que /api/v1/alertas: el umbral por defecto es 5 % y la relevancia es ALTA desde el doble
+const UMBRAL_ALERTA = 5
+const ESTADOS_ALERTA = ['NUEVA', 'LEIDA', 'CERRADA']
+const RELEVANCIAS = ['NORMAL', 'ALTA']
+const ACCIONES = ['ACEPTAR', 'AJUSTAR', 'DESCARTAR']
+const margenCon = (producto, precio) => Math.round(((precio - costoDe(producto)) / precio) * 10000) / 100
+
+// El sugerido es 1 % bajo la competencia, sin bajar del precio que deja el margen objetivo
+function sugeridoPara(producto, precioCompetencia) {
+    const rentable = Math.ceil(costoDe(producto) / (1 - producto.margenObjetivo / 100))
+    return Math.max(Math.round((precioCompetencia * 0.99) / 100) * 100, rentable)
+}
+
+function alertarCambio(producto, { monitoreo, pub }, ahora) {
+    const variacionPct = Math.round(((pub.precio - pub.precioAnterior) / pub.precioAnterior) * 10000) / 100
+    if (Math.abs(variacionPct) < UMBRAL_ALERTA) return
+    agregarAlerta(producto, {
+        monitoreoId: monitoreo.id,
+        publicacionId: pub.idPublicacion,
+        competidor: pub.vendedor,
+        tituloPublicacion: pub.titulo,
+        tipo: variacionPct < 0 ? 'BAJA_PRECIO' : 'SUBIDA_PRECIO',
+        relevancia: Math.abs(variacionPct) >= UMBRAL_ALERTA * 2 ? 'ALTA' : 'NORMAL',
+        precioAnterior: pub.precioAnterior,
+        precioNuevo: pub.precio,
+        variacionPct,
+        precioSugerido: sugeridoPara(producto, pub.precio),
+        creadoEn: new Date(ahora).toISOString(),
+    })
+}
+
+function agregarAlerta(producto, datos) {
+    const alerta = {
+        id: siguienteAlertaId++,
+        usuarioId: producto.usuarioId,
+        productoId: producto.id,
+        monitoreoId: null,
+        publicacionId: null,
+        competidor: 'Competidor',
+        tituloPublicacion: null,
+        estado: 'NUEVA',
+        creadoEn: new Date().toISOString(),
+        decision: null,
+        ...datos,
+    }
+    alertas.push(alerta)
+    return alerta
+}
+
+// Para las pruebas: una alerta sobre el primer producto del vendedor (o el que se indique)
+export function sembrarAlerta(email, datos = {}) {
+    const usuario = usuarios.find((u) => u.email === email.toLowerCase())
+    const producto = productos.find((p) => p.usuarioId === usuario.id && (!datos.productoId || p.id === datos.productoId))
+    return agregarAlerta(producto, {
+        tipo: 'BAJA_PRECIO',
+        relevancia: 'NORMAL',
+        precioAnterior: 100000,
+        precioNuevo: 90000,
+        variacionPct: -10,
+        precioSugerido: null,
+        ...datos,
+    }).id
+}
+
+function publicoAlerta(alerta) {
+    const producto = productos.find((p) => p.id === alerta.productoId)
+    const copia = structuredClone(alerta)
+    delete copia.usuarioId
+    return {
+        ...copia,
+        productoNombre: producto.nombre,
+        precioVentaActual: producto.precioVenta,
+        margenActual: margenCon(producto, producto.precioVenta),
+        margenObjetivo: producto.margenObjetivo,
+        margenSugerido: alerta.precioSugerido ? margenCon(producto, alerta.precioSugerido) : null,
+    }
+}
+
+function conAlerta(config, id, accion) {
+    const usuario = usuarioDelToken(config)
+    if (!usuario) return [401, { message: 'Token vencido o ausente' }]
+    const alerta = alertas.find((a) => a.id === Number(id) && a.usuarioId === usuario.id)
+    if (!alerta) return [404, { message: 'Alerta no encontrada' }]
+    return accion(alerta)
+}
+
+function decidirAlerta(alerta, { accion, precioFinal, motivo }) {
+    if (alerta.estado === 'CERRADA') return [409, { message: 'Esta alerta ya tiene una decisión registrada' }]
+    const elegida = String(accion ?? '').trim().toUpperCase()
+    if (!ACCIONES.includes(elegida)) return [400, { message: 'La acción debe ser ACEPTAR, AJUSTAR o DESCARTAR' }]
+    const producto = productos.find((p) => p.id === alerta.productoId)
+    const limpio = (motivo ?? '').trim() || null
+    let final = null
+    if (elegida === 'ACEPTAR') {
+        if (!alerta.precioSugerido) return [400, { message: 'Esta alerta no tiene precio sugerido: ajusta el precio a mano' }]
+        final = alerta.precioSugerido
+    } else if (elegida === 'AJUSTAR') {
+        if (!(Number(precioFinal) > 0)) return [400, { message: 'Escribe el precio final, mayor que cero' }]
+        final = Number(precioFinal)
+    } else if (!limpio) {
+        return [400, { message: 'Escribe el motivo para descartar la alerta' }]
+    }
+    alerta.decision = {
+        accion: elegida,
+        precioAnterior: producto.precioVenta,
+        precioFinal: final,
+        motivo: limpio,
+        decididoEn: new Date().toISOString(),
+    }
+    if (final !== null) producto.precioVenta = final
+    alerta.estado = 'CERRADA'
+    return [200, publicoAlerta(alerta)]
 }
 
 // Propuesta para el backend: la lista de productos trae un resumen de su competencia
@@ -388,6 +520,46 @@ const manejadores = {
         return [201, conResumen(conMargen(sinDueno(producto)))]
     },
 
+    // Un Excel o un PDF de verdad solo los genera el backend (SCRUM-50)
+    'GET /reportes': () => [503, { message: 'La descarga de reportes necesita el servidor real; no está disponible con datos simulados' }],
+
+    'GET /alertas': (config) => {
+        const usuario = usuarioDelToken(config)
+        if (!usuario) return [401, { message: 'Token vencido o ausente' }]
+        deUsuario(usuario).forEach(avanzarMercado)
+        const estado = String(config.params?.estado ?? '').toUpperCase()
+        const relevancia = String(config.params?.relevancia ?? '').toUpperCase()
+        if (estado && !ESTADOS_ALERTA.includes(estado)) return [400, { message: 'El estado debe ser NUEVA, LEIDA o CERRADA' }]
+        if (relevancia && !RELEVANCIAS.includes(relevancia)) return [400, { message: 'La relevancia debe ser NORMAL o ALTA' }]
+        const lista = alertas
+            .filter((a) => a.usuarioId === usuario.id && (!estado || a.estado === estado) && (!relevancia || a.relevancia === relevancia))
+            .sort((a, b) => Date.parse(b.creadoEn) - Date.parse(a.creadoEn) || b.id - a.id)
+        return [200, lista.map(publicoAlerta)]
+    },
+
+    'GET /usuarios/me/reglas-alerta': (config) => {
+        const usuario = usuarioDelToken(config)
+        if (!usuario) return [401, { message: 'Token vencido o ausente' }]
+        return [200, { ...reglasDe(usuario) }]
+    },
+
+    // Mismas validaciones que ReglaAlertaRequest; recibirPush es opcional y si no viene se conserva
+    'PUT /usuarios/me/reglas-alerta': (config) => {
+        const usuario = usuarioDelToken(config)
+        if (!usuario) return [401, { message: 'Token vencido o ausente' }]
+        const { umbralPct, avisarDisponibilidad, recibirCorreos, recibirPush } = leerCuerpo(config)
+        const umbral = Number(umbralPct)
+        if (umbralPct === null || umbralPct === undefined || umbralPct === '') return [400, { message: 'El umbral es obligatorio' }]
+        if (Number.isNaN(umbral) || umbral < 0.01 || umbral > 100) return [400, { message: 'El umbral debe estar entre 0,01 y 100' }]
+        if (Math.round(umbral * 100) !== umbral * 100) return [400, { message: 'El umbral admite hasta 2 decimales' }]
+        if (typeof avisarDisponibilidad !== 'boolean') return [400, { message: 'Indique si quiere avisos de disponibilidad' }]
+        if (typeof recibirCorreos !== 'boolean') return [400, { message: 'Indique si quiere recibir correos' }]
+        const actuales = reglasDe(usuario)
+        const nuevas = { umbralPct: umbral, avisarDisponibilidad, recibirCorreos, recibirPush: typeof recibirPush === 'boolean' ? recibirPush : actuales.recibirPush }
+        reglas.set(usuario.id, nuevas)
+        return [200, { ...nuevas }]
+    },
+
     // Propuesta: búsqueda en el proveedor (AliExpress) por palabra clave o URL
     'GET /proveedores/ofertas': (config) => {
         const usuario = usuarioDelToken(config)
@@ -411,6 +583,8 @@ function buscarManejador(config) {
     }
     return null
 }
+
+const reglasDe = (usuario) => reglas.get(usuario.id) ?? { umbralPct: 5, avisarDisponibilidad: true, recibirCorreos: true, recibirPush: true }
 
 // Axios llama a esta funcion en lugar de hacer la peticion real
 export function mockAdapter(config) {

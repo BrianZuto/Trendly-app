@@ -2,9 +2,11 @@ package co.trendly.alerta;
 
 import java.math.BigDecimal;
 
-public record ReglaAlertaResponse(BigDecimal umbralPct, boolean avisarDisponibilidad, boolean recibirCorreos) {
+public record ReglaAlertaResponse(BigDecimal umbralPct, boolean avisarDisponibilidad, boolean recibirCorreos,
+        boolean recibirPush) {
 
     static ReglaAlertaResponse de(ReglaAlerta regla) {
-        return new ReglaAlertaResponse(regla.getUmbralPct(), regla.isAvisarDisponibilidad(), regla.isRecibirCorreos());
+        return new ReglaAlertaResponse(regla.getUmbralPct(), regla.isAvisarDisponibilidad(), regla.isRecibirCorreos(),
+                regla.isRecibirPush());
     }
 }

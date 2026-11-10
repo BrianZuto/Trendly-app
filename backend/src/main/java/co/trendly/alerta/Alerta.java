@@ -58,6 +58,10 @@ public class Alerta {
     @Column(name = "enviada_correo_en")
     private Instant enviadaCorreoEn;
 
+    /** Cuándo salió la notificación push (SCRUM-52); {@code null} = pendiente. */
+    @Column(name = "enviada_push_en")
+    private Instant enviadaPushEn;
+
     @Column(name = "creado_en", nullable = false, updatable = false)
     private Instant creadoEn;
 
@@ -76,6 +80,18 @@ public class Alerta {
         this.precioSugerido = precioSugerido;
         this.estado = EstadoAlerta.NUEVA;
         this.creadoEn = cambio.precio().capturadoEn();
+    }
+
+    /** El vendedor la abrió en la bandeja (SCRUM-49). Una alerta cerrada no vuelve atrás. */
+    void marcarLeida() {
+        if (estado == EstadoAlerta.NUEVA) {
+            estado = EstadoAlerta.LEIDA;
+        }
+    }
+
+    /** El vendedor tomó una decisión sobre ella (SCRUM-49). */
+    void cerrar() {
+        estado = EstadoAlerta.CERRADA;
     }
 
     public Long getId() {
@@ -124,6 +140,10 @@ public class Alerta {
 
     public Instant getEnviadaCorreoEn() {
         return enviadaCorreoEn;
+    }
+
+    public Instant getEnviadaPushEn() {
+        return enviadaPushEn;
     }
 
     public Instant getCreadoEn() {

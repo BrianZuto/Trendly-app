@@ -3,6 +3,7 @@ import MainLayout from '@core/layout/MainLayout'
 import PublicLayout from '@core/layout/PublicLayout'
 import RutaProtegida from '@core/guards/RutaProtegida'
 import RutaPublica from '@core/guards/RutaPublica'
+import Alertas from '@features/alertas/Alertas'
 import Dashboard from '@features/dashboard/Dashboard'
 import Login from '@features/login/Login'
 import PoliticaDatos from '@features/politica-datos/PoliticaDatos'
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/productos" element={<Productos />} />
           <Route path="/productos/nuevo" element={<NuevoProducto />} />
           <Route path="/productos/:id" element={<ProductoDetalle />} />
+          <Route path="/alertas" element={<Alertas />} />
         </Route>
       </Route>
 

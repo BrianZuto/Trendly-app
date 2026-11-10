@@ -9,6 +9,7 @@ import Paletas from '@shared/components/Paletas'
 import { MARKETPLACES } from '@shared/utils/marketplaces'
 import { agruparPorPublicacion, armarSeries, COLOR_PROPIO, DIA, fechaHora, leer, pesos, porcentajeConSigno, RANGOS, resumir } from './tablero'
 import DecisionesPendientes from './DecisionesPendientes'
+import DescargarReporte from './DescargarReporte'
 import TendenciasDropshipping from './TendenciasDropshipping'
 import Vitrina from './Vitrina'
 import { crearAnunciosVitrina } from './vitrina.mock'
@@ -252,6 +253,7 @@ export default function Dashboard() {
                     </select>
                 </div>
                 <Rango dias={dias} onCambiar={setDias} />
+                <DescargarReporte productoId={productoId} dias={dias} />
             </div>
 
             {fallo && <Mensaje tipo="error">{historico.error}</Mensaje>}

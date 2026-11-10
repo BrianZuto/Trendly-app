@@ -154,6 +154,61 @@ class RecoleccionIntegracionTest {
         assertThat(puntos(id)).isZero();
     }
 
+    @Test
+    void unTimeoutSeReintentaTresVecesAntesDeRegistrarseComoIncidencia() throws Exception {
+        long id = monitoreo("MCO1", "ACTIVO", Instant.now().minus(1, ChronoUnit.HOURS));
+        when(mercadoLibre.obtener(any())).thenReturn(
+                ResultadoScraping.fallo(co.trendly.scraping.TipoFallo.TIMEOUT, "MercadoLibre no respondió"));
+
+        disparar().andExpect(status().isAccepted());
+        esperarFin();
+
+        verify(mercadoLibre, times(4)).obtener(any());
+        Map<String, Object> incidencia = jdbc.queryForMap(
+                "SELECT tipo, detalle, intentos FROM incidencia_scraping WHERE monitoreo_id = ?", id);
+        assertThat(incidencia.get("tipo")).isEqualTo("TIMEOUT");
+        assertThat(incidencia.get("detalle")).isEqualTo("MercadoLibre no respondió");
+        assertThat(incidencia.get("intentos")).isEqualTo(4);
+    }
+
+    @Test
+    void unaVariacionDel90PorCientoNoEntraAlHistoricoYQuedaComoIncidencia() throws Exception {
+        long id = monitoreo("MCO1", "ACTIVO", Instant.now().minus(1, ChronoUnit.HOURS));
+        // El scraper simulado responde 89.900: frente a 899.000 son -90 %
+        jdbc.update("""
+                INSERT INTO historico_precio (monitoreo_id, publicacion_id, precio, moneda, precio_cop, capturado_en)
+                VALUES (?, 'MCO-111', 899000, 'COP', 899000, ?)""", id, Timestamp.from(Instant.now().minus(7, ChronoUnit.HOURS)));
+
+        disparar().andExpect(status().isAccepted());
+        esperarFin();
+
+        assertThat(puntos(id)).isEqualTo(1);
+        Map<String, Object> incidencia = jdbc.queryForMap(
+                "SELECT tipo, detalle FROM incidencia_scraping WHERE monitoreo_id = ?", id);
+        assertThat(incidencia.get("tipo")).isEqualTo("DATO_INVALIDO");
+        assertThat((String) incidencia.get("detalle")).contains("MCO-111").contains("sospechoso").contains("-90.00 %");
+        assertThat(jdbc.queryForObject("SELECT fallos_consecutivos FROM monitoreo WHERE id = ?", Integer.class, id))
+                .isEqualTo(1);
+    }
+
+    @Test
+    void trasTresCiclosConFalloElMonitoreoQuedaEnError() throws Exception {
+        long id = monitoreo("MCO1", "ACTIVO", Instant.now().minus(1, ChronoUnit.HOURS));
+        when(mercadoLibre.obtener(any())).thenReturn(
+                ResultadoScraping.fallo(co.trendly.scraping.TipoFallo.NO_ENCONTRADO, "No existe"));
+
+        for (int ciclo = 0; ciclo < 3; ciclo++) {
+            disparar().andExpect(status().isAccepted());
+            esperarFin();
+            jdbc.update("UPDATE monitoreo SET proxima_ejecucion = ? WHERE id = ?",
+                    Timestamp.from(Instant.now().minus(1, ChronoUnit.HOURS)), id);
+        }
+
+        assertThat(jdbc.queryForObject("SELECT estado FROM monitoreo WHERE id = ?", String.class, id)).isEqualTo("ERROR");
+        assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM incidencia_scraping WHERE monitoreo_id = ?", Integer.class, id))
+                .isEqualTo(3);
+    }
+
     private ResultActions disparar() throws Exception {
         return mockMvc.perform(post(RUTA).header("X-Api-Key", CLAVE));
     }

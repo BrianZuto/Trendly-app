@@ -29,6 +29,10 @@ public class ReglaAlerta {
     @Column(name = "recibir_correos", nullable = false)
     private boolean recibirCorreos;
 
+    /** El vendedor puede desactivar las notificaciones push desde su perfil (SCRUM-52). */
+    @Column(name = "recibir_push", nullable = false)
+    private boolean recibirPush;
+
     @Column(name = "actualizado_en", nullable = false)
     private Instant actualizadoEn;
 
@@ -41,12 +45,18 @@ public class ReglaAlerta {
         this.umbralPct = UMBRAL_POR_DEFECTO;
         this.avisarDisponibilidad = true;
         this.recibirCorreos = true;
+        this.recibirPush = true;
     }
 
-    void actualizar(BigDecimal umbralPct, boolean avisarDisponibilidad, boolean recibirCorreos, Instant ahora) {
+    /** @param recibirPush {@code null} = se deja como estaba (la web no envía este campo) */
+    void actualizar(BigDecimal umbralPct, boolean avisarDisponibilidad, boolean recibirCorreos, Boolean recibirPush,
+            Instant ahora) {
         this.umbralPct = umbralPct;
         this.avisarDisponibilidad = avisarDisponibilidad;
         this.recibirCorreos = recibirCorreos;
+        if (recibirPush != null) {
+            this.recibirPush = recibirPush;
+        }
         this.actualizadoEn = ahora;
     }
 
@@ -64,5 +74,9 @@ public class ReglaAlerta {
 
     public boolean isRecibirCorreos() {
         return recibirCorreos;
+    }
+
+    public boolean isRecibirPush() {
+        return recibirPush;
     }
 }

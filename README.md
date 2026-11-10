@@ -39,7 +39,7 @@ Roles del sistema: `ADMIN` y `VENDEDOR`.
 | Base de datos | MySQL 8 en desarrollo y producción; H2 solo para pruebas | Local con Docker y migraciones Flyway (SCRUM-29) |
 | Frontend | SPA con React 19 + Vite 8, ESLint | Proyecto base creado |
 | Frontend (librerías) | Axios, Recharts (gráficas), Vitest (pruebas) | Vitest configurado; Axios y Recharts pendientes |
-| Móvil | React Native con Expo y notificaciones push | Pendiente (Sprint 4) |
+| Móvil | React Native con Expo SDK 58: Expo Router, expo-secure-store para el JWT, react-native-gifted-charts, Jest | Login, productos, detalle y alertas (SCRUM-51); notificaciones push con expo-notifications y perfil (SCRUM-52) |
 | Scraping | Jsoup (Selenium solo para AliExpress si es necesario), adaptadores por marketplace (patrón Strategy/Adapter), Resilience4j para reintentos y limitador de tasa | Pendiente (Sprint 3) |
 | Job programado | Azure Functions (timer cada 6 horas) que llama a un endpoint interno del backend | Desplegado (SCRUM-39) |
 | Despliegue | Backend en Azure Container Apps con MySQL Flexible Server; frontend en Vercel | Desplegado; un merge a `main` publica el backend solo (SCRUM-54) |
@@ -60,7 +60,7 @@ trendly/
 │   ├── package.json
 │   └── src/
 ├── functions/               # Azure Function: dispara la recolección cada 6 h (SCRUM-39)
-├── mobile/                  # App React Native + Expo (pendiente, Sprint 4)
+├── mobile/                  # App React Native + Expo (SCRUM-51)
 ├── docs/                    # BPMN, modelo de datos, pruebas de aceptación, resultados SUS
 ├── .github/                 # Plantilla de PR y workflows de CI
 ├── .env.example
@@ -74,6 +74,7 @@ trendly/
 - Maven 3.9+ (o el wrapper incluido `./mvnw`, que no requiere instalar Maven)
 - Node.js 20+ y npm
 - Docker Desktop (para MySQL local)
+- Expo Go en el celular (Android o iOS) para la app móvil
 - Git
 
 ## Cómo correr el proyecto en local
@@ -118,6 +119,8 @@ Las variables del frontend van en `frontend/.env`, porque Vite solo lee archivos
 | `SMTP_PASSWORD` | Clave SMTP | `cambia-esto` |
 | `SMTP_FROM` | Remitente verificado; sin él no se envían correos | `alertas@ejemplo.com` |
 | `FRONTEND_URL` | Base de los enlaces del correo | `https://trendlyapp.vercel.app` |
+| `PUSH_HABILITADO` | `false` para no enviar notificaciones push (las alertas quedan pendientes) | `true` |
+| `EXPO_ACCESS_TOKEN` | Token de acceso de Expo; solo si el proyecto activó "enhanced push security" | vacío |
 | `VITE_API_URL` | URL base del API para el frontend | `http://localhost:8080/api/v1` |
 
 Para generar `JWT_SECRET`:
@@ -155,6 +158,11 @@ cd backend && ./mvnw verify
 cd frontend && npm test       # Vitest
 cd frontend && npm run coverage  # Vitest con reporte en frontend/coverage/
 cd frontend && npm run lint   # ESLint
+
+# App móvil
+cd mobile && npm test         # Jest
+cd mobile && npm run coverage # Jest con reporte en mobile/coverage/
+cd mobile && npm run lint     # ESLint (expo lint)
 ```
 
 `./mvnw verify` también genera el reporte de cobertura de JaCoCo en `backend/target/site/jacoco/index.html` y falla si la cobertura de líneas baja del 70 %. El pipeline de GitHub Actions (`.github/workflows/ci.yml`) ejecuta lo mismo en cada PR y publica los reportes como artefactos.
@@ -176,6 +184,51 @@ Variables de entorno, en Vercel → Settings → Environment Variables:
 | `VITE_USE_MOCK` | `true` mientras no haya backend publicado (la app funciona con datos simulados); `false` cuando el API esté arriba. |
 
 Las variables `VITE_` se leen al compilar: después de cambiarlas hay que volver a desplegar (Deployments → Redeploy). No hace falta tocar el código.
+
+## App móvil (SCRUM-51)
+
+App de Expo (React Native) en `mobile/` para consultar Trendly desde el celular. Usa el mismo API y la misma cuenta de la web.
+
+```bash
+cd mobile
+npm install
+npx expo start
+```
+
+Se escanea el código QR con **Expo Go** (en iOS, con la cámara). El celular y el computador deben estar en la misma red wifi; si la red no lo permite, `npx expo start --tunnel`. No hace falta publicarla en las tiendas.
+
+| Pantalla | Qué muestra | API |
+|---|---|---|
+| Login | Correo y contraseña de la cuenta web | `POST /auth/login`, `GET /auth/me` |
+| Mis productos | Precio de venta y margen frente al objetivo; se recarga deslizando hacia abajo | `GET /productos` |
+| Detalle | Gráfica de 30 días con el precio más bajo de la competencia por día frente a tu precio, y el precio sugerido con su margen y posición | `GET /productos/{id}`, `/sugerencia`, `/monitoreos`, `GET /monitoreos/{id}/historico` |
+| Alertas | Alertas con filtro por estado y contador de nuevas en la pestaña; tocar una abre su detalle | `GET /alertas?estado=` |
+| Detalle de alerta | Qué cambió, el competidor, el precio antes y ahora, el precio sugerido con su margen y la decisión si ya se tomó; al abrirla queda leída (SCRUM-52) | `GET /alertas/{id}`, `PATCH /alertas/{id}/leida` |
+| Perfil | Datos de la cuenta, interruptor de notificaciones push y cerrar sesión (SCRUM-52) | `GET` y `PUT /usuarios/me/reglas-alerta` |
+
+- **Sesión:** el JWT se guarda cifrado con `expo-secure-store` (Keychain en iOS, Keystore en Android) y viaja como `Authorization: Bearer`. La app vuelve al login con el aviso "Tu sesión venció" si el token ya venció al abrirla, al llegar su hora de vencimiento, al volver a la app con el token vencido o si el API responde 401.
+- **Backend:** por defecto apunta al API desplegado en Azure. Para usar un backend local, copia `mobile/.env.example` como `mobile/.env` y pon la IP del computador en `EXPO_PUBLIC_API_URL` (en el celular, `localhost` es el propio teléfono). La app no necesita CORS.
+- **Pruebas:** Jest con `jest-expo` y Testing Library. Montan la app completa con Expo Router y reemplazan la red con un adaptador de axios (`mobile/test/apiFalso.js`). El job `mobile` del CI corre el lint y las pruebas, y SonarCloud analiza `mobile/src` con su cobertura.
+
+### Notificaciones push (SCRUM-52)
+
+Cada alerta llega al celular como notificación, en el mismo momento que el correo de SCRUM-48: al terminar cada ciclo de recolección.
+
+1. **Registro:** al iniciar sesión (o al abrir la app con la sesión guardada), la app pide permiso, obtiene su token de Expo Push y lo registra en el backend. Si el vendedor niega el permiso, la app funciona igual.
+2. **Envío:** el backend manda una notificación por alerta y por celular con la [Expo Push API](https://docs.expo.dev/push-notifications/sending-notifications/) (`trendly.push.url`), con la ruta de la alerta en `data.url`. Lo que no se pudo enviar queda pendiente para el próximo ciclo durante 24 h. Si Expo responde `DeviceNotRegistered`, el celular se olvida.
+3. **Al tocarla:** se abre el detalle de esa alerta (`/alerta/{id}`), con la app abierta o cerrada. Si la sesión había vencido, se abre después de iniciar sesión.
+4. **Desactivarlas:** en *Perfil* → *Notificaciones push*. Al cerrar sesión el celular se quita del servidor y deja de recibir las alertas de esa cuenta.
+
+| Endpoint | Qué hace |
+|---|---|
+| `POST /api/v1/usuarios/me/dispositivos` | Registra el celular: `{ "token": "ExponentPushToken[...]", "plataforma": "IOS | ANDROID" }` → 204. Es idempotente; si otra cuenta inicia sesión en el mismo celular, el token pasa a ser suyo. |
+| `DELETE /api/v1/usuarios/me/dispositivos?token=` | Quita el celular al cerrar sesión → 204. Un token de otro vendedor no se toca. |
+| `PUT /api/v1/usuarios/me/reglas-alerta` | Acepta además `recibirPush` (opcional: si no viene, se conserva el valor; la web no lo envía). |
+| `GET /api/v1/alertas/{id}` | Detalle de una alerta propia; una ajena responde 404. |
+
+- **Expo Go y development build:** según la documentación de Expo, desde el SDK 53 Expo Go **no recibe notificaciones push en Android**; para Android hace falta un *development build* (`npx eas-cli build --profile development`) con credenciales de FCM. La app está vinculada al proyecto de Expo `@trendlyproject/trendly` (`extra.eas.projectId` en `mobile/app.json`), que es lo que pide el token.
+- **Base de datos:** migración `V8__notificaciones_push.sql`: tabla `dispositivo_push`, columna `regla_alerta.recibir_push` y columna `alerta.enviada_push_en`.
+- **Pruebas:** el backend prueba el cliente contra un servidor HTTP local que hace de Expo y el envío con un doble de `ClienteExpoPush`; la app reemplaza `expo-notifications` en `jest.setup.js` y simula el toque de una notificación.
 
 ## API de monitoreos (contrato)
 
@@ -257,6 +310,30 @@ Al terminar un ciclo que guardó precios nuevos, cada vendedor recibe un solo co
 - **Fallos:** si el SMTP falla, la alerta queda pendiente y se reintenta en el siguiente ciclo. Después de 24 horas ya no se envía.
 - **Configuración:** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM` y `FRONTEND_URL`. Sin `SMTP_FROM` no se envían correos y la API funciona igual.
 
+### Bandeja de alertas y decisión de precio (SCRUM-49)
+
+Cada vendedor solo ve sus alertas; una alerta ajena responde 404. La página `/alertas` del frontend las muestra con filtros, y el menú lleva un contador de alertas nuevas.
+
+| Endpoint | Qué hace |
+|---|---|
+| `GET /api/v1/alertas?estado=&relevancia=` | Lista las alertas, la más reciente primero. `estado`: `NUEVA`, `LEIDA` o `CERRADA`; `relevancia`: `NORMAL` o `ALTA`. Los dos filtros son opcionales. Cada alerta trae el producto con su precio y margen, el competidor, el cambio, el precio sugerido con su margen y, si está cerrada, la decisión. |
+| `PATCH /api/v1/alertas/{id}/leida` | Pasa una alerta `NUEVA` a `LEIDA`. El frontend lo llama al abrirla. |
+| `PATCH /api/v1/alertas/{id}/decision` | Registra la decisión en `decision_precio` y cierra la alerta. Cuerpo: `{ "accion": "ACEPTAR \| AJUSTAR \| DESCARTAR", "precioFinal": 104900, "motivo": "..." }`. |
+
+- **ACEPTAR:** pone como precio de venta el precio sugerido de la alerta. Si la alerta no tiene sugerido, responde 400.
+- **AJUSTAR:** exige `precioFinal` mayor que cero y lo pone como precio de venta.
+- **DESCARTAR:** exige `motivo` y no cambia el precio.
+- Una alerta se decide una sola vez: la segunda decisión responde 409. Al cambiar el precio se recalcula la sugerencia del producto.
+
+## Reportes en Excel y PDF (SCRUM-50)
+
+`GET /api/v1/reportes?formato=xlsx|pdf&productoId=&desde=&hasta=` descarga el reporte de un producto propio; uno ajeno responde 404. `desde` y `hasta` son opcionales y se escriben como en el histórico; sin ellos, cubre los últimos 30 días. En el tablero, el botón **Descargar reporte** usa el producto y el rango elegidos.
+
+- **Excel (Apache POI):** tres hojas. **Resumen** con las métricas, **Histórico** con cada captura del periodo y **Alertas y decisiones**. Los precios y las fechas son números y fechas de Excel, no texto.
+- **PDF (OpenPDF):** logo, resumen, histórico con una fila por día y fecha de generación. El detalle de cada captura solo va en el Excel: con todas, el PDF tendría cientos de páginas.
+- **Métricas:** el mínimo, el promedio, la diferencia y la variación usan las mismas fórmulas que el tablero (`CalculoCompetencia.java` y `tablero.js`). Si cambia una, debe cambiar la otra. El mínimo y el promedio miran la última captura con stock de cada publicación en los 90 días anteriores a `hasta`, aunque el periodo sea más corto.
+- **Fechas:** en hora de Colombia.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:
@@ -275,6 +352,18 @@ curl -X POST http://localhost:8080/api/v1/interno/recoleccion/ejecutar -H "X-Api
 ```
 
 **La Function:** `cd functions && npm ci && npm test`. En Azure necesita las variables `BACKEND_URL` (URL pública del backend) y `RECOLECCION_API_KEY` (la misma del backend).
+
+### Validación, reintentos e incidencias (SCRUM-45)
+
+En cada ciclo, un dato malo o un fallo del sitio no llega al histórico ni genera alertas:
+
+- **Reintentos:** timeout, 5xx y 429 se reintentan 3 veces, con esperas de 2, 4 y 8 s. Lo demás (403, 404, página cambiada) no se reintenta.
+- **Validación antes de guardar:** identificador y título presentes, precio mayor que 0, moneda esperada (COP en MercadoLibre, USD en AliExpress) y variación de máximo ±70 % frente a la captura anterior de la misma publicación, comparada en su moneda original.
+- **Incidencias:** lo que falla tras los reintentos o se descarta queda en `incidencia_scraping`, con su tipo: `TIMEOUT`, `BLOQUEO`, `NO_ENCONTRADO`, `ESTRUCTURA` o `DATO_INVALIDO`.
+- **Estado ERROR:** tras 3 ciclos seguidos con fallo, el monitoreo pasa a `ERROR` y el job deja de capturarlo hasta que se reactive (`PATCH /api/v1/monitoreos/{id}` con `{ "estado": "ACTIVO" }`). Un ciclo cuenta como fallo si falló la captura o si se descartó todo lo capturado.
+- **Aviso:** si en un ciclo falla más del 10 % de los monitoreos, queda una advertencia en el log y se envía un correo a los usuarios ADMIN activos (requiere `SMTP_FROM`).
+
+**`GET /api/v1/admin/incidencias?tipo=&limite=100`** (solo ADMIN) responde `{ monitoreosEnError: [...], incidencias: [...] }`, con las incidencias de la más reciente a la más antigua. `tipo` es opcional y `limite` admite hasta 500.
 
 ## Despliegue del backend (SCRUM-54)
 

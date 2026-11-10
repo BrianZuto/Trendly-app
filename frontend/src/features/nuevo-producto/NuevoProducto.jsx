@@ -304,7 +304,7 @@ export default function NuevoProducto() {
                             <div className="elegido-texto">
                                 <strong>Sin proveedor en AliExpress</strong>
                                 <span className="mini">
-                                    Escribe tu costo a mano. Podrás vigilar la reventa igual.
+                                    Si no compras en AliExpress, no pasa nada: escribe tu costo a mano y Trendly vigila igual a tu competencia.
                                 </span>
                             </div>
                             {!tendencia && conProveedor && (
@@ -321,14 +321,26 @@ export default function NuevoProducto() {
                         <div className="datos-columnas">
                             <div className="datos-campos">
                                 <CampoTexto etiqueta="Nombre" name="nombre" value={datos.nombre} onChange={cambiar} error={errores.nombre} />
-                                <CampoTexto etiqueta="SKU" name="sku" value={datos.sku} onChange={cambiar} error={errores.sku} />
-                                {manual && <CampoTexto etiqueta="Costo" name="costo" value={datos.costo} error={errores.costo} prefijo="$" {...numero} />}
+                                {/* Ayudas en lenguaje sencillo: en el piloto SUS nadie sabía qué era SKU ni margen objetivo */}
+                                <div>
+                                    <CampoTexto etiqueta="SKU" name="sku" value={datos.sku} onChange={cambiar} error={errores.sku} />
+                                    {!errores.sku && <p className="campo-ayuda">Tu código para reconocer el producto, por ejemplo MOU-01. No se repite entre tus productos.</p>}
+                                </div>
+                                {manual && (
+                                    <div>
+                                        <CampoTexto etiqueta="Costo" name="costo" value={datos.costo} error={errores.costo} prefijo="$" {...numero} />
+                                        {!errores.costo && <p className="campo-ayuda">Lo que te cuesta cada unidad.</p>}
+                                    </div>
+                                )}
                                 <div>
                                     <CampoTexto etiqueta="Costos extra" name="costosExtra" value={datos.costosExtra} error={errores.costosExtra} prefijo="$" {...numero} />
                                     {!errores.costosExtra && <p className="campo-ayuda">Envío local, comisión de pago, empaque. Opcional.</p>}
                                 </div>
                                 <CampoTexto etiqueta="Precio de venta" name="precioVenta" value={datos.precioVenta} error={errores.precioVenta} prefijo="$" {...numero} />
-                                <CampoTexto etiqueta="Margen objetivo" name="margenObjetivo" value={datos.margenObjetivo} error={errores.margenObjetivo} prefijo="%" {...numero} max={100} />
+                                <div>
+                                    <CampoTexto etiqueta="Margen objetivo" name="margenObjetivo" value={datos.margenObjetivo} error={errores.margenObjetivo} prefijo="%" {...numero} max={100} />
+                                    {!errores.margenObjetivo && <p className="campo-ayuda">Lo mínimo que quieres ganar de cada venta, en % del precio. Por ejemplo, 30.</p>}
+                                </div>
                             </div>
                             <div className="datos-lectura">
                                 <p className="mini datos-rotulo">Tu costo por unidad</p>
