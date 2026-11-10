@@ -23,13 +23,14 @@ function usePermisoNotificaciones() {
     return permiso
 }
 
-/** Perfil del vendedor (SCRUM-52): aquí puede desactivar las notificaciones push y cerrar sesión. */
+/** Perfil del vendedor (SCRUM-52, SCRUM-48): aquí puede desactivar las notificaciones push y los correos, y cerrar sesión. */
 export default function PerfilScreen() {
     const { usuario, cerrarSesion } = useAuth()
     const cargar = useCallback(() => obtenerReglas(), [])
     const { datos: reglas, error, cargando, recargar } = useCarga(cargar)
     const permiso = usePermisoNotificaciones()
-    const [push, setPush] = useState(null)
+    // Lo que el vendedor cambió en esta pantalla; manda sobre lo que trajo el servidor
+    const [cambios, setCambios] = useState({})
     const [guardando, setGuardando] = useState(false)
     const [errorGuardar, setErrorGuardar] = useState(null)
     const [saliendo, setSaliendo] = useState(false)
@@ -37,23 +38,27 @@ export default function PerfilScreen() {
     if (cargando) return <Cargando texto="Cargando tu perfil…" />
     if (error && !reglas) return <ErrorConReintento mensaje={error} onReintentar={recargar} />
 
-    const activas = push ?? reglas.recibirPush
+    const actuales = { ...reglas, ...cambios }
+    const activas = actuales.recibirPush
 
-    async function cambiarPush(valor) {
+    // Push y correo se guardan juntos con el resto de las reglas, para no pisar un cambio con el otro
+    async function cambiar(campo, valor) {
         vibrar.seleccion()
-        setPush(valor)
+        const antes = cambios
+        setCambios({ ...cambios, [campo]: valor })
         setErrorGuardar(null)
         setGuardando(true)
         try {
             const guardadas = await actualizarReglas({
-                umbralPct: reglas.umbralPct,
-                avisarDisponibilidad: reglas.avisarDisponibilidad,
-                recibirCorreos: reglas.recibirCorreos,
-                recibirPush: valor,
+                umbralPct: actuales.umbralPct,
+                avisarDisponibilidad: actuales.avisarDisponibilidad,
+                recibirCorreos: actuales.recibirCorreos,
+                recibirPush: actuales.recibirPush,
+                [campo]: valor,
             })
-            setPush(guardadas.recibirPush)
+            setCambios({ recibirPush: guardadas.recibirPush, recibirCorreos: guardadas.recibirCorreos })
         } catch (e) {
-            setPush(!valor)
+            setCambios(antes)
             setErrorGuardar(mensajeDeError(e))
             vibrar.error()
         } finally {
@@ -90,12 +95,28 @@ export default function PerfilScreen() {
                         <Ionicons name="notifications-outline" size={20} color={colores.tinta} />
                         <View style={estilos.flexible}>
                             <Text style={tipo.titular}>Notificaciones push</Text>
-                            <Text style={tipo.nota}>Te avisamos en el celular, junto con el correo, cuando la competencia cambia un precio.</Text>
+                            <Text style={tipo.nota}>Te avisamos en el celular cuando la competencia cambia un precio.</Text>
                         </View>
                         <Switch
                             accessibilityLabel="Notificaciones push"
                             value={activas}
-                            onValueChange={cambiarPush}
+                            onValueChange={(valor) => cambiar('recibirPush', valor)}
+                            disabled={guardando}
+                            trackColor={{ true: colores.tinta, false: colores.humoOscuro }}
+                            thumbColor={colores.papel}
+                            ios_backgroundColor={colores.humoOscuro}
+                        />
+                    </View>
+                    <View style={[estilos.fila, estilos.separada]}>
+                        <Ionicons name="mail-outline" size={20} color={colores.tinta} />
+                        <View style={estilos.flexible}>
+                            <Text style={tipo.titular}>Alertas por correo</Text>
+                            <Text style={tipo.nota}>Un correo con los cambios de precio de tu competencia. Puedes desactivarlo cuando quieras.</Text>
+                        </View>
+                        <Switch
+                            accessibilityLabel="Alertas por correo"
+                            value={actuales.recibirCorreos}
+                            onValueChange={(valor) => cambiar('recibirCorreos', valor)}
                             disabled={guardando}
                             trackColor={{ true: colores.tinta, false: colores.humoOscuro }}
                             thumbColor={colores.papel}
@@ -138,6 +159,7 @@ const estilos = StyleSheet.create({
     flexible: { flex: 1, gap: 2 },
     seccion: { marginTop: espacio.s, marginLeft: espacio.xs },
     fila: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
+    separada: { marginTop: espacio.m },
     aviso: { gap: espacio.s, paddingTop: espacio.xs },
     salir: { marginTop: espacio.s },
 })

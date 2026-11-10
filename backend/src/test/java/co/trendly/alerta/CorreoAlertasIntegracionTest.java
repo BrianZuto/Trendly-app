@@ -120,6 +120,19 @@ class CorreoAlertasIntegracionTest {
         return jdbc.queryForObject("SELECT COUNT(*) FROM alerta WHERE usuario_id = ? AND enviada_correo_en IS NULL", Integer.class, usuario);
     }
 
+    /** Junta el texto de todas las partes del correo, ya decodificadas. */
+    private static String textoDecodificado(jakarta.mail.Part parte) throws Exception {
+        Object contenido = parte.getContent();
+        if (contenido instanceof jakarta.mail.Multipart multi) {
+            StringBuilder texto = new StringBuilder();
+            for (int i = 0; i < multi.getCount(); i++) {
+                texto.append(textoDecodificado(multi.getBodyPart(i)));
+            }
+            return texto.toString();
+        }
+        return contenido instanceof String cadena ? cadena : "";
+    }
+
     @Test
     void variasAlertasDelVendedorLleganEnUnSoloCorreoYQuedanMarcadas() throws Exception {
         long m1 = monitoreoDe(ana, "Audífonos");
@@ -139,6 +152,9 @@ class CorreoAlertasIntegracionTest {
             assertThat(correo.getContentType()).startsWith("multipart/");
             assertThat(cuerpo).contains("Tienda Uno", "$ 100.000", "$ 90.000", "$ 89.100", "-10 %", "Parlante",
                     "https://trendly.test/productos/");
+            // El enlace para dejar de recibir correos (Ley 1581): el cuerpo va en quoted-printable, se lee ya decodificado
+            assertThat(textoDecodificado(correo)).contains("Para dejar de recibir estos correos: https://trendly.test/alertas?preferencias=1",
+                    "href=\"https://trendly.test/alertas?preferencias=1\"", "Preferencias de aviso</a>");
         });
         assertThat(sinEnviar(ana)).isZero();
     }

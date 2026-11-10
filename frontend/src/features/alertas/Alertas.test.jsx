@@ -7,6 +7,7 @@ import { guardarSesion, guardarToken } from '@core/auth/token'
 import MainLayout from '@core/layout/MainLayout'
 import { sembrarAlerta, sembrarProductos } from '@core/mocks/mockAdapter'
 import { iniciarSesion, obtenerPerfil } from '@core/services/auth.service'
+import { obtenerReglasAlerta } from '@core/services/alertas.service'
 import { obtenerProducto } from '@core/services/productos.service'
 import Alertas from './Alertas'
 
@@ -38,9 +39,9 @@ beforeEach(async () => {
     })
 })
 
-async function renderizar() {
+async function renderizar(url = '/alertas') {
     render(
-        <MemoryRouter initialEntries={['/alertas']}>
+        <MemoryRouter initialEntries={[url]}>
             <AuthProvider>
                 <Routes>
                     <Route element={<MainLayout />}>
@@ -147,5 +148,54 @@ describe('bandeja de alertas', () => {
         expect(decision).toHaveTextContent('Motivo: Es una oferta relámpago')
         expect((await obtenerProducto(1)).precioVenta).toBe(159900)
         expect(conSugerido).not.toBe(sinSugerido)
+    })
+})
+
+describe('preferencias de aviso', () => {
+    it('el vendedor desactiva los correos de alertas y queda guardado', async () => {
+        const user = userEvent.setup()
+        await renderizar()
+
+        await user.click(screen.getByRole('button', { name: 'Preferencias de aviso' }))
+        const dialogo = await screen.findByRole('dialog', { name: 'Preferencias de aviso' })
+        const correos = await within(dialogo).findByRole('switch', { name: 'Alertas por correo' })
+        expect(correos).toBeChecked()
+        await user.click(correos)
+        await user.click(within(dialogo).getByRole('button', { name: 'Guardar preferencias' }))
+
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+        expect(screen.getByRole('status')).toHaveTextContent('Ya no te enviaremos correos de alertas')
+        expect(await obtenerReglasAlerta()).toMatchObject({ recibirCorreos: false, umbralPct: 5, avisarDisponibilidad: true })
+    })
+
+    it('cambia el umbral y rechaza uno fuera de rango sin guardar', async () => {
+        const user = userEvent.setup()
+        await renderizar()
+
+        await user.click(screen.getByRole('button', { name: 'Preferencias de aviso' }))
+        const umbral = await screen.findByLabelText('Umbral de cambio')
+        await user.clear(umbral)
+        await user.type(umbral, '150')
+        await user.click(screen.getByRole('button', { name: 'Guardar preferencias' }))
+        expect(screen.getByRole('alert')).toHaveTextContent('El umbral debe estar entre 0,01 y 100')
+        expect((await obtenerReglasAlerta()).umbralPct).toBe(5)
+
+        await user.clear(umbral)
+        await user.type(umbral, '7,5')
+        await user.click(screen.getByRole('button', { name: 'Guardar preferencias' }))
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+        expect((await obtenerReglasAlerta()).umbralPct).toBe(7.5)
+    })
+
+    it('el enlace del correo abre las preferencias y Cancelar las cierra sin cambiar nada', async () => {
+        const user = userEvent.setup()
+        await renderizar('/alertas?preferencias=1')
+
+        const dialogo = await screen.findByRole('dialog', { name: 'Preferencias de aviso' })
+        await user.click(await within(dialogo).findByRole('switch', { name: 'Avisos de disponibilidad' }))
+        await user.click(within(dialogo).getByRole('button', { name: 'Cancelar' }))
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        expect((await obtenerReglasAlerta()).avisarDisponibilidad).toBe(true)
     })
 })

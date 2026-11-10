@@ -25,3 +25,16 @@ export async function decidirAlerta(id, decision) {
     const { data } = await client.patch(`/alertas/${id}/decision`, decision)
     return data
 }
+
+// GET /usuarios/me/reglas-alerta → 200 { umbralPct, avisarDisponibilidad, recibirCorreos, recibirPush } (SCRUM-47, SCRUM-48)
+export async function obtenerReglasAlerta() {
+    const { data } = await client.get('/usuarios/me/reglas-alerta')
+    return data
+}
+
+// PUT /usuarios/me/reglas-alerta { umbralPct, avisarDisponibilidad, recibirCorreos } → 200 | 400 umbral fuera de 0,01–100.
+// recibirPush no se manda: lo maneja la app móvil y el backend conserva su valor
+export async function guardarReglasAlerta({ umbralPct, avisarDisponibilidad, recibirCorreos }) {
+    const { data } = await client.put('/usuarios/me/reglas-alerta', { umbralPct, avisarDisponibilidad, recibirCorreos })
+    return data
+}

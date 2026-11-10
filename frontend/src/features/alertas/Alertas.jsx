@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { mensajeDeError } from '@core/api/errores'
 import { avisarCambioDeAlertas, decidirAlerta, listarAlertas, marcarAlertaLeida } from '@core/services/alertas.service'
 import { obtenerHistorico } from '@core/services/monitoreos.service'
 import { formatearPesos, formatearPorcentaje } from '@features/productos/formato'
+import Mensaje from '@shared/components/Mensaje'
+import PreferenciasAlertas from './PreferenciasAlertas'
 import './Alertas.css'
 
 const ESTADOS = [
@@ -41,6 +43,25 @@ export default function Alertas() {
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState('')
     const [elegidaId, setElegidaId] = useState(null)
+    // El enlace del correo de alertas abre /alertas?preferencias=1 para poder dejar de recibirlos
+    const [parametros, setParametros] = useSearchParams()
+    const preferenciasAbiertas = parametros.get('preferencias') === '1'
+    const [avisoPreferencias, setAvisoPreferencias] = useState('')
+
+    function abrirPreferencias() {
+        setAvisoPreferencias('')
+        setParametros({ preferencias: '1' })
+    }
+
+    function cerrarPreferencias() {
+        setParametros({}, { replace: true })
+    }
+
+    function preferenciasGuardadas(reglas) {
+        cerrarPreferencias()
+        const correos = reglas.recibirCorreos ? 'Te enviaremos las alertas por correo' : 'Ya no te enviaremos correos de alertas'
+        setAvisoPreferencias(`Guardamos tus preferencias. ${correos} y te avisaremos desde un cambio de ${formatearPorcentaje(reglas.umbralPct)}.`)
+    }
 
     useEffect(() => {
         let vigente = true
@@ -80,9 +101,17 @@ export default function Alertas() {
     return (
         <section className="bandeja" aria-labelledby="bandeja-titulo">
             <header className="bandeja-cabecera">
-                <h1 id="bandeja-titulo">Alertas</h1>
-                <p>Los cambios de tu competencia que superaron tu umbral. Decide en cada una si cambias tu precio.</p>
+                <div>
+                    <h1 id="bandeja-titulo">Alertas</h1>
+                    <p>Los cambios de tu competencia que superaron tu umbral. Decide en cada una si cambias tu precio.</p>
+                </div>
+                <button type="button" className="app-boton app-boton-claro bandeja-preferencias" onClick={abrirPreferencias}>
+                    Preferencias de aviso
+                </button>
             </header>
+
+            {avisoPreferencias && <Mensaje tipo="exito">{avisoPreferencias}</Mensaje>}
+            {preferenciasAbiertas && <PreferenciasAlertas onCerrar={cerrarPreferencias} onGuardadas={preferenciasGuardadas} />}
 
             <div className="bandeja-filtros">
                 <div className="bandeja-chips" role="group" aria-label="Filtrar por estado">
