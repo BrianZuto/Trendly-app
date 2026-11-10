@@ -26,6 +26,8 @@ let siguienteMonitoreoId = 1
 let ultimoMovimiento = Date.now()
 let alertas = []
 let siguienteAlertaId = 1
+// Reglas de alerta por usuario (SCRUM-47, SCRUM-48); sin fila, las de por defecto
+let reglas = new Map()
 // Ofertas del proveedor que ya devolvió una búsqueda: crear un producto exige elegir una de ellas
 let ofertasVistas = new Map()
 
@@ -46,6 +48,7 @@ export function reiniciarMock() {
     ofertasVistas = new Map()
     alertas = []
     siguienteAlertaId = 1
+    reglas = new Map()
     sembrarUsuarios()
 }
 
@@ -534,6 +537,29 @@ const manejadores = {
         return [200, lista.map(publicoAlerta)]
     },
 
+    'GET /usuarios/me/reglas-alerta': (config) => {
+        const usuario = usuarioDelToken(config)
+        if (!usuario) return [401, { message: 'Token vencido o ausente' }]
+        return [200, { ...reglasDe(usuario) }]
+    },
+
+    // Mismas validaciones que ReglaAlertaRequest; recibirPush es opcional y si no viene se conserva
+    'PUT /usuarios/me/reglas-alerta': (config) => {
+        const usuario = usuarioDelToken(config)
+        if (!usuario) return [401, { message: 'Token vencido o ausente' }]
+        const { umbralPct, avisarDisponibilidad, recibirCorreos, recibirPush } = leerCuerpo(config)
+        const umbral = Number(umbralPct)
+        if (umbralPct === null || umbralPct === undefined || umbralPct === '') return [400, { message: 'El umbral es obligatorio' }]
+        if (Number.isNaN(umbral) || umbral < 0.01 || umbral > 100) return [400, { message: 'El umbral debe estar entre 0,01 y 100' }]
+        if (Math.round(umbral * 100) !== umbral * 100) return [400, { message: 'El umbral admite hasta 2 decimales' }]
+        if (typeof avisarDisponibilidad !== 'boolean') return [400, { message: 'Indique si quiere avisos de disponibilidad' }]
+        if (typeof recibirCorreos !== 'boolean') return [400, { message: 'Indique si quiere recibir correos' }]
+        const actuales = reglasDe(usuario)
+        const nuevas = { umbralPct: umbral, avisarDisponibilidad, recibirCorreos, recibirPush: typeof recibirPush === 'boolean' ? recibirPush : actuales.recibirPush }
+        reglas.set(usuario.id, nuevas)
+        return [200, { ...nuevas }]
+    },
+
     // Propuesta: búsqueda en el proveedor (AliExpress) por palabra clave o URL
     'GET /proveedores/ofertas': (config) => {
         const usuario = usuarioDelToken(config)
@@ -557,6 +583,8 @@ function buscarManejador(config) {
     }
     return null
 }
+
+const reglasDe = (usuario) => reglas.get(usuario.id) ?? { umbralPct: 5, avisarDisponibilidad: true, recibirCorreos: true, recibirPush: true }
 
 // Axios llama a esta funcion en lugar de hacer la peticion real
 export function mockAdapter(config) {

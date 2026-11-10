@@ -160,6 +160,28 @@ describe('preferencia en el perfil', () => {
         await waitFor(() => expect(screen.getByLabelText('Notificaciones push')).toHaveProp('value', false))
     })
 
+    it('el vendedor puede desactivar los correos, y cambiar después el push no los vuelve a activar', async () => {
+        const llamadas = simularApi(RUTAS)
+        await conSesion()
+        await renderRouter('./src/app', { initialUrl: '/perfil' })
+
+        const correos = await screen.findByLabelText('Alertas por correo')
+        expect(correos).toHaveProp('value', true)
+        await fireEvent(correos, 'valueChange', false)
+        await waitFor(() => expect(llamadasA(llamadas, 'PUT /usuarios/me/reglas-alerta')).toHaveLength(1))
+        expect(JSON.parse(llamadasA(llamadas, 'PUT /usuarios/me/reglas-alerta')[0].config.data)).toEqual({ ...REGLAS, recibirCorreos: false })
+        await waitFor(() => expect(screen.getByLabelText('Alertas por correo')).toHaveProp('value', false))
+
+        await fireEvent(screen.getByLabelText('Notificaciones push'), 'valueChange', false)
+        await waitFor(() => expect(llamadasA(llamadas, 'PUT /usuarios/me/reglas-alerta')).toHaveLength(2))
+        expect(JSON.parse(llamadasA(llamadas, 'PUT /usuarios/me/reglas-alerta')[1].config.data)).toEqual({
+            ...REGLAS,
+            recibirCorreos: false,
+            recibirPush: false,
+        })
+        expect(screen.getByLabelText('Alertas por correo')).toHaveProp('value', false)
+    })
+
     it('si no se pudo guardar, el interruptor vuelve a como estaba y lo dice', async () => {
         simularApi({ ...RUTAS, 'PUT /usuarios/me/reglas-alerta': { status: 500 } })
         await conSesion()

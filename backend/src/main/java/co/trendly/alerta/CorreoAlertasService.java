@@ -99,6 +99,8 @@ public class CorreoAlertasService {
             }
             texto.append("\nVer en Trendly: ").append(baseUrl()).append("/productos/").append(fila.productoId()).append("\n");
         }
+        // Ley 1581 de 2012: el vendedor puede dejar de recibir estos correos cuando quiera
+        texto.append("\nPara dejar de recibir estos correos: ").append(baseUrl()).append("/alertas?preferencias=1\n");
         return texto.toString();
     }
 
