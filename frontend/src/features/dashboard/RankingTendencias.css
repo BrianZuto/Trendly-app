@@ -1,0 +1,68 @@
+/* Ranking de tendencias (SCRUM-53): usa la tabla del tablero (.tablero-tabla) */
+
+.ranking-tendencias {
+  scroll-margin-top: 80px;
+}
+
+.ranking-tendencias h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: #000000;
+}
+
+.ranking-tendencias-descripcion {
+  margin: 4px 0 0;
+  max-width: 78ch;
+}
+
+.ranking-tendencias-contenedor {
+  max-height: 560px;
+  margin-top: 0;
+}
+
+.ranking-tendencias-tabla {
+  min-width: 760px;
+}
+
+.ranking-tendencias-tabla thead th {
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.ranking-tendencias-tabla tbody th {
+  text-align: left;
+  font-weight: 600;
+  color: #000000;
+}
+
+.ranking-tendencias-tabla .es-numero {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ranking-tendencias-detalle {
+  display: block;
+  color: #86868b;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.ranking-tendencias-puntaje {
+  font-weight: 700;
+  color: #000000;
+}
+
+.ranking-tendencias-esqueleto {
+  height: 240px;
+  border-radius: 14px;
+}
+
+.ranking-tendencias-vacio {
+  margin: 0;
+  color: #86868b;
+  font-size: 14px;
+  max-width: 70ch;
+}

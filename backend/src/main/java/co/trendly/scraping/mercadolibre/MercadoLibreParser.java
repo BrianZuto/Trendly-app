@@ -52,7 +52,13 @@ public final class MercadoLibreParser {
             return null;
         }
         PublicacionCapturada p = oferta(primera, nombre, posicion);
-        return validar(p) == null ? p : null;
+        if (validar(p) != null) {
+            return null;
+        }
+        // paging.total cuenta todas las ofertas del producto aunque solo se pida la primera (SCRUM-53)
+        int vendedores = ofertas.path("paging").path("total").asInt(0);
+        return new PublicacionCapturada(p.idPublicacion(), p.titulo(), p.vendedor(), p.posicion(), p.precio(), p.moneda(),
+                p.disponible(), vendedores > 0 ? vendedores : null);
     }
 
     /**

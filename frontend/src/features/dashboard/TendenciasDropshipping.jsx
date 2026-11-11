@@ -70,12 +70,12 @@ export default function TendenciasDropshipping() {
                         Productos verificados con alta demanda y margen proyectado entre proveedores internacionales y el mercado local.
                     </p>
                 </div>
-                <Link to="/productos/nuevo" className="tendencias-boton-ranking">
+                <a href="#ranking-tendencias" className="tendencias-boton-ranking">
                     Ver ranking completo
                     <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
                         <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                     </svg>
-                </Link>
+                </a>
             </div>
 
             <div className="tendencias-grilla">

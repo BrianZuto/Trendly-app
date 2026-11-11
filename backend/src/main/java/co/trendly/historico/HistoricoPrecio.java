@@ -58,12 +58,24 @@ public class HistoricoPrecio {
     @Column(name = "capturado_en", nullable = false, updatable = false)
     private Instant capturadoEn;
 
+    /** Vendedores que ofrecen el mismo producto (SCRUM-53); solo en búsquedas por palabra clave de MercadoLibre. */
+    @Column(updatable = false)
+    private Integer vendedores;
+
     protected HistoricoPrecio() {
     }
 
     HistoricoPrecio(Long monitoreoId, String publicacionId, String titulo, String vendedor, Integer posicion,
             BigDecimal precio, String moneda, BigDecimal precioCop, boolean disponible, String fuente,
             Instant capturadoEn) {
+        this(monitoreoId, publicacionId, titulo, vendedor, posicion, precio, moneda, precioCop, disponible, fuente,
+                capturadoEn, null);
+    }
+
+    HistoricoPrecio(Long monitoreoId, String publicacionId, String titulo, String vendedor, Integer posicion,
+            BigDecimal precio, String moneda, BigDecimal precioCop, boolean disponible, String fuente,
+            Instant capturadoEn, Integer vendedores) {
+        this.vendedores = vendedores;
         this.monitoreoId = monitoreoId;
         this.publicacionId = publicacionId;
         this.titulo = recortar(titulo, 300);
@@ -124,6 +136,10 @@ public class HistoricoPrecio {
 
     public String getFuente() {
         return fuente;
+    }
+
+    public Integer getVendedores() {
+        return vendedores;
     }
 
     public Instant getCapturadoEn() {

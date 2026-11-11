@@ -96,7 +96,7 @@ public class HistoricoService {
             HistoricoPrecio punto = historico.save(new HistoricoPrecio(monitoreo.getId(), idPublicacion,
                     publicacion.titulo(), publicacion.vendedor(), publicacion.posicion(), publicacion.precio(),
                     publicacion.moneda(), precioCop.get(), publicacion.disponible(), monitoreo.getMarketplace().name(),
-                    ahora));
+                    ahora, publicacion.vendedores()));
             guardados.add(new PrecioActualizado(punto.getId(), monitoreo.getId(), monitoreo.getProductoId(),
                     idPublicacion, anterior.map(HistoricoPrecio::getPrecioCop).orElse(null), punto.getPrecioCop(),
                     anterior.map(HistoricoPrecio::isDisponible).orElse(null), punto.isDisponible(), ahora));
