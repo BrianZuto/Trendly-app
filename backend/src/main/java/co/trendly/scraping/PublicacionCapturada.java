@@ -13,7 +13,14 @@ import java.math.BigDecimal;
  * @param precio        precio de venta, mayor que 0
  * @param moneda        código ISO 4217 (USD, COP…)
  * @param disponible    si se puede comprar en este momento
+ * @param vendedores    cuántos vendedores ofrecen el mismo producto (SCRUM-53); {@code null} si no se sabe
  */
 public record PublicacionCapturada(String idPublicacion, String titulo, String vendedor, Integer posicion,
-        BigDecimal precio, String moneda, boolean disponible) {
+        BigDecimal precio, String moneda, boolean disponible, Integer vendedores) {
+
+    /** Publicación de la que no se sabe cuántos vendedores tiene. */
+    public PublicacionCapturada(String idPublicacion, String titulo, String vendedor, Integer posicion,
+            BigDecimal precio, String moneda, boolean disponible) {
+        this(idPublicacion, titulo, vendedor, posicion, precio, moneda, disponible, null);
+    }
 }
