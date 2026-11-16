@@ -97,6 +97,16 @@ class MercadoLibreParserTest {
         assertThat(p.precio()).isEqualByComparingTo("173990");
         assertThat(p.posicion()).isEqualTo(1);
         assertThat(p.titulo()).isEqualTo("Redmi Buds 8 Green");
+        // Se pidió una sola oferta, pero paging.total dice cuántos vendedores tiene el producto (SCRUM-53)
+        assertThat(p.vendedores()).isEqualTo(2);
+    }
+
+    @Test
+    void sinPaginacionNoSeSabeCuantosVendedoresHay() {
+        PublicacionCapturada p = MercadoLibreParser.mejorOferta(texto("""
+                {"results": [{"item_id": "MCO1", "price": 1000, "currency_id": "COP"}]}"""), "x", 1);
+
+        assertThat(p.vendedores()).isNull();
     }
 
     @Test

@@ -71,6 +71,7 @@ erDiagram
         BOOLEAN disponible
         VARCHAR fuente
         DATETIME capturado_en
+        INT vendedores "con el mismo producto (SCRUM-53)"
     }
     incidencia_scraping {
         BIGINT id PK

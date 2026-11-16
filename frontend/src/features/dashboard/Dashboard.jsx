@@ -10,6 +10,7 @@ import { MARKETPLACES } from '@shared/utils/marketplaces'
 import { agruparPorPublicacion, armarSeries, COLOR_PROPIO, DIA, fechaHora, leer, pesos, porcentajeConSigno, RANGOS, resumir } from './tablero'
 import DecisionesPendientes from './DecisionesPendientes'
 import DescargarReporte from './DescargarReporte'
+import RankingTendencias from './RankingTendencias'
 import TendenciasDropshipping from './TendenciasDropshipping'
 import Vitrina from './Vitrina'
 import { crearAnunciosVitrina } from './vitrina.mock'
@@ -224,6 +225,7 @@ export default function Dashboard() {
                     </Link>
                 </div>
                 <TendenciasDropshipping />
+                <RankingTendencias />
             </section>
         )
     }
@@ -344,6 +346,7 @@ export default function Dashboard() {
             </div>
 
             <TendenciasDropshipping />
+            <RankingTendencias />
         </section>
     )
 }

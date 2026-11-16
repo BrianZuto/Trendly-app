@@ -334,6 +334,26 @@ Cada vendedor solo ve sus alertas; una alerta ajena responde 404. La página `/a
 - **Métricas:** el mínimo, el promedio, la diferencia y la variación usan las mismas fórmulas que el tablero (`CalculoCompetencia.java` y `tablero.js`). Si cambia una, debe cambiar la otra. El mínimo y el promedio miran la última captura con stock de cada publicación en los 90 días anteriores a `hasta`, aunque el periodo sea más corto.
 - **Fechas:** en hora de Colombia.
 
+## Ranking de tendencias (SCRUM-53)
+
+`GET /api/v1/tendencias?top=20` responde los productos mejor puntuados del vendedor, del puntaje más alto al más bajo (`top` va de 1 a 50). En el tablero es la tabla **Tendencias**.
+
+**De dónde salen los productos.** De las búsquedas por palabra clave en MercadoLibre de los productos del vendedor (SCRUM-37). Entra cada producto que salió en la última captura de la búsqueda, con stock. Si el mismo producto sale en dos búsquedas, queda una vez, con su mejor puntaje. Con el Top N por defecto (5), hacen falta al menos 4 búsquedas para llegar a 20 productos.
+
+**Las tres variables**, cada una de 0 a 100:
+
+| Variable | Cómo se calcula | Ejemplo |
+|---|---|---|
+| **Demanda** | `(11 − puesto promedio) × 10 × presencia`. El puesto es el de la búsqueda en los últimos 30 días (el 1 vale 100 y el 10 vale 10) y la presencia es la fracción de las capturas en que el producto apareció. | Puesto promedio 2,5 en todas las capturas → 85 |
+| **Margen** | `(precio en MercadoLibre − costo) ÷ precio × 100`, sin bajar de 0. El costo es el precio más bajo con stock de los monitoreos de AliExpress del producto, en COP con la TRM; si el producto no vigila AliExpress, es el costo registrado. | Se vende a $64.900 y cuesta $28.400 → 56,2 |
+| **Competencia** | `vendedores × 5`, hasta 100. Son los vendedores que ofrecen el mismo producto de catálogo en MercadoLibre; desde 20 vale 100. Entre menos, mejor. | 8 vendedores → 40 |
+
+**Puntaje** `= 0,4 × demanda + 0,3 × margen + 0,3 × (100 − competencia)`. Con el ejemplo: 0,4 × 85 + 0,3 × 56,2 + 0,3 × 60 = **68,9**. Las variables se redondean a un decimal antes de combinarlas, así que el puntaje se puede comprobar con lo que muestra la tabla.
+
+- **Por qué la demanda no usa ventas ni reseñas:** la API de MercadoLibre no las entrega a una aplicación (responde 403) y su HTML bloquea los rastreadores. Se estima con el orden de relevancia de la búsqueda, que MercadoLibre arma en buena parte con las ventas.
+- **Vendedores:** se guardan en `historico_precio.vendedores` (migración `V9`) al capturar una búsqueda. Las capturas anteriores a SCRUM-53 no traen el dato: un producto entra al ranking cuando su búsqueda se vuelve a capturar (máximo 6 horas).
+- Las fórmulas están en `CalculoTendencia.java`; los datos simulados del frontend (`tendenciasSimuladas.js`) usan las mismas.
+
 ## Job de recolección (SCRUM-39)
 
 Cada 6 horas (00:00, 06:00, 12:00 y 18:00 UTC) la Azure Function de `functions/` llama a `POST /api/v1/interno/recoleccion/ejecutar` con la clave en `X-Api-Key`. El backend:

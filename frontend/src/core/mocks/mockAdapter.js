@@ -11,6 +11,7 @@ import {
     reconocerMarketplace,
     TRM,
 } from './mercadoSimulado'
+import { rankingSimulado } from './tendenciasSimuladas'
 import { SITIOS_SOPORTADOS } from '@shared/utils/marketplaces'
 import { MENSAJE_SOLO_CATALOGO } from '@shared/utils/validaciones'
 
@@ -522,6 +523,14 @@ const manejadores = {
 
     // Un Excel o un PDF de verdad solo los genera el backend (SCRUM-50)
     'GET /reportes': () => [503, { message: 'La descarga de reportes necesita el servidor real; no está disponible con datos simulados' }],
+
+    // Ranking de tendencias (SCRUM-53): un mercado de ejemplo, igual para todos los vendedores
+    'GET /tendencias': (config) => {
+        if (!usuarioDelToken(config)) return [401, { message: 'Token vencido o ausente' }]
+        const top = Number(config.params?.top ?? 20)
+        if (!Number.isInteger(top)) return [400, { message: 'El parámetro top no es válido' }]
+        return [200, rankingSimulado(top)]
+    },
 
     'GET /alertas': (config) => {
         const usuario = usuarioDelToken(config)
