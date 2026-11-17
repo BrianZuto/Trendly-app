@@ -35,3 +35,8 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# --- Pruebas E2E (Selenium) ---
+e2e/capturas/
+e2e/.pytest_cache/
+e2e/.venv/

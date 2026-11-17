@@ -6,22 +6,22 @@
 
 ## Resumen
 
-| Clave | Historia | Responsable | Pts | Depende de |
-|---|---|---|---|---|
-| SCRUM-45 | Validar dato, reintentos y marcar para revisión | Raquel | 3 | 40, 41, 42 |
-| SCRUM-46 | Precio y margen sugeridos | Brian | 5 | 42 |
-| SCRUM-47 | Detectar cambios según umbral | Brian | 3 | 42, 46 |
-| SCRUM-48 | Alertas por correo | Brian | 3 | 47 |
-| SCRUM-49 | Bandeja de alertas y decisión de precio | Juan David | 5 | 46, 47 |
-| SCRUM-50 | Reportes en Excel y PDF | Raquel | 5 | 42, 46, 49 |
-| SCRUM-51 | App móvil: login y dashboards | Juan David | 5 | 31, 42 |
-| SCRUM-52 | Notificaciones push | Juan David | 3 | 48, 51 |
+| Código | Clave | Historia | Responsable | Pts | Depende de |
+|---|---|---|---|---|---|
+| HU-19 | SCRUM-45 | Validar dato, reintentos y marcar para revisión | Raquel | 3 | 40, 41, 42 |
+| HU-20 | SCRUM-46 | Precio y margen sugeridos | Brian | 5 | 42 |
+| HU-21 | SCRUM-47 | Detectar cambios según umbral | Brian | 3 | 42, 46 |
+| HU-22 | SCRUM-48 | Alertas por correo | Brian | 3 | 47 |
+| HU-23 | SCRUM-49 | Bandeja de alertas y decisión de precio | Juan David | 5 | 46, 47 |
+| HU-24 | SCRUM-50 | Reportes en Excel y PDF | Raquel | 5 | 42, 46, 49 |
+| HU-25 | SCRUM-51 | App móvil: login y dashboards | Juan David | 5 | 31, 42 |
+| HU-26 | SCRUM-52 | Notificaciones push | Juan David | 3 | 48, 51 |
 
 **Carga:** Brian 11 pts · Raquel 8 pts · Juan David 13 pts.
 
 ## Historias de usuario
 
-### SCRUM-45 · Validar dato extraído, reintentos y marcar producto para revisión
+### HU-19 · SCRUM-45 · Validar dato extraído, reintentos y marcar producto para revisión
 
 **Responsable:** Raquel · 3 pts · Épica: Recolección y análisis de precios (Proceso 2)
 
@@ -52,7 +52,7 @@ Que un dato malo o un fallo del sitio no contamine el histórico ni genere alert
 
 ---
 
-### SCRUM-46 · Calcular precio y margen sugeridos comparando plataformas
+### HU-20 · SCRUM-46 · Calcular precio y margen sugeridos comparando plataformas
 
 **Responsable:** Brian · 5 pts · Épica: Recolección y análisis de precios (Proceso 2)
 
@@ -83,7 +83,7 @@ Convertir el histórico en una recomendación de precio que respete el margen ob
 
 ---
 
-### SCRUM-47 · Detectar cambios de precio o disponibilidad según umbral
+### HU-21 · SCRUM-47 · Detectar cambios de precio o disponibilidad según umbral
 
 **Responsable:** Brian · 3 pts · Épica: Alertas, reportes y toma de decisiones (Proceso 3)
 
@@ -112,7 +112,7 @@ Decidir cuándo un cambio del mercado merece una alerta. Es el inicio del Proces
 
 ---
 
-### SCRUM-48 · Enviar alertas por correo al vendedor
+### HU-22 · SCRUM-48 · Enviar alertas por correo al vendedor
 
 **Responsable:** Brian · 3 pts · Épica: Alertas, reportes y toma de decisiones (Proceso 3)
 
@@ -138,7 +138,7 @@ Avisarle al vendedor por correo en menos de 5 minutos cuando algo importante cam
 
 ---
 
-### SCRUM-49 · Bandeja de alertas y registro de la decisión de precio
+### HU-23 · SCRUM-49 · Bandeja de alertas y registro de la decisión de precio
 
 **Responsable:** Juan David · 5 pts · Épica: Alertas, reportes y toma de decisiones (Proceso 3)
 
@@ -165,7 +165,7 @@ Que el vendedor atienda las alertas y registre qué hizo. Con esto se cierra el 
 
 ---
 
-### SCRUM-50 · Exportar reportes en Excel y PDF
+### HU-24 · SCRUM-50 · Exportar reportes en Excel y PDF
 
 **Responsable:** Raquel · 5 pts · Épica: Alertas, reportes y toma de decisiones (Proceso 3)
 
@@ -194,7 +194,7 @@ Entregarle al vendedor un reporte descargable con las métricas de su negocio.
 
 ---
 
-### SCRUM-51 · App móvil React Native: login y consulta de dashboards
+### HU-25 · SCRUM-51 · App móvil React Native: login y consulta de dashboards
 
 **Responsable:** Juan David · 5 pts · Épica: Tablero web y aplicación móvil
 
@@ -220,7 +220,7 @@ Que el vendedor consulte Trendly desde el celular.
 
 ---
 
-### SCRUM-52 · Notificaciones push en la app móvil
+### HU-26 · SCRUM-52 · Notificaciones push en la app móvil
 
 **Responsable:** Juan David · 3 pts · Épica: Alertas, reportes y toma de decisiones (Proceso 3)
 

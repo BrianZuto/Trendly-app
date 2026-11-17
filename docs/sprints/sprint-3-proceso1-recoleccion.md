@@ -6,23 +6,23 @@
 
 ## Resumen
 
-| Clave | Historia | Responsable | Pts | Depende de |
-|---|---|---|---|---|
-| SCRUM-36 | Agregar competidor por URL (ML o AliExpress) | Raquel | 5 | 33 |
-| SCRUM-37 | Monitorear producto por palabra clave | Brian | 3 | 36 |
-| SCRUM-38 | Validar URL y palabra clave (pantalla de competidores) | Juan David | 2 | 36, 37 |
-| SCRUM-39 | Job programado cada 6 h en Azure Functions | Brian | 3 | 36, 40 |
-| SCRUM-40 | Scraper de MercadoLibre | Brian | 5 | 36, 37 |
-| SCRUM-41 | Scraper de AliExpress | Raquel | 5 | 40 |
-| SCRUM-42 | Persistir histórico de precios (con TRM) | Raquel | 3 | 40, 41 |
-| SCRUM-43 | Tablero con gráfica de evolución de precios | Juan David | 5 | 42 |
-| SCRUM-44 | SonarCloud como quality gate | Juan David | 2 | 28 |
+| Código | Clave | Historia | Responsable | Pts | Depende de |
+|---|---|---|---|---|---|
+| HU-10 | SCRUM-36 | Agregar competidor por URL (ML o AliExpress) | Raquel | 5 | 33 |
+| HU-11 | SCRUM-37 | Monitorear producto por palabra clave | Brian | 3 | 36 |
+| HU-12 | SCRUM-38 | Validar URL y palabra clave (pantalla de competidores) | Juan David | 2 | 36, 37 |
+| HU-13 | SCRUM-39 | Job programado cada 6 h en Azure Functions | Brian | 3 | 36, 40 |
+| HU-14 | SCRUM-40 | Scraper de MercadoLibre | Brian | 5 | 36, 37 |
+| HU-15 | SCRUM-41 | Scraper de AliExpress | Raquel | 5 | 40 |
+| HU-16 | SCRUM-42 | Persistir histórico de precios (con TRM) | Raquel | 3 | 40, 41 |
+| HU-17 | SCRUM-43 | Tablero con gráfica de evolución de precios | Juan David | 5 | 42 |
+| HU-18 | SCRUM-44 | SonarCloud como quality gate | Juan David | 2 | 28 |
 
 **Carga:** Brian 11 pts · Raquel 13 pts · Juan David 9 pts.
 
 ## Historias de usuario
 
-### SCRUM-36 · Como vendedor quiero agregar un competidor por URL de MercadoLibre o AliExpress
+### HU-10 · SCRUM-36 · Como vendedor quiero agregar un competidor por URL de MercadoLibre o AliExpress
 
 **Responsable:** Raquel · 5 pts · Épica: Registro de productos a monitorear (Proceso 1)
 
@@ -58,7 +58,7 @@ Asociar a cada producto propio las publicaciones de la competencia que se quiere
 
 ---
 
-### SCRUM-37 · Como vendedor quiero monitorear un producto por palabra clave
+### HU-11 · SCRUM-37 · Como vendedor quiero monitorear un producto por palabra clave
 
 **Responsable:** Brian · 3 pts · Épica: Registro de productos a monitorear (Proceso 1)
 
@@ -87,7 +87,7 @@ Vigilar el mercado a partir de una búsqueda, sin conocer una publicación puntu
 
 ---
 
-### SCRUM-38 · Validar formato de URL y palabra clave con mensajes de error
+### HU-12 · SCRUM-38 · Validar formato de URL y palabra clave con mensajes de error
 
 **Responsable:** Juan David · 2 pts · Épica: Registro de productos a monitorear (Proceso 1)
 
@@ -116,7 +116,7 @@ Construir en la web la sección de competidores de cada producto, validando los 
 
 ---
 
-### SCRUM-39 · Job programado cada 6 h en Azure Functions
+### HU-13 · SCRUM-39 · Job programado cada 6 h en Azure Functions
 
 **Responsable:** Brian · 3 pts · Épica: Recolección y análisis de precios (Proceso 2)
 
@@ -146,7 +146,7 @@ Disparar automáticamente la recolección de precios de todos los monitoreos act
 
 ---
 
-### SCRUM-40 · Scraper de MercadoLibre (precio y disponibilidad)
+### HU-14 · SCRUM-40 · Scraper de MercadoLibre (precio y disponibilidad)
 
 **Responsable:** Brian · 5 pts · Épica: Recolección y análisis de precios (Proceso 2)
 
@@ -175,7 +175,7 @@ Obtener el precio, la disponibilidad y los datos de las publicaciones de Mercado
 
 ---
 
-### SCRUM-41 · Scraper de AliExpress (precio y disponibilidad)
+### HU-15 · SCRUM-41 · Scraper de AliExpress (precio y disponibilidad)
 
 **Responsable:** Raquel · 5 pts · Épica: Recolección y análisis de precios (Proceso 2)
 
@@ -201,7 +201,7 @@ Obtener el precio y la disponibilidad de AliExpress, que es la fuente de costos 
 
 ---
 
-### SCRUM-42 · Persistir histórico de precios por producto y plataforma
+### HU-16 · SCRUM-42 · Persistir histórico de precios por producto y plataforma
 
 **Responsable:** Raquel · 3 pts · Épica: Recolección y análisis de precios (Proceso 2)
 
@@ -228,7 +228,7 @@ Guardar cada captura como un punto del histórico, en pesos colombianos, y avisa
 
 ---
 
-### SCRUM-43 · Tablero web con gráfica de evolución de precios
+### HU-17 · SCRUM-43 · Tablero web con gráfica de evolución de precios
 
 **Responsable:** Juan David · 5 pts · Épica: Tablero web y aplicación móvil
 
@@ -255,7 +255,7 @@ Que el vendedor vea cómo cambian los precios de su competencia frente al suyo.
 
 ---
 
-### SCRUM-44 · Análisis estático con SonarCloud como quality gate
+### HU-18 · SCRUM-44 · Análisis estático con SonarCloud como quality gate
 
 **Responsable:** Juan David · 2 pts · Épica: Calidad, CI/CD y despliegue
 
