@@ -8,17 +8,17 @@
 
 ## Resumen
 
-| Clave | Historia | Responsable | Pts | Depende de |
-|---|---|---|---|---|
-| SCRUM-53 | Ranking de productos en tendencia | Raquel | 5 | 37, 42 |
-| SCRUM-54 | Despliegue en Azure y pruebas de aceptación | Brian | 3 | Todo el backend |
-| SCRUM-55 | Manual de usuario y prueba SUS | Juan David | 2 | 54 |
+| Código | Clave | Historia | Responsable | Pts | Depende de |
+|---|---|---|---|---|---|
+| HU-27 | SCRUM-53 | Ranking de productos en tendencia | Raquel | 5 | 37, 42 |
+| HU-28 | SCRUM-54 | Despliegue en Azure y pruebas de aceptación | Brian | 3 | Todo el backend |
+| HU-29 | SCRUM-55 | Manual de usuario y prueba SUS | Juan David | 2 | 54 |
 
 **Carga:** Brian 3 pts · Raquel 5 pts · Juan David 2 pts.
 
 ## Historias de usuario
 
-### SCRUM-53 · Ranking de productos en tendencia (demanda, competencia y margen)
+### HU-27 · SCRUM-53 · Ranking de productos en tendencia (demanda, competencia y margen)
 
 **Responsable:** Raquel · 5 pts · Épica: Tablero web y aplicación móvil
 
@@ -46,7 +46,7 @@ Ayudar al vendedor a escoger productos nuevos con datos, no por intuición (obje
 
 ---
 
-### SCRUM-54 · Despliegue del backend en Azure y pruebas de aceptación
+### HU-28 · SCRUM-54 · Despliegue del backend en Azure y pruebas de aceptación
 
 **Responsable:** Brian · 3 pts · Épica: Calidad, CI/CD y despliegue
 
@@ -73,7 +73,7 @@ Dejar Trendly funcionando en la nube y comprobar que cumple lo prometido en los 
 
 ---
 
-### SCRUM-55 · Manual de usuario y prueba SUS con 5 usuarios
+### HU-29 · SCRUM-55 · Manual de usuario y prueba SUS con 5 usuarios
 
 **Responsable:** Juan David · 2 pts · Épica: Calidad, CI/CD y despliegue
 
